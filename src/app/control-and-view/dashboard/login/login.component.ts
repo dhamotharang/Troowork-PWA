@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Login } from '../../../model-class/login';
 import { LoginService } from '../../../service/login.service';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ export class LoginComponent implements OnInit {
   isAuthenticated: boolean;
   rev_orgid: Number = 103;
   room_key: Number = 100;
+  
+  isMobile: boolean;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -38,7 +41,7 @@ export class LoginComponent implements OnInit {
     return window.atob(output);
   }
 
-  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router) {
+  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router,private responsiveService: ResponsiveService) {
 
     this.loginForm = fb.group({
       userName: ['', Validators.required],
@@ -133,6 +136,15 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
+
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+  }
+
 
 }

@@ -17,6 +17,8 @@ import { IgxDatePickerModule } from 'igniteui-angular';
 import { GooglePieChartService } from './extra-files/piechart-file/Services/google-pie-chart.service';
 // import { PieChartComponent } from './extra-files/piechart-file/Dashboard/Charts/piechart.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ResponsiveService } from './service/responsive.service';
+// import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 import { NgDatepickerModule} from 'ng2-datepicker';
@@ -37,8 +39,10 @@ import { NgDatepickerModule} from 'ng2-datepicker';
     // CalendarModule,
     // IgxDatePickerModule,NgDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot()
+    // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    
   ],
-  providers: [ GooglePieChartService],
+  providers: [ GooglePieChartService,ResponsiveService],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

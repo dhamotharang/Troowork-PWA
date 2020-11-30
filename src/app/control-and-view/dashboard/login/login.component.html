@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!isMobile">
     <div class="col-md-4 top_margin" style="padding-left: 1.5rem">
 
         <span class="trooworkintro">
@@ -27,8 +27,10 @@
 
         <span class="trooworkintro">
 
-            <p>TrooWork has been designed for use with Android devices and Apple devices such as iPhone, iPad, and iPods. The application
-                is compatible for all above listed devices running iOS 8.0 and above or Android Kitkat OS and above. The program has been created with
+            <p>TrooWork has been designed for use with Android devices and Apple devices such as iPhone, iPad, and
+                iPods. The application
+                is compatible for all above listed devices running iOS 8.0 and above or Android Kitkat OS and above. The
+                program has been created with
                 the end user in mind, attempting to be as simple, efficient, and straight forward as possible.</p>
         </span>
         <span>
@@ -49,7 +51,8 @@
             <div class=" mt-5 ">
                 <div class="md-form">
                     <i class="fa fa-lock prefix grey-text"></i>
-                    <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control" #passWord>
+                    <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control"
+                        #passWord>
                     <label for="defaultForm-pass">Password</label>
                 </div>
             </div>
@@ -60,7 +63,9 @@
             </div>
 
             <div class="text-center">
-                <a><input type="submit" mdbBtn color="default" (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light" mdbWavesEffect value="Login"></a>
+                <a><input type="submit" mdbBtn color="default"
+                        (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
+                        mdbWavesEffect value="Login"></a>
             </div>
             <div class=" mt-5 md-form">
                 <!-- <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
@@ -71,10 +76,51 @@
     <div class=" col-md-4 top_margin">
         <div>
 
-            <iframe width="420" height="215" src="https://www.youtube.com/embed/KGj-4FHPhlQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe width="420" height="215" src="https://www.youtube.com/embed/KGj-4FHPhlQ" frameborder="0"
+                allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         <div>
             <img src="assets/img/landingimage-3.png" class="landingimage" />
         </div>
     </div>
+</div>
+<div id="header-mobile" *ngIf="isMobile">
+    <div class=" col-md-4 top_margin">
+        <!-- <img src="assets/img/TrooWork-sticker-str.png" class="trooworklogo" /> -->
+        <a class="navbar-brand" href="http://troodontechnology.com/">
+            <img src="assets/img/TROOWORK.png" style="width: 10rem;margin-left: 9rem">
+        </a>
+        <form [formGroup]="loginForm">
+            <div class="md-form">
+                <i class="fa fa-user-circle prefix grey-text"></i>
+                <input type="text" formControlName="userName" id="defaultForm-email" class="form-control" #userName>
+                <label for="defaultForm-email">User Name</label>
+            </div>
+            <div class=" mt-5 ">
+                <div class="md-form">
+                    <i class="fa fa-lock prefix grey-text"></i>
+                    <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control"
+                        #passWord>
+                    <label for="defaultForm-pass">Password</label>
+                </div>
+            </div>
+            <div class=" mt-5 md-form">
+                <i class="fa fa-university prefix grey-text"></i>
+                <input type="text" formControlName="tenantID" id="defaultForm-TenantID" class="form-control" #tenantID>
+                <label for="defaultForm-TenantID">Tenant ID</label>
+            </div>
+
+            <div class="text-center">
+                <a><input type="submit" mdbBtn color="default"
+                        (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
+                        mdbWavesEffect value="Login"></a>
+            </div>
+            <div class=" mt-5 md-form">
+                <!-- <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
+                <a [routerLink]="['UserWorkRequest',924,1464,4433,2233,223,134593]" class="btn btn-primary"><b>User Work Request</b></a> -->
+            </div>
+        </form>
+    </div>
+    
+
 </div>

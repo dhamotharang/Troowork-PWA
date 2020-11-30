@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-manager-dash-board',
@@ -15,6 +16,7 @@ export class ManagerDashBoardComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   scheduleIcon;
+  isMobile: boolean;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -32,7 +34,7 @@ export class ManagerDashBoardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService,private responsiveService: ResponsiveService) { }
 
   ngOnInit() {
 
@@ -56,6 +58,37 @@ export class ManagerDashBoardComponent implements OnInit {
     // .subscribe((data: any[]) => {
     //   this.scheduleIcon = data[0].IsEmployeeCalendar;
     // });
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
-
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+  }
+  openNav() {
+    document.getElementById("mySidenav").style.width = "300px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+  }
+  
+  closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
+  dropdownData(){
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+    for (i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+      } else {
+      dropdownContent.style.display = "block";
+      }
+      });
+    }
+  }
 }

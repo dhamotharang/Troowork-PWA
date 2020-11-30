@@ -1,4 +1,13 @@
-<div>
+<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
+<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+  integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<div *ngIf="!isMobile">
+
   <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
     <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
   </div>
@@ -17,7 +26,8 @@
       <div style="margin-left: 10%;margin-top: 1.3%">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{ManagerOut:['welcomePage']}}]">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png"
+              [routerLink]="[{outlets:{ManagerOut:['welcomePage']}}]">
           </li>
           <li class="nav-item dropdown" style="margin-left: -1rem;">
             <img class="imagesize nav-link" src="assets/icons/work order.png">
@@ -81,7 +91,8 @@
                   Report</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['reviewReport']}}]"><b>FeedBack
                   Report</b></a>
-              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionReport']}}]"><b>Inspection</b></a>
+              <a class="dropdown-item"
+                [routerLink]="[{outlets:{ManagerOut:['InspectionReport']}}]"><b>Inspection</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['inspectionDetailReport']}}]"><b>Inspection
                   Detailed</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['inspectionAuditReport']}}]"><b>Inspection
@@ -114,7 +125,8 @@
                   Employee PTO Requests</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['TradeRequestsFromEmployees']}}]"><b>View
                   Employee Trade Requests</b></a>
-              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['EmployeeWorkingHourEmpListView']}}]"><b>Employee Working
+              <a class="dropdown-item"
+                [routerLink]="[{outlets:{ManagerOut:['EmployeeWorkingHourEmpListView']}}]"><b>Employee Working
                   Hour</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createshift']}}]"><b>Create Employee
                   Group</b></a>
@@ -146,7 +158,8 @@
                   Inspection</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create
                   Inspection Template</b></a>
-              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]"><b>View
+              <a class="dropdown-item"
+                [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]"><b>View
                   Inspection Template</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['feedbackManage']}}]"><b>View
                   FeedBack Template</b></a>
@@ -185,4 +198,162 @@
   <router-outlet name="ManagerOut"></router-outlet>
 
   <!-- </div> -->
+</div>
+
+<!-- mobile screen page begins here -->
+
+<div *ngIf="isMobile">
+
+  <div id="mySidenav" class="sidenav">
+
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+
+    <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-stack-exchange"></i> Work Order
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateWorkOrder']}}]"><b>Create Work Order</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createQuickOrder']}}]"><b>Create Quick Order</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewWorkOrder']}}]"><b>View Work Order</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchWorkOrder']}}]"><b>Create Batch Work
+        Order</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewBatchWorkorder']}}]"><b>View Batch Work Order</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkOrderType']}}]"><b>Work-Order Type</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewServiceRequest']}}]"><b>View Service Request</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['viewIntervaltype']}}]"><b>Color Coding</b></a>
+    </div>
+
+    <!-- <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-barcode"></i> Scan For Work
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScanBarcode']}}]"><b>Barcode Scanner</b></a>
+    </div> -->
+
+
+    <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-edit"></i> Inspection Order
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]"><b>Create
+          Inspection</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]"><b>View
+          Inspection</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create
+          Inspection Template</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]"><b>View
+          Inspection Template</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['feedbackManage']}}]"><b>View
+          FeedBack Template</b></a>
+    </div>
+
+    <button class="dropdown-btn" (click)="dropdownData()"> <i class="fa fa-users"></i> People
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateEmployee']}}]"><b>Create
+          Employee</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewEmployee']}}]"><b>View Employee</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingCreate']}}]"><b>Create
+          Meeting/Training</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingView']}}]"><b>View
+          Meeting/Training</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['JobTitileView']}}]"><b>Create
+          Job-Title</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manageLoginCredentials']}}]"><b>Manage
+          Login Credentials</b></a>
+    </div>
+<!-- 
+    <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-map-marker"></i> Live Tracking
+
+    </button>
+
+    <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-info-circle"></i> App info
+
+    </button> -->
+
+    <button class="dropdown-btn" (click)="dropdownData()"> <i class="fa fa-calendar-o"></i> Scheduler View
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Scheduler']}}]"><b>Scheduler</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule Employee</b></a>
+    </div>
+
+    <button class="dropdown-btn" (click)="dropdownData()"><i class="fa fa-sign-out"></i> Logout
+
+    </button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+    </div>
+  </div>
+
+
+
+  <span style="font-size:30px;cursor:pointer" (click)="openNav()">&#9776;</span>
+
+  <div id="main">
+    <!-- <div class="col-md-4 menu">
+        <ul>
+        <button [routerLink]="[{outlets:{ManagerMobOut:['CreateWorkOrder']}}]">Work Order</button>
+        <button [routerLink]="[{outlets:{ManagerOut:['ScanBarcode']}}]">Scan for Work Order</button>
+        <button [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]">Inspection Order</button>
+        <button [routerLink]="[{outlets:{ManagerOut:['ViewEmployee']}}]" >Find Employee</button>
+        <button >Live Tracking</button>
+        <button [routerLink]="[{outlets:{ManagerOut:['SchedulerMobile']}}]">Scheduler View</button>
+
+      </ul> 
+    </div>  -->
+    <div class="col-md-4 menu">
+      <div *ngIf="workOrder == true;disabled">
+        <ul>
+          <button [routerLink]="[{outlets:{ManagerOut:['CreateWorkOrder']}}]">Create Work Order
+          </button>
+
+          <button [routerLink]="[{outlets:{ManagerOut:['createQuickOrder']}}]">Create Quick Order
+          </button>
+
+          <button [routerLink]="[{outlets:{ManagerOut:['ViewWorkOrder']}}]">View Work Order
+          </button>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-4 menu">
+      <div *ngIf="inspectionDisplay == true;disabled">
+        <ul>
+          <button [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]">Create Inspection
+          </button>
+          <button [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]">View Inspection
+          </button>
+          <button>Scan to Create Inspection</button>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-4 menu">
+      <div *ngIf="livetrackingDisplay == true;disabled">
+        <ul>
+          <button [routerLink]="[{outlets:{ManagerOut:['DocumentfolderView']}}]">Create New
+            Document Folder</button>
+          <button [routerLink]="[{outlets:{ManagerOut:['DocumentsUpload']}}]">Upload
+            Document</button>
+          <button [routerLink]="[{outlets:{ManagerOut:['ViewDocuments']}}]">View
+            Document</button>>
+        </ul>
+      </div>
+    </div>
+
+    <div class="navbar1">
+      <a (click)="selectedOpt(1);"><i class="fa fa-home"></i>Home</a>
+      <a (click)="selectedOpt(2);"><i class="fa fa-stack-exchange"></i>Work Order</a>
+      <a href="#scan for work"><i class="fa fa-barcode"></i>Scan for Work</a>
+      <a (click)="selectedOpt(4);"><i class="fa fa-search"></i>Inspection</a>
+      <a (click)="selectedOpt(5);"><i class="fa fa-map-marker"></i>Live Tracking</a>
+    </div>
+  </div>
+
+
+
+  <router-outlet name="ManagerOut"></router-outlet>
 </div>

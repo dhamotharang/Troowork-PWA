@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
 import { Router } from '@angular/router';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-welcomepage',
@@ -23,6 +24,8 @@ export class WelcomepageComponent implements OnInit {
   expiredList;
   expiringList;
 
+  isMobile: boolean;
+
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,7 +43,7 @@ export class WelcomepageComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, private router: Router, private responsiveService: ResponsiveService) { }
 
   callCreateWO() {
 
@@ -102,9 +105,14 @@ export class WelcomepageComponent implements OnInit {
         this.viewFlag1 = false;
       }
     });
-
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
-
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+  }
   changeAssignment(BatchScheduleNameKey) {
     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport', BatchScheduleNameKey] } }]);
   }

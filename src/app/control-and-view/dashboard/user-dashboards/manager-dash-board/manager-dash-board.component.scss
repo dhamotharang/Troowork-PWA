@@ -1,3 +1,176 @@
 .navbar {
   box-shadow: none !important;
 }
+
+.nav-link[data-toggle].collapsed:before {
+  content: " ▾";
+}
+.nav-link[data-toggle]:not(.collapsed):before {
+  content: " ▴";
+}
+
+
+/* Fixed sidenav, full height */
+#main {
+  text-align: center;
+  font-size: 10px;
+  
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #EBFAFF; 
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 18px;
+  
+ 
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color:#3b3e3f;
+  display: block;
+  transition: 0.3s;
+  
+}
+
+
+
+.dropdown-btn {
+  padding: 25px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  border-bottom: 3px solid #ddd !important;
+}
+
+/* On mouse-over */
+.sidenav a:hover,.dropdown-btn {
+  color:green;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color:#818181;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+  font-size:30px;
+}
+
+/* Some media queries for responsiveness */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+  
+  
+}
+
+.sidenav .homeBtn{
+  font-size: 20px;
+  color: green;
+  padding: 6px 8px 6px 16px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+html {
+  font-family: "Lucida Sans", sans-serif;
+}
+
+
+
+.menu button {
+  background-color:#EBFAFF; 
+  color: white; 
+  border: 2px solid #EBFAFF; 
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  width:100%;
+}
+
+.menu button:hover {
+  background-color: white;
+  color: black;
+}
+
+
+/* For mobile phones: */
+
+.navbar1 {
+  overflow: hidden;
+  background-color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.navbar1 a:hover {
+  background: #EBFAFF;
+  color: black;
+ 
+}
+
+.navbar1 i {
+    display: block;
+    margin: 0 auto 10px auto;
+   	width: 32px;
+    height: 30px;
+    margin: 10px auto 0;
+    line-height: 32px;
+    text-align: center;
+    font-size: 20px;
+    color: #EBFAFF;
+    margin-top:0;
+    padding-top:4px;
+    
+     
+   
+}
+
+.navbar1 a{
+	float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 12px;
+    width: 20%;
+    
+   
+}
+.navbar1 a:active {
+    border-top: 3px solid blue;
+   
+}
