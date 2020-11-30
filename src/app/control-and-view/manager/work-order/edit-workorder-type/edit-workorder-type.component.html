@@ -1,0 +1,67 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">EDIT WORK-ORDER TYPE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Work-Order Type Name">Work-Order Type Name: </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input *ngIf="workorderTypeList" type="text" maxlength="40" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="workorderTypeList[0].WorkorderTypeName">
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row col-md-12">
+      <h5 style="text-align:right;" class="col-md-4"><label for="MetricType">MetricType Name*:</label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <select *ngIf="workorderTypeList" style="background-color: #D4F4FF !important; " class="form-control"
+          [(ngModel)]="metricType" (change)=showFields($event.target.value)>
+          <!-- <option>--Select--</option> -->
+          <option *ngFor="let f of metricTypeList" [value]="f.MetricType">
+            {{f.MetricType}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row col-md-12">
+      <h5 style="text-align:right;" class="col-md-4"><label for="floorname">MetricType Value*:</label></h5>
+
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" *ngIf="workorderTypeList && metricType=='Default'" maxlength="40"
+          style="background-color: #D4F4FF !important;" class="form-control" [disabled]="metricType=='Default'"
+          placeholder="Metric Value" (keypress)="numberValid($event)" [(ngModel)]="workorderTypeList[0].MetricTypeValue">
+
+        <input type="text" *ngIf="workorderTypeList && metricType!='Default'" maxlength="40"
+          style="background-color: #D4F4FF !important;" class="form-control" placeholder="Metric Value"
+          (keypress)="numberValid($event)" [(ngModel)]="MetricTypeValue">
+      </div>
+    </div>
+
+    <br>
+
+
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div style="text-align:right" class="col-md-3">
+        <button style="color:white !important" class="btn btn-success"
+          (click)="updateWOT(workorderTypeList[0].WorkorderTypeName,workorderTypeList[0].WorkorderTypeKey,MetricTypeValue)"><b>UPDATE</b>
+        </button></div>
+      <div style="text-align:left" class="col-md-3">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+            Back
+          </b>
+        </a></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

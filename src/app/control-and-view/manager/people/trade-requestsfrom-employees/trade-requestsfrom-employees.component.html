@@ -1,0 +1,72 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW EMPLOYEE TRADE REQUESTS</h4>
+  </div>
+  <br>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;margin-bottom: 1%;padding-bottom: 1rem;padding-top: 1rem;width: 96%;" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>From Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>To Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="tradeStatusKey" style="background-color: #d4f4ff;width: 75%;" class="form-control">
+          <option value="0" selected>--Select--</option>
+          <option *ngFor="let u of tradestatus" [value]="u.idtradestatus">
+            {{u.TradeStatus}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div style="margin-left: 45%">
+        <button type="button" class="btn btn-success" (click)="viewtrade(fromdate,todate,tradeStatusKey)"><b>GENERATE</b></button>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem; text-align: center;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Requested Employee Number </th>
+        <th> Requested Employee Name </th>
+        <th> Trade Employee Number </th>
+        <th> Trade Employee Name </th>
+        <th> Submitted Date </th>
+        <th> Trade Requested Date </th>
+        <th> Status </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of traderequestdetails">
+          <td>{{ x.EmployeeNo }}</td>
+          <td>{{ x.employeename }}</td>
+          <td>{{ x.otherEmployeeNo }}</td>
+          <td>{{ x.otheremployeename }}</td>
+          <td>{{ x.SubmittedDate }}</td>
+          <td>{{ x.StartDate }} to {{ x.EndDate }}</td>
+          <td>{{ x.RequestStatus }}</td>
+          <td>
+            <a *ngIf="x.StatusKey==2" [routerLink]="['TradeRequestAction', x.trade_requestID]" class="btn btn-primary"><b>VIEW</b></a>&nbsp;&nbsp;
+            <a *ngIf="x.StatusKey==4||x.StatusKey==5" [routerLink]="['TradeRequestDetails', x.trade_requestID]" class="btn btn-primary"><b>DETAILS</b></a>&nbsp;&nbsp;
+          </td>
+        </tr>
+        <tr *ngIf="traderequestdetails?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,188 @@
+<div>
+  <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
+    <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
+  </div>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark align-right">
+    <mdb-navbar-brand>
+      <a class="navbar-brand" href="http://troodontechnology.com/">
+        <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+      </a>
+    </mdb-navbar-brand>
+
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
+    <links>
+      <div style="margin-left: 10%;margin-top: 1.3%">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{ManagerOut:['welcomePage']}}]">
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/work order.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateWorkOrder']}}]"><b>Create Work
+                  Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createQuickOrder']}}]"><b>Create Quick
+                  Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewWorkOrder']}}]"><b>View Work
+                  Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchWorkOrder']}}]"><b>Create Batch
+                  Work Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewBatchWorkorder']}}]"><b>View Batch
+                  Work
+                  Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkOrderType']}}]"><b>Work-Order
+                  Type</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewServiceRequest']}}]"><b>View Service
+                  Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['viewIntervaltype']}}]"><b>Color
+                  Coding</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateEmployee']}}]"><b>Create
+                  Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewEmployee']}}]"><b>View Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingCreate']}}]"><b>Create
+                  Meeting/Training</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingView']}}]"><b>View
+                  Meeting/Training</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['JobTitileView']}}]"><b>Create
+                  Job-Title</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manageLoginCredentials']}}]"><b>Manage
+                  Login
+                  Credentials</b></a>
+
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/reports.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DashboardReport']}}]"><b>WorkOrder
+                  Dashboard</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['woprogressReport']}}]"><b>WorkOrder
+                  In-Progress Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkorderReport']}}]"><b>WorkOrder</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Batch-work-order-Report']}}]"><b>Batch
+                  WorkOrder Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleAssignment']}}]"><b>View
+                  Batch-Schedule Assignment</b>
+              </a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BarcodeReport']}}]"><b>Barcode</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BarchartReport']}}]"><b>Downtime Detail
+                  Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['employeeDowntimeReport']}}]"><b>Downtime
+                  Summary Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['inventoryReport']}}]"><b>Inventory
+                  Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['reviewReport']}}]"><b>FeedBack
+                  Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionReport']}}]"><b>Inspection</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['inspectionDetailReport']}}]"><b>Inspection
+                  Detailed</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['inspectionAuditReport']}}]"><b>Inspection
+                  Audit Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['picklistReport']}}]"><b>Inspection-
+                  PickList Report</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/ASSIGNMENTS--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulingView']}}]"><b>Create/Edit
+                  Assignment Name</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleRoom']}}]"><b>Create/Edit
+                  Assignment List</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchSchedule']}}]"><b>View/Edit
+                  Assignment Schedule</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['viewMasterShifts']}}]"><b>Create/Edit
+                  Shifts</b></a>
+            </div>
+          </li>
+          <li *ngIf="scheduleIcon==1" class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/scheduling.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Scheduler']}}]"><b>Scheduler</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule
+                  Employee</b></a>
+              <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manualEmpOff']}}]"><b>Manual Employee Leave</b></a> -->
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['RequestsFromEmployees']}}]"><b>View
+                  Employee PTO Requests</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['TradeRequestsFromEmployees']}}]"><b>View
+                  Employee Trade Requests</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['EmployeeWorkingHourEmpListView']}}]"><b>Employee Working
+                  Hour</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createshift']}}]"><b>Create Employee
+                  Group</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewShift']}}]"><b>View Employee
+                  Group</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['schedulerReport']}}]"><b>Scheduler
+                  Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ManualSchedulerCronjob']}}]"><b>Scheduler
+                  CronJob - Manual</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/DOCUMENTS--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentfolderView']}}]"><b>Create New
+                  Document Folder</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentsUpload']}}]"><b>Upload
+                  Document</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewDocuments']}}]"><b>View
+                  Document</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/INSPECTION--2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]"><b>Create
+                  Inspection</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]"><b>View
+                  Inspection</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create
+                  Inspection Template</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]"><b>View
+                  Inspection Template</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['feedbackManage']}}]"><b>View
+                  FeedBack Template</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/INVENTORY--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Buildview']}}]"><b>Building</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['FloorView']}}]"><b>Floor</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ZoneView']}}]"><b>Zone</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['roomView']}}]"><b>Room</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['EquipmentView']}}]"><b>Equipment</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DepartmentView']}}]"><b>Department</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['GenerateQRCode']}}]"><b>Generate QR
+                  Code</b></a>
+              <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['GenerateQRCodeList']}}]"><b>Generate QR
+                  Code List</b></a> -->
+
+            </div>
+          </li>
+          <li class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/profile-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['managerMyProfile']}}]"><b>My
+                  Profile</b></a>
+              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </links>
+  </mdb-navbar>
+  <!-- <div style="height:100%;background-color: #EBFAFF;"> -->
+
+  <router-outlet name="ManagerOut"></router-outlet>
+
+  <!-- </div> -->
+</div>

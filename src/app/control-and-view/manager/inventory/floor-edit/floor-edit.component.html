@@ -1,0 +1,51 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">UPDATE FLOOR</h4>
+  </div>
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Building*</label></h5>
+
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+
+        <select style="background-color: #D4F4FF !important; " *ngIf="flooroptions" class="form-control"
+          [(ngModel)]="flooroptions[0].FacilityKey">
+          <option *ngFor="let f of buildingList" [value]="f.FacilityKey">
+            {{f.FacilityText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="floorname">Floor Name*</label></h5>
+
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+
+        <input type="text" maxlength="25" *ngIf="flooroptions" style="background-color: #D4F4FF !important;"
+          class="form-control" class="form-control" [(ngModel)]="flooroptions[0].FloorName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="floorname">Floor Description*</label></h5>
+
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+
+        <input type="text" maxlength="40" *ngIf="flooroptions" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="flooroptions[0].FloorDescription">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 35%">
+      <a style="color:white !important" class="btn btn-success" (click)="updateFloor(flooroptions[0].FacilityKey,
+        flooroptions[0].FloorKey,flooroptions[0].FloorName,flooroptions[0].FloorDescription)">
+        <b>UPDATE</b>
+      </a>
+      <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
+          Back</b></a>
+    </div>
+  </div>
+</div>

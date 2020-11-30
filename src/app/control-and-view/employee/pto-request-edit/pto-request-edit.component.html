@@ -1,0 +1,35 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;margin-top: 3.5%;">EDIT PTO REQUEST</h4>
+  </div>
+  <div *ngIf="requestdetails" style="margin-left: 1.5rem;margin-right: 1.5rem; margin-top: 2%;padding-top: 4%;"
+    class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Start Date*</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="requestdetails.StartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">End Date*</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="requestdetails.EndDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> PTO Remaining</label>
+        <input type="text" [(ngModel)]="requestdetails.Reason" maxlength="75"
+          style="background-color: #D4F4FF !important;width: 75%;" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Comments</label>
+        <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="requestdetails.Comments" rows="8"
+          style="resize: none;margin-top: 0.5rem"></textarea>
+      </div>
+    </div>
+    <div class="row col-md-12" style="margin-left:35%">
+      <button type="button" style="text-align:center" class="btn btn-success"
+        (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>GO BACK</b></a>
+    </div>
+  </div>
+</div>

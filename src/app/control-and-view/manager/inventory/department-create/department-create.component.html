@@ -1,0 +1,28 @@
+<div style="overflow-x: hidden;margin-left: 15rem;margin-right: 15rem;">
+  <br>
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE NEW DEPARTMENT</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">Department Name: </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" maxlength="30" placeholder="Department Name" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="DepartmentName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 34%">
+      <a style="color:white !important" class="btn btn-success" (click)="addDepartment(DepartmentName)"><b>Create
+          Department</b>
+      </a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+
+</div>

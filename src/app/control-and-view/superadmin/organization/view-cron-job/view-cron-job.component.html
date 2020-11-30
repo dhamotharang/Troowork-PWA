@@ -1,0 +1,27 @@
+<div style="width: 100% !important;overflow-x: hidden; padding-left: 10rem;padding-right: 8rem; padding-top:1rem !important; padding-bottom:0rem !important;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">CRONJOB- WORK ORDER DETAILS</h4>
+  </div>
+  <div class="row col-md-12" style="padding: 2rem">
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> NO. </th>
+        <th> ORGANIZATION ID</th>
+        <th> ORGANIZATION NAME</th>
+        <th> TOTAL WORKORDERS CREATED</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of woList;index as i">
+          <td>{{ i+1 }}</td>
+          <td>{{ e.OrganizationID }}</td>
+          <td>{{ e.OrganizationName }}</td>
+          <td>{{ e.count }}</td>
+        </tr>
+        <tr>
+          <td colspan="3" >TOTAL</td>
+          <td>{{total}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

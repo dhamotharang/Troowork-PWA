@@ -1,0 +1,52 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">UPDATE ZONE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Building* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important; " *ngIf="zoneEditValues" class="form-control" [(ngModel)]="zoneEditValues.FacilityKey"
+          (change)="selectFloorfromBuildings($event.target.value)">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of buildingList" [value]="f.FacilityKey">
+            {{f.FacilityText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="floorname">Floor Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important;" *ngIf="zoneEditValues" class="form-control" [(ngModel)]="zoneEditValues.FloorKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floorList" [value]="f.FloorKey">
+            {{f.FloorName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Zone Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <input type="text" maxlength="20" *ngIf="zoneEditValues" style="background-color: #D4F4FF !important;" class="form-control"
+          [(ngModel)]="zoneEditValues.ZoneName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 38%">
+      <a style="color:white !important" class="btn btn-success" (click)="updateZone(zoneEditValues.FacilityKey,zoneEditValues.FacilityName,zoneEditValues.FloorName,
+        zoneEditValues.FloorKey,zoneEditValues.ZoneKey,zoneEditValues.ZoneName)">
+        <b>UPDATE</b>
+      </a>
+
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back</b></a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE NEW ZONE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Building* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="selectFloorfromBuildings($event.target.value)">
+          <option value="">--Select--</option>
+          <option *ngFor="let b of building" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="floorname">Floor Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorName">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floorName" [value]="f.FloorKey">
+            {{f.FloorName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Zone Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <input type="text" maxlength="20" placeholder="Zone Name" style="background-color: #D4F4FF !important;" class="form-control"
+          [(ngModel)]="ZoneName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 36%">
+      <a style="color:white !important" class="btn btn-success" (click)="addZone(FacilityKey,FloorName,ZoneName,FloorKey)"><b>CREATE ZONE</b>
+      </a>
+      <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+</div>

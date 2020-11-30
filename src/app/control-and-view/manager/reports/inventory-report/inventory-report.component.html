@@ -1,0 +1,139 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="margin-left: 42%;">REPORTS ON INVENTORY</h4>
+  <div style="padding-right: 2rem; padding-top: 2rem;width: 99.9%" class="row bg-info col-md-12">
+
+    <div class="form-group col-md-6">
+      <label>Building*</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FacilityKey"
+        (change)="getFloorDisp($event.target.value);checkBuilding()">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of building" [value]="b.FacilityKey">
+          {{b.FacilityText}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Floor</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey"
+        (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+          {{b.FloorName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Zone</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FacilityKey"
+        (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+          {{b.ZoneName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Room Type</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomTypeKey"
+        [disabled]="!FacilityKey" (change)="getRoomFromRoomtype($event.target.value,ZoneKey,FacilityKey,FloorKey);">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
+          {{b.RoomTypeName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Floor Type</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorTypeKey"
+        [disabled]="!FacilityKey"
+        (change)="getRoomFromFloortype($event.target.value,RoomTypeKey,ZoneKey,FacilityKey,FloorKey);">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of floorTypeList" [value]="b.FloorTypeKey">
+          {{b.FloorTypeName}}
+        </option>
+      </select>
+    </div>
+    <!-- <div class="form-group col-md-6">
+      <label>Room</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+          {{b.RoomName}}
+        </option>
+      </select>
+    </div> -->
+  </div>
+  <br>
+  <div style="text-align:center">
+    <button type="button" class="btn btn-success" [disabled]="!FacilityKey"
+      (click)=generateInventoryReport(FacilityKey,FloorKey,ZoneKey,RoomTypeKey,FloorTypeKey,RoomKey)><b>GENERATE</b></button>
+  </div>
+  <div style="text-align:center" *ngIf="!loading">
+    <button type="button" *ngIf='((viewInventoryReport?.length > 0))' class="btn btn-success"
+      (click)="exportToExcel()"><b>EXPORT
+        TO EXCEL</b></button>
+  </div>
+  <!-- Table for generating barcode for rooms -->
+  <table *ngIf='viewInventoryReport?.length > 0' id="reportexport"
+    class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
+    <thead class="tableHead">
+      <th> Building</th>
+      <th>Floor</th>
+      <th> Zone</th>
+      <th>Room Type</th>
+      <th>Floor Type</th>
+      <th>Room</th>
+      <th>Area</th>
+      <th>Unit of Area</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of viewInventoryReport">
+        <td>{{x.FacilityName}}</td>
+        <td>{{x.FloorName}}</td>
+        <td>{{x.ZoneName}}</td>
+        <td>{{x.RoomTypeText}}</td>
+        <td>{{x.FloorTypeName}}</td>
+        <td>{{x.RoomName}}</td>
+        <td>{{x.Area}}</td>
+        <td>{{x.UnitOfArea}}</td>
+      </tr>
+      <tr *ngIf="viewInventoryReport?.length == 0">
+        <td colspan="8" class="no-data-available">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br>
+
+  <div *ngIf='viewInventoryReport?.length > 0' id='exportable' style="visibility: hidden !important;">
+    <table style="visibility: hidden !important;" cellspacing="0" rules="rows" border="1"
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Building</th>
+        <th>Floor</th>
+        <th> Zone</th>
+        <th>Room Type</th>
+        <th>Floor Type</th>
+        <th>Room</th>
+        <th>Area</th>
+        <th>Unit of Area</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewInventoryReport">
+          <td>{{x.FacilityName}}</td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomTypeText}}</td>
+          <td>{{x.FloorTypeName}}</td>
+          <td>{{x.RoomName}}</td>
+          <td>{{x.Area}}</td>
+          <td>{{x.UnitOfArea}}</td>
+        </tr>
+        <tr *ngIf="viewInventoryReport?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

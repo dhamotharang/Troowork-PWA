@@ -1,0 +1,2 @@
+ALTER TABLE `trooworkdb`.`facility` 
+CHANGE COLUMN `FacilityName` `FacilityName` VARCHAR(50) NOT NULL ;

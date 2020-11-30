@@ -1,0 +1,36 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+  <br>
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">RESET PASSWORD</h4>
+  </div>
+  <div class="row col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="username">User Name: </label></h5>
+      <div class="col-md-8" style="margin-top: 2rem;text-align:left">
+        <input *ngIf="build" type="text" style="background-color: #D4F4FF !important;" class="form-control" id="username"
+          [(ngModel)]="build[0].UserId">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="Password">Password: </label></h5>
+      <div class="col-md-8" style="margin-top: 2rem;text-align:left">
+        <input *ngIf="build" type="password" disabled="disabled" style="background-color: #D4F4FF !important;" class="form-control"
+          id="Password" [(ngModel)]="build[0].Password">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col col-md-4"></div>
+      <div style="text-align:right" class="col-md-3">
+        <button style="color:white !important" class="btn btn-success" (click)="resetUserPassword(build[0].UserId,'troowork',build[0].UserLoginId)"><b>Reset
+            & Send Email</b>
+        </button></div>
+      <div style="text-align:left" class="col-md-3">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+            Back
+          </b>
+        </a></div>
+      <div class="col col-md-2"></div>
+    </div>
+  </div>
+
+</div>

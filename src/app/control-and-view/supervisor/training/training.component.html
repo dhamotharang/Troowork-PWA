@@ -1,0 +1,44 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
+
+  <h4 class="refer"> MEETING/TRAINING/EVENT</h4>
+  <br>
+  <form [formGroup]="searchform">
+    <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+      <input class="form-control" name="searchmeetingview" maxlength="20" specialIsAlphaNumeric minlength="3" type="text"
+        placeholder="Search Action Name, Event Venue,Event Host" aria-label="Search" [(ngModel)]="SearchMeeting"
+        formControlName="SearchMeeting" (input)="searchMeeting($event.target.value);" style="width: 100%;">
+      <div *ngIf="searchform.controls.SearchMeeting.errors?.minlength">Minimum 3 characters required.</div>
+    </div>
+  </form>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table">
+      <thead class="tableHead">
+        <th> Action Name </th>
+        <th>Event Venue</th>
+        <th>Event Host</th>
+        <th>Employee Name</th>
+        <th>Time</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of viewmeeting">
+          <td>{{ v.ActionType }}-{{ v.Action }}</td>
+          <td>{{ v.EventVenue }}</td>
+          <td>{{ v.EventHost }}</td>
+          <td>{{ v.EmployeeName }}</td>
+          <td>{{ v.EventStartTime }}-{{ v.EventEndTime }}</td>
+          <td *ngIf="v.HasAttended === '0'">Not Attended</td>
+          <td *ngIf="v.HasAttended === '1'">Attended</td>
+        </tr>
+        <tr *ngIf="viewmeeting?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-success" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>
+    <button class="btn btn-success" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+  </div>
+  <!-- </div> -->
+</div>

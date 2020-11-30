@@ -1,0 +1,123 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;margin-top: 3.5%">INSPECTION PICKLIST REPORT</h4>
+  </div>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;margin-top: 3rem;padding-top: 2.5%;" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-4 col-lg-4 ">Template Name*</label>
+        <select [(ngModel)]="TemplateName" style="background-color: #d4f4ff;" class="form-control">
+          <option value="">--Select--</option>
+          <option *ngFor="let s of templateNameList" [value]="s.TemplateID">
+            {{s.TemplateName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-4 col-md-4 col-lg-4 ">Employee</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control " [(ngModel)]="Employee">
+          <option value="0">--All--</option>
+          <option *ngFor="let e of employeeList" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row col-md-12">
+      <div style="margin-left: 45%">
+        <button type="button" class="btn btn-success"
+          (click)=generateInspectionAuditReport(fromdate,todate,TemplateName,Employee,ReportType)><b>GENERATE</b></button>
+      </div>
+    </div>
+    <br>
+
+  </div>
+  <div style="text-align:center;margin-left: 4%" *ngIf="viewinspectionReport?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
+  <br>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem; width: 100%">
+    <table *ngIf='showHide1' id="reportexport" class="table table-hover table-responsive table-bordered table"
+      style="display: inline-table">
+      <thead class="tableHead">
+        <th> Template Name </th>
+        <th> Question </th>
+        <th> Value</th>
+        <th> Location </th>
+        <th> Room </th>
+        <th> Inspection Date</th>
+        <th> Auditor </th>
+        <th> Employee </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewinspectionReport">
+          <td>{{x.TemplateName}}</td>
+          <td>{{x.Question}}</td>
+          <td>{{x.Value}}</td>
+          <td>
+            <span style="color: red">{{x.FacilityName}}</span> - <span style="color: blue">{{x.FloorName}}</span> -
+            <span style="color: black">{{x.ZoneName}}</span>
+          </td>
+          <td>{{x. RoomId}} </td>
+          <td>{{x.InspectionDate}}</td>
+          <td>{{x.Auditor}}</td>
+          <td>{{x.AssignedEmployee}}</td>
+        </tr>
+        <tr *ngIf="viewinspectionReport?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <br>
+
+  <div id='exportable1' style="visibility: hidden !important;">
+    <table *ngIf='showHide1' cellspacing="0" rules="rows" border="1"
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Template Name </th>
+        <th> Question </th>
+        <th> Value</th>
+        <th> Facility </th>
+        <th> Floor </th>
+        <th> Zone </th>
+        <th> Room </th>
+        <th> Inspection Date</th>
+        <th> Auditor </th>
+        <th> Employee </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewinspectionReport">
+          <td>{{x.TemplateName}}</td>
+          <td>{{x.Question}}</td>
+          <td>{{x.Value}}</td>
+          <td>{{x.FacilityName}}</td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomId}} </td>
+          <td>{{x.InspectionDate}}</td>
+          <td>{{x.Auditor}}</td>
+          <td>{{x.AssignedEmployee}}</td>
+        </tr>
+        <tr *ngIf="viewinspectionReport?.length == 0">
+          <td colspan="10" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div>
+  <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
+    <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
+  </div>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark">
+    <mdb-navbar-brand>
+      <a class="navbar-brand" href="http://troodontechnology.com/">
+        <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+      </a>
+    </mdb-navbar-brand>
+
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> -->
+    <links>
+      <div>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png"
+              [routerLink]="[{outlets:{SuperAdminOut:['welcomePage']}}]">
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['Createemployee']}}]"><b>Create
+                  Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['Viewemployee']}}]"><b>View
+                  Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['Managelogincredentials']}}]"><b>Manage
+                  Login Credentials</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/Organisation-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['CreateOrganization']}}]"><b>Create
+                  Organisation</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['ViewOrganization']}}]"><b>View
+                  Organisation</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['cronJob']}}]"><b>CronJob</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['cronJobView']}}]"><b>CronJob-WorkOrder
+                  Details</b></a>
+              <a class="dropdown-item"
+                [routerLink]="[{outlets:{SuperAdminOut:['cronJobBatchDetailedView']}}]"><b>CronJob-Batch Details</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/profile-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['superAdminMyProfile']}}]"><b>My
+                  Profile</b></a>
+              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </links>
+  </mdb-navbar>
+
+
+  <router-outlet name="SuperAdminOut"></router-outlet>
+  <!-- varun - child paths are loaded in  SuperAdminOut outlet for lazy loading-->
+</div>

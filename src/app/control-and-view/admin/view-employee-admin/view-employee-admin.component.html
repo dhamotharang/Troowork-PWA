@@ -1,0 +1,72 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">VIEW EMPLOYEE DETAILS</h4>
+  </div>
+
+
+  <div style="margin-left: 0.2rem;margin-right: 1.5rem;width: 99.7%;padding-top: 1.5rem;padding-bottom: 1.5rem" class="row bg-info col-md-12">
+    <div class="row col-md-12">
+      <br>
+      <div class="row col-md-6">
+        <h5 style="text-align:right"><label for="building">Job Title</label></h5> &nbsp;
+        <select [(ngModel)]="JobTitleKey" style="background-color: #d4f4ff;width: 25rem" class="form-control" (change)="getempdettablewithselectedJobtitle()">
+          <option value="" selected>--Select--</option>
+          <option *ngFor="let j of jobtitle" [value]="j.JobTitleKey">
+            {{j.JobTitleText}}
+          </option>
+        </select>
+      </div>
+      <div class="row col-md-6" style="margin-left: 2.8rem;">
+        <h5 style="text-align:right"><label for="building">Managers</label></h5> &nbsp;
+        <select [(ngModel)]="ManagerKey" style="background-color: #d4f4ff;width: 25rem" class="form-control" (change)="getempdettablewithselectedJobtitle()">
+          <option value="" selected>--Select--</option>
+          <option *ngFor="let k of managerList" [value]="k.ManagerKey">
+            {{k.ManagerName}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="col-md-12">
+    <form [formGroup]="searchform">
+      <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: -0.9rem;margin-right: 1.5rem;">
+        <input class="form-control" name="searchempdetails" maxlength="20" specialIsAlphaNumeric minlength="3" type="text"
+          placeholder="Search Employee Number,Department,Last Name,First Name,Job Title,Contact No" aria-label="Search"
+          [(ngModel)]="SearchEmpDetails" formControlName="SearchEmpDetails" (input)="searchEmployeeDetails($event.target.value);"
+          style="width: 103.1%;">
+        <div *ngIf="searchform.controls.SearchEmpDetails.errors?.minlength">Minimum 3 characters required.</div>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;"></div>
+  <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+    <thead class="tableHead">
+      <th> Employee Number </th>
+      <th> Department </th>
+      <th> Last Name</th>
+      <th>First Name</th>
+      <th>Employee Status</th>
+      <th>Job Title</th>
+      <th>Contact No</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of employeedetailstable" [routerLink]="['editEmpDetailsAdmin',e.EmployeeKey]">
+        <td>{{ e.EmployeeNumber }}</td>
+        <td>{{ e.DepartmentName }}</td>
+        <td>{{ e.LastName }}</td>
+        <td>{{ e.FirstName }}</td>
+        <td>{{ e.EmployeeStatus }}</td>
+        <td>{{ e.JobTitle }}</td>
+        <td>{{ e.PrimaryPhone }}</td>
+      </tr>
+      <tr *ngIf="employeedetailstable?.length == 0">
+        <td colspan="7" class="no-data-available">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>
+  <button class="btn btn-success" style="float: right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+</div>

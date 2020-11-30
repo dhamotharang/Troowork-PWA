@@ -1,0 +1,99 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;padding-bottom: 1rem">EMPLOYEE WORKING HOUR DETAILS</h4>
+  </div>
+  <br>
+  <div style="text-align:center">
+    <a [routerLink]="['manualEmpOff',empk$]" class="btn btn-success" style="width: 16%"><b>Add Time Off</b></a>
+    <a [routerLink]="['EmployeeWorkingHourAdd',empk$]" class="btn btn-success"><b>Add Working Hour</b></a>
+   
+  </div>
+  <br>
+  <div style="margin-left: 1.6rem;margin-right: 1.5rem;width: 96%;padding-top: 1.5rem;padding-bottom: 1.5rem"
+    class="row bg-info col-md-12">
+    <br>
+      
+    
+    <div class="row col-md-12">
+      <br>
+      <div class="col-md-6 ">
+        <div class="form-group" style="margin-left: 0.7rem;">
+          <label for="people">From Date </label>
+          <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1"
+            style="width: 75%;" [(ngModel)]="fromdate" (onSelection)="filterMtngTrainingList()"></igx-datePicker> -->
+          <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group " style="margin-left: 0.7rem;">
+          <label for="people">To Date </label>
+          <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1"
+            style="width: 75%;" [(ngModel)]="todate" (onSelection)="filterMtngTrainingList()"></igx-datePicker> -->
+          <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate" ></ng-datepicker>
+        </div>
+      </div>
+      <div class="row col-md-12">
+        <div style="margin-left: 45%">
+          <button type="button" class="btn btn-success" (click)="DateFilter()"><b>GENERATE</b></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+      <thead class="tableHead">
+        <th> Employee Date </th>
+        <th> Scheduler Time </th>
+        <th> Scheduling Type</th>
+        <th *ngIf="checkflag==false">Delete</th>
+        <th *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button"
+            (click)="basicModal.show();">
+            Delete</button></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of employeedetailstable;let k=index" >
+          <td>{{ e.EmployeeDate }}</td>
+          <td>{{ e.SchedulerDisplay }}</td>
+          <td>{{ e.SchedulingType }}</td>       
+          <td style="text-align:center"><input type="checkbox" [(ngModel)]="e.deletechkbox" 
+            (change)="checkBoxValueForDelete(k,e.deletechkbox, e.Employee_CalenderID);">
+          </td>
+        </tr>
+        <tr *ngIf="employeedetailstable?.length == 0">
+          <td colspan="4">
+            No Records Found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this?
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+            (click)="basicModal.hide(); deleteWorkingHour()" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+            mdbWavesEffect>No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

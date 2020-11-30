@@ -1,0 +1,66 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">INSPECTION TEMPLATE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="scoringtype">Scoring Type </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important;width: 31.5rem" class="form-control" [(ngModel)]="TemplateEditDetails.ScoreTypeKey">
+          <option>--Select--</option>
+
+          <option *ngFor="let s of scores" [value]="s.ScoreTypeKey">
+            {{s.ScoreTypeText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="inspectiontemplatename">Inspection Template Name
+        </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" style="background-color: #D4F4FF !important;width: 78.2%" class="form-control" [(ngModel)]="TemplateEditDetails.TemplateName">
+      </div>
+    </div>
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <!-- already present array -->
+        <tr *ngFor="let field of fieldArray">
+          <td>
+            <input maxlength="1000" [(ngModel)]="field.Question" (input)='addtempId(field.TemplateQuestionID)' class="form-control" type="text"
+              value="{{field.Question}}" />
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button" (click)="deleteFieldValue(field.TemplateQuestionID)"><b>DELETE
+                QUESTION</b></button>
+          </td>
+        </tr>
+        <!-- new space to enter values -->
+        <tr *ngFor="let f of newAttribute; let k = index;trackBy:customTrackBy">
+          <td>
+            <input maxlength="1000" class="form-control" type="text" [(ngModel)]="newAttribute[k]" />
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button" (click)="deleteNewFieldValue(k)"><b>DELETE QUESTION</b></button>
+          </td>
+
+        </tr>
+        <tr>
+          <td style="text-align: center">
+            <button class="btn btn-success" type="button" (click)="addFieldValue()"><b>ADD QUESTION</b></button>
+          </td>
+          <td>
+            <button class="btn btn-success" type="button" (click)="savetemplate()"><b>UPDATE</b></button>&nbsp;&nbsp;
+            <a (click)=' goBack()' class="btn btn-warning" style="color:white !important"><b>CANCEL
+              </b>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

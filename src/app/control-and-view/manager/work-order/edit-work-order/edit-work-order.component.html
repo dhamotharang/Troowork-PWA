@@ -1,0 +1,203 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%">EDIT THIS WORK ORDER INSTANCE</h4>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem"
+    class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck
+          (change)="toggleVisibility($event);change_values();" />&nbsp;
+        <label style="margin-top: 2rem;">Equipment Order</label>&nbsp;
+      </div>
+
+      <div class="form-group">
+        <label>Workorder Type*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="workordertypekey"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
+            {{e.WorkorderTypeText}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Building*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey"
+          (change)="getFloorDisp($event.target.value);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey"
+          [disabled]="!FloorKey||(showEqTypes==true)"
+          (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+            {{b.ZoneName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey"
+          [disabled]="!FloorKey||(showEqTypes==true)"
+          (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
+            {{b.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey"
+          [disabled]="!FloorKey||(showEqTypes==true)" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+            {{b.RoomName}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>WorkDate</label><br>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="dateValue"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="dateValue"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label>Workorder Notes</label>
+        <textarea class="form-control rounded-1" [(ngModel)]="WorkorderNotes" rows="6"
+          style="resize: none;width: 100% !important"></textarea>
+      </div>
+      <div class="form-group" *ngIf="WOEditList.WorkorderStatus ==='Cancelled'">
+        <label>Reason for cancellation</label>
+        <textarea class="form-control rounded-1" [(ngModel)]="WOEditList.CancelReason" rows="3"
+          style="resize: none;width: 100% !important"></textarea>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group" style="margin-top: 5rem">
+        <label>Employee</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EmployeeKey" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EmployeeOption" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Floor*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey"
+          [disabled]="!FacilityKey"
+          (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);getEquiment($event.target.value,FacilityKey);"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+            {{b.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentTypeKey"
+          [disabled]="!(showEqTypes&&FloorKey)"
+          (change)="showEquipment_typechange($event.target.value,FacilityKey,FloorKey)" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EquipmentTypeList" [value]="e.EquipmentTypeKey">
+            {{e.EquipmentTypeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment Name</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentKey"
+          [disabled]="(!(showEqTypes&&EquipmentTypeKey))" required>{{EquipmentKey}}
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EquipmentList" [value]="e.EquipmentKey">
+            {{e.EquipmentName}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Priority Level</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="PriorityKey" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of priorityList" [value]="b.PriorityKey">
+            {{b.PriorityText}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label style="margin-left: -1rem" class="col-sm-3 col-md-3 col-lg-3 ">Time*</label><br>
+        <p-calendar [inputStyle]="{'width':'275%'}" [(ngModel)]="timeValue" [timeOnly]="true" hourFormat="12" required>
+        </p-calendar>
+      </div>
+
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="isPhotoRequired" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+        <label style="margin-top: 2rem;">Photo Required</label>&nbsp;
+      </div>
+
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck
+          (change)="toggleVisibility_Barcode($event)" />&nbsp;
+        <label>Barcode Required</label>&nbsp;
+      </div>
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="keepActive" data-md-icheck />&nbsp;
+        <label>Keep Active</label>&nbsp;
+      </div>
+
+
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="GpsSnapShot" data-md-icheck />&nbsp;
+        <label>Gps SnapShot</label>&nbsp;
+      </div>
+
+    </div>
+
+    <div style="margin-left:35%">
+      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-success"
+        (click)=UpdateWO()><b>UPDATE</b></button>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back </b>
+      </a>
+      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-danger button_style"
+        (click)="basicModal.show();" mdbWavesEffect><b>DELETE</b></button>
+
+      <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this?
+            </div>
+            <div class="modal-footer">
+              <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+                (click)="basicModal.hide(); DeleteWO()" mdbWavesEffect>Yes</button>
+              <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+                mdbWavesEffect>No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

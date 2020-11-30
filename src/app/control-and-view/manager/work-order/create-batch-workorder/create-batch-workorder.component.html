@@ -1,0 +1,287 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%">CREATE BATCH WORK-ORDER</h4>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Workorder Schedule Name*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKey"
+          (change)="getEmployee($event.target.value);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of scheduleList" [value]="b.BatchScheduleNameKey">
+            {{b.ScheduleName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top: 2.8rem">
+        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility_Equipment($event);change_values();" />&nbsp;
+        <label style="margin-top: 2rem;">Equipment Order</label>
+      </div>
+      <div class="form-group">
+        <label>Building*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value);"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FloorKey||showEqTypes"
+          (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+            {{b.ZoneName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey||showEqTypes"
+          (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
+            {{b.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey||showEqTypes"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+            {{b.RoomName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label style="margin-top: 2rem;">From When*</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date"
+          [(ngModel)]="WorkorderStartDate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="WorkorderStartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label>Workorder Notes</label>
+        <textarea class="form-control rounded-1" [(ngModel)]="workorderNotes" rows="6" style="resize: none;width: 100% !important;max-width: 100% !important;"></textarea>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group row">
+        <label class="col col-lg-12 col-md-12 col-sm-12">Workorder Type*</label><br>
+        <select *ngIf="!newType" style="background-color: #D4F4FF !important;margin-left: 1rem;width: 93.9% !important;margin-bottom: 0.4rem"
+          class="form-control" (change)='checkfornewWOT(WorkorderTypeKey)' [(ngModel)]="WorkorderTypeKey" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
+            {{e.WorkorderTypeText}}
+          </option>
+        </select>
+        <input type="text" *ngIf="newType" maxlength="30" [(ngModel)]="newworkordertypetext" class="form-control"
+          placeholder="Enter new workordertype" style="margin-left: 1rem;width: 70.3%">
+        <br>
+        <input type="button" *ngIf="newType" (click)="GobacktoMenu()" class="btn btn-primary button_style" style="margin-top: 0rem"
+          value="Go Default" />
+      </div>
+      <div class="form-group" style="margin-bottom: 2rem">
+        <label>Employee*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EmployeeKey" [disabled]="true">
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EmployeeOption" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Floor*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey"
+          (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);getEquiment($event.target.value,FacilityKey);"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+            {{b.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentTypeKey"
+          [disabled]="!(showEqTypes&&FloorKey)" (change)="showEquipment_typechange($event.target.value,FacilityKey,FloorKey)"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EquipmentTypeList" [value]="e.EquipmentTypeKey">
+            {{e.EquipmentTypeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment Name</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentKey"
+          [disabled]="(!(showEqTypes&&EquipmentTypeKey))" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EquipmentList" [value]="e.EquipmentKey">
+            {{e.EquipmentName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Priority Level</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="PriorityKey" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of priorityList" [value]="b.PriorityKey">
+            {{b.PriorityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="isPhotoRequired" data-md-icheck (change)="toggleVisibility_Photo($event)" />&nbsp;
+        <label style="margin-top: 2rem;">Photo Required</label>
+
+      </div>
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck (change)="toggleVisibility_Barcode($event)" />&nbsp;
+        <label>Barcode Required</label>&nbsp;
+      </div>
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="GpsSnapShot" data-md-icheck />&nbsp;
+        <label>Gps SnapShot</label>&nbsp;
+      </div>
+      <div class="form-group">
+        <input type="radio" name="recurringevent" [(ngModel)]="rec1" [value]="dailyrecurring" (click)='dailyrecurringChange()'>
+        &nbsp;
+        <label style="margin-top: 2rem;">Daily </label>&nbsp;&nbsp;
+
+        <input type="radio" name="recurringevent" [(ngModel)]="rec1" [value]='weeklyrecurring' (click)='weeklyrecurringChange()'>
+        &nbsp;
+        <label style="margin-top: 2rem;">Weekly </label>&nbsp;&nbsp;
+
+        <input type="radio" name="recurringevent" [(ngModel)]="rec1" [value]='monthlyrecurring' (click)='monthlyrecurringChange()'>&nbsp;
+        <label style="margin-top: 2rem;">Monthly </label>
+
+      </div>
+      <div class="form-group" *ngIf="(dailyrecurring==true||weeklyrecurring==true||monthlyrecurring==true)">
+        <label style="margin-top: 2rem;">End Date*</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date"
+          [(ngModel)]="WorkorderEndDate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="WorkorderEndDate"></ng-datepicker>
+      </div>
+    </div>
+    <!--Daily-Dropdowns-->
+    <div class="col-md-12">
+      <div class="form-group row" *ngIf="dailyrecurring==true">
+        <label style="margin-top: 1rem;" class="col-sm-2 col-md-2 col-lg-2 col">On Gap Of</label>
+        <select [(ngModel)]="DailyrecurringGap" class="form-control col col-sm-3 col-md-3 col-lg-3" style="margin-top: 1rem;margin-left: -0.5rem">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of monthlyDays; let i = index" [value]="i + 1">
+            {{i + 1}}
+          </option>
+        </select>
+        <label style="margin-top: 1rem;" class="col-sm-1 col-md-1 col-lg-1 col">Days</label>
+        <!-- </div>
+      <div class="form-group row" *ngIf="dailyrecurring==true"> -->
+        <label style="margin-top: 1rem;margin-left: 0.5rem" class="col-sm-3 col-md-3 col-lg-3 col">Frequency*</label>
+        <select [(ngModel)]="dailyFrequency" style="margin-top: 1rem;margin-left: -1rem;" class="form-control col col-sm-3 col-md-3 col-lg-3"
+          (change)="addFormField()">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of recurringFrequency; let i = index" [value]="i + 1">
+            {{i + 1}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="((dailyrecurring==true)&&(dailyFrequency))">
+        <p-calendar [inputStyle]="{'width':'105%','margin-top':'1rem'}" placeholder="TIME" [(ngModel)]="timetable.times[i]"
+          *ngFor=" let field of timetable.times;let i = index" [timeOnly]="true" hourFormat="12" required>
+          {{index+' '+field}}
+        </p-calendar>
+      </div>
+    </div>
+
+    <!--Weekly-Dropdowns-->
+    <div class="col-md-12">
+
+      <div class="form-group" *ngIf="weeklyrecurring==true">
+          <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sun </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Mon </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Tue </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_four" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Wed </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_five" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Thu </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_six" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Fri </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_seven" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sat </label>&nbsp;
+        <!-- </div>
+      <div class="form-group" *ngIf="weeklyrecurring==true"> -->
+        <label style="margin-top: 2rem;margin-left: 7.5rem;margin-right: -1rem;" class="col-sm-3 col-md-3 col-lg-3 ">Time*</label>
+        <p-calendar [inputStyle]="{'width':'150%','margin-top':'1rem'}" [(ngModel)]="Time_weekly" [timeOnly]="true"
+          hourFormat="12" required></p-calendar>
+      </div>
+
+    </div>
+
+    <!--Monthly-Dropdowns-->
+    <div class="col-md-12">
+
+      <div class="form-group" *ngIf="monthlyrecurring==true">
+        <label style="margin-top: 2rem;margin-left: -1rem;margin-right: -4.3rem;" class="col-sm-3 col-md-3 col-lg-3 ">Time*</label>
+        <p-calendar [inputStyle]="{'width':'147%','margin-top':'1rem'}" [(ngModel)]="Time_monthly" [timeOnly]="true"
+          hourFormat="12" required></p-calendar>
+      </div>
+      <div class="form-group row" *ngIf="monthlyrecurring==true">
+        <input type="radio" name="recurringevent1" class="col-sm-1 col-md-1 col-lg-1 col" [(ngModel)]="rec2" [value]="monthlyreccradio1"
+          (click)='monthlyreccradio1_change()'>
+        <label class="col-sm-1 col-md-1 col-lg-1 col">Day</label>
+        <select [(ngModel)]="day1" style="margin-left: 0.5rem" class="form-control col col-md-3 col-lg-3 col-sm-3"
+          [disabled]="monthlyreccradio1==false">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of monthlyDays; let i = index" [value]="i + 1">
+            {{i + 1}}
+          </option>
+        </select>&nbsp;
+        <label class="col-sm-2 col-md-2 col-lg-2 col">Of Every</label>&nbsp;
+        <select [(ngModel)]="month1" class="form-control col-sm-2 col-md-2 col-lg-2 col" [disabled]="monthlyreccradio1==false">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of recurringFrequency; let i = index" [value]="i + 1">
+            {{i + 1}}
+          </option>
+        </select>
+        <label class="col-sm-2 col-md-2 col-lg-2 col">Month(s)</label>
+      </div>
+      <div class="form-group row" *ngIf="monthlyrecurring==true">
+        <input type="radio" name="recurringevent1" class="col col-sm-1 col-md-1 col-lg-1" [(ngModel)]="rec2" [value]="monthlyreccradio2"
+          (click)='monthlyreccradio2_change()'>
+        <!-- <div class="form-group"> -->
+        &nbsp;
+        <select [(ngModel)]="pos2" class="form-control col col-sm-2 col-md-2 col-lg-2" [disabled]="monthlyreccradio2==false">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of weekPosition" [value]="b.value">
+            {{b.id}}
+          </option>
+        </select>
+        &nbsp;
+        <select [(ngModel)]="day2" class="form-control col col-sm-2 col-md-2 col-lg-2" [disabled]="monthlyreccradio2==false">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of weekDay; let i = index" [value]="i">
+            {{b}}
+          </option>
+        </select>
+        &nbsp;
+        <label class="col-sm-1 col-md-2 col-lg-2 col">Of Every</label>&nbsp;
+        <select [(ngModel)]="month2" class="form-control col col-sm-2 col-md-2 col-lg-2" [disabled]="monthlyreccradio2==false">
+          <option value="">--Select--</option>
+          <option *ngFor=" let b of recurringFrequency; let i = index" [value]="i + 1">
+            {{i + 1}}
+          </option>
+        </select>
+        <label class="col-sm-2 col-md-2 col-lg-2 col">Month(s)</label>
+        <!-- </div> -->
+      </div>
+    </div>
+
+    <div style="margin-left:50%">
+      <button type="button" class="btn btn-success" (click)=createWorkOrder()><b>SAVE</b></button>
+    </div>
+
+  </div>
+</div>

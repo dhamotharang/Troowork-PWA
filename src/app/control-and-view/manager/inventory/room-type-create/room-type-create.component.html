@@ -1,0 +1,50 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden;">
+  <br>
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE NEW ROOM TYPE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">RoomType Name*: </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" maxlength="40" placeholder="RoomType Name" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="RoomTypeName">
+      </div>
+    </div>
+    <br>
+    <!-- <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">MetricType Name* : </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="MetricKey" (change)=showFields($event.target.value)>
+          <option value="">--Select--</option>
+          <option *ngFor="let f of metricValues" [value]="f.MetricType">
+            {{f.MetricType}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+
+    <div class="row col-md-12" *ngIf="MetricKey">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">MetricType Value*:
+        </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" style="background-color: #D4F4FF !important;" class="form-control" maxlength="40"
+          [(ngModel)]="MetricTypeValue" (keypress)="numberValid($event)" [disabled]="MetricKey=='Default'" maxlength="40"
+          placeholder="Metric Value">
+      </div>
+    </div>
+    <br> -->
+    <div class="row col-md-12" style="margin-left: 35%">
+      <a style="color:white !important" class="btn btn-success" (click)="addRoomType(MetricKey,RoomTypeName,MetricTypeValue)"><b>Create
+        </b>
+      </a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+</div>

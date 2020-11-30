@@ -1,0 +1,27 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">BUILDING EDIT</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Building Name: </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input *ngIf="build" type="text" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control"
+          id="Building" [(ngModel)]="build[0].FacilityName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 35%">
+      <button style="color:white !important" class="btn btn-success" (click)="updateBuilding(build[0].FacilityName,build[0].FacilityKey)"><b>Update</b>
+      </button>
+      <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+
+</div>

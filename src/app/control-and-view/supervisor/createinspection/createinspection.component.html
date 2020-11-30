@@ -1,0 +1,137 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;margin-top: 2%;">CREATE NEW INSPECTION</h4>
+  </div>
+  <br>
+  <div class="row bg-info col-md-12" style="padding-top: 2rem;padding-bottom: 1rem;">
+    <div class="col-md-12">
+      <div class="form-group" style="display: flex">
+        <label class="col-sm-2 col-md-2 col-lg-2 " style="margin-left: -1rem;">Template Name*</label>
+        <span style="margin-left: 3.8rem"></span>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-8 col-md-8 col-lg-8"
+          [(ngModel)]="TemplateID">
+          <option value="">--Select--</option>
+          <option *ngFor="let t of templateName" [value]="t.TemplateID">
+            {{t.TemplateName}}
+          </option>
+        </select>
+        <span class="col-sm-2 col-md-2 col-lg-2 "></span>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;"> Date*</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" style="width: 75%;"
+            [value]="date" [(ngModel)]="fromdate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Auditor*</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="SupervisorKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let a of auditor" [value]="a.SupervisorKey">
+            {{a.SupervisorText}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Time*</label><br>
+        <p-calendar [inputStyle]="{'width':'212%'}" [(ngModel)]="time1" [timeOnly]="true" hourFormat="12"></p-calendar>
+      </div>
+      <div class="form-group" style="margin-top: 1.3rem">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Employee</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="Employee">
+          <option value="">--Select--</option>
+          <option *ngFor="let e of employee" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Building*</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="Building" (change)="selectFloorfromBuildings($event.target.value)">
+          <option value="">--Select--</option>
+          <option *ngFor="let b of building" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Zone</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="Zone" (change)="selectroomtypefromZone($event.target.value,Floor)" [disabled]="!Floor">
+          <option value="">--Select--</option>
+          <option *ngFor="let z of zone" [value]="z.ZoneKey">
+            {{z.ZoneName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Floor*</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="Floor" [disabled]="!Building" (change)="selectZoneRoomRoomtypefromFloor($event.target.value)">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floors" [value]="f.FloorKey">
+            {{f.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Room Type</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="RoomType" [disabled]="!Floor" (change)="selectroomfromRoomtype($event.target.value,Zone)">
+          <option value="">--Select--</option>
+          <option *ngFor="let rt of roomtype" [value]="rt.RoomTypeKey">
+            {{rt.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Room*</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="RoomKey" [disabled]="!Floor">
+          <option value="">--Select--</option>
+          <option *ngFor="let r of room" [value]="r.RoomKey">
+            {{r.RoomName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-12"></div>
+    <div class="col-md-6">
+      <!-- <div class="form-group" style="margin-top: 2.5rem">
+        <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+        <label class="form-check-label" for="materialInline1">Recurring Yes:</label>
+      </div> -->
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" *ngIf="marked">
+        <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">To Date</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" style="width: 75%;"
+            [value]="date" [(ngModel)]="todate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col-md-6"></div>
+      <div style="text-align:center">
+        <button type="button" style="text-align:center" class="btn btn-success" (click)="createInspection()"><b>SAVE</b></button></div>
+    </div>
+  </div>
+</div>

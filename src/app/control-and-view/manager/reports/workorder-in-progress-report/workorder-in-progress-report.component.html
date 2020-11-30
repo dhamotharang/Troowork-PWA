@@ -1,0 +1,38 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="text-align: center;margin-top: 2%"> WORKORDER IN-PROGRESS REPORT </h4>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Workorder Type </th>
+        <th> Room </th>
+        <th> Date </th>
+        <th> Employee </th>
+        <th> Building </th>
+        <th> Floor </th>
+        <th> Zone </th>
+        <th> Status </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of woList">
+          <td>{{ x.WorkorderTypeName }}</td>
+          <td>{{ x.RoomName }}</td>
+          <td>{{ x.WorkorderTime }}</td>
+          <td>{{ x.LastName }},{{ x.FirstName }}</td>
+          <td>{{ x.FacilityName }}</td>
+          <td>{{ x.FloorName }}</td>
+          <td>{{ x.ZoneName }}</td>
+          <td>{{ x.WorkorderStatus }}</td>
+        </tr>
+        <tr *ngIf="woList?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+      Previous</button>
+    <button class="btn btn-success" style="float: right;" (click)="nextPage()" *ngIf="showHide2">Next >></button> -->
+  </div>
+</div>

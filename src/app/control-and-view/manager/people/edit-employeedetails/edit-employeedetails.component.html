@@ -1,0 +1,605 @@
+<div style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 35%;">EDIT EMPLOYEE INFORMATION</h4>
+  </div><br>
+  <div *ngIf="editempdtails">
+    <div class="row bg-info col-md-12">
+      <br>
+      <h3 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Employment
+        Information</h3>
+      <div class="col-md-6">
+        <div class="form-group ">
+          <label>Employee Number*</label>
+          <input type="text" name="EmployeeNumber" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+            placeholder="Employee Number" [(ngModel)]="editempdtails.EmployeeNumber" style="width: 73%">
+        </div>
+      </div>
+
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>User Role Type*</label>
+          <select name="userroletype" (change)="selectUserType($event.target.value)" style="background-color: #d4f4ff;"
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="editempdtails.UserRoleTypeKey">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let u of userRoleTypes" [value]="u.UserRoleTypeKey">
+              {{u.UserRoleName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <!-- <div class="col-md-6 " *ngIf="editempdtails.UserRoleName ==='Manager'">
+        <div class="form-group">
+          <label>User Role Type*</label>
+          <select name="userroletype" style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+            [(ngModel)]="editempdtails.UserRoleTypeKey">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let u of userRoleTypes" [value]="u.UserRoleTypeKey">
+              {{u.UserRoleName}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Hire Date*</label>
+          <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" item-width="20%" [(ngModel)]=""></igx-datePicker> -->
+          <ng-datepicker [options]="options" position="top-right" [(ngModel)]="HireDate"></ng-datepicker>
+        </div>
+        <div class="form-group">
+          <label>Department*</label><br>
+          <select name="department" style="background-color: #d4f4ff;width: 75%"
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="editempdtails.DepartmentKey">
+            <option value="">--Select--</option>
+            <option *ngFor="let d of department" [value]="d.DepartmentKey">
+              {{d.DepartmentName}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="editempdtails.UserRoleName !== 'Manager'">
+          <label>Manager*</label>
+          <select name="userroletype" style=" background-color: #d4f4ff;width: 75%;max-width: 100%;"
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="editempdtails.ManagerKey">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let u of managerList" [value]="u.ManagerKey">
+              {{u.ManagerName}}
+            </option>
+          </select>
+        </div>
+        <!-- <div class="form-check form-check-inline" style="margin-bottom: 2rem;margin-top: 2rem">
+        <input type="checkbox" [(ngModel)]="editempdtails.IsSupervisor" data-md-icheck
+          (change)="toggleVisibility($event)" />&nbsp;
+        <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;
+      </div> -->
+
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Job Title*</label><br>
+          <select name="jobtitle" style="background-color: #d4f4ff;width: 75%" [(ngModel)]="editempdtails.JobTitleKey"
+            class="form-control col-sm-9 col-md-9 col-lg-9">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let j of jobtitle" [value]="j.JobTitleKey">
+              {{j.JobTitleText}}
+            </option>
+          </select>
+        </div>
+        <!-- <div class="form-group" *ngIf="marked">
+          <label>Supervisor</label><br>
+          <select name="supervisor" style="background-color: #d4f4ff;" [(ngModel)]="editempdtails.SupervisorKey"
+            class="form-control col-sm-9 col-md-9 col-lg-9">
+            <option value="">--Select--</option>
+            <option *ngFor="let s of supervisor" [value]="s.SupervisorKey">
+              {{s.SupervisorText}}
+            </option>
+          </select>
+        </div> -->
+
+      </div>
+    </div>
+    <br>
+    <div class="row bg-info col-md-12">
+      <h3 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Personal
+        Information</h3>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>First Name*</label>
+          <input type="text" name="FirstName" class="form-control  col-sm-9 col-md-9 col-lg-9"
+            (keypress)="charValidation($event)" maxlength="19" placeholder="First Name"
+            [(ngModel)]="editempdtails.FirstName">
+        </div>
+        <div class="form-group">
+          <label>Last Name*</label>
+          <input type="text" name="LastName" class="form-control  col-sm-9 col-md-9 col-lg-9"
+            (keypress)="charValidation($event)" maxlength="19" placeholder="Last Name"
+            [(ngModel)]="editempdtails.LastName">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Middle Name</label>
+          <input type="text" name="MiddleName" class="form-control  col-sm-9 col-md-9 col-lg-9"
+            (keypress)="charValidation($event)" maxlength="19" placeholder="Middle Name"
+            [(ngModel)]="editempdtails.MiddleName">
+        </div>
+        <div class="form-group">
+          <label>Birth Date</label>
+          <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" item-width="20%" [(ngModel)]="BirthDate"></igx-datePicker> -->
+          <ng-datepicker [options]="options" position="top-right" [(ngModel)]="BirthDate"></ng-datepicker>
+        </div>
+
+      </div>
+      <div class="col-md-12" style="margin-bottom: 2rem;">
+        <div class="col-md-6">
+          <div class="form-group" style="margin-left:-1rem;">
+            <label>Gender</label><br>
+            <select name="Gender" [(ngModel)]="editempdtails.Gender" class="form-control col-sm-9 col-md-9 col-lg-9"
+              style="background-color: #d4f4ff;">
+              <option value="">--Select--</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="row bg-info col-md-12">
+      <h3 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Contact
+        Information</h3>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Address Line 1</label>
+          <textarea class="form-control rounded-1  col-sm-9 col-md-9 col-lg-9" maxlength="85"
+            [(ngModel)]="editempdtails.AddressLine1" placeholder="Address Line1" id="exampleFormControlTextarea1"
+            rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+
+          <input type="text" name="City" [(ngModel)]="editempdtails.City"
+            class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="19" placeholder="City">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Address Line 2</label>
+          <textarea class="form-control rounded-1 col-sm-9 col-md-9 col-lg-9" maxlength="85"
+            [(ngModel)]="editempdtails.AddressLine2" placeholder="Address Line2" id="exampleFormControlTextarea1"
+            rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+
+          <input type="text" name="State" [(ngModel)]="editempdtails.State"
+            class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="19" placeholder="State">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" name="Country" [(ngModel)]="editempdtails.Country" (keypress)="charValidation($event)"
+            maxlength="19" class="form-control col-sm-9 col-md-9 col-lg-9" placeholder="Country"> </div>
+        <div class="form-group">
+          <label>Primary Phone Number*</label>
+          <input type="text" name="PrimaryPhone" [(ngModel)]="editempdtails.PrimaryPhone" minlength=10
+            (keypress)="numberValid($event)" maxlength="15" class="form-control col-sm-9 col-md-9 col-lg-9"
+            placeholder="Primary Phone Number" #Primaryphone="ngModel">
+          <div *ngIf="Primaryphone.errors?.minlength" style="color: red;">
+            Primary Phone Number must be at least 10 digit long.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Zip Code</label>
+          <input type="text" name="ZipCode" [(ngModel)]="editempdtails.ZipCode"
+            class="form-control col-sm-9 col-md-9 col-lg-9" (keypress)="numberValid($event)" maxlength="10"
+            placeholder="Zip Code"> </div>
+        <div class="form-group">
+          <label>Alternative Phone Number</label>
+          <input type="text" name="AlternatePhone" [(ngModel)]="editempdtails.AlternatePhone"
+            (keypress)="numberValid($event)" maxlength="15" class="form-control col-sm-9 col-md-9 col-lg-9"
+            placeholder="Alternative Phone Number">
+        </div>
+
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Email</label><br>
+          <input type="text" name="EmailID" [(ngModel)]="editempdtails.EmailID" maxlength="40"
+            class="form-control col-sm-9 col-md-9 col-lg-9" placeholder="Email" email #prmEmail="ngModel">
+          <div *ngIf="prmEmail.errors?.email" style="color: red;">
+            Email not valid.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Employee Status*</label><br>
+          <select name="jobtitle" style="background-color: #d4f4ff;" [(ngModel)]="editempdtails.EmployeeStatusKey"
+            class="form-control col-sm-9 col-md-9 col-lg-9" (change)="statusChanged(editempdtails.EmployeeStatusKey)">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let s of employeestatus" [value]="s.EmployeeStatusKey">
+              {{s.EmployeeStatus}}
+            </option>
+          </select>
+
+          <div class="form-group" *ngIf="statusFlag">
+            <label>Remarks*</label>
+            <!-- <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="remark" rows="8"
+        style="resize: none;width: 100% !important;max-width: 100% !important;"></textarea> -->
+
+            <textarea class="form-control rounded-1  col-sm-9 col-md-9 col-lg-9" maxlength="85" [(ngModel)]="remark"
+              placeholder="Remarks" id="exampleFormControlTextarea1" rows="5"></textarea>
+
+          </div>
+
+
+        </div>
+      </div>
+      <!-- <div class="col-md-6">
+      <div class="form-group">
+        <label>Employee Group</label><br>
+        <select name="idemployeegrouping" [(ngModel)]="idemployeegrouping"
+          style="background-color: #d4f4ff;width: 75% !important" class=" form-control">
+          <option value="" placeholder>--Select--</option>
+          <option *ngFor="let s of employeegrouping" [value]="s.Idemployeegrouping">
+            {{s.Description}}
+          </option>
+        </select>
+      </div>
+    </div> -->
+    </div>
+    <br>
+
+    <!-- <div class="row bg-info col-md-12" *ngIf="isemployeecalendar==1">
+    <h3 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Weekly
+      Schedule</h3>
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+      <thead class="tableHead">
+        <th></th>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Start Time</td>
+          <td>
+            <select name="start_sun_hour" [(ngModel)]="editempdtails.start_sun_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_sun_min" [(ngModel)]="editempdtails.start_sun_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_sun_format" [(ngModel)]="editempdtails.start_sun_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_mon_hour" [(ngModel)]="editempdtails.start_mon_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_mon_min" [(ngModel)]="editempdtails.start_mon_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_mon_format" [(ngModel)]="editempdtails.start_mon_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_tue_hour" [(ngModel)]="editempdtails.start_tue_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_tue_min" [(ngModel)]="editempdtails.start_tue_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_tue_format" [(ngModel)]="editempdtails.start_tue_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_wed_hour" [(ngModel)]="editempdtails.start_wed_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_wed_min" [(ngModel)]="editempdtails.start_wed_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_wed_format" [(ngModel)]="editempdtails.start_wed_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_thu_hour" [(ngModel)]="editempdtails.start_thu_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_thu_min" [(ngModel)]="editempdtails.start_thu_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_thu_format" [(ngModel)]="editempdtails.start_thu_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_fri_hour" [(ngModel)]="editempdtails.start_fri_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_fri_min" [(ngModel)]="editempdtails.start_fri_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_fri_format" [(ngModel)]="editempdtails.start_fri_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="start_sat_hour" [(ngModel)]="editempdtails.start_sat_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_sat_min" [(ngModel)]="editempdtails.start_sat_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_sat_format" [(ngModel)]="editempdtails.start_sat_format"
+              style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>End Time</td>
+          <td>
+            <select name="end_sun_hour" [(ngModel)]="editempdtails.end_sun_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_sun_min" [(ngModel)]="editempdtails.end_sun_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_sun_format" [(ngModel)]="editempdtails.end_sun_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_mon_hour" [(ngModel)]="editempdtails.end_mon_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_mon_min" [(ngModel)]="editempdtails.end_mon_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_mon_format" [(ngModel)]="editempdtails.end_mon_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_tue_hour" [(ngModel)]="editempdtails.end_tue_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_tue_min" [(ngModel)]="editempdtails.end_tue_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_tue_format" [(ngModel)]="editempdtails.end_tue_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_wed_hour" [(ngModel)]="editempdtails.end_wed_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_wed_min" [(ngModel)]="editempdtails.end_wed_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_wed_format" [(ngModel)]="editempdtails.end_wed_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_thu_hour" [(ngModel)]="editempdtails.end_thu_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_thu_min" [(ngModel)]="editempdtails.end_thu_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_thu_format" [(ngModel)]="editempdtails.end_thu_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_fri_hour" [(ngModel)]="editempdtails.end_fri_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_fri_min" [(ngModel)]="editempdtails.end_fri_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_fri_format" [(ngModel)]="editempdtails.end_fri_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select name="end_sat_hour" [(ngModel)]="editempdtails.end_sat_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_sat_min" [(ngModel)]="editempdtails.end_sat_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_sat_format" [(ngModel)]="editempdtails.end_sat_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Exceptions</label><br>
+        <select name="sch_exception" style="background-color: #d4f4ff;width: 75% !important"
+          [(ngModel)]="idscheduler_exception" class=" form-control">
+          <option value="" placeholder>--Select--</option>
+          <option *ngFor="let s of schedulerexception" [value]="s.Idscheduler_exception">
+            {{s.Exception_Description}}
+          </option>
+        </select>
+      </div>
+    </div> -->
+    <!-- <div class="col-md-6">
+      <div class="form-group">
+        <label>Weekend</label><br>
+        <select name="sch_exception_weekend" [(ngModel)]="idmaster_exception_weekend"
+          style="background-color: #d4f4ff;width: 75% !important" class=" form-control">
+          <option value="" placeholder>--Select--</option>
+          <option *ngFor="let s of exceptionweekend" [value]="s.Idmaster_exception_weekend">
+            {{s.Exception_Weekend}}
+          </option>
+        </select>
+      </div>
+    </div> -->
+    <!-- </div> -->
+    <br>
+
+    <div class="row bg-info col-md-12">
+      <div class="row col-md-12" style="margin-left: 35%;">
+        <a style="text-align:center" class="btn btn-success"
+          (click)="editEmployee(editempdtails.EmployeeNumber,editempdtails.UserRoleTypeKey,editempdtails.FirstName,editempdtails.LastName,editempdtails.MiddleName,BirthDate,editempdtails.Gender,editempdtails.AddressLine1,editempdtails.City,editempdtails.AddressLine2,editempdtails.State,editempdtails.Country,editempdtails.PrimaryPhone,editempdtails.ZipCode,editempdtails.AlternatePhone,editempdtails.EmailID,editempdtails.EmployeeStatusKey,HireDate,editempdtails.JobTitleKey,editempdtails.SupervisorKey,editempdtails.DepartmentKey,editempdtails.ManagerKey)">
+          Update</a>
+        <a class="btn btn-danger" (click)="basicModal.show();deleteEmpPass(empk$); ">Delete</a>
+        <a (click)='GoBack()' class="btn btn-warning" style="color:white !important"><b>Go
+            Back
+          </b>
+        </a>
+      </div>
+    </div>
+
+
+    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this?
+          </div>
+          <div class="modal-footer">
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+              (click)="basicModal.hide(); deleteEmployee()" mdbWavesEffect>Yes</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+              mdbWavesEffect>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

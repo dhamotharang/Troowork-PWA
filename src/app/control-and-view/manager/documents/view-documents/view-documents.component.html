@@ -1,0 +1,62 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="margin-left: 10.5rem;margin-right: 15rem; padding-bottom: 2rem;width: 78.5%">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">VIEW DOCUMENTS</h4>
+  </div>
+  <br>
+  <div class="row col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 2rem;margin-left: 0rem">
+    <label class="col-sm-3 col-md-3 col-lg-3 col" style="margin-right: -2rem"> Document Folder</label><br>
+    <select style="background-color: #D4F4FF !important;" class="form-control col-sm-6 col-md-6 col-lg-6 col"
+      [(ngModel)]="FormtypeId" (change)="showFileDetailsTablebydropdown($event.target.value)">
+      <option value="">--Select--</option>
+      <option *ngFor="let d of documentsList" [value]="d.FormtypeId">
+        {{d.FormType}}
+      </option>
+    </select>
+    <button type="button" class="btn btn-primary col-sm-3 col-md-3 col-lg-3 col" style="margin-left: 1rem;margin-top: 0rem"
+      (click)="RecentUpdates()"><b>SHOW
+        RECENT
+        UPLOADS</b></button>
+  </div>
+</div>
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div *ngIf='searchFlag'>
+    <form [formGroup]="searchform">
+      <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+        <br>
+        <input class="form-control" name="searchFileandDescName" maxlength="20" specialIsAlphaNumeric minlength="3"
+          type="text" placeholder="Search File Name,Description Name" aria-label="Search" [(ngModel)]="searchFileDescName"
+          formControlName="searchFileDescName" (input)="searchFNDN($event.target.value);" style="width: 100%;">
+        <div *ngIf="searchform.controls.searchFileDescName.errors?.minlength">Minimum 3 characters required.</div>
+      </div>
+    </form>
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table *ngIf='viewFolderDescriptionTable' id="viewfilesinfolders" class="table table-hover table-responsive table-bordered table"
+      style="display: inline-table">
+
+      <thead class="tableHead">
+        <th> File Name </th>
+        <th> Description Name </th>
+        <th> Download</th>
+        <th>View</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let v of viewFolderDescriptionTable">
+          <td>{{v.FileName}}</td>
+          <td>{{v.FormDesc}}</td>
+          <td><a target="_self" href="uploads/{{v.FileName}}" download="{{v.FileName}}"><button type="button" mdbBtn
+                color="primary" class="relative waves-light" mdbWavesEffect><i class="fa fa-file-pdf-o"></i>
+                <b> DOWNLOAD</b></button></a></td>
+          <td> <a href="uploads/{{v.FileName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
+            return false;"><button
+                type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect><b>VIEW</b></button></a></td>
+        </tr>
+        <tr *ngIf="viewFolderDescriptionTable?.length == 0">
+          <td colspan="4" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

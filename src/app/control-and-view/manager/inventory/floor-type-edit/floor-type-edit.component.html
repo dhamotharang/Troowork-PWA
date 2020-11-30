@@ -1,0 +1,27 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden;">
+  <br>
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">UPDATE FLOOR TYPE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="FloorType">Floor Type Name: </label></h5>
+      <div class="col-md-3" style="text-align:left">
+        <input *ngIf="flrType" type="text" style="background-color: #D4F4FF !important;width: 30rem" class="form-control"
+          maxlength="20" id="FloorType" [(ngModel)]="flrType.FloorTypeName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 35%">
+      <a style="color:white !important" class="btn btn-success" (click)="updateFloorType(flrType.FloorTypeName)"><b>Update</b>
+      </a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+
+</div>

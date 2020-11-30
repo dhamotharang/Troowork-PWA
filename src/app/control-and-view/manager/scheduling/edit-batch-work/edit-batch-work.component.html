@@ -1,0 +1,105 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">EDIT ASSIGNMENT NAME</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top:2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Name*: </label></h5>
+      <input type="text" maxlength="30" style="background-color: #D4F4FF !important;" *ngIf="scheduleDetails"
+        class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleDetails.BatchSchduleName">
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Description*:
+        </label></h5>
+      <input type="text" maxlength="45" style="background-color: #D4F4FF !important;" *ngIf="scheduleDetails"
+        class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleDetails.ScheduleDescription">
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Employee*: </label></h5>
+      <select style="background-color: #D4F4FF !important;" *ngIf="scheduleDetails"
+        (change)="setEmployeeForbatchSchedule($event.target.value)" class="form-control col-md-8 col-lg-8 col-sm-8"
+        [(ngModel)]="scheduleDetails.EmployeeKey">
+        <option>--Select--</option>
+        <option *ngFor="let f of empList" [value]="f.EmployeeKey">
+          {{f.EmployeeText}}
+        </option>
+      </select>
+    </div>
+    <div class="row col-md-12" style="padding-top: 2%;">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Shift: </label></h5>
+      <select style="background-color: #D4F4FF !important;" *ngIf="scheduleDetails"
+        class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleDetails.Master_shiftID">
+        <option value="0">--Select--</option>
+        <option *ngFor="let b of shiftdetails" [value]="b.Master_shiftID">
+          {{b.ShiftName}}
+        </option>
+      </select>
+    </div>
+    <div class="row col-md-12" style="margin-top: 2%">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Start Time*: </label></h5>
+      <div style="width: 14%">
+        <p-calendar [inputStyle]="{'width':'300%'}" [(ngModel)]="BatchScheduleTime" [timeOnly]="true" hourFormat="12">
+        </p-calendar>
+      </div>
+    </div>
+    <div class="row col-md-12" style="margin-top: 2%">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">End Time*: </label></h5>
+
+      <div style="width: 14%">
+        <p-calendar [inputStyle]="{'width':'300%'}" [(ngModel)]="BatchScheduleEndTime" [timeOnly]="true"
+          hourFormat="12"></p-calendar>
+      </div>
+    </div>
+    <br>
+    <div class="text-center col-md-12">
+      <label>Apply Changes For All Workorders</label>&nbsp;
+      <input type="checkbox" *ngIf="scheduleDetails" [(ngModel)]="scheduleDetails.checkBoxValue"
+        [value]=scheduleDetails.checkBoxValue>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 42%;">
+      <a style="color:white !important" (click)="updateScheduleName()" class="btn btn-success"><b>Update</b></a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back </b>
+      </a>
+      <a class="btn btn-danger"
+        (click)="basicModal.show();deleteAssignName(scheduleDetails.BatchScheduleNameKey); "><b>Delete</b>
+      </a>
+    </div>
+  </div>
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel"></h4>
+        </div>
+
+        <div class="modal-body">
+          <h5 style="color: red"><b>Are you sure you want to delete this assignment?</b></h5>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+            (click)="basicModal.hide(); deleteAssignmentName()" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+            mdbWavesEffect>No</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

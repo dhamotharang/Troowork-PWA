@@ -1,0 +1,83 @@
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark">
+  <mdb-navbar-brand>
+    <a class="navbar-brand" href="http://troodontechnology.com/">
+      <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+    </a>
+  </mdb-navbar-brand>
+</mdb-navbar>
+<div style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">HI, WE ARE HERE TO SUPPORT YOU.</h4>
+  </div><br>
+
+  <div class="row bg-info col-md-12">
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Type*</label>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="useType" required>
+          <option value="">--Select--</option>
+          <option value="User Registration">User Registration</option>
+          <option value="Support">Support</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="useType === 'User Registration'">
+        <label>Last Name*</label>
+        <input type="text" name="FirstName" class="form-control" maxlength="150" placeholder="Last Name" [(ngModel)]="LastName">
+      </div>
+
+      <div class="form-group" *ngIf="useType === 'User Registration'">
+        <label>Email ID*</label>
+        <input type="text" name="EmailID" [(ngModel)]="EmailID" maxlength="40" class="form-control rounded-1 " placeholder="Email ID" email #prmEmail="ngModel">
+        <div *ngIf="prmEmail.errors?.email" style="color: red;">
+          Email not valid.
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" *ngIf="useType === 'Support'">
+        <label>Email ID*</label>
+        <input type="text" name="EmailID" [(ngModel)]="EmailID" maxlength="40" class="form-control rounded-1 " placeholder="Email ID" email #prmEmail="ngModel">
+        <div *ngIf="prmEmail.errors?.email" style="color: red;">
+          Email not valid.
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="useType === 'User Registration'">
+        <label>First Name*</label>
+        <input type="text" name="FirstName" class="form-control" maxlength="150" placeholder="First Name" [(ngModel)]="FirstName">
+      </div>
+      <div class="form-group" *ngIf="useType === 'User Registration'">
+        <label>Organization Name*</label>
+        <input type="text" name="FirstName" class="form-control" maxlength="300" placeholder="Organization Name" [(ngModel)]="Organization">
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group" *ngIf="useType === 'Support'">
+        <label>How can we help you? *</label>
+        <textarea class="form-control rounded-1 " maxlength="85" rows="5" cols="100" [(ngModel)]="comments" placeholder="How can we help you?" id="exampleFormControlTextarea1"></textarea>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="useType" style="padding-left: 2%;padding-top:0% !important; padding-bottom:0% !important;">
+  <br>
+  <div class="row  col-md-12 col-sm-12 col-xs-12 col-lg-12">
+    <button type="button" style="margin-left: 45%;" class="btn btn-success" (click)="Submit();"><b>SUBMIT</b></button>
+  </div>
+</div>
+
+<div class="container bg-footer newfoot">
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <p class="text-sm-center">
+        © 2018 TrooWork - All Rights Reserved /Privacy Policy/ Sitemap
+        <br>
+      </p>
+    </div>
+  </div>
+</div>

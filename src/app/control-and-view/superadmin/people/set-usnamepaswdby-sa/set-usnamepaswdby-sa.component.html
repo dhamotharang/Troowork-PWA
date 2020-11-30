@@ -1,0 +1,46 @@
+<app-set-usnamepaswdby-sa></app-set-usnamepaswdby-sa>
+
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">SETTING USERNAME AND PASSWORD</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 1rem">
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="username">User Name: </label></h5>
+      <div class="col-md-3" style="text-align:left">
+        <input *ngIf="sasemail" type="text" style="background-color: #D4F4FF !important;" class="form-control" id="username"
+          [(ngModel)]="username">
+      </div>
+      <div class="col col-md-5"></div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="Password">Password: </label></h5>
+      <div class="col-md-3" style="text-align:left">
+        <input *ngIf="sasemail" type="password" disabled="disabled" style="background-color: #D4F4FF !important;" class="form-control"
+          id="Password" [(ngModel)]="password">
+      </div>
+      <div class="col col-md-5"></div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="Re-typePassword">Re-type Password:
+        </label></h5>
+      <div class="col-md-3" style="text-align:left">
+        <input *ngIf="sasemail" type="password" disabled="disabled" style="background-color: #D4F4FF !important;" class="form-control"
+          id="Re-typePassword" [(ngModel)]="reEnterPassword">
+      </div>
+      <div class="col col-md-5"></div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col col-md-4"></div>
+      <div style="text-align:right" class="col-md-3">
+        <a style="color:white !important" routerLink="/ViewEmployee" class="btn btn-success" routerLinkActive="active"
+          (click)="setUsernamePassword()"><b>Save & Send Email</b>
+        </a></div>
+      <div class="col col-md-2"></div>
+    </div>
+  </div>
+
+</div>

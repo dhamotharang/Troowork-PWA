@@ -1,0 +1,68 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="text-align:center">EMPLOYEES OF THE GROUP - {{grpname}}</h4>
+  <br>
+  <!-- The below commented code is for edit against single item. Saving item against single item -->
+
+  <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Employee Number </th>
+        <th> First Name</th>
+        <th> Last Name </th>
+        <th> Seniority Order </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let z of empList;let k = index">
+          <td>{{z.EmployeeNumber}}</td>
+          <td>{{z.FirstName}}</td>
+          <td>{{z.LastName}}</td>
+          <td>
+            <input type="text" id="seniorirtyorder" [(ngModel)]="z.GroupSeniorityOrder" [disabled]='!(k===editEmp)' />
+            <a style="color: red" *ngIf='!(k===editEmp)' (click)="changeDisable(k,z.EmployeeKey);"><b>Click here to
+                change seniorirty order</b></a>
+            <a *ngIf='(k===editEmp)' (click)="saveOrderChange(z.EmployeeKey,z.GroupSeniorityOrder);"
+              class="btn btn-success"><b>Save</b></a>&nbsp;
+            <a *ngIf='(k===editEmp)' (click)="cancelOrderChange();" class="btn btn-warning"><b>Cancel</b></a>
+          </td>
+        </tr>
+        <tr *ngIf="empList?.length == 0">
+          <td colspan="4" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+
+  <!-- For single save button -->
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Employee Number </th>
+        <th> First Name</th>
+        <th> Last Name </th>
+        <th> Seniority Order </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let z of empList;let k = index">
+          <td>{{z.EmployeeNumber}}</td>
+          <td>{{z.FirstName}}</td>
+          <td>{{z.LastName}}</td>
+          <td>
+            <input type="text" id="seniorirtyorder" [(ngModel)]="z.GroupSeniorityOrder" class="form-control" />
+          </td>
+        </tr>
+        <tr *ngIf="empList?.length === 0">
+          <td colspan="4" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="empList?.length > 0" style="margin-left:41%">
+      <a (click)="saveOrderChanges();" class="btn btn-success"><b>Save</b></a>&nbsp;
+      <a (click)="cancelOrderChange();" class="btn btn-warning"><b>Cancel</b></a>
+    </div>
+    <div>
+      <a (click)="goBack();" class="btn btn-warning" style="margin-left:45%"><b>GO BACK</b></a>
+    </div>
+  </div>
+</div>

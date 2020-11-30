@@ -1,0 +1,102 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">TRADE REQUEST DETAILS</h4>
+  </div>
+  <div *ngIf="traderequestdetails" style="margin-left: 1.5rem;margin-right: 1.5rem; margin-top: 2rem;" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;margin-top: 1.6rem;">Start Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.StartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">End Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.EndDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Employee Name</label>
+        <input type="text" style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [disabled]="!editflag" [(ngModel)]="traderequestdetails.Employeename">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; margin-top: 1.6rem;">Submitted Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.SubmittedDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Comments</label>
+        <textarea class="form-control rounded-1" [disabled]="!editflag" maxlength="200" [(ngModel)]="traderequestdetails.Comments" rows="5" style="resize: none;width: 75% !important; "></textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; margin-top: 2rem;">Other Employee</label>
+        <input type="text" style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeename">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Status</label>
+        <input type="text" style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [disabled]="!editflag" [(ngModel)]="traderequestdetails.RequestStatus">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Other Employee Comment</label>
+        <textarea class="form-control rounded-1" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeComments" rows="5" style="resize: none;width: 75% !important;"></textarea>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="traderequestdetails.StatusKey == 2||traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; margin-top: 2rem;">Status Approved Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeStatusDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved Start Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeApprovedStartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved End Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeApprovedEndDate"></ng-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; ">Approver</label>
+        <input type="text" style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverName">
+      </div>
+      <!-- <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Status</label>
+        <input type="text" style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [disabled]="!editflag" [(ngModel)]="traderequestdetails.RequestStatus">
+      </div> -->
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Status Updated Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverStatusDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approver Comments</label>
+        <textarea class="form-control rounded-1" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverComments" rows="5" style="resize: none;width: 75% !important;"></textarea>
+      </div>
+    </div>
+    <div class="col-md-6" *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved Start Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverApprovedStartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved End Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverApprovedEndDate"></ng-datepicker>
+      </div>
+    </div>
+    <div class="row col-md-12 ">
+      <div *ngIf="traderequestdetails.StatusKey == 4" style="margin-left: 34%;">
+        <a (click)='cancelTrade()' class="btn btn-warning" style="color:white !important;"><b>Cancel Trade Request</b></a>
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important; "><b>Go Back</b></a>
+      </div>
+      <div *ngIf="traderequestdetails.StatusKey == 6 && show1" style="margin-left: 34%;">
+        <a *ngIf="show1" (click)='cancelTradeApproval()' class="btn btn-warning" style="color:white !important;"><b>Approve Cancel Trade Request</b></a>
+        <a *ngIf="show1" (click)='goBack()' class="btn btn-warning" style="color:white !important; "><b>Go Back</b></a>
+      </div>
+      <div *ngIf="show" style="margin-left: 40%;">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a>
+      </div>
+    </div>
+  </div>
+</div>

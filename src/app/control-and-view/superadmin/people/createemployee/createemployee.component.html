@@ -1,0 +1,235 @@
+<div style="padding-left: 11rem;padding-right: 7rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">EMPLOYEE FORM</h4>
+  </div><br>
+  <div class="row bg-info col-md-12">
+    <h4 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Employment
+      Information</h4>
+    <div class="form-row col-md-12">
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>Organization*</label>
+          <select name="org" style="background-color: #d4f4ff;" (change)='OrganizationChanged()'
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="OrganizationID">
+            <option value="">--Select--</option>
+            <option *ngFor="let o of organization" [ngValue]="o.OrganizationID">
+              {{o.OrganizationName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group ">
+          <label style="margin-left: 1rem;">Employee Number*</label>
+          <input type="text" name="EmployeeNumber" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+            placeholder="Employee Number" [(ngModel)]="EmployeeNumber"
+            style="margin-left: 1rem;width: 76%;max-width: 100%;">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row col-md-12">
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>User Role Type*</label>
+          <select name="userroletype" style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+            [(ngModel)]="UserRoleTypeKey" (change)="selectUserType($event.target.value)">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let u of useroletypesa" [value]="u.UserRoleTypeKey">
+              {{u.UserRoleName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="showManager">
+        <div class="form-group " style="margin-left: 1rem;">
+          <label>Manager*</label>
+          <select name="userroletype" style=" background-color: #d4f4ff;width: 78%;max-width: 100%;"
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="ManagerKey">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let u of managerList" [value]="u.ManagerKey">
+              {{u.ManagerName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-row col-md-12">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Department</label><br>
+          <select name="department" style="background-color: #d4f4ff;width: 76%;max-width: 100%;"
+            class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="DepartmentKey">
+            <option value="">--Select--</option>
+            <option *ngFor="let d of department" [value]="d.DepartmentKey">
+              {{d.DepartmentName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Hire Date*</label>
+          <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" item-width="20%" [value]="hiredate" [(ngModel)]="HireDate"></igx-datePicker> -->
+          <ng-datepicker [options]="options" position="top-right" [(ngModel)]="HireDate"></ng-datepicker>
+        </div>
+        <!-- <div class="form-check form-check-inline" style="margin-top: 2.2rem">
+          <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+          <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;
+        </div> -->
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label style="margin-left: 1rem;">Job Title</label><br>
+          <select name="jobtitle" style="margin-left:0.9rem;background-color: #d4f4ff;width: 76%;max-width: 100%;"
+            [(ngModel)]="JobTitleKey" class="form-control col-sm-9 col-md-9 col-lg-9">
+            <option value="" placeholder>--Select--</option>
+            <option *ngFor="let j of jobtitle" [value]="j.JobTitleKey">
+              {{j.JobTitleText}}
+            </option>
+          </select>
+        </div>
+        <!-- <div class="form-group" *ngIf="supermark">
+          <label style="margin-left: 1rem;">Supervisor</label><br>
+          <select name="supervisor" style="margin-left:0.9rem;background-color: #d4f4ff;width: 76%;max-width: 100%;"
+            [(ngModel)]="SupervisorKey" class="form-control col-sm-9 col-md-9 col-lg-9">
+            <option value="">--Select--</option>
+            <option *ngFor="let s of supervisor" [value]="s.SupervisorKey">
+              {{s.SupervisorText}}
+            </option>
+          </select>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row bg-info col-md-12">
+    <h4 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Personal
+      Information</h4>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>First Name*</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="FirstName"
+          class="form-control  col-sm-9 col-md-9 col-lg-9" (keypress)="charValidation($event)" maxlength="19"
+          placeholder="First Name" [(ngModel)]="FirstName">
+      </div>
+      <div class="form-group">
+        <label>Last Name*</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="LastName"
+          class="form-control  col-sm-9 col-md-9 col-lg-9" (keypress)="charValidation($event)" maxlength="19"
+          placeholder="Last Name" [(ngModel)]="LastName"> </div>
+      <!-- </form> -->
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Middle Name</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="MiddleName"
+          class="form-control  col-sm-9 col-md-9 col-lg-9" (keypress)="charValidation($event)" maxlength="19"
+          placeholder="Middle Name" [(ngModel)]="MiddleName">
+      </div>
+      <div class="form-group">
+        <label>Birth Date</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" item-width="20%" [value]="date" [(ngModel)]="BirthDate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="BirthDate"></ng-datepicker>
+      </div>
+
+    </div>
+    <div class="col-md-12" style="margin-bottom: 2rem;">
+      <div class="col-md-6">
+        <div class="form-group" style="margin-left:-1rem;">
+          <label>Gender</label><br>
+          <select name="Gender" [(ngModel)]="Gender" class="form-control col-sm-9 col-md-9 col-lg-9"
+            style="background-color: #d4f4ff;width: 76%;max-width: 100%;">
+            <option value="">--Select--</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="row bg-info col-md-12">
+    <h4 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Contact
+      Information</h4>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Address Line 1</label>
+        <textarea style="width: 76% !important;max-width: 100%;"
+          class="form-control rounded-1  col-sm-9 col-md-9 col-lg-9" maxlength="85" [(ngModel)]="AddressLine1"
+          placeholder="Address Line1" id="exampleFormControlTextarea1" rows="5"></textarea>
+      </div>
+      <div class="form-group">
+        <label>City</label>
+
+        <input type="text" style="width: 76%;max-width: 100%;" name="City" [(ngModel)]="City"
+          class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="19" placeholder="City">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Address Line 2</label>
+        <textarea style="width: 76% !important;max-width: 100%;"
+          class="form-control rounded-1 col-sm-9 col-md-9 col-lg-9" maxlength="85" [(ngModel)]="AddressLine2"
+          placeholder="Address Line2" id="exampleFormControlTextarea1" rows="5"></textarea>
+      </div>
+      <div class="form-group">
+        <label>State</label>
+
+        <input type="text" style="width: 76%;max-width: 100%;" name="State" [(ngModel)]="State"
+          class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="19" placeholder="State">
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="Country" [(ngModel)]="Country"
+          (keypress)="charValidation($event)" maxlength="19" class="form-control col-sm-9 col-md-9 col-lg-9"
+          placeholder="Country"> </div>
+      <div class="form-group">
+        <label>Primary Phone Number*</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="PrimaryPhone" [(ngModel)]="PrimaryPhone"
+          minlength=10 (keypress)="numberValid($event)" maxlength="15" class="form-control col-sm-9 col-md-9 col-lg-9"
+          placeholder="Primary Phone Number" #Primaryphone="ngModel">
+        <div *ngIf="Primaryphone.errors?.minlength" style="color: red;">
+          Primary Phone Number must be at least 10 digit long.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Zip Code</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="ZipCode" [(ngModel)]="ZipCode"
+          class="form-control col-sm-9 col-md-9 col-lg-9" (keypress)="numberValid($event)" maxlength="10"
+          placeholder="Zip Code"> </div>
+      <div class="form-group">
+        <label>Alternative Phone Number</label>
+        <input type="text" style="width: 76%;max-width: 100%;" name="AlternatePhone" [(ngModel)]="AlternatePhone"
+          (keypress)="numberValid($event)" maxlength="15" class="form-control col-sm-9 col-md-9 col-lg-9"
+          placeholder="Alternative Phone Number">
+      </div>
+
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Email</label><br>
+        <input type="text" style="width: 76%;max-width: 100%;" name="EmailID" [(ngModel)]="EmailID" maxlength="40"
+          class="form-control col-sm-9 col-md-9 col-lg-9" placeholder="Email" email #prmEmail="ngModel">
+        <div *ngIf="prmEmail.errors?.email" style="color: red;">
+          Email not valid.
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row col-md-12">
+      <!-- <div> -->
+      <button type="button" style="margin-left: 42%;" class="btn btn-success" (click)="createEmployee();"><b>CREATE
+          EMPLOYEE</b></button>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

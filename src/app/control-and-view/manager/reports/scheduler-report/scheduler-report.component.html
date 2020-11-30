@@ -1,0 +1,134 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 44%;margin-top: 5.5%;margin-bottom: 3%">SCHEDULER REPORT</h4>
+  </div>
+  <div style="margin-left: 2rem;margin-right: 1.5rem;padding-top: 2rem" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group">
+        <label>From Date*</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label>Employee Group</label>
+        <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="Idemployeegrouping"
+          (change)="getEmployeeFromGroup($event.target.value);">
+          <option value="">--Select--</option>
+          <option *ngFor="let b of groupList" [value]="b.Idemployeegrouping">
+            {{b.Description}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group" style="visibility: hidden">
+        <label>To Date*</label>
+        <ng-datepicker [options]="options" position="top-right"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label>Employee</label>
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="empList" [(ngModel)]="EmployeeKey"
+          [settings]="dropdownSettings">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-left: 2rem;padding-top: 1rem" class="row bg-info col-md-12">
+    <div class="row col-md-12">
+      <div style="margin-left: 44%">
+        <button type="button" class="btn btn-success" (click)=generateSchedulerReport()><b>GENERATE REPORT</b></button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-left: 2rem;padding-top: 1rem" class="row col-md-12">
+    <div class="row col-md-12">
+      <div style="margin-left: 44%">
+        <button type="button" *ngIf='schReport?.length > 0' class="btn btn-success" style="widows: 98%"
+          (click)=downloadexcel()><b>EXPORT TO
+            EXCEL</b></button>
+      </div>
+    </div>
+  </div>
+  <!-- <div style="text-align: center;margin-left: 4rem">
+    <button type="button" *ngIf='schReport?.length > 0' class="btn btn-success" style="padding-right: 1rem"
+      (click)=downloadexcel()><b>EXPORT TO
+        EXCEL</b></button>
+  </div> -->
+
+  <table *ngIf='schReport?.length > 0' id='exportable123'
+    class="table table-hover table-responsive table-bordered table"
+    style="margin-left: 2%;display: inline-table;margin-top: 2%">
+    <thead class="tableHead">
+      <!-- <th> Group Name</th> -->
+      <th> Employee</th>
+      <th *ngFor="let z of dateList">
+        {{z.date1}}
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of schReport">
+        <!-- <td>{{x.groupName}} </td> -->
+        <td>{{x.empName}} </td>
+        <td> {{x.textDescription1}}</td>
+        <td> {{x.textDescription2}}</td>
+        <td> {{x.textDescription3}}</td>
+        <td> {{x.textDescription4}}</td>
+        <td> {{x.textDescription5}}</td>
+        <td> {{x.textDescription6}}</td>
+        <td> {{x.textDescription7}}</td>
+      </tr>
+      <tr *ngIf="schReport?.length == 0">
+        <td colspan="9" class="no-data-available">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- Hidden table for excel work... -->
+  <!--  -->
+  <div id='exportable' style="visibility: hidden !important;">
+    <table *ngIf='schReport?.length > 0' cellspacing="0" rules="rows" border="1"
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <!-- <th> Group Name</th> -->
+        <th> Employee</th>
+
+        <th *ngFor="let z of dateList" [ngStyle]="{backgroundColor: z.colColor}">
+          {{z.date1}}
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let n of schReport;">
+          <!-- <td>{{n.groupName}} </td> -->
+          <td [ngStyle]="{backgroundColor: n.empColor}">{{n.empName}} </td>
+          <td [ngStyle]="{backgroundColor: n.backColor1}">{{n.textDescription1}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor2}">{{n.textDescription2}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor3}">{{n.textDescription3}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor4}">{{n.textDescription4}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor5}">{{n.textDescription5}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor6}">{{n.textDescription6}}</td>
+          <td [ngStyle]="{backgroundColor: n.backColor7}">{{n.textDescription7}}</td>
+        </tr>
+        <!-- <tr *ngFor="let n of empListForTable;">
+          <td>{{n.Description}} </td>
+          <td>{{n.name}} </td>
+          <td *ngFor="let d of dateList;">
+            <span *ngFor="let l of schedulerReport;">
+              <span *ngIf="l.EmployeeKey == n.EmployeeKey">
+                <span *ngIf="d.rundate == l.start">
+                  {{l.text}}
+                </span>
+              </span>
+            </span>
+          </td>
+        </tr> -->
+        <!-- <tr *ngIf="schReport?.length == 0">
+          <td colspan="3" class="no-data-available">No records found</td>
+        </tr> -->
+      </tbody>
+    </table>
+  </div>

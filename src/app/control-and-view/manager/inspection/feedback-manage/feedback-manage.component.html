@@ -1,0 +1,70 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">FEEDBACK TEMPLATE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <!-- already present array -->
+        <tr *ngFor="let field of fieldArray">
+          <td>
+            {{field.Question}}
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button"
+              (click)="basicModal.show();deleteFieldValue1(field.idreviewtemplatequestion)"><b>DELETE
+                QUESTION</b></button>
+          </td>
+        </tr>
+        <!-- new space to enter values -->
+        <tr *ngFor="let f of newAttribute; let k = index;trackBy:customTrackBy">
+          <td>
+            <input maxlength="1000" class="form-control" type="text" [(ngModel)]="newAttribute[k]" />
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button" (click)="deleteNewFieldValue(k)"><b>DELETE
+                QUESTION</b></button>
+          </td>
+
+        </tr>
+        <tr>
+          <td style="text-align: center" colspan="2">
+            <button class="btn btn-success" type="button" (click)="addFieldValue()"><b>ADD QUESTION</b></button>
+            <button class="btn btn-success" type="button" (click)="savetemplate()"
+              *ngIf="newAttribute?.length>0"><b>SAVE</b></button>
+          </td>
+
+        </tr>
+
+        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel"></h4>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this?
+              </div>
+              <div class="modal-footer">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+                  (click)="basicModal.hide(); deleteFieldValue()" mdbWavesEffect>Yes</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+                  mdbWavesEffect>No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>

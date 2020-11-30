@@ -1,0 +1,69 @@
+<div>
+  <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
+    <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
+  </div>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark align-right">
+    <mdb-navbar-brand>
+      <a class="navbar-brand" href="http://troodontechnology.com/">
+        <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+      </a>
+    </mdb-navbar-brand>
+
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
+    <links>
+      <div style="margin-left: 45%;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/work order.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['Viewworkordersforemployee']}}]"><b>View
+                  Workorders</b></a></div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['Viewmeetingortrainingevent']}}]"><b>View
+                  Meeting/Training/Event</b></a>
+
+
+            </div>
+          </li>
+          <li *ngIf="isEmployeecalendar==1" class="nav-item dropdown" style="margin-left: -1rem;">
+            <img class="imagesize nav-link" src="assets/icons/scheduling.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['ViewSchedulerForEmployee']}}]"><b>View
+                  Scheduler-Employee</b></a>
+
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['PtoRequest']}}]"><b>Create PTO
+                  Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['ViewPtoRequest']}}]"><b>View PTO
+                  Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['TradeRequest']}}]"><b>Create
+                  Trade Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['ViewTradeRequest']}}]"><b>View
+                  Trade Request</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/profile-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['employeeMyProfile']}}]"><b>My
+                  Profile</b></a>
+              <a class="dropdown-item" routerLink=""><b>Log Out</b></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </links>
+  </mdb-navbar>
+  <!-- <div style="height:100%;background-color: #EBFAFF;"> -->
+  <router-outlet name="EmployeeOut"></router-outlet>
+  <!-- varun - child paths are loaded in  EmployeeOut outlet for lazy loading-->
+  <!-- </div> -->
+</div>

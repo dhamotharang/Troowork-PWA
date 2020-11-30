@@ -1,0 +1,99 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
+
+  <h4 class="refer">ASSIGNMENT NAME LIST </h4>
+  <br>
+  <div style="text-align:center">
+    <a [routerLink]="['CreateBatchWork']" class="btn btn-success"><b>Create Assignment Name</b>
+    </a>
+  </div>
+  <form [formGroup]="searchform">
+    <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+      <input class="form-control" name="searchScheduleView" type="text" maxlength="20" specialIsAlphaNumeric
+        minlength="3" placeholder="Search Assignment Name" aria-label="Search" [(ngModel)]="SearchSchedule"
+        formControlName="SearchSchedule" (input)="searchSchedule($event.target.value);" style="width: 100%;">
+      <div *ngIf="searchform.controls.SearchSchedule.errors?.minlength">Minimum 3 characters required.</div>
+    </div>
+  </form>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Assignment Name </th>
+        <th> Assignment Description</th>
+        <th> Employee </th>
+        <th> Start Time </th>
+        <th> End Time </th>
+        <th> Edit </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let z of scheduleList;let k = index">
+          <td>{{z.BatchSchduleName}}</td>
+          <td>{{z.ScheduleDescription}}</td>
+          <td>
+            <!-- {{z.EmployeeText}} -->
+            <select (change)="setEmployeeForbatchSchedule($event.target.value)" class="form-control"
+              [disabled]='!(k===editEmp)' [(ngModel)]="z.EmployeeKey">
+              <option *ngFor="let f of empList" [value]="f.EmployeeKey">
+                {{f.EmployeeText}}
+              </option>
+            </select>
+            <a style="color: red" *ngIf='!(k===editEmp)' (click)="changeDisable(k,z.EmployeeKey);" ><b>Click here to change employee</b></a>
+          </td>
+          <td>{{z.BatchScheduleTime}}</td>
+          <td>{{z.BatchScheduleEndTime}}</td>
+          <td>
+            <div style="text-align:center">
+              <a *ngIf='!(k===editEmp)' [routerLink]="['EditBatchWork',z.BatchScheduleNameKey]"
+                class="btn btn-primary"><b>Edit</b></a>
+              <a *ngIf='(k===editEmp)' (click)="saveEmpChange(z.BatchSchduleName,z.ScheduleDescription,z.BatchScheduleNameKey);" class="btn btn-success"><b>Save</b></a>&nbsp;
+              <a *ngIf='(k===editEmp)' (click)="cancelEmpChange();" class="btn btn-warning"><b>Cancel</b></a>
+              <!-- <a class="btn btn-danger" (click)="basicModal.show();deleteAssignName(z.BatchScheduleNameKey); "><b>Delete</b></a> -->
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="scheduleList?.length == 0">
+          <td colspan="4" class="no-data-available">No records found</td>
+        </tr>
+
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+          aria-hidden="true">
+
+          <div class="modal-dialog" role="document">
+
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel"></h4>
+              </div>
+
+              <div class="modal-body">
+                <h5 style="color: red"><b>Are you sure you want to delete this assignment?</b></h5>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteAssignmentName()"
+                  mdbWavesEffect>Yes</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+                  mdbWavesEffect>No</button>
+              </div>
+              
+            </div>
+
+          </div>
+
+        </div> -->
+
+
+      </tbody>
+    </table>
+    <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+      Previous</button>
+    <button class="btn btn-success" style="float: right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+  </div>
+  <!-- </div> -->
+</div>

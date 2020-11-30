@@ -1,0 +1,64 @@
+<div style="width: 100% !important;overflow-x: hidden; padding-left: 10rem;padding-right: 8rem; padding-top:1rem !important; padding-bottom:0rem !important;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">EDIT ORGANIZATION</h4>
+  </div>
+  <div class="row bg-info col-md-12" style="padding-top: 2rem">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label> Name*</label>
+        <input *ngIf="OrgDetail" type="text" [(ngModel)]="OrgDetail.OrganizationName" class="form-control  col-sm-9 col-md-9 col-lg-9"
+          maxlength="40" placeholder=" Name">
+      </div>
+      <div class="form-group">
+        <label> Description</label>
+        <textarea class="form-control rounded-1  col-sm-9 col-md-9 col-lg-9" *ngIf="OrgDetail" maxlength="100"
+          [(ngModel)]="OrgDetail.OrganizationDescription" placeholder=" Description" rows="5"></textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>State</label>
+        <input type="text" *ngIf="OrgDetail" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="40"
+          [(ngModel)]="OrgDetail.State" placeholder="State">
+      </div>
+      <div class="form-group">
+        <label>Tenant ID*</label>
+        <input type="text" *ngIf="OrgDetail" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="5" [(ngModel)]="OrgDetail.TenantID"
+          placeholder="Tenant ID">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" *ngIf="OrgDetail" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="40"
+          [(ngModel)]="OrgDetail.Location" placeholder="Location">
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" *ngIf="OrgDetail" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="40"
+          [(ngModel)]="OrgDetail.Country" placeholder="Country">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Tenant Name</label>
+        <input type="text" *ngIf="OrgDetail" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="40"
+          [(ngModel)]="OrgDetail.TenantName" placeholder="TenantName">
+      </div>
+      <div *ngIf="OrgDetail" class="form-group">
+        <label>Organization Email</label>
+        <input type="text" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="40" [(ngModel)]="OrgDetail.OrganizationEmail"
+          placeholder=" Email" email #prmEmail="ngModel">
+        <div *ngIf="prmEmail.errors?.email" style="color: red;">
+          Email not valid.
+        </div>
+      </div>
+    </div>
+    <div class="row col-md-12" style="margin-left: 35%">
+      <a class="btn btn-success" (click)="updateOrg(OrgDetail.OrganizationName,OrgDetail.OrganizationDescription,OrgDetail.State,OrgDetail.TenantID,OrgDetail.Location,OrgDetail.Country,OrgDetail.TenantName,OrgDetail.OrganizationEmail)"><b>Update</b>
+      </a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back</b> </a>
+    </div>
+  </div>
+</div>

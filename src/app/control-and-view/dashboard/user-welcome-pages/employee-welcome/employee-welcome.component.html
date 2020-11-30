@@ -1,0 +1,33 @@
+<!-- <ng-marquee><b class="marquee1">{{Message}}</b></ng-marquee> -->
+<div class="py-5 r1">
+        <!-- <ng-marquee><mark>{{Message}}</mark></ng-marquee> -->
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+
+            <table class="table table-responsive table-hover">
+                <thead class="tableHead">
+                    <th> Updates </th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let x of updateList" class="r2">
+                        <td>{{ x.Message }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="container bg-footer" style="width: 100%;max-width:100%;">
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <p class="text-sm-center">
+                © 2018 TrooWork - All Rights Reserved /Privacy Policy/ Sitemap
+                <br>
+            </p>
+        </div>
+    </div>
+</div>

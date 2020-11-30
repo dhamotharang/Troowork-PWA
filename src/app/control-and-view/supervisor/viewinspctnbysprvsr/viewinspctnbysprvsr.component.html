@@ -1,0 +1,94 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="container"> -->
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">VIEW INSPECTION ORDER</h4>
+  </div>
+
+  <h4 style="text-align: right"></h4>
+  <div class="col-md-12">
+    <form [formGroup]="searchform">
+      <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+        <input class="form-control" name="searchtl" maxlength="20" specialIsAlphaNumeric minlength="3" type="text"
+          placeholder="Search Template,Location" aria-label="Search" [(ngModel)]="SearchTL" formControlName="SearchTL"
+          (input)="searchTL($event.target.value);" style="width: 101.4%;margin-left: 1rem">
+        <div *ngIf="searchform.controls.SearchTL.errors?.minlength">Minimum 3 characters required.</div>
+      </div>
+    </form>
+    <!-- </div> -->
+    <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12">
+      <table class="table table-responsive table-hover table-bordered table" style="display: inline-table;">
+        <thead class="tableHead">
+          <th> Template </th>
+          <th>Location</th>
+          <th>Action</th>
+          <th>View</th>
+          <th *ngIf="checkflag==false">Delete</th>
+          <th *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button"
+              (click)="basicModal.show();">
+              Delete</button></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of inspectionordertable;let k=index">
+            <td>{{i.TemplateName}} </td>
+            <td>{{i.FacilityName}}-{{i.RoomId}} </td>
+            <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)"
+              style="text-align: center">
+              <a [routerLink]="['Supervsrinspectiontemplate',i.InspectionOrderKey]" class="btn btn-primary" style="width:75%;">Inspect</a>
+            </td>
+            <td *ngIf="i.InspectionCompletedBy !== null" style="text-align: center">
+              <!-- <a [routerLink]="['Supervsrinspectiontemplate',i.InspectionOrderKey]" class="btn btn-primary">Inspection
+                Completed </a> -->
+              <a (click)="inspectionDetail(i.InspectionOrderKey)"  style="width:75%;"  class="btn btn-primary">Inspection
+                Completed </a>
+            </td>
+            <td style="text-align: center"> <a href="Inspection-Upload/{{i.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
+              return false;">
+                <button type="button" class="btn btn-default btn-xs" style="margin-top: -1%;"
+                  *ngIf="i.IsPhoto === 1 && i.InspectionCompletedBy !== null ">View
+                  Image</button>
+              </a> </td>
+            <td *ngIf="i.InspectionCompletedBy !== null"></td>
+            <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)">
+              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 40%;margin-top: 15%"
+                (change)="toggleVisibility($event);checkBoxValueForDelete(k,i.deletechkbox, i.InspectionOrderKey);">
+            </td>
+            <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey !== toServeremployeekey)">
+              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 40%;margin-top: 15%"
+                (change)="toggleVisibility($event);checkBoxValueForDelete(k,i.deletechkbox, i.InspectionOrderKey);">
+            </td>
+            <!-- <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)"> <a routerLink="/Managerinspectiontemplate/{{i.InspectionOrderKey}}" class="btn btn-primary">Inspect</a></td>
+                <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey !== toServeremployeekey)">Scheduled</td> -->
+          </tr>
+          <tr *ngIf="inspectionordertable?.length == 0">
+            <td colspan="5" class="no-data-available">No records found</td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-success" style="float:left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+        Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="btn btn-success" style="float:right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+    </div>
+    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this?
+          </div>
+          <div class="modal-footer">
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+              (click)="basicModal.hide(); deleteInspectionOrder()" mdbWavesEffect>Yes</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+              mdbWavesEffect>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

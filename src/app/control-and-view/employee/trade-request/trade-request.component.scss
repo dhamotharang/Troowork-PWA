@@ -1,0 +1,14 @@
+textarea {
+  resize: none;
+  width: 23rem !important;
+  background-color: #d4f4ff !important;
+}
+
+
+.bg-info {
+  background-color: #FFFFFF !important;
+}
+
+::ng-deep.ngx-datepicker-position-bottom-right {
+  z-index: 1;
+}

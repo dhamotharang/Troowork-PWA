@@ -1,0 +1,98 @@
+<!-- <ng-marquee><b class="marquee1">{{Message}}</b></ng-marquee> -->
+<div class="py-5 r1" style="margin-left: 1% !important;">
+  <br>
+  <div class="row">
+    <div class="col-md-3">
+      <a> <img class="img-fluid d-block" src="assets/img/wo1.png" style="width: 60%;" (click)="callCreateWO()"></a>
+      <br>
+      <a><img class="img-fluid d-block" src="assets/img/inspection.png" style="width: 60%;"
+          (click)="callCreateInspection()"></a>
+    </div>
+    <div class="col-md-4">
+      <table class="table table-responsive table-hover">
+        <thead class="tableHead">
+          <th> Updates </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of updateList" class="r2">
+            <td>{{ x.Message }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-4">
+
+      <table class="table table-responsive table-hover table-bordered" style="display: inline-table">
+        <thead class="tableHead">
+          <th colspan="3"> Expiry Nearing Assignments </th>
+        </thead>
+        <tbody>
+          <tr *ngIf="expiringList?.length != 0">
+            <td><b>Assignment Name</b></td>
+            <td><b>Expiring Date</b></td>
+            <td><b>Edit</b></td>
+          </tr>
+          <tr *ngFor="let x of expiringList" class="r2">
+            <td>{{ x.BatchSchduleName }}</td>
+            <td>{{ x.ScheduleEndDate }}</td>
+            <td>
+              <a (click)="changeAssignment(x.BatchScheduleNameKey)" class="btn btn-primary"><b>Edit</b></a>
+            </td>
+          </tr>
+          <tr *ngIf="viewFlag">
+            <td colspan="3">
+              <a style="float:right" [routerLink]="['expiryNearDetails']">...view more</a>
+            </td>
+          </tr>
+          <tr *ngIf="expiringList?.length == 0">
+            <td colspan="3" style="text-align: center;">
+              <span><b>No Records Found</b></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-responsive table-hover table-bordered" style="display: inline-table">
+        <thead class="tableHead">
+          <th colspan="3"> Expired Assignments </th>
+        </thead>
+        <tbody>
+          <tr *ngIf="expiredList?.length != 0">
+            <td><b>Assignment Name</b></td>
+            <td><b>Expired Date</b></td>
+            <td><b>Edit</b></td>
+          </tr>
+          <tr *ngFor="let x of expiredList" class="r2">
+            <td>{{ x.BatchSchduleName }}</td>
+            <td>{{ x.ScheduleEndDate }}</td>
+            <td>
+              <a (click)="changeAssignment(x.BatchScheduleNameKey)" class="btn btn-primary"><b>Edit</b></a>
+            </td>
+          </tr>
+          <tr *ngIf="viewFlag1">
+            <td colspan="3">
+              <a style="float:right" [routerLink]="['expiredDetails']">...view more</a>
+            </td>
+          </tr>
+          <tr *ngIf="expiredList?.length == 0">
+            <td colspan="3" style="text-align: center;">
+              <span><b>No Records Found</b></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div class="container bg-footer" style="width: 100%;max-width:100%;">
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <p class="text-sm-center">
+        © 2018 TrooWork - All Rights Reserved /Privacy Policy/ Sitemap
+        <br>
+      </p>
+    </div>
+  </div>
+</div>

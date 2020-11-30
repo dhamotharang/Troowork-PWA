@@ -1,0 +1,210 @@
+ 
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 3rem;padding-right: 9rem;">
+  <!-- <div class="container"> -->
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">BATCH SCHEDULE ASSIGNMENT REPORT</h4>
+  </div>
+  <br>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12">
+    <br>
+    <div class="form-group">
+      <div class="row col-md-12" style="padding-top: 1.5rem">
+        <br>
+        <div class="row col-md-12" style="margin-left: -0.3rem">
+          <h5 style="text-align:right;" class="col-md-4"><label for="building">Schedule Name* </label></h5>
+          <div class="col-md-8" style="text-align:left;margin-top: -1.5rem">
+            <br>
+            <select [(ngModel)]="BatchScheduleNameKey" style="background-color: #D4F4FF !important;width: 30rem" class="form-control"
+              (change)="getBatchSchedule($event.target.value)">
+              <option value="">--Select--</option>
+              <option *ngFor="let s of bacthschedules" [value]="s.BatchScheduleNameKey">
+                {{s.ScheduleName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row col-md-12" *ngIf="workorderNotes">
+          <h5 style="text-align:right;margin-left: 1.2rem" class="col-md-4"><label for="building">WorkOrder Notes
+            </label></h5>
+          <div class="form-group" style="text-align:left;margin-left: 0.4rem">
+            <textarea class="form-control rounded-1" [disabled]="true" [(ngModel)]="workorderNotes" rows="6" style="resize: none;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div style="text-align:center" *ngIf="reportarray?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table *ngIf='reportarray' class="table table-hover table-responsive table-bordered table" style="display: inline-table;width: 103.8%;max-width: 150%;"> 
+      <thead class="tableHead"> 
+        <th>Building</th>
+        <th>Floor</th>
+        <th>Zone</th>
+        <th>Room Number</th>
+        <th>Floor Type</th>
+        <th>Room Type</th>
+        <th>Minutes</th>
+        <th>Frequency</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+        <th>Photo Required</th>
+        <th>Barcode Required</th>
+      </thead>
+      <tbody>  
+        <tr *ngFor="let x of reportarray">
+          <td>{{x.FacilityName}} </td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomId}}</td>
+          <td>{{x.FloorTypeName}}</td>
+          <td>{{x.RoomType}}</td>
+          <td *ngIf="x.MetricType === 'Minutes Per'">{{x.MetricValue}}</td>
+          <td *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area | number:'1.2-2'}}</td>
+          <!--<span id="tooltip-span" style="position:absolute;margin-bottom:-166">{{x.EquipmentType}}</span> </td>-->
+          <td>{{x.Frequency}}</td>
+          <td *ngIf="x.Mon=='true'">x</td>
+          <td *ngIf="x.Mon !='true'"></td>
+          <td *ngIf="x.Tue=='true'">x</td>
+          <td *ngIf="x.Tue!='true'"></td>
+          <td *ngIf="x.Wed=='true'">x</td>
+          <td *ngIf="x.Wed!='true'"></td>
+          <td *ngIf="x.Thu=='true'">x</td>
+          <td *ngIf="x.Thu!='true'"></td>
+          <td *ngIf="x.Fri=='true'">x</td>
+          <td *ngIf="x.Fri!='true'"></td>
+          <td *ngIf="x.Sat=='true'">x</td>
+          <td *ngIf="x.Sat!='true'"></td>
+          <td *ngIf="x.Sun=='true'">x</td>
+          <td *ngIf="x.Sun!='true'"></td>
+          <td *ngIf="x.IsPhotoRequired==1">x</td>
+          <td *ngIf="x.IsPhotoRequired!=1"></td>
+          <td *ngIf="x.IsBarcodeRequired==1">x</td>
+          <td *ngIf="x.IsBarcodeRequired!=1"></td>
+          <!--                            <td >{{x.SwipIn}}</td>
+              <td >{{x.SwipOut}}</td>-->
+        </tr>
+        <tr *ngIf="reportarray?.length> 0">
+          <td colspan="8">Total Assigned daily minutes</td>
+          <!--                            <td></td>-->
+          <td>{{totalMonTime | number:'1.2-2'}}</td>
+          <td>{{totalTuesTime| number:'1.2-2'}}</td>
+          <td>{{totalWedTime | number:'1.2-2'}}</td>
+          <td>{{totalThuTime | number:'1.2-2'}}</td>
+          <td>{{totalFriTime | number:'1.2-2'}}</td>
+          <td>{{totalSatTime | number:'1.2-2'}}</td>
+          <td>{{totalSunTime | number:'1.2-2'}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngIf="reportarray?.length == 0">
+          <td colspan="17" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+
+  <div id='exportable' style="visibility: hidden !important;">
+      <table *ngIf='reportarray' cellspacing="0" 
+      rules="rows" 
+      border="1" 
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+          <td><b>Assignment Area</b></td>
+          <td></td>
+          <td><b>Assignment Allowable minutes</b></td>
+          <tr >
+  
+              <td>{{reportarray[0].BatchSchduleName}} </td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr></tr>
+      </table>
+    <table *ngIf='reportarray' cellspacing="0" 
+    rules="rows" 
+    border="1" 
+    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">   
+      <thead> 
+        <th>Building</th>
+        <th>Floor</th>
+        <th>Zone</th>
+        <th>Room Number</th>
+        <th>Floor Type</th>
+        <th>Room Type</th>
+        <th>Minutes</th>
+        <th>Frequency</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+        <th>Photo Required</th>
+        <th>Barcode Required</th>
+      </thead>
+      <tbody>
+          
+        <tr *ngFor="let x of reportarray">
+          <td>{{x.FacilityName}} </td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomId}}</td>
+          <td>{{x.FloorTypeName}}</td>
+          <td>{{x.RoomType}}</td>
+          <td *ngIf="x.MetricType === 'Minutes Per'">{{x.MetricValue}}</td>
+          <td *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area | number:'1.2-2'}}</td>
+
+          <!--<span id="tooltip-span" style="position:absolute;margin-bottom:-166">{{x.EquipmentType}}</span> </td>-->
+          <td>{{x.Frequency}}</td>
+          <td *ngIf="x.Mon=='true'">x</td>
+          <td *ngIf="x.Mon !='true'"></td>
+          <td *ngIf="x.Tue=='true'">x</td>
+          <td *ngIf="x.Tue!='true'"></td>
+          <td *ngIf="x.Wed=='true'">x</td>
+          <td *ngIf="x.Wed!='true'"></td>
+          <td *ngIf="x.Thu=='true'">x</td>
+          <td *ngIf="x.Thu!='true'"></td>
+          <td *ngIf="x.Fri=='true'">x</td>
+          <td *ngIf="x.Fri!='true'"></td>
+          <td *ngIf="x.Sat=='true'">x</td>
+          <td *ngIf="x.Sat!='true'"></td>
+          <td *ngIf="x.Sun=='true'">x</td>
+          <td *ngIf="x.Sun!='true'"></td>
+          <td *ngIf="x.IsPhotoRequired==1">x</td>
+          <td *ngIf="x.IsPhotoRequired!=1"></td>
+          <td *ngIf="x.IsBarcodeRequired==1">x</td>
+          <td *ngIf="x.IsBarcodeRequired!=1"></td>
+          <!--                            <td >{{x.SwipIn}}</td>
+              <td >{{x.SwipOut}}</td>-->
+        </tr>
+        <tr *ngIf="reportarray?.length> 0">
+          <td colspan="8">Total Assigned daily minutes</td>
+          <!--                            <td></td>-->
+          <td>{{totalMonTime | number:'1.2-2'}}</td>
+          <td>{{totalTuesTime| number:'1.2-2'}}</td>
+          <td>{{totalWedTime | number:'1.2-2'}}</td>
+          <td>{{totalThuTime | number:'1.2-2'}}</td>
+          <td>{{totalFriTime | number:'1.2-2'}}</td>
+          <td>{{totalSatTime | number:'1.2-2'}}</td>
+          <td>{{totalSunTime | number:'1.2-2'}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngIf="reportarray?.length == 0">
+          <td colspan="17" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

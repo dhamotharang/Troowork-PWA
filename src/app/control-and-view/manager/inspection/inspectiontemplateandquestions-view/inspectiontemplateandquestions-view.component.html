@@ -1,0 +1,84 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading">
+  <div style="margin-left: 10.5rem;margin-right: 10rem;">
+    <div style="text-align:center;padding-top: 2rem">
+      <h4 style="color: #174a5e;">INSPECTION TEMPLATES AND QUESTIONS</h4>
+    </div>
+    <br>
+    <div class="row col-md-12 bg-info" style="padding-bottom: 2rem;padding-top: 2rem;padding-left: 5rem;margin-left: 2rem;width: 95%">
+      <div class="col-md-6" >
+        <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="TemplateID"
+          (change)="showInspectionTemplateTable($event.target.value)">
+          <option value="">--Choose a Template--</option>
+          <option *ngFor="let t of template" [value]="t.TemplateID">
+            {{t.TemplateName}}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6" >
+        <a [routerLink]="['InspectiontemplateEdit']" style="margin-top: -0.1rem;margin-left: 7rem;" class="btn btn-primary"><b>Edit
+            Inspection
+            Template</b></a>
+      </div>
+    </div>
+  </div>
+  <div style="margin-left:1.5rem; margin-right: 1.5rem;    margin-top: 40px;"></div>
+  <div style="padding-left: 9rem;padding-right: 9rem;">
+    <div *ngIf='searchFlag'>
+      <form [formGroup]="searchform">
+        <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+          <input class="form-control" name="searchtemplatenameandquestion" maxlength="20" specialIsAlphaNumeric
+            minlength="3" type="text" placeholder="Search Template Name" aria-label="Search" [(ngModel)]="searchTemplateNameAndQuestion"
+            formControlName="searchTemplateNameAndQuestion" (input)="searchTNandTQ($event.target.value,TemplateID);"
+            style="width: 100%;">
+          <div *ngIf="searchform.controls.searchTemplateNameAndQuestion.errors?.minlength">Minimum 3 characters
+            required.</div>
+        </div>
+      </form>
+    </div>
+    <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+      <table *ngIf='viewinspectionTemplate' id="inspectemplate" class="table table-hover table-responsive table-bordered"
+        style="display: inline-table">
+        <thead class="tableHead">
+          <th> Template Name </th>
+          <th> Template Question </th>
+          <th> Score Type</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of viewinspectionTemplate">
+            <td>{{v.TemplateName}}</td>
+            <td>{{v.Question}}</td>
+            <td>{{v.ScoreName}}</td>
+            <td> <a class="btn btn-danger" (click)="basicModal.show();deleteInspTemplatePass(v.TemplateID,v.TemplateQuestionID);"><b>Delete</b></a></td>
+          </tr>
+          <tr *ngIf="viewinspectionTemplate?.length == 0">
+            <td colspan="2" class="no-data-available">No records found</td>
+          </tr>
+          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title w-100" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete this?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteInspTemplate()"
+                    mdbWavesEffect>Yes</button>
+                  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+                    mdbWavesEffect>No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

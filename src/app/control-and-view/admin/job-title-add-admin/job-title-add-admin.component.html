@@ -1,0 +1,39 @@
+<div style="margin-left: 15rem;margin-right: 15rem;padding-top: 1rem;padding-bottom: 1rem">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">Create Job-Title </h4>`
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12" style="margin-bottom: 1rem">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Job-Title* </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control"
+          placeholder="Jobtitle Name" id="Building" [(ngModel)]="JobtitleName">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building"> Description* </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" style="background-color: #D4F4FF !important;" maxlength="95" class="form-control"
+          placeholder="Description" id="Building" [(ngModel)]="JobTitleDescription">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div style="text-align:right">
+        <a style="color:white !important" class="btn btn-success" routerLinkActive="active"
+          (click)="addNewJobtitle(JobtitleName,JobTitleDescription)"><b>CREATE
+            JOB TITLE</b>
+        </a></div>
+      <div style="text-align:left">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important" routerLinkActive="active"><b>Go
+            Back
+          </b>
+        </a></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

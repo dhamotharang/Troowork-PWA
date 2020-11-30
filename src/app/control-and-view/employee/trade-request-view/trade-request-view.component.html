@@ -1,0 +1,64 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW TRADE REQUEST</h4>
+  </div>
+  <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12"> -->
+  <div style="margin-left: 6rem; margin-top:1.5rem; width:80% ; text-align:center;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Submitted Date </th>
+        <th> Employee </th>
+        <th> Traded To</th>
+        <th> Start Date </th>
+        <th> End Date </th>
+        <th> Status </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of requestdetails">
+          <td>{{ x.SubmittedDate }}</td>
+          <td>{{ x.Employeename }}</td>
+          <td>{{ x.OtherEmployeename }}</td>
+          <td>{{ x.StartDate }}</td>
+          <td>{{ x.EndDate }}</td>
+          <td>{{ x.RequestStatus }}</td>
+
+          <td *ngIf="x.StatusKey==1 && x.EmployeeKey==checkEmp">
+            <a [routerLink]="['TradeRequestEdit', x.trade_requestID]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
+            <a class="btn btn-danger" (click)="basicModal.show();deletePass(x.trade_requestID); "><b>Delete</b></a>
+          </td>
+          <td *ngIf="x.StatusKey==1 && x.EmployeeKey!=checkEmp">
+            <a [routerLink]="['TradeRequestApprove', x.trade_requestID]" class="btn btn-primary"><b>Request Details</b></a>&nbsp;&nbsp;
+          </td>
+          <td *ngIf="x.StatusKey>1">
+            <a [routerLink]="['TradeRequestDetails', x.trade_requestID]" class="btn btn-primary"><b>Details</b></a>&nbsp;&nbsp;
+          </td>
+
+        </tr>
+        <tr *ngIf="requestdetails?.length == 0">
+          <td colspan="7" class="no-data-available">No records found</td>
+        </tr>
+
+        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel"></h4>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this?
+              </div>
+              <div class="modal-footer">
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tbody>
+    </table>
+  </div>
+</div>

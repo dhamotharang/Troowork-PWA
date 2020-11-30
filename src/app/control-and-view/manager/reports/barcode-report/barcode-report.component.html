@@ -1,0 +1,173 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="margin-left: 42%;">REPORTS ON BARCODE</h4>
+  <div class="row bg-info col-md-12">
+    <br>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Building*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value)"
+          (change)='EquipmentKey=null;EquipmentTypeKey=null;'>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" (change)='zoneChange()' [(ngModel)]="ZoneKey" [disabled]="!FloorKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let z of zoneroom" [value]="z.ZoneKey">
+            {{z.ZoneName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" (change)='FacilityKey=null;FloorKey=null;ZoneKey=null;RoomTypeKey=null;getequipments($event.target.value);'
+          [(ngModel)]="EquipmentTypeKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of equipmenttypelist" [value]="f.EquipmentTypeKey">
+            {{f.EquipmentTypeText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Floor</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" (change)="getZoneRoom($event.target.value,FacilityKey)"
+          [disabled]="!FacilityKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floor" [value]="f.FloorKey">
+            {{f.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let r of room" [value]="r.RoomTypeKey">
+            {{r.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Equipment</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of equipment" [value]="f.EquipmentKey">
+            {{f.EquipmentName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col-md-6"></div>
+      <div style="margin-left: 46.5%">
+        <button type="button" class="btn btn-success" (click)=generateBarcodeReport(FacilityKey,FloorKey,RoomTypeKey,ZoneKey,EquipmentTypeKey,EquipmentKey)><b>GENERATE</b></button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div style="margin-left: 42%" *ngIf="!loading">
+    <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
+      (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
+  <div style="margin-left: 42%" *ngIf="!loading">
+    <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
+        TO EXCEL</b></button>
+  </div>
+  <!-- Table for generating barcode for rooms -->
+  <table *ngIf='Roomflag' id="reportexport" class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
+    <thead class="tableHead">
+      <th> Room Name </th>
+      <th> Barcode </th>
+      <th> Building</th>
+      <th>Floor</th>
+      <th> Zone</th>
+      <th>Roomtype</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of viewBarcodeReport">
+        <td>{{x.RoomId}}</td>
+        <td>{{x.Barcode1}}</td>
+        <td>{{x.FacilityName}}</td>
+        <td>{{x.FloorName}}</td>
+        <td>{{x.ZoneName}}</td>
+        <td>{{x.RoomType}}</td>
+      </tr>
+      <tr *ngIf="viewBarcodeReport?.length == 0">
+        <td colspan="6" class="no-data-available">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+ 
+  <!-- Table for generating barcode for Equipments -->
+  <table *ngIf='Equipmentflag' id="reportexport" class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
+    <thead class="tableHead">
+      <th> Equpiment Name </th>
+      <th> Barcode </th>
+      <th> Equipment Type</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of viewBarcodeEquipment">
+        <td>{{x.EquipmentName}}</td>
+        <td>{{x.Barcode1}}</td>
+        <td>{{x.EquipmentType}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  
+  <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;"> 
+    <table  style="visibility: hidden !important;" cellspacing="0" 
+    rules="rows" 
+    border="1" 
+    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Room Name </th>
+        <th> Barcode </th>
+        <th> Building</th>
+        <th>Floor</th>
+        <th> Zone</th>
+        <th>Roomtype</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewBarcodeReport">
+          <td>{{x.RoomId}}</td>
+          <td>{{x.Barcode}}</td>
+          <td>{{x.FacilityName}}</td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomType}}</td>
+        </tr>
+        <tr *ngIf="viewBarcodeReport?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div *ngIf='Equipmentflag' id='exportable1' style="visibility: hidden !important;">
+      <table   cellspacing="0" 
+      rules="rows" 
+      border="1" 
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+        <thead class="tableHead">
+          <th> Equpiment Name </th>
+          <th> Barcode </th>
+          <th> Equipment Type</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of viewBarcodeEquipment">
+            <td>{{x.EquipmentName}}</td>
+            <td>{{x.Barcode}}</td>
+            <td>{{x.EquipmentType}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

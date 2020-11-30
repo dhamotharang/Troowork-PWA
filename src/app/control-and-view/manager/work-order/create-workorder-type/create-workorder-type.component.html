@@ -1,0 +1,57 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE NEW WORK-ORDER TYPE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="building">Work-Order Type Name:
+        </label></h5>
+      <div class="col-md-8" style="text-align:left;margin-top: 3%;">
+        <input type="text" placeholder="Work-Order Type Name" maxlength="40"
+          style="background-color: #D4F4FF !important;border-radius: 0.25rem;border: 1px solid #ced4da;"
+          class="form-control" [(ngModel)]="WorkOrderTypeName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">MetricType Name* : </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="MetricKey"
+          (change)=showFields($event.target.value)>
+          <option value="">--Select--</option>
+          <option *ngFor="let f of metricValues" [value]="f.MetricType">
+            {{f.MetricType}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" *ngIf="MetricKey">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">MetricType Value*:
+        </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" style="background-color: #D4F4FF !important;" class="form-control" maxlength="40"
+          [(ngModel)]="MetricTypeValue" (keypress)="numberValid($event)" [disabled]="MetricKey=='Default'"
+          maxlength="40" placeholder="Metric Value">
+      </div>
+    </div>
+    <br>
+
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div style="text-align:right;margin-left: 3%;"><button style="color:white !important" class="btn btn-success"
+          (click)="addWOT(MetricKey,WorkOrderTypeName,MetricTypeValue)"><b>CREATE WORK-ORDER TYPE</b>
+        </button></div>
+      <div style="text-align:left">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>GO
+            BACK
+          </b>
+        </a></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

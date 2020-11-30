@@ -1,0 +1,188 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="container"> -->
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW BATCH WORK ORDER</h4>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;width:95%" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group">
+        <label>Building*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey"
+          (change)="getFloorDisp($event.target.value);viewWO_Filter();" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
+            {{b.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Floor*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey"
+          [disabled]="!FacilityKey" (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);viewWO_Filter();"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+            {{b.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey"
+          [disabled]="!FloorKey" (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);viewWO_Filter();"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+            {{b.ZoneName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey"
+          [disabled]="!FloorKey" (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);viewWO_Filter();"
+          required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
+            {{b.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6" style="margin-top: 0.7rem">
+      <div class="form-group">
+        <label>Room</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey"
+          [disabled]="!FloorKey" (change)="viewWO_Filter();" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+            {{b.RoomName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Employee*</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EmployeeKey"
+          (change)="viewWO_Filter();" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of EmployeeOption" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Workorder Type</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="WorkorderTypeKey"
+          (change)="viewWO_Filter();" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
+            {{e.WorkorderTypeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Schedule Name</label><br>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKey"
+          (change)="viewWO_Filter();" required>
+          <option value="">--Select--</option>
+          <option *ngFor="let b of scheduleList" [value]="b.BatchScheduleNameKey">
+            {{b.ScheduleName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <div class="col-md-12">
+    <form [formGroup]="searchform">
+      <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 0.5rem;margin-right: 1.5rem;">
+        <input class="form-control" name="searchWO" maxlength="20" type="text" specialIsAlphaNumeric minlength="3"
+          formControlName="SearchWo" placeholder="Search Schedule Name,Employee" aria-label="Search"
+          [(ngModel)]="SearchWo" (input)="searchBatchWo($event.target.value);" style="width: 101%;">
+        <div *ngIf="searchform.controls.SearchWo.errors?.minlength">Minimum 3 characters required.</div>
+      </div>
+    </form>
+  </div><br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table *ngIf='workorderList' class="table table-hover table-responsive table-bordered table"
+      style="display: inline-table">
+      <thead class="tableHead">
+        <th>Schedule Name</th>
+        <th>Work Order Type</th>
+        <th>Start Date</th>
+        <th>end Date</th>
+        <th>Employee</th>
+        <th>Notes</th>
+        <!-- <th>Interval Type</th> -->
+        <th>Action</th>
+        <th>
+          <span *ngIf="checkflag==false">Delete</span>
+          <span *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button"
+              (click)="basicModal.show();">
+              Delete</button>
+          </span>
+        </th>
+
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of workorderList; let i=index">
+          <td>{{x.ScheduleName}}</td>
+          <td>{{x.WorkorderTypeName}}</td>
+          <td>{{x.WorkorderTime}}</td>
+          <td>{{x.EndDate}}</td>
+          <td>{{x.LastName}},{{x.FirstName}}</td>
+          <td>{{x.WorkorderNotes}}</td>
+          <!-- <td>{{x.IntervalType}}</td> -->
+          <td>
+            <span *ngIf="x.IsEquipment === 0 && x.IntervalType === 'm'">
+              <a [routerLink]="['EditBatchWorkorder',x.WorkorderScheduleKey]" class="btn btn-primary"
+                style="color:white !important" routerLinkActive="active"><b>Edit</b> </a>
+            </span>
+            <span *ngIf="x.IsEquipment === 0 && x.IntervalType !== 'm'">
+            </span>
+            <span *ngIf="x.IsEquipment === 1">
+              <a [routerLink]="['EditBatchWorkorder',x.WorkorderScheduleKey]" class="btn btn-primary"
+                style="color:white !important" routerLinkActive="active"><b>Edit</b> </a>
+            </span>
+          </td>
+          <td>
+            <input type="checkbox" [(ngModel)]="x.workorderCheckValue"
+              (change)="toggleVisibility($event);checkBoxValueForDelete(i,x.workorderCheckValue, x.WorkorderScheduleKey);">
+          </td>
+        </tr>
+        <tr *ngIf="workorderList?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this?
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+            (click)="basicModal.hide(); deletebatchWorkOrdersPage()" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+            mdbWavesEffect>No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-success" style="float:left" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+    Previous</button>
+  <button class="btn btn-success" (click)="nextPage()" style="float:right" *ngIf="showHide2">Next >></button>
+</div>

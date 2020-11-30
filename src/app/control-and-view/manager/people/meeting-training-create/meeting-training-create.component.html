@@ -1,0 +1,154 @@
+<div style="overflow-x: hidden;padding-left: 9rem;padding-right: 9rem; padding-top:3% !important; padding-bottom:0rem !important;">
+    <!-- <div class="row col-md-12 ">
+        <h4 style="margin-left: 40%;">ASSIGN MEETING/TRAINING/EVENT</h4>
+    </div> -->
+    <div style="text-align:center">
+        <h4 class="refer">CREATE MEETING/TRAINING/EVENT</h4>
+    </div>
+    <br>
+    <div class="row bg-info col-md-12" *ngIf='newMeet' style="padding-top: 5%">
+        <div class="col-md-6 ">
+            <label for="mtngTrainingEvent">Meeting/Training/Event*</label>
+
+            <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;" class="form-control"
+                [(ngModel)]="EventType">
+                <option value="">--Select--</option>
+                <option *ngFor="let b of event" [value]="b.ActionKey">
+                    {{b.ActionType}} - {{b.Action}}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-6 ">
+            <h3></h3>
+            <button class="btn btn-success" (click)='newMeet=false;' style="margin-top: 1.2rem;margin-left: 0.1rem">
+                <b>CREATE NEW EVENT</b>
+            </button>
+        </div>
+        <!-- </div> -->
+
+        <div class="form-row col-md-12">
+            <div class="col-md-6 ">
+                <div class="form-group">
+                    <label>Event Host* </label>
+                    <input type="text" style="background-color: #D4F4FF !important;width: 99.4%" maxlength="40" class="form-control " [(ngModel)]="eventHost">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group " style="margin-left: 1rem;">
+                    <label>Venue</label>
+                    <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control " [(ngModel)]="Venue">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="building">Date* </label>
+                <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1"
+                    [(ngModel)]="mtngDate"></igx-datePicker> -->
+                <ng-datepicker [options]="options" position="top-right" [(ngModel)]="mtngDate"></ng-datepicker>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-sm-3 col-md-3 col-lg-3 ">Start Time*</label><br>
+                <p-calendar [inputStyle]="{'width':'277%'}" [(ngModel)]="time1" [timeOnly]="true" hourFormat="12"></p-calendar>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="col-sm-3 col-md-3 col-lg-3 ">End Time*</label><br>
+                <p-calendar [inputStyle]="{'width':'277%'}" [(ngModel)]="time2" [timeOnly]="true" hourFormat="12"></p-calendar>
+            </div>
+        </div>
+        <h5 class="col-md-12"><label>SELECT EMPLOYEES</label></h5>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="floorname">Job Title </label>
+                <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="JobTitle"
+                    (change)="selectEmp()">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let f of jobTitle" [value]="f.JobTitleKey">
+                        {{f.JobTitleText}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="floorname">Manager </label>
+                <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager" (onDeSelect)="selectEmp()"
+                    [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+                </ng-multiselect-dropdown>
+                <!-- <select style="background-color: #D4F4FF !important;" class="form-control "
+                    [(ngModel)]="Supervisor" (change)="selectEmpOfSupervisor($event.target.value)">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let f of supervisor" [value]="f.SupervisorKey">
+                        {{f.SupervisorText}}
+                    </option>
+                </select> -->
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Employee">Department </label>
+                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="DepartmentKey"
+                    (change)="selectEmp()">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let d of department" [value]="d.DepartmentKey">
+                        {{d.DepartmentName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Employee">Employee* </label>
+                <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
+                    [(ngModel)]="Employee" [settings]="dropdownSettings1">
+                </ng-multiselect-dropdown>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control rounded-1 " [(ngModel)]="Notes" rows="8" style="resize: none;width: 49%"></textarea>
+            </div>
+        </div>
+        <div class="row col-md-12" style="margin-left: 45%;">
+            <a style="color:white !important" class="btn btn-success" (click)="addMeetingTrainingEvent()"><b>Save</b>
+            </a>
+        </div>
+    </div>
+    <div *ngIf='!newMeet' style="padding-top: 2.5rem" class="row bg-info col-md-12">
+        <div class="row col-md-12">
+            <h5 style="text-align:right" class="col-md-4"><label for="eventHost">Event Type* </label></h5>
+            <div class=" col-md-8" style="text-align:left">
+                <input type="text" placeholder="Event Type" style="background-color: #D4F4FF !important;" class="form-control"
+                    [(ngModel)]="Event_Type">
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <h5 style="text-align:right" class="col-md-4"><label for="Venue">Event Name* </label></h5>
+            <div class=" col-md-8" style="text-align:left">
+                <input type="text" placeholder="Event Name" style="background-color: #D4F4FF !important;" class="form-control"
+                    [(ngModel)]="Event_Name">
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <h5 style="text-align:right;margin-top: 2rem;" class="col-md-4"><label for="Venue">Description </label></h5>
+            <div class="col-md-8" style="text-align:left">
+                <textarea class="form-control rounded-1" [(ngModel)]="Description" rows="5" maxlength="240" style="resize: none;width: 100% !important;"></textarea>
+            </div>
+        </div>
+        <div class="row col-md-12" style="margin-left: 45%;margin-top: 1.5rem">
+            <a style="color:white !important" class="btn btn-success" (click)="addNewMeeting()"><b>Save</b>
+            </a>
+            <a style="color:white !important" class="btn btn-warning" (click)="refreshValues();newMeet=true;"><b>Go
+                    back</b>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">DEPARTMENT EDIT</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="department">Department Name: </label></h5>
+      <div class="col-md-3" style="text-align:left">
+        <input *ngIf="dept" type="text" style="background-color: #D4F4FF !important;" maxlength="30" class="form-control"
+          id="Department" [(ngModel)]="dept.DepartmentName">
+      </div>
+      <div class="col col-md-5"></div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div style="text-align:right" class="col-md-3">
+        <a style="color:white !important" class="btn btn-success" (click)="updateDepartment(dept.DepartmentName)"><b>Update</b>
+        </a></div>
+      <div style="text-align:left" class="col-md-3">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+            Back
+          </b>
+        </a></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

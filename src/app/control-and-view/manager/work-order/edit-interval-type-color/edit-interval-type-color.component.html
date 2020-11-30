@@ -1,0 +1,41 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">EDIT INTERVAL TYPE COLOR</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="margin-top: 2rem;text-align:right" class="col-md-4"><label for="building">Interval Type:
+        </label></h5>
+      <div class="col-md-8" style="margin-top: 3%;text-align:left">
+        <input type="text" style="border-radius: 0.25rem;border-bottom: 1px solid #ced4da;background-color: #ced4da;"
+          [(ngModel)]="interval.IntervalTypeDescription" readonly class="form-control col-lg-9 col-md-9 col-sm-9" />
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Department">Color : </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input [(colorPicker)]="interval.Colour" [style.background]="interval.Colour"
+          class="form-control col-sm-9 col-md-9 col-lg-9" />
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row col-md-12">
+      <div class="col col-md-4"></div>
+      <div style="text-align:right;margin-left: 3%;">
+        <button type="button" style="text-align:center" class="btn btn-success"
+          (click)="updateIntervalColor()"><b>UPDATE</b></button>
+      </div>
+      <div style="text-align:left">
+        <button type="button" style="text-align:center" class="btn btn-warning" (click)="goBack()"><b>GO
+            BACK</b></button></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

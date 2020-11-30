@@ -1,0 +1,175 @@
+ 
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">BATCH WORK-ORDER REPORT</h4>
+  </div>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12">
+    <div class="col-md-12">
+      <div class="form-group" style="margin-top: 2rem">
+        <div class="row col-md-12">
+          <h5 style="text-align:right;" class="col-md-4"><label for="building">Schedule Name </label></h5>
+          <div class="col-md-6" style="text-align:left">
+            <select [(ngModel)]="BatchScheduleNameKey" style="background-color: #D4F4FF !important;" class="form-control"
+              (change)="getBatchSchedule($event.target.value)">
+              <option value="" selected>--Select--</option>
+              <option *ngFor="let s of bacthschedules" [value]="s.BatchScheduleNameKey">
+                {{s.ScheduleName}}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div style="text-align:center" *ngIf="reportarray?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
+  <div style="margin-left: 1.5rem;width: 100%">
+    <table *ngIf='reportarray' class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+      <thead class="tableHead">
+        <th>Building</th>
+        <th>Floor</th>
+        <th>Zone</th>
+        <th>Room Number</th>
+        <th>Floor Type</th>
+        <th>Room Type</th>
+        <th>Minutes</th>
+        <th>Frequency</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>Sunday</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of reportarray">
+          <td>{{x.FacilityName}} </td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomId}}</td>
+          <td>{{x.FloorTypeName}}</td>
+          <td>{{x.RoomType}}</td>
+          <td *ngIf="x.MetricType === 'Minutes Per'">{{x.MetricValue}}</td>
+          <td *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area | number:'1.2-2'}}</td>
+          <td>{{x.dailyFrequency}}</td>
+          <td *ngIf="x.mon==1">x</td>
+          <td *ngIf="x.mon !=1"></td>
+          <td *ngIf="x.tue==1">x</td>
+          <td *ngIf="x.tue!=1"></td>
+          <td *ngIf="x.wed==1">x</td>
+          <td *ngIf="x.wed!=1"></td>
+          <td *ngIf="x.thu==1">x</td>
+          <td *ngIf="x.thu!=1"></td>
+          <td *ngIf="x.fri==1">x</td>
+          <td *ngIf="x.fri!=1"></td>
+          <td *ngIf="x.sat==1">x</td>
+          <td *ngIf="x.sat!=1"></td>
+          <td *ngIf="x.sun==1">x</td>
+          <td *ngIf="x.sun!=1"></td>
+        </tr>
+        <tr *ngIf="reportarray?.length> 0">
+          <td colspan="8">Total Assigned daily minutes</td>
+          <!--                            <td></td>-->
+          <td>{{totalMonTime | number:'1.2-2'}}</td>
+          <td>{{totalTuesTime| number:'1.2-2'}}</td>
+          <td>{{totalWedTime | number:'1.2-2'}}</td>
+          <td>{{totalThuTime | number:'1.2-2'}}</td>
+          <td>{{totalFriTime | number:'1.2-2'}}</td>
+          <td>{{totalSatTime | number:'1.2-2'}}</td>
+          <td>{{totalSunTime | number:'1.2-2'}}</td>
+        </tr>
+        <tr *ngIf="reportarray?.length == 0">
+          <td colspan="15" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  
+  <div id='exportable1' style="visibility: hidden !important;">
+      <table *ngIf='reportarray' cellspacing="0" 
+      rules="rows" 
+      border="1" 
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+          <td><b>Assignment Area</b></td>
+          <td></td>
+          <td><b>Assignment Allowable minutes</b></td>
+          <tr >
+  
+              <td>{{reportarray[0].BatchSchduleName}} </td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr></tr>
+      </table>
+      <table *ngIf='reportarray' cellspacing="0" 
+      rules="rows" 
+      border="1" 
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+        <thead>
+          <th>Building</th>
+          <th>Floor</th>
+          <th>Zone</th>
+          <th>Room Number</th>
+          <th>Floor Type</th>
+          <th>Room Type</th>
+          <th>Minutes</th>
+          <th>Frequency</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of reportarray">
+            <td>{{x.FacilityName}} </td>
+            <td>{{x.FloorName}}</td>
+            <td>{{x.ZoneName}}</td>
+            <td>{{x.RoomId}}</td>
+            <td>{{x.FloorTypeName}}</td>
+            <td>{{x.RoomType}}</td>
+            <td *ngIf="x.MetricType === 'Minutes Per'">{{x.MetricValue}}</td>
+            <td *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area | number:'1.2-2'}}</td>
+            <td>{{x.dailyFrequency}}</td>
+            <td *ngIf="x.mon==1">x</td>
+            <td *ngIf="x.mon !=1"></td>
+            <td *ngIf="x.tue==1">x</td>
+            <td *ngIf="x.tue!=1"></td>
+            <td *ngIf="x.wed==1">x</td>
+            <td *ngIf="x.wed!=1"></td>
+            <td *ngIf="x.thu==1">x</td>
+            <td *ngIf="x.thu!=1"></td>
+            <td *ngIf="x.fri==1">x</td>
+            <td *ngIf="x.fri!=1"></td>
+            <td *ngIf="x.sat==1">x</td>
+            <td *ngIf="x.sat!=1"></td>
+            <td *ngIf="x.sun==1">x</td>
+            <td *ngIf="x.sun!=1"></td>
+          </tr>
+          <tr *ngIf="reportarray?.length> 0">
+            <td colspan="8">Total Assigned daily minutes</td>
+            <!--                            <td></td>-->
+            <td>{{totalMonTime | number:'1.2-2'}}</td>
+            <td>{{totalTuesTime| number:'1.2-2'}}</td>
+            <td>{{totalWedTime | number:'1.2-2'}}</td>
+            <td>{{totalThuTime | number:'1.2-2'}}</td>
+            <td>{{totalFriTime | number:'1.2-2'}}</td>
+            <td>{{totalSatTime | number:'1.2-2'}}</td>
+            <td>{{totalSunTime | number:'1.2-2'}}</td>
+          </tr>
+          <tr *ngIf="reportarray?.length == 0">
+            <td colspan="15" class="no-data-available">No records found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>

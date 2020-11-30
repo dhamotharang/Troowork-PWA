@@ -1,0 +1,48 @@
+<div style="margin-left: 15rem;margin-right: 15rem;overflow-x: hidden">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE NEW FLOOR</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Building Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="FacilityKey">
+          <option value="">--Select--</option>
+
+          <option *ngFor="let f of flooroptions" [value]="f.FacilityKey">
+            {{f.FacilityText}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right;" class="col-md-4"><label for="building">Floor Name* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <input type="text" maxlength="25" placeholder="Floor Name" style="background-color: #D4F4FF !important;" class="form-control"
+          [(ngModel)]="FloorName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right;" class="col-md-4"><label for="building">Floor Description* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <input type="text" maxlength="40" placeholder="Floor Description" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="FloorDescription">
+      </div>
+    </div>
+    <br>
+
+    <div class="row col-md-12" style="margin-left: 35%">
+      <a style="color:white !important" class="btn btn-success" (click)="addFloor(FacilityKey,FloorName,FloorDescription)">
+        <b>CREATE FLOOR</b>
+      </a>
+      <a class="btn btn-warning" style="color:white !important" (click)='goBack()'>
+        <b>Go Back</b>
+      </a>
+    </div>
+  </div>
+</div>

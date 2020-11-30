@@ -1,0 +1,14 @@
+
+tbody {
+    display:block;
+    // height:500px;
+    overflow:auto;
+}
+thead, tbody tr {
+    display:inline-table;
+    width:100%;
+    table-layout:fixed;
+}
+textarea{
+  resize: none;
+}

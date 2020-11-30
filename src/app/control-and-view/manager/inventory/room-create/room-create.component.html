@@ -1,0 +1,101 @@
+<div class="py-5"
+  style="overflow-x: hidden;padding-left: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;margin-left: 2rem">
+  <br>
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 35%;">CREATE NEW ROOM</h4>
+  </div><br>
+
+  <div class="row bg-info col-md-12" style="padding-top: 2rem">
+    <br>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Building*</label>
+        <select style="background-color: #d4f4ff;" (change)="selectFloorfromBuildings($event.target.value)"
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="FacilityKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of building" [value]="f.FacilityKey">
+            {{f.FacilityText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Floor Type Name*</label>
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="FloorTypeKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floorType" [value]="f.FloorTypeKey">
+            {{f.FloorTypeName}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Floor Name* </label>
+        <select style="background-color: #d4f4ff;" (change)="selectZonefromFloor($event.target.value)"
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="FloorKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of floor" [value]="f.FloorKey">
+            {{f.FloorName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Zone Name*</label>
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          (change)='zoneChange()' [(ngModel)]="ZoneKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of zone" [value]="f.ZoneKey">
+            {{f.ZoneName}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Room Type Name* </label>
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="RoomTypeKey">
+          <option value="">--Select--</option>
+          <option *ngFor="let f of roomType" [value]="f.RoomTypeKey">
+            {{f.RoomTypeName}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Room Name*</label>
+        <input type="text" maxlength="40" placeholder="Room Name" style="background-color: #D4F4FF !important;"
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="RoomName">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Square Foot* </label>
+        <input type="text" maxlength="19" placeholder="Area" style="background-color: #D4F4FF !important;"
+          (keypress)="numberValid($event)" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="SquareFoot">
+      </div>
+      <div class="form-group">
+        <label>Barcode* </label>
+        <input type="text" *ngIf="Barcode" style="background-color: #D4F4FF !important;"
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="Barcode.barcode">
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <div class="row col-md-12" style="margin-left: 25%">
+    <div>
+      <a style="color:white !important" class="btn btn-success"
+        (click)="addRoom(FacilityKey,FloorKey,FloorTypeKey,ZoneKey,RoomTypeKey,RoomName,SquareFoot,Barcode.barcode)"><b>Create
+          New Room</b>
+      </a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back</b>
+      </a>
+      <a class="btn btn-danger" style="color:white !important" (click)="clearall()"><b>Clear All Values </b>
+      </a>
+    </div>
+  </div>
+</div>

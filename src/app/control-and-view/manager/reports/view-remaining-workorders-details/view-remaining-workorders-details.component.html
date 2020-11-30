@@ -1,0 +1,82 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;padding-top: 4%">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW WORK ORDERS</h4>
+  </div>
+
+  <div style="width: 100%;height: 100%;margin-top: 2.5%" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group">
+        <label>Employee Name</label><br>
+        <input type="text" style="background-color: #D4F4FF !important;" readonly [(ngModel)]="empName"
+          class="form-control">
+      </div>
+      <div class="form-group">
+        <label>From Date</label><br>
+        <input type="text" style="background-color: #D4F4FF !important;" readonly [(ngModel)]="from"
+          class="form-control">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group">
+        <label>WorkorderType</label><br>
+        <input type="text" style="background-color: #D4F4FF !important;" readonly [(ngModel)]="wotypeName"
+          class="form-control">
+      </div>
+      <div class="form-group">
+        <label>To Date</label><br>
+        <input type="text" style="background-color: #D4F4FF !important;" readonly [(ngModel)]="to" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  <div style="width: 100%;height: 100%;padding-top: 1%;">
+    <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
+        Back
+      </b>
+    </a>
+    <table *ngIf='workorderList' class="table table-hover table-responsive table-bordered table"
+      style="display: inline-table;margin-left: -8rem;max-width: 150%;width: 135%">
+      <thead class="tableHead">
+        <th>Workorder Type Name</th>
+        <th style="width: 7%">Date</th>
+        <th>Status</th>
+        <th>Employee</th>
+        <th>Room</th>
+        <th>Equipment</th>
+        <th>Recurring</th>
+        <th>Check-In Time</th>
+        <th>Check-Out Time</th>
+        <th>Duration (Minutes)</th>
+        <th>Delay Time (Minutes)</th>
+        <th>Notes</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of workorderList; let i=index">
+          <td>{{x.WorkorderTypeName}}</td>
+          <td>{{x.WorkorderTime}}</td>
+          <td> {{x.WorkorderStatus}}</td>
+          <td>{{x.LastName}},{{x.FirstName}}</td>
+          <td *ngIf="x.RoomId==='Dummy'">Refer notes</td>
+          <td *ngIf="x.RoomId!=='Dummy'">{{x.RoomId}}</td>
+          <td>{{x.EquipmentName}}
+          </td>
+          <td>
+            <span *ngIf="x.IsReccurring === 1 && x.IsSchedule === 0">YES</span>
+            <span *ngIf="x.IsReccurring === 1 && x.IsSchedule === 1">YES , {{x.ScheduleName}}</span>
+            <span *ngIf="x.IsReccurring === 0 && x.IsSchedule === 1">NO , {{x.ScheduleName}}</span>
+            <span *ngIf="x.IsReccurring === 0 && x.IsSchedule === 0">NO</span>
+          </td>
+          <td>{{x.checkin}}</td>
+          <td>{{x.checkout}}</td>
+          <td>{{x.duration}}</td>
+          <td>{{x.DelayTime}}</td>
+          <td style="width:15%;word-wrap: break-word;">{{x.WorkorderNotes}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">DASHBOARD REPORT</h4>
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <div class="form-group" style="width: 85%;">
+          <label>Filter Type</label><br>
+          <select name="ShiftType" [(ngModel)]="ShiftType" class="form-control " [value]="value"
+            (change)="shiftcheck();dashboardreportbyfilter()" style="background-color: #d4f4ff;">
+            <option value="Normal">Date Range</option>
+            <option value="Shift">Shift</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+    <div *ngIf="ShiftType==='Shift'" class="col-md-6">
+      <div class="form-group">
+        <div class="form-group" style="width: 85%;">
+          <label>Shift</label><br>
+          <select name="ShiftType" [(ngModel)]="ShiftValue" class="form-control " [value]="value"
+            (change)="dashboardreportbyfilter()" style="background-color: #d4f4ff;">
+            <option value="All">All</option>
+            <option *ngFor="let e of shiftlist" [value]="e.Master_shiftID">
+              {{e.ShiftName}}
+            </option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group" style="width: 85%;">
+        <label>Employee</label>
+        <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control"
+          (change)="dashboardreportbyfilter()">
+          <option value="">--Select--</option>
+          <option *ngFor="let e of employeeoption" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group" style="width: 68%;">
+        <label *ngIf="ShiftType!='Shift'">From Date</label>
+        <label *ngIf="ShiftType==='Shift'"> Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"
+          (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="fromdate" (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group" style="width: 85%;">
+        <label>Workorder Type</label>
+        <ng-multiselect-dropdown [placeholder]="'Select'" [data]="workordertypeoption" [(ngModel)]="WorkorderTypeKey"
+          [settings]="dropdownSettings" (onSelect)="dashboardreportbyfilter()" (onDeSelect)="dashboardreportbyfilter()"
+          (onSelectAll)="dashboardreportbyfilter()" (onDeSelectAll)="dashboardreportbyfilter()">
+        </ng-multiselect-dropdown>
+      </div>
+      <div *ngIf="ShiftType!='Shift'" class="form-group" style="width: 68%;">
+        <label>To Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"
+          (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"
+          (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- <div style="text-align:right" id="content" #content> -->
+  <div *ngIf="((reporttable?.length> 0)&&(!loading))">
+    <input type="button" style="margin-left: 45%;" class="btn btn-success" value="CONVERT TO PDF"
+      (click)="captureScreen()" />
+  </div>
+  <!-- </div> -->
+</div>
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
+  *ngIf="((reporttable?.length> 0)&&(!loading))">
+  <div id="part1" class="col-md-6" *ngIf="reporttable?.length> 0" style="border: 0px !important;">
+
+    <div id="{{elementId1}}" style="width: 800px; height: 400px;"></div>
+  </div>
+  <div class="col-md-6">
+    <div style="margin-left:1.5rem; margin-right: 1.5rem;   margin-top: 40px; margin-bottom: 100px;"></div>
+    <table id="contentToConvert" *ngIf='reporttable' class="table table-hover table-responsive table-bordered table"
+      style="border: none">
+      <thead class="tableHead">
+        <tr>
+          <th> Employee Name </th>
+          <th> Percentage Completed </th>
+          <th> WorkOrder Type</th>
+          <th>Total WorkOrder</th>
+          <!-- <th>Cancelled WorkOrder</th> -->
+          <th> Quantity Left</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of reporttable">
+          <td>{{x.EmployeeName}} </td>
+          <td>{{((x.CompletedCount + x.CancelCount)/x.totalCount)*100|number:'1.0-0'}}% </td>
+          <td>{{x.WorkorderTypeName}}</td>
+          <td>{{x.totalCount}} </td>
+          <!-- <td>{{x.CancelCount}} </td> -->
+          <td>
+            <!-- <a id="tooltip" (click)="viewWODetails(x.empkey,x.Workorder_TypeKey,x.EmployeeName,x.WorkorderTypeName)"
+            style="color: red !important;"
+              *ngIf="(x.totalCount-(x.CompletedCount + x.CancelCount))>0">
+              {{x.totalCount-(x.CompletedCount + x.CancelCount)}}
+              <span class="tooltiptext">Click to see WorkOrder </span>
+            </a> -->
+            <a (click)="viewWODetails(x.empkey,x.Workorder_TypeKey,x.EmployeeName,x.WorkorderTypeName)"
+              style="color: blue !important;" *ngIf="(x.totalCount-(x.CompletedCount + x.CancelCount))>0">
+              <abbr title="Click to see pending workorder details">
+                {{x.totalCount-(x.CompletedCount + x.CancelCount)}}
+              </abbr>
+            </a>
+            <span
+              *ngIf="(x.totalCount-(x.CompletedCount + x.CancelCount))==0">{{x.totalCount-(x.CompletedCount + x.CancelCount)}}</span>
+          </td>
+        </tr>
+        <tr *ngIf="reporttable?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
+  *ngIf="((reporttable?.length== 0)&&(!loading))">
+  <span style="margin-left: 35rem;"><b>No Records Found</b></span>
+</div>

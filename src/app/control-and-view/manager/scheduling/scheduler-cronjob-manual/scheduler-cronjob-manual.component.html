@@ -1,0 +1,42 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
+
+  <h4 style="text-align:center">SCHEDULER CRONJOB MANUAL CALL</h4>
+  <br>
+  <div style="text-align:center">
+    <h5>
+      <label>DATE: </label> &nbsp;
+      <label>{{nextschedulerDate}}</label>
+    </h5>
+  </div>
+  <div style="text-align:center">
+    <button class="btn btn-success" (click)="createCJ()">CREATE </button>
+    <button class="btn btn-danger" [disabled]="disableFlag" (click)="basicModal.show();">DELETE </button>
+
+    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body">
+            <h5 style="color: red"><b>Are you sure you want to delete ?</b></h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+              (click)="basicModal.hide(); deleteCJ()" mdbWavesEffect>Yes</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
+              mdbWavesEffect>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+</div>

@@ -1,0 +1,35 @@
+<div *ngIf="inspectioneddetails" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="container"> -->
+  <div style="text-align:center">
+    <h4> {{inspectioneddetails[0].RoomType}} - {{inspectioneddetails[0].RoomId}} Inspection Report </h4>
+    <h5><b>Inspected by {{inspectioneddetails[0].SupervisorName}} on {{inspectioneddetails[0].EmployeeName}}</b></h5>
+    <h4>{{inspectioneddetails[0].TemplateName}}</h4>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table;">
+
+      <thead class="tableHead">
+        <td>Template Questions</td>
+        <td>Score Type - {{inspectioneddetails[0].ScoreName}}</td>
+        <td>Notes</td>
+        <td>Observation/Deficiency</td>
+        <td>Corrective Action</td>
+        <td>Completed Date</td>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of inspectioneddetails">
+          <td>{{x.Question}}</td>
+          <td>{{x.Value}}</td>
+          <td>{{x.Notes}}</td>
+
+          <td>{{x.ObservationDeficiency}}</td>
+          <td>{{x.CorrectiveAction}}</td>
+          <td>{{x.CompletedDate}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <a (click)='GoView()' class="btn btn-success" style="margin-left: 45%"><b>Done</b></a>
+  </div>
+</div>

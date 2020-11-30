@@ -1,0 +1,84 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <br><br>
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW SERVICE REQUESTS</h4>
+  </div>
+  <br><br><br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
+    class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>From Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>To Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+    </div>
+
+    <div class="row col-md-12">
+      <div style="margin-left: 45%">
+        <button type="button" class="btn btn-success"
+          (click)="viewserviceRequest(fromdate,todate)"><b>GENERATE</b></button>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+  <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12"> -->
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem; text-align: center;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table;max-width: 110%;width: 104%">
+      <thead class="tableHead">
+        <th> Requested Date </th>
+        <th> Building - Floor - Zone</th>
+        <th> Room </th>
+        <th> Description</th>
+        <th> Employee*</th>
+        <th> Status </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of requestdetails">
+          <td>{{ x.ServiceRequestedDate }}</td>
+          <td>
+              <span style="color: red">{{x.FacilityName}}</span> - <span style="color: blue">{{x.FloorName}}</span> -
+              <span style="color: black">{{x.ZoneName}}</span>
+
+          </td>
+          
+          <td>{{ x.RoomId }}</td>
+          <td>{{ x.Requestnotes }}</td>
+          <td>
+            <select style="background-color: #D4F4FF !important;" [disabled]="x.IsWorkorderCreated === 1" class="form-control" [(ngModel)]="x.EmployeeKey" required>
+              <option value="">--Select--</option>
+              <option *ngFor="let e of EmployeeOption" [value]="e.EmployeeKey">
+                {{e.name}}
+              </option>
+            </select>
+
+          </td>
+          <td>{{ x.WorkorderStatus }}</td>
+          <td>
+            <span *ngIf="x.IsWorkorderCreated === 0">
+              <button type="button" class="btn btn-success"
+                (click)="createworkorderbyservicerequest(x.Workorder_servicerequestID,x.EmployeeKey)"><b>GENERATE WORK
+                  ORDER</b></button>
+            </span>
+            <span *ngIf="x.IsWorkorderCreated === 1">
+              WorkOrder Created
+            </span>
+
+          </td>
+        </tr>
+        <tr *ngIf="requestdetails?.length == 0">
+          <td colspan="7" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

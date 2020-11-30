@@ -1,0 +1,49 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 45%">QR CODE LIST</h4>
+  </div>
+
+  <div class="row col-md-12">
+    <div style="margin-left: 45%;">
+      <button type="button" class="btn btn-success" (click)="captureScreen()">DOWNLOAD</button>
+    </div>
+  </div>
+  <div id="part1" *ngIf="QRCodeArray" style="margin-left: 1.5rem; margin-right: 1.5rem;padding-top: 1rem;"
+    class="row bg-info col-md-12">
+
+    <!-- <ul style="margin-left: 25.5rem;">
+    <li *ngFor="let qr of QRCodeArray;" >
+        <h5><span style="color: red">{{qr.FacilityName}} </span> - <span style="color: blue">{{qr.FloorName}}</span>
+          - {{qr.RoomId}} </h5>
+      <ngx-qrcode [qrc-value]="qr.url"></ngx-qrcode>
+    </li>
+  </ul> -->
+
+    <table style="display: inline-table; margin-left: 30%;">
+      <tbody>
+        <!-- <tr *ngFor="let qr of QRCodeArray;" style='margin-bottom:5px'> -->
+        <tr>
+          <td colspan="2">Your feedback is valuable to us so that we can make your experience better. Scan the QR Code
+            to give us your feedback.</td>
+        </tr>
+        <tr>
+          <td>
+            <h5><span style="color: red">{{qr.FacilityName}} </span> - <span style="color: blue">{{qr.FloorName}}</span>
+              - {{qr.RoomId}} </h5>
+          </td>
+          <td>
+            <ngx-qrcode [qrc-value]="qr.url"></ngx-qrcode>
+          </td>
+        </tr>
+        <!-- </tr> -->
+      </tbody>
+    </table>
+
+  </div>
+  <br>
+
+
+
+</div>

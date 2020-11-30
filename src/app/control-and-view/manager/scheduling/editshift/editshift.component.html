@@ -1,0 +1,430 @@
+<!-- OLD CODE -->
+
+<!-- <div style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+    <div class="row col-md-12 ">
+      <h4 style="margin-left: 40%;">EDIT SHIFT</h4>
+    </div><br>
+    <div class="row bg-info col-md-12" style="padding-top: 1rem;padding-bottom: 2rem">
+      <br>
+      <div class="col-md-6">
+        <div class="form-group ">
+          <label>Description</label>
+          <input type="text" name="desc" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+              [(ngModel)]="edit.Description">
+        </div>
+      </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>Abbreviation</label>
+          <input type="text" name="abb" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+           [(ngModel)]="edit.Abbrevation">
+        </div>
+      </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>Publish as</label>
+          <input type="text" name="publish" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+           [(ngModel)]="edit.PublishAs">
+        </div>
+      </div>
+      <br>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>Start Time</label>&nbsp;
+          <p-calendar [inputStyle]="{'width':'155%'}" [(ngModel)]="StartTime" [timeOnly]="true" hourFormat="12"></p-calendar>
+        </div>
+      </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>Paid hours</label>
+          <input type="text" name="paidhrs" class="form-control col-sm-9 col-md-9 col-lg-9" maxlength="15"
+           [(ngModel)]="edit.PaidHours">
+        </div>
+      </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+          <label>End Time</label>&nbsp;
+          <p-calendar [inputStyle]="{'width':'155%'}" [(ngModel)]="EndTime" [timeOnly]="true" hourFormat="12"></p-calendar>
+        </div>
+      </div>
+      <div class="col-md-6 ">
+        <div class="form-group">
+        <label>Colour</label>&nbsp;
+        <div class="form-group">
+      <input [(colorPicker)]="edit.Colour" [style.background]="edit.Colour" class="form-control col-sm-9 col-md-9 col-lg-9" />
+      (colorPickerChange)="colourchange()" 
+    </div>
+  </div>
+  </div>
+  <div class="row col-md-12" style="margin-left: 45%">
+    <button type="button" style="text-align:center" class="btn btn-success" (click)="editShift()"><b>EDIT</b></button></div>
+  </div> -->
+
+
+<!-- NEW CODE -->
+
+<div style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;overflow: hidden">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">EDIT EMPLOYEE GROUP NAME</h4>
+  </div><br>
+  <div class="row bg-info col-md-12" style="padding-top: 3rem;padding-bottom: 2rem">
+    <div class="col-md-6 ">
+      <div class="form-group">
+        <label>Group Name</label>
+        <input type="text" name="desc" maxlength="20" class="form-control" placeholder="Enter Group Name" *ngIf="edit" style="width: 70%;" [(ngModel)]="edit.Description">
+      </div>
+    </div>
+    <div class="col-md-6 ">
+      <div class="form-group">
+        <label>Colour</label>&nbsp;
+        <input [(colorPicker)]="edit.Colour" [style.background]="edit.Colour" class="form-control col-sm-9 col-md-9 col-lg-9" />
+        <!-- (colorPickerChange)="colourchange()" -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULER STARTS -->
+  <div class="row bg-info col-md-12" *ngIf="isemployeecalendar==1 && showHide">
+    <h3 class="text-gray-dark col-md-12" style="margin-top: 1.5rem;margin-bottom: 1.5rem; color: #00cc67">Weekly
+      Schedule</h3>
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+      <thead class="tableHead">
+        <th></th>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Start Time</td>
+          <td>
+            <select [(ngModel)]="edit.Start_sun_hour" style="background-color: #d4f4ff;" *ngIf="edit">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_sun_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_sun_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_mon_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_mon_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_mon_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_tue_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_tue_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_tue_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_wed_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_wed_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_wed_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_thu_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_thu_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_thu_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_fri_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_fri_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_fri_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_sat_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_sat_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.Start_sat_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>End Time</td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sun_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sun_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sun_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_mon_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_mon_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_mon_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_tue_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_tue_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_tue_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_wed_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_wed_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_wed_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_thu_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_thu_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_thu_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_fri_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_fri_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_fri_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+          <td>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sat_hour" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sat_min" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select *ngIf="edit" [(ngModel)]="edit.End_sat_format" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Exceptions</label><br>
+        <select name="sch_exception" style="background-color: #d4f4ff;width: 75% !important" [(ngModel)]="Idscheduler_exception" class=" form-control">
+          <option value="" placeholder>--Select--</option>
+          <option *ngFor="let s of schedulerexception" [value]="s.Idscheduler_exception">
+            {{s.Exception_Description}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="!showHide" style="margin-left: -1.7%;margin-top: 1%;">
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;width: 99%;">
+      <thead class="tableHead">
+        <th>Start Time</th>
+        <th>End Time</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center;">
+            <select name="start_hour" [(ngModel)]="start_hour" [value]="value" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="start_min" [(ngModel)]="start_min" [value]="value" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="start_format" [(ngModel)]="start_format" [value]="value" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+
+          <td style="text-align: center;">
+            <select name="end_hour" [(ngModel)]="end_hour" [value]="value" style="background-color: #d4f4ff;">
+              <option value="-1">hr</option>
+              <option *ngFor="let s of masterhour" [value]="s.master_hour_value">
+                {{s.master_hour}}
+              </option>
+            </select>
+            <select name="end_min" [(ngModel)]="end_min" [value]="value" style="background-color: #d4f4ff;">
+              <option value="-1">min</option>
+              <option *ngFor="let s of masterminute" [value]="s.Master_minute_Value">
+                {{s.Master_minute}}
+              </option>
+            </select>
+            <select name="end_format" [(ngModel)]="end_format" [value]="value" style="background-color: #d4f4ff;">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </td>
+    </table>
+  </div>
+  <!-- SCHEDULER ENDS -->
+
+  <div class="row col-md-12" style="margin-left: 40%">
+    <button type="button" style="text-align:center" class="btn btn-success" (click)="editShift()"><b>UPDATE</b></button>
+    <button type="button" style="text-align:center" class="btn btn-warning" (click)="goBack()"><b>GO BACK</b></button>
+  </div>
+</div>

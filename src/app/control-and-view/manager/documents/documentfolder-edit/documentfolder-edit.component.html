@@ -1,0 +1,30 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">EDIT DOCUMENT FOLDER</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top:2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Document Folder Name </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input *ngIf="folder" type="text" maxlength="25" style="background-color: #D4F4FF !important;" class="form-control"
+          id="docfold" [(ngModel)]="folder.FormType">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div style="text-align:right" class="col-md-3">
+        <button style="color:white !important" class="btn btn-success" (click)="updateFolderName()"><b>Update</b>
+        </button></div>
+      <div style="text-align:left" class="col-md-3">
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+            Back
+          </b>
+        </a></div>
+      <div class="col col-md-3"></div>
+    </div>
+  </div>
+
+</div>

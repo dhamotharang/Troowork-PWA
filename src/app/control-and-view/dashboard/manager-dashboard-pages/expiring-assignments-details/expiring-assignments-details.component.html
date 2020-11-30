@@ -1,0 +1,31 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="text-align: center;"> EXPIRY NEARING ASSIGNMENTS </h4>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th>Assignment Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Employee Name</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Edit </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of expiringList">
+          <td>{{x.BatchSchduleName}}</td>
+          <td>{{x.ScheduleStartDate}}</td>
+          <td>{{x.ScheduleEndDate}}</td>
+          <td>{{x.EmployeeName}}</td>
+          <td>{{x.BatchScheduleTime}}</td>
+          <td>{{x.BatchScheduleEndTime}}</td>
+          <td><button class="btn btn-primary" (click)="changeAssignment(x.BatchScheduleNameKey)">UPDATE</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-warning" style="float: left;color:white !important" (click)="goBack()"> GO BACK</button>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
+
+  <h4 class="refer"> GENERATE QR CODE LIST</h4>
+
+  <div style="margin-left: 1.5rem;padding-right: 2rem; padding-top: 2rem;width: 95.5%" class="row bg-info col-md-12">
+
+    <div class="form-group col-md-6">
+      <label>Building*</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value);rooms_Filter();"
+        required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of building" [value]="b.FacilityKey">
+          {{b.FacilityText}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Floor*</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey"
+        (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);rooms_Filter();" required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+          {{b.FloorName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Zone</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FloorKey"
+        (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);rooms_Filter();" required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+          {{b.ZoneName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Room Type</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey"
+        (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);rooms_Filter();" required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
+          {{b.RoomTypeName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Floor Type</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorTypeKey" [disabled]="!FloorKey"
+        (change)="setFlrTypeKey($event.target.value);rooms_Filter();" required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of floorTypeList" [value]="b.FloorTypeKey">
+          {{b.FloorTypeName}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Room</label><br>
+      <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey"
+        (change)="rooms_Filter();" required>
+        <option value="">--Select--</option>
+        <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+          {{b.RoomName}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <br>
+  <form [formGroup]="searchform">
+    <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+      <input class="form-control" name="searchroomview" maxlength="20" specialIsAlphaNumeric minlength="3" type="text"
+        placeholder="Search Building,Floor,Floor Type,Zone,Room Type,Room" aria-label="Search" [(ngModel)]="SearchRoom"
+        formControlName="SearchRoom" (input)="searchRoom($event.target.value);" style="width: 100%;">
+      <div *ngIf="searchform.controls.SearchRoom.errors?.minlength">Minimum 3 characters required.</div>
+    </div>
+  </form>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Building </th>
+        <th> Floor </th>
+        <th> Floor Type </th>
+        <th> Zone </th>
+        <th> Room Type </th>
+        <th> Room </th>
+        <th *ngIf="checkflag==false">Generate WO QR Code</th>
+        <th *ngIf="checkflag==true"> <button class="btn btn-primary button_style" type="button" (click)="GenerateQRCodeRoomList();">
+          Generate WO QR Code</button></th>
+        <th *ngIf="feedcheckflag==false">Generate Feedback QR Code</th>
+        <th *ngIf="feedcheckflag==true"> <button class="btn btn-primary button_style" type="button" (click)="GenerateFeedbackQRCodeRoomList();">
+          Generate Feedback QR Code</button></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of rooms; let i=index">
+          <td>{{ x.FacilityName }}</td>
+          <td>{{ x.FloorName }}</td>
+          <td>{{ x.FloorTypeName }}</td>
+          <td>{{ x.ZoneName }}</td>
+          <td>{{ x.RoomTypeText }}</td>
+          <td>{{ x.RoomName }}</td>
+          <td> <input type="checkbox" [(ngModel)]="x.QRCodeCheckValue" [disabled]="feedcheckflag"
+              (change)="toggleVisibility($event); checkBoxValueForQRCode(i,x.QRCodeCheckValue, x.RoomKey);"></td>
+              
+          <td> <input type="checkbox" [(ngModel)]="x.feedbackQRCodeCheckValue" [disabled]="checkflag"
+            (change)="toggleVisibility($event); checkBoxValueForFeedbackQRCode(i,x.feedbackQRCodeCheckValue, x.RoomKey);"></td>
+        </tr>
+        <tr *ngIf="rooms?.length == 0">
+          <td colspan="8" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+      Previous</button>
+    <button class="btn btn-success" style="float: right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+  </div>
+</div>
+

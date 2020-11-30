@@ -1,0 +1,71 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <br><br>
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">VIEW PTO REQUESTS</h4>
+  </div>
+  <br><br><br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
+    class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>From Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>To Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="ptoStatus" style="background-color: #d4f4ff;width: 75%;" class="form-control">
+          <option value="" selected>--Select--</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div style="margin-left: 45%">
+        <button type="button" class="btn btn-success"
+          (click)="viewpto(fromdate,todate,ptoStatus)"><b>GENERATE</b></button>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+  <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12"> -->
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem; text-align: center;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> Employee Number </th>
+        <th> Employee Name </th>
+        <th> Submitted Date </th>
+        <th> PTO Requested Date </th>
+        <th> Status </th>
+        <th> Action </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of requestdetails">
+          <td>{{ x.EmployeeNumber }}</td>
+          <td>{{ x.employeename }}</td>
+          <td>{{ x.SubmittedDate }}</td>
+          <td>{{ x.StartDate }} to {{ x.EndDate }}</td>
+          <td>{{ x.RequestStatus }}</td>
+          <td>
+            <a [routerLink]="['PTORequestAction', x.request_id]" class="btn btn-primary"><b>VIEW</b></a>&nbsp;&nbsp;
+          </td>
+        </tr>
+        <tr *ngIf="requestdetails?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

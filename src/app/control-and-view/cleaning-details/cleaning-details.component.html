@@ -1,0 +1,65 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark">
+  <mdb-navbar-brand>
+    <a class="navbar-brand" href="http://troodontechnology.com/">
+      <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+    </a>
+  </mdb-navbar-brand>
+</mdb-navbar>
+<div style="overflow-x: hidden" *ngIf="!loading">
+  <div style="text-align:center">
+    <h4 style="text-align:center"><b>CLEANING DETAILS</b></h4>
+  </div>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <div *ngIf="show">
+      <table class="table table-responsive table-hover table-bordered table"
+        *ngIf="cleaningDetails.cleanDate && cleaningDetails.checkout" style="display: inline-table">
+        <tbody>
+          <tr>
+            <td>DATE</td>
+            <td>{{cleaningDetails.cleanDate}}</td>
+          </tr>
+          <tr>
+            <td>TIME</td>
+            <td>{{cleaningDetails.checkout}}</td>
+          </tr>
+          <!-- <tr>
+          <td>Done By</td>
+          <td>{{cleaningDetails.LastName}},{{cleaningDetails.FirstName}}</td>
+        </tr> -->
+        </tbody>
+      </table>
+
+      <table class="table table-responsive table-hover table-bordered table"
+        *ngIf="!(cleaningDetails.cleanDate) && !(cleaningDetails.checkout)" style="display: inline-table">
+        <tbody>
+          <tr>
+            <td style="text-align: center;"><b>Not Cleaned Yet. </b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!show">
+      <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+        <tbody>
+          <tr>
+            <td style="text-align: center;"><b>Not Cleaned Yet. </b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+</div>
+<div class="container bg-footer" style="width: 102%;max-width:102%;">
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <p class="text-sm-center">
+        © 2018 TrooWork - All Rights Reserved /Privacy Policy/ Sitemap
+        <br>
+      </p>
+    </div>
+  </div>
+</div>

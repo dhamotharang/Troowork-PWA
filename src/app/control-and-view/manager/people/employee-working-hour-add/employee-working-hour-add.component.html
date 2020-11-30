@@ -1,0 +1,57 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading">
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center;margin-top:3%;margin-bottom:3% ">
+    <h4 style="color: #174a5e;">CREATE NEW WORKING HOUR</h4>
+  </div>
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top:2rem">   
+    
+    
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Employee*: </label></h5>
+      <select style="background-color: #D4F4FF !important;" [disabled]="true" (change)="setEmployeeForbatchSchedule($event.target.value)"
+        class="form-control col-md-5 col-lg-5 col-sm-5" [(ngModel)]="employee_Key">
+        <option value="">--Select--</option>
+        <option *ngFor="let b of empList" [value]="b.EmployeeKey">
+          {{b.EmployeeText}}
+        </option>
+      </select>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Date*:
+        </label></h5>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="date" ></ng-datepicker>
+    </div>
+    <div class="row col-md-12" style="margin-top: 2%">
+      <h5 style="text-align:right;" class="col-md-4"><label for="scheduling">Start Time*: </label></h5>
+      <!-- <div class=" col-md-4 "> -->
+      <!--removing this class for adjusting the time picker width-->
+      <div style="width: 14%">
+        <p-calendar [inputStyle]="{'width':'300%'}" [(ngModel)]="StartTime"
+          [timeOnly]="true" hourFormat="12"></p-calendar>
+      </div>
+    </div>
+    <div class="row col-md-12" style="margin-top: 2%">
+      <h5 style="text-align:right;" class="col-md-4"><label for="scheduling">End Time*: </label></h5>
+      <!-- <div class=" col-md-4 "> -->
+      <!--removing this class for adjusting the time picker width-->
+      <div style="width: 14%">
+        <p-calendar [inputStyle]="{'width':'300%'}" [(ngModel)]="EndTime"
+          [timeOnly]="true" hourFormat="12"></p-calendar>
+      </div>
+    </div>
+    
+    <br>
+    <div class="row col-md-12" style="margin-left: 32%;">
+      <a style="color:white !important" (click)="create()" class="btn btn-success"><b>Create</b></a>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
+          Back </b>
+      </a>
+    </div>
+  </div>
+
+</div>
+</div>

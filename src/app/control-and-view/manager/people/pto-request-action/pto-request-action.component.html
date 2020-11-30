@@ -1,0 +1,163 @@
+<div style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;">PTO REQUEST APPROVAL</h4>
+  </div>
+  <br>
+
+  <div *ngIf="requestdetailsbyID" class="row bg-info col-md-12" style="padding-top: 2rem;padding-bottom: 1rem;">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> Employee Name</label>
+        <input type="text" class="form-control  col-sm-9 col-md-9 col-lg-9" [disabled]=!editflag
+          (keypress)="charValidation($event)" maxlength="19" [(ngModel)]="requestdetailsbyID.employeename">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> Start Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.StartDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Submitted Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.SubmittedDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> PTO Remaining</label>
+        <input type="text" [(ngModel)]="requestdetailsbyID.Reason" maxlength="75" [disabled]="!editflag"
+          style="background-color: #D4F4FF !important;width: 75%;" class="form-control" />
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> Employee Number</label>
+        <input type="text" class="form-control  col-sm-9 col-md-9 col-lg-9" maxlength="19" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.EmployeeNumber">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;"> End Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.EndDate"></ng-datepicker>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Comments</label><br>
+        <textarea class="form-control rounded-1 col-sm-9 col-md-9 col-lg-9" maxlength="200" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.Comments" rows="5" style="resize: none;width: 75% !important"></textarea>
+      </div>
+    </div>
+
+    <div *ngIf="requestdetailsbyID.RequestStatus=='Approved'||requestdetailsbyID.RequestStatus=='Rejected'"
+      class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Status Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag [(ngModel)]="statuscurrentdate">
+        </ng-datepicker>
+      </div>
+      <div class="form-group" *ngIf="requestdetailsbyID.RequestStatus=='Approved'">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved Start Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.ApprovedStartDate"></ng-datepicker>
+      </div>
+      <div class="form-group" *ngIf="requestdetailsbyID.RequestStatus=='Approved'">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved End Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.ApprovedEndDate"></ng-datepicker>
+      </div>
+      <div *ngIf="assignmentdetails?.length != 0" class="form-group col-md-6">
+        <label style="margin-left: -1rem;">Assignment List</label>
+        <!-- <ul *ngFor="let x of assignmentdetails" style="margin-left:1.5rem; margin-top: 1.5rem;">
+          <li>{{x.BatchSchduleName}}</li>
+        </ul> -->
+        <textarea class="form-control " maxlength="200" readonly=!editflag [(ngModel)]="assignmentdetails" rows="5"
+          style="resize: none;width: 168% !important;margin-left: -1rem;"></textarea>
+      </div>
+      <div *ngIf="assignmentdetails?.length == 0" class="form-group col-md-6">
+        <label>Assignment List</label>
+        <textarea class="form-control " maxlength="200" readonly=!editflag [(ngModel)]="assignmentdetails" rows="5"
+          style="resize: none;width: 75% !important"></textarea>
+      </div>
+    </div>
+
+    <div *ngIf="requestdetailsbyID.RequestStatus=='Approved'||requestdetailsbyID.RequestStatus=='Rejected'"
+      class="col-md-6">
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; width: 20%;">Status</label>
+        <input type="text" style="background-color: #d4f4ff !important;" [disabled]=!editflag
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="requestdetailsbyID.RequestStatus">
+      </div>
+      <div class="form-group" style="margin-top: 1.3rem">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approver Comments</label>
+        <textarea class="form-control rounded-1" maxlength="200" [disabled]=!editflag
+          [(ngModel)]="requestdetailsbyID.StatusComment" rows="5" style="resize: none;width: 75% !important"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <div *ngIf="requestdetailsbyID.RequestStatus=='Pending'" class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem; width: 20%;">Status*</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="requestdetailsbyID.Status">
+          <option value="">--Select--</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div
+        *ngIf="requestdetailsbyID.RequestStatus=='Pending' && requestdetailsbyID.Status!='Rejected' && requestdetailsbyID.Status!=''  ">
+        <div class="form-group">
+          <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved Start Date*</label>
+          <ng-datepicker [options]="options1" position="top-right" [(ngModel)]="requestdetailsbyID.ApprovedStartDate">
+          </ng-datepicker>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approved End Date*</label>
+          <ng-datepicker [options]="options1" position="top-right" [(ngModel)]="requestdetailsbyID.ApprovedEndDate">
+          </ng-datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="requestdetailsbyID.RequestStatus=='Pending'" class="form-group col-md-6">
+      <div *ngIf="requestdetailsbyID.RequestStatus=='Pending'">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Status Date</label>
+        <ng-datepicker [options]="options" position="top-right" [disabled]=!editflag [(ngModel)]="statuscurrentdate">
+        </ng-datepicker>
+      </div>
+      <div class="form-group" style="margin-top: 1.3rem">
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Approver Comments</label>
+        <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="requestdetailsbyID.StatusComment" rows="5"
+          style="resize: none;width: 75% !important"></textarea>
+      </div>
+    </div>
+    <div *ngIf="assignmentdetails?.length != 0 && requestdetailsbyID.RequestStatus=='Pending'"
+      class="form-group col-md-6">
+      <label>Assignment List</label>
+      <!-- <ul *ngFor="let x of assignmentdetails" style="margin-left:1.5rem; margin-top: 1.5rem;"> -->
+      <!-- <li>{{x.BatchSchduleName}}</li> -->
+      <!-- {{assignmentdetails}} -->
+      <!-- </ul> -->
+      <textarea class="form-control " maxlength="200" readonly=!editflag [(ngModel)]="assignmentdetails" rows="5"
+        style="resize: none;width: 75% !important"></textarea>
+      <!-- <textarea [(ngModel)]="assignmentdetails"></textarea> -->
+
+    </div>
+    <div *ngIf="assignmentdetails?.length == 0 && requestdetailsbyID.RequestStatus=='Pending'"
+      class="form-group col-md-6">
+      <label>Assignment List</label>
+      <textarea class="form-control " maxlength="200" readonly=!editflag [(ngModel)]="assignmentdetails" rows="5"
+        style="resize: none;width: 75% !important"></textarea>
+    </div>
+    <div class="row bg-info col-md-12">
+      <div *ngIf="requestdetailsbyID.RequestStatus=='Approved'||requestdetailsbyID.RequestStatus=='Rejected'"
+        style="margin-left:42%">
+        <a (click)='goBack()' class="btn btn-warning" style="text-align:center"><b>Go Back</b></a>
+      </div>
+      <div *ngIf="requestdetailsbyID.RequestStatus=='Pending'" style="margin-left:42%">
+        <button type="button" class="btn btn-success" style="text-align:center"
+          (click)="saveRequestAction()"><b>SAVE</b></button>
+        &nbsp;&nbsp;
+        <a (click)='goBack()' class="btn btn-warning" style="text-align:center"><b>Go Back</b></a>
+      </div>
+    </div>
+  </div>
+</div>

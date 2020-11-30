@@ -1,0 +1,38 @@
+ 
+
+<div style="margin-left: 15rem;margin-right: 15rem;">
+ 
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">UPDATE JOB-TITLE</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Job-Title* </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input *ngIf="JobtitleDetails" type="text" maxlength="40" style="background-color: #D4F4FF !important;"
+          class="form-control" id="JobTitle" [(ngModel)]="JobtitleDetails[0].JobTitle">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Job-Title Description* </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input *ngIf="JobtitleDetails" type="text" maxlength="95" style="background-color: #D4F4FF !important;"
+          class="form-control" id="JobTitle" [(ngModel)]="JobtitleDetails[0].JobTitleDescription">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div style="margin-left: 45%">
+        <a style="color:white !important" class="btn btn-success" routerLinkActive="active" (click)="updateJobTitle(JobtitleDetails[0].JobTitle,JobtitleDetails[0].JobTitleDescription)"><b>Update</b>
+        </a>&nbsp;
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important" ><b>Go
+            Back
+          </b>
+        </a>
+      </div>
+    </div>
+  </div>
+ 
+</div>

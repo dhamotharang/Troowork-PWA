@@ -1,0 +1,50 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 40%;padding-bottom: 1rem">VIEW EMPLOYEE FOR WORKING HOUR</h4>
+  </div>
+  
+  <br>
+  <div class="col-md-12">
+    <form [formGroup]="searchform">
+      <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
+        <input class="form-control" name="searchempdetails" maxlength="20"  minlength="3"
+          type="text" placeholder="Search Employee Number,First Name,Last Name,Job Title,Contact No" aria-label="Search"
+          [(ngModel)]="SearchEmpDetails" formControlName="SearchEmpDetails"
+          (input)="searchEmployeeDetails($event.target.value);" style="width: 102.3%;margin-left: -0.9rem;">
+        <div *ngIf="searchform.controls.SearchEmpDetails.errors?.minlength">Minimum 3 characters required.</div>
+      </div>
+    </form>
+   
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">
+      <thead class="tableHead">
+        <th> Employee Number </th>
+       
+        <th> Last Name</th>
+        <th> First Name</th>
+        <th> Employee Group</th>
+    
+        <th> Contact No</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of employeedetailstable" [routerLink]="['EmployeeWorkingHourList',e.EmployeeKey]">
+          <td>{{ e.EmployeeNumber }}</td>         
+          <td>{{ e.LastName }}</td>
+          <td>{{ e.FirstName }}</td>
+          <td>{{ e.Description }}</td>
+          <td>{{ e.PrimaryPhone }}</td>
+        </tr>
+        <tr *ngIf="employeedetailstable?.length == 0">
+          <td colspan="7">
+            No Records Found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
+      Previous</button>
+    <button class="btn btn-success" style="float: right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+  </div>
+</div>

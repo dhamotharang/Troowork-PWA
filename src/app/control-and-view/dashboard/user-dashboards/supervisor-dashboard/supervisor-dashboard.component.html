@@ -1,0 +1,138 @@
+<div>
+  <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
+    <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
+  </div>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark align-right">
+    <mdb-navbar-brand>
+      <a class="navbar-brand" href="http://troodontechnology.com/">
+        <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+      </a>
+    </mdb-navbar-brand>
+
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
+    <links>
+      <div style="margin-left:30%;margin-top: 1.3%">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{Superout:['Supervisor_welcomePage']}}]">
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/work order.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['CreateWorkOrderSuperVisor']}}]"><b>Create
+                  Work-Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['createQuickOrderSuperVisor']}}]"><b>Create
+                  Quick Work-Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['viewWorkOrderSupervisor']}}]"><b>View
+                  Work-Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['CreateBatchWorkOrder']}}]"><b>Create Batch
+                  Work Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewBatchWorkorder']}}]"><b>View Batch
+                  Work
+                  Order</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['WorkOrderType']}}]"><b>Work-Order
+                  Type</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewServiceRequest']}}]"><b>View Service
+                  Request</b></a>
+            </div>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['CreateEmployee']}}]"><b>Create Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewEmployee']}}]"><b>View Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['MeetingTrainingCreate']}}]"><b>Create
+                  Meeting/Training</b></a> -->
+          <!-- <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['Training']}}]"><b>View Training</b></a> //old view training link -->
+          <!-- <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['MeetingTrainingView']}}]"><b>View
+                  Meeting/Training</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['JobTitileView']}}]"><b>Create Job-Title</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['manageLoginCredentials']}}]"><b>Manage
+                  Login
+                  Credentials</b></a>
+            </div>
+          </li> -->
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/reports.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['DashboardReport']}}]"><b>WorkOrder
+                  Dashboard</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['WorkorderReport']}}]"><b>WorkOrder</b></a>
+              <!--<a class="dropdown-item" [routerLink]="[{outlets:{Superout:['Batch-work-order-Report']}}]"><b>Batch
+                  Work-Order Report</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['BatchScheduleAssignment']}}]"><b>View
+                  Batch-Schedule Assignment</b>
+              </a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['InspectionReport']}}]"><b>Inspection</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['BarcodeReport']}}]"><b>Barcode</b></a> -->
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/ASSIGNMENTS--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['SchedulingView']}}]"><b>Create/Edit
+                  Assignment Name</b></a>
+            </div>
+          </li>
+          <li *ngIf="scheduleIcon==1" class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/scheduling.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['Scheduler']}}]"><b>Scheduler</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['PtoRequest']}}]"><b>Create PTO
+                  Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewPtoRequest']}}]"><b>View PTO
+                  Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['RequestsFromEmployees']}}]"><b>View
+                  Employee PTO Requests</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequest']}}]"><b>Create
+                  Trade Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewTradeRequest']}}]"><b>View
+                  Trade Request</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequestsFromEmployees']}}]"><b>View
+                  Employee Trade Requests</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['schedulerReport']}}]"><b>Scheduler
+                  Report</b></a>
+            </div>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/DOCUMENTS--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['DocumentfolderView']}}]"><b>Create New
+                  Document Folder</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['DocumentsUpload']}}]"><b>Upload Document</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['ViewDocuments']}}]"><b>View Document</b></a>
+            </div>
+          </li> -->
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/INSPECTION--2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['Createinspectionbysuprvsr']}}]"><b>Create
+                  Inspection</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['Viewinspctnbysprvsr']}}]"><b>View
+                  Inspection</b></a>
+              <!-- <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['InspectiontemplateCreate']}}]"><b>Create
+                  Inspection Template</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['InspectiontemplateandquestionsView']}}]"><b>View
+                  Inspection Template</b></a> -->
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/profile-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['supervisorMyProfile']}}]"><b>My
+                  Profile</b></a>
+              <a class="dropdown-item" routerLink=""><b>Log Out</b></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </links>
+  </mdb-navbar>
+  <!-- <div style="height:100%;background-color: #EBFAFF;"> -->
+  <router-outlet name="Superout"></router-outlet>
+  <!-- varun - child paths are loaded in  Superout outlet for lazy loading-->
+  <!-- </div> -->
+</div>

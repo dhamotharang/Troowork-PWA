@@ -1,0 +1,28 @@
+<div style="margin-left: 15rem;margin-right: 15rem;">
+
+  <div style="text-align:center">
+    <h4 style="color: #174a5e;">CREATE SHIFT</h4>
+  </div>
+
+  <br>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem">
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="Shift">Shift Name* </label></h5>
+      <div class="col-md-8" style="text-align:left">
+        <input type="text" placeholder="Shift Name" maxlength="40" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="ShiftName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12" style="margin-left: 33%">
+      <button style="color:white !important" class="btn btn-success" (click)="addShift(ShiftName)"><b>CREATE
+          SHIFT</b>
+      </button>
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important" routerLinkActive="active"><b>Go
+          Back
+        </b>
+      </a>
+    </div>
+  </div>
+
+</div>

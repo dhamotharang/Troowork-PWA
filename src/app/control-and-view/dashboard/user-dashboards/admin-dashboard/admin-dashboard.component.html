@@ -1,0 +1,59 @@
+<div>
+  <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
+    <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
+  </div>
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark">
+    <mdb-navbar-brand>
+      <a class="navbar-brand" href="http://troodontechnology.com/">
+        <img src="assets/img/TROOWORK.png" style="width: 10rem;">
+      </a>
+    </mdb-navbar-brand>
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button> -->
+    <links>
+      <div style="margin-left: 45%;">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png"
+              [routerLink]="[{outlets:{AdminOut:['welcomePage']}}]">
+          </li>
+
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['addEmployeeAdmin']}}]"><b>Create
+                  Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['viewEmployeeAdmin']}}]"><b>View
+                  Employee</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['manageLoginCreds']}}]"><b>Manage Login
+                  Credentials</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['JobTitleViewAdmin']}}]"><b>Create
+                  JobTitle</b></a>
+             
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/INVENTORY--3.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['ViewDepartment']}}]"><b>Create
+                  Department</b></a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <img class="imagesize nav-link" src="assets/icons/profile-2.png">
+            <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['adminMyProfile']}}]"><b>My Profile</b></a>
+              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </links>
+  </mdb-navbar>
+  <!-- <div style="height:100%;background-color: #EBFAFF;"> -->
+  <router-outlet name="AdminOut"></router-outlet>
+  <!-- </div> -->
+</div>
