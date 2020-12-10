@@ -541,5 +541,10 @@ export class SchedulingService {
       .get(ConectionSettings.Url + '/getCountForAssignmentManualcreatecheck?orgID=' + orgID + '&curDate=' + curDate);
   }
   // @Author:Prakash code ends here
-
+  
+  employeesForSchedulerDropdown(groupID, empkey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/employeesForSchedulerDropdown?groupID=' + groupID + '&empkey=' + empkey + '&OrganizationID=' + orgID);
+  }
 }
