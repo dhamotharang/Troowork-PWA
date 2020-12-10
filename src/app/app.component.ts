@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ResponsiveService} from './service/responsive.service';
+import { ResponsiveService } from './service/responsive.service';
 
 @Component({
   selector: 'app-root',
@@ -7,29 +7,29 @@ import {ResponsiveService} from './service/responsive.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    
-  constructor (private responsiveService:ResponsiveService) {
-    
+
+  constructor(private responsiveService: ResponsiveService) {
+
   }
 
-  ngOnInit(){
-    this.responsiveService.getMobileStatus().subscribe( isMobile =>{
-      if(isMobile){
+  ngOnInit() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      if (isMobile) {
         console.log('Mobile device detected')
       }
-      else{
+      else {
         console.log('Desktop detected')
       }
     });
-    this.onResize();    
+    this.onResize();
   }
 
-  onResize(){
+  onResize() {
     this.responsiveService.checkWidth();
   }
-  onScroll(){
+  onScroll() {
     console.log("scrolled");
   }
-  }
-  
+}
+
 

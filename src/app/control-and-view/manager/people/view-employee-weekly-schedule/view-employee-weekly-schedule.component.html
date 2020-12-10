@@ -1,13 +1,13 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
-<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+<div *ngIf="!loading">
   <div class="row col-md-12 ">
-    <h4 style="margin-left: 40%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
+    <h4 style="margin-left: 35%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
   </div>
-  <div style="margin-left: 1.6rem;margin-right: 1.5rem;width: 96%;padding-top: 1.5rem;padding-bottom: 1.5rem"
-    class="row bg-info col-md-12">
+  <div class="row bg-info col-md-12" style="padding-top: 1%;padding-bottom: 1%;margin-left: 0%;">
+    
     <div class="row col-md-12">
       <br>
-      <div class="row col-md-6">
+      <div class="row col-md-3 col-md-12">
         <h6 class="col-sm-3 col-md-3 col-lg-3 col" style="padding-top: 0.3rem"><label for="people">Job Title</label>
         </h6>
         <select [(ngModel)]="JobTitleKey" style="background-color: #d4f4ff;"
@@ -18,7 +18,7 @@
           </option>
         </select>
       </div>
-      <div class="row col-md-6" style="margin-left: 2.8rem;">
+      <div class="row col-md-3 col-md-12">
         <h6 class="col-sm-3 col-md-3 col-lg-3 col" style="padding-top: 0.3rem"><label for="people">Employee
             Status</label>
         </h6>

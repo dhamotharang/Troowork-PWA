@@ -28,6 +28,8 @@
   transition: 0.5s;
   padding-top: 18px;
   
+  
+  
  
 }
 
@@ -35,7 +37,7 @@
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 15px;
-  color:#3b3e3f;
+  color: #818181;
   display: block;
   transition: 0.3s;
   
@@ -47,7 +49,6 @@
   padding: 25px;
   text-decoration: none;
   font-size: 20px;
-  color: #818181;
   display: block;
   border: none;
   background: none;
@@ -56,6 +57,7 @@
   cursor: pointer;
   outline: none;
   border-bottom: 3px solid #ddd !important;
+  
 }
 
 /* On mouse-over */
@@ -66,7 +68,7 @@
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
   display: none;
-  background-color:#818181;
+  background-color: #EBFAFF !important;
   padding-left: 8px;
 }
 
@@ -117,6 +119,7 @@ html {
   transition-duration: 0.4s;
   cursor: pointer;
   width:100%;
+  
 }
 
 .menu button:hover {
@@ -146,14 +149,14 @@ html {
     margin: 0 auto 10px auto;
    	width: 32px;
     height: 30px;
-    margin: 10px auto 0;
+   margin: 10px auto 0;
     line-height: 32px;
     text-align: center;
     font-size: 20px;
-    color: #EBFAFF;
     margin-top:0;
     padding-top:4px;
-    
+    z-index: -1;
+  
      
    
 }
@@ -161,16 +164,16 @@ html {
 .navbar1 a{
 	float: left;
     display: block;
-    color: black;
-    text-align: center;
+    color:white;
+   text-align: center;
     padding: 10px 16px;
     text-decoration: none;
     font-size: 12px;
     width: 20%;
-    
+       
    
 }
 .navbar1 a:active {
-    border-top: 3px solid blue;
+    border-top: 3px soli blue;
    
 }

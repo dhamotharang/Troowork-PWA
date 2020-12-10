@@ -15,7 +15,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 <div *ngIf="!loading">
   <div style="margin-top: 1%;margin-bottom: 1%;">
     <div class="row col-md-12 ">
-      <h4 style="margin-left: 42%;">EMPLOYEE SCHEDULER</h4>
+      <h4 style="margin-left: 35%;">EMPLOYEE SCHEDULER</h4>
     </div>
     <div class="row bg-info col-md-12" style="padding-top: 1%;padding-bottom: 1%;margin-left: 0%;">
       <div class="form-group col-md-3">
