@@ -18,10 +18,11 @@ import { GooglePieChartService } from './extra-files/piechart-file/Services/goog
 // import { PieChartComponent } from './extra-files/piechart-file/Dashboard/Charts/piechart.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ResponsiveService } from './service/responsive.service';
-// import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 import { NgDatepickerModule} from 'ng2-datepicker';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,10 +37,10 @@ import { NgDatepickerModule} from 'ng2-datepicker';
     HttpClientModule,
     AppRoutingModule,
     NgMarqueeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     // CalendarModule,
     // IgxDatePickerModule,NgDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot()
-    // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     
   ],
   providers: [ GooglePieChartService,ResponsiveService],

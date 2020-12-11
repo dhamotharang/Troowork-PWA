@@ -26,44 +26,46 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
+              },
+              "src/manifest.json"
+            ],
+            "styles": [
+              {
+                "input": "node_modules/font-awesome/scss/font-awesome.scss"
+              },
+              {
+                "input": "node_modules/igniteui-angular/styles/igniteui-angular.css"
+              },
+              {
+                "input": "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
+              },
+              {
+                "input": "node_modules/angular-bootstrap-md/scss/mdb-free.scss"
+              },
+              {
+                "input": "src/styles.scss"
+              },
+              {
+                "input": "node_modules/primeicons/primeicons.css"
+              },
+              {
+                "input": "node_modules/primeng/resources/themes/nova-light/theme.css"
+              },
+              {
+                "input": "node_modules/primeng/resources/primeng.min.css"
+              },
+              {
+                "input": "node_modules/font-awesome/css/font-awesome.css"
               }
             ],
-            "styles": [{
-              "input": "node_modules/font-awesome/scss/font-awesome.scss" 
-            },
-            {
-              "input":"node_modules/igniteui-angular/styles/igniteui-angular.css"
-            },
-            {
-              "input": "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
-            },
-            {
-              "input": "node_modules/angular-bootstrap-md/scss/mdb-free.scss"
-            },
-            {
-              "input": "src/styles.scss"
-            },
-            {
-              "input": "node_modules/primeicons/primeicons.css"
-            },
-            {
-              "input": "node_modules/primeng/resources/themes/nova-light/theme.css"
-            },
-            {
-              "input": "node_modules/primeng/resources/primeng.min.css"
-            },
-            {
-              "input": "node_modules/font-awesome/css/font-awesome.css"  
-            }
-        
-          ],
-          "scripts": [{
-              "input": "node_modules/chart.js/dist/Chart.js"
-            },
-            {
-              "input": "node_modules/hammerjs/hammer.min.js"
-            }
-          ]
+            "scripts": [
+              {
+                "input": "node_modules/chart.js/dist/Chart.js"
+              },
+              {
+                "input": "node_modules/hammerjs/hammer.min.js"
+              }
+            ]
           },
           "configurations": {
             "production": {
@@ -81,7 +83,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -125,7 +128,8 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
-              }
+              },
+              "src/manifest.json"
             ]
           }
         },
