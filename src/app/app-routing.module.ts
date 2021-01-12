@@ -29,6 +29,10 @@ const routes: Routes = [
     path: 'support',
     loadChildren: './control-and-view/support-page/support-page.module#SupportPageModule'
   },
+  {
+    path: 'privacypolicy',
+    loadChildren: './control-and-view/privacy-policy-page/privacy-policy-page.module#PrivacyPolicyPageModule'
+  },
 ];
 
 

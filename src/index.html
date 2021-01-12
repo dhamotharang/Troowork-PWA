@@ -11,7 +11,7 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.7/css/mdb.min.css" />
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.7/js/mdb.min.js"></script> -->
-  
+
   <!-- <script>
 
 if ('serviceWorker' in navigator) {
@@ -24,12 +24,154 @@ if ('serviceWorker' in navigator) {
     });
  }
   </script> -->
-  <link rel="manifest" href="manifest.json">
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+      // When site loaded, load the Popupbox First
+      new popup($("#popup_box"), $("#container")).load();
+
+    });
+
+    function popup(popup, container) {
+
+      var thisPopup = this,
+        timer,
+        counter = 10,
+        countDown = $("#countDown").text(counter.toString());
+
+      thisPopup.load = function () {
+
+        container.animate({
+          "opacity": "0.3"
+        }, 250, function () {
+          popup.fadeIn("250");
+        });
+
+        container.off("click").on("click", function () {
+          thisPopup.unload();
+        });
+
+        $('#popupBoxClose').off("click").on("click", function () {
+          thisPopup.unload();
+        });
+
+        timer = setInterval(function () {
+          counter--;
+          if (counter < 0) {
+            thisPopup.unload();
+          } else {
+            countDown.text(counter.toString());
+          }
+        }, 1000);
+      }
+
+      thisPopup.unload = function () {
+
+        clearInterval(timer);
+
+        popup.fadeOut("250", function () {
+          container.animate({
+            "opacity": "1"
+          }, 250);
+        });
+      }
+    } 
+  </script>
+  <style>
+    body {
+      font: normal 12px "Segoe UI", Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+
+    a {
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /*------------Container styles --------------*/
+
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+
+    /*------------Popup styles --------------*/
+
+    #popup_box {
+      display: none;
+      position: fixed;
+      height: 300px;
+      width: 300px;
+      background: #fff;
+      left: 50%;
+      top: 50%;
+      margin-left: -150px;
+      margin-top: -150px;
+      z-index: 100;
+      padding: 15px;
+      font-size: 15px;
+      -moz-box-shadow: 0 0 5px;
+      -webkit-box-shadow: 0 0 5px;
+      box-shadow: 0 0 5px;
+    }
+
+    #popupBoxClose {
+      background: #369;
+      color: #fff;
+      padding: 10px;
+      margin: -15px -15px 10px -15px;
+      display: block;
+      position: relative;
+      text-align: right;
+    }
+
+    #popupBoxClose #countDown {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      color: #369;
+      text-align: center;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+  <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
   <meta name="theme-color" content="#1976d2">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Add to Home">
+
+  <link rel="stylesheet" type="text/css" href="assets/addtohome/addtohomescreen.css">
+  <script src="assets/addtohome/addtohomescreen.js"></script>
+  <script src="assets/addtohome/addtohomescreen.min.js"></script>
+  <script>
+    if (
+      (("standalone" in window.navigator) && !window.navigator.standalone)
+      ||
+      (!window.matchMedia('(display-mode: standalone)').matches)
+    ) {
+      addToHomescreen();
+    }
+  </script>
+
 </head>
 
 <body style="background-color: #EBFAFF !important; width: 98% !important;">
   <app-root></app-root>
+  <div id="popup_box">
+    <!-- OUR PopupBox DIV-->
+    <a id="popupBoxClose">Close <span id="countDown"></span></a>
+    <h1>This is a Popup</h1>
+  </div>
+
 </body>
 
 </html>
