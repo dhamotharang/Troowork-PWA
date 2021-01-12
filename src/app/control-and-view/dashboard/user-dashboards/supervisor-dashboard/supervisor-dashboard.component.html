@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isMobile">
   <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
     <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
   </div>
@@ -136,3 +136,50 @@
   <!-- varun - child paths are loaded in  Superout outlet for lazy loading-->
   <!-- </div> -->
 </div>
+<!-- mobile screen page begins here -->
+
+<div *ngIf="isMobile">
+  <div id="mySidenav" class="sidenav">
+
+   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+
+  
+   <button class="dropdown-btn" [routerLink]="[{outlets:{Superout:['SchedulerPWA']}}]"(click)="dropdownData()"> <i class="fa fa-calendar-o" ></i>       SCHEDULER VIEW
+   </button>
+
+   <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/pto.png"> PTO</button>
+   <div class="dropdown-container">
+     
+   <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['PtoRequestPWA']}}]"><b>Create PTO
+     </b></a>
+     <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['PtoRequestViewPWA']}}]"><b>View PTO
+     </b></a>
+   </div>
+   <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/Trade.png" > TRADE</button>
+   <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequestPWA']}}]"><b>Create Trade
+     </b></a>
+     <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequestViewPWA']}}]"><b>View Trade
+     </b></a>
+ 
+ 
+   </div>
+     <!-- <button class="dropdown-btn" routerLink="/" (click)="dropdownData()"><i class="fa fa-sign-out"></i> Logout
+    
+     </button>
+    -->
+   
+  </div>
+  <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>  
+  <!-- <div class="picture" >
+   <a (click)="icon"><img src="../../../../../assets/icons/logout.png" routerLink="/"style= "width:7%;height:7%;border-radius:7%;margin-left:3rem;
+   margin-top:-5rem;
+   background-color: transparent;
+     border-color: transparent;
+
+     box-shadow: none;" ></a>
+  </div> -->
+
+
+ <router-outlet name="Superout"></router-outlet>
+</div> 

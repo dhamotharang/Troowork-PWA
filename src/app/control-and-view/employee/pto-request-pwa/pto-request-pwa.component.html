@@ -1,0 +1,62 @@
+<div style="padding-left:0rem;padding-right: 0rem;">
+ 
+
+  <div class="row ">
+    <h4 style="margin-left:35%;margin-top: 3%"> <b>CREATE PTO REQUEST</b></h4>
+  </div>
+  <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
+    <table class="table table-striped table-bordered">
+      <tbody>
+   <tr>
+     <td>
+  <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;;margin-top: 2%" class="row bg-info col-md-12"> -->
+
+  
+      <div class="date" style="margin-top:0rem">
+        <label style="margin-top:0rem;"> Start Date*</label>
+        <label style=" float:right; width:40%; ">
+        <ng-datepicker [options]="options" background-color="white!important"  [(ngModel)]="startdate"></ng-datepicker>
+        </label>
+      </div>
+      </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="date" style="margin-top:0rem">
+            <label> End Date*</label>
+            <label style="float:right; width:40%; ">
+            <ng-datepicker [options]="options1" [(ngModel)]="enddate"></ng-datepicker>
+            </label>
+          </div>
+        </td>
+      </tr>
+     <tr>
+       <td>
+        <div style="margin-top:0rem;margin-bottom:0rem;">
+        
+          <label>PTO Remaining</label>
+          <input type="text" placeholder="PTO Remaining" maxlength="200" [(ngModel)]="ptoreason" 
+            style="background-color:rgb(245, 245, 245) !important; width:35% !important;  border: 1px solid rgb(245, 245, 245);">
+        </div>
+
+       </td>
+     </tr>
+     <tr>
+       <td>
+        <div class="col-md-6">
+          <div class="form-group" style="margin-top: 1rem">
+            <label style="margin-top:1rem;margin-left:-1rem;">Comments</label>
+            <input type="text" placeholder="Comments" maxlength="200" [(ngModel)]="comments" 
+              style="resize: none;background-color:white !important; width:80% !important;   border: 1px solid white;">
+          </div>
+        </div>
+       </td>
+     </tr>
+     <!-- <div class="row col-md-12" style="margin-left:40%"> -->
+      <button type="button" style="width:98%;" class="btn btn-success"
+        (click)="submitRequest()"><b>CREATE PTO</b></button>
+    <!-- </div> -->
+  </tbody>
+</table>
+  </div>
+</div>

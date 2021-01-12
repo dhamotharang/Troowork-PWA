@@ -8,4 +8,16 @@
       margin-top: 0;
     }
   }
-  
+  .alert {
+    width: 200px;
+    height: 100px;
+    margin-top: 30%;
+    margin-left: 50%;
+    background-color: grey;
+    color: white;
+    text-align: center;
+  }
+
+  .hide {
+    display: none;
+  }

@@ -1,3 +1,4 @@
+
 <div class="row" *ngIf="!isMobile">
     <div class="col-md-4 top_margin" style="padding-left: 1.5rem">
 
@@ -40,7 +41,7 @@
     <div class=" col-md-4 top_margin">
         <!-- <img src="assets/img/TrooWork-sticker-str.png" class="trooworklogo" /> -->
         <a class="navbar-brand" href="http://troodontechnology.com/">
-            <img src="assets/img/TROOWORK.png" style="width: 10rem;margin-left: 9rem">
+            <img src="assets/img/TROOWORK.png" style="width: 10rem;margin-left:13rem">
         </a>
         <form [formGroup]="loginForm">
             <div class="md-form">
@@ -84,23 +85,27 @@
         </div>
     </div>
 </div>
-<div id="header-mobile" *ngIf="isMobile">
-    <div class=" col-md-4 top_margin">
+
+<!-- mobile screen page begins here -->
+<div id="header-mobile" *ngIf="isMobile" >
+    <div class=" col-md-4 top-margin ">
         <!-- <img src="assets/img/TrooWork-sticker-str.png" class="trooworklogo" /> -->
         <a class="navbar-brand" href="http://troodontechnology.com/">
-            <img src="assets/img/TROOWORK.png" style="width: 10rem;margin-left: 9rem">
+            <div class="img">
+            <img src="assets/img/TROOWORK.png" style="width:10rem; margin-left:3rem">
+            </div>
         </a>
         <form [formGroup]="loginForm">
             <div class="md-form">
                 <i class="fa fa-user-circle prefix grey-text"></i>
-                <input type="text" formControlName="userName" id="defaultForm-email" class="form-control" #userName>
+                <input type="text" formControlName="userName" id="defaultForm-email" class="form-control" #userName >
                 <label for="defaultForm-email">User Name</label>
             </div>
             <div class=" mt-5 ">
                 <div class="md-form">
                     <i class="fa fa-lock prefix grey-text"></i>
                     <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control"
-                        #passWord>
+                        #passWord >
                     <label for="defaultForm-pass">Password</label>
                 </div>
             </div>
@@ -111,16 +116,19 @@
             </div>
 
             <div class="text-center">
+                <div class="login">
                 <a><input type="submit" mdbBtn color="default"
                         (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
                         mdbWavesEffect value="Login"></a>
+                </div>
             </div>
             <div class=" mt-5 md-form">
                 <!-- <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
                 <a [routerLink]="['UserWorkRequest',924,1464,4433,2233,223,134593]" class="btn btn-primary"><b>User Work Request</b></a> -->
             </div>
         </form>
-    </div>
-    
-
+   
 </div>
+</div>
+
+

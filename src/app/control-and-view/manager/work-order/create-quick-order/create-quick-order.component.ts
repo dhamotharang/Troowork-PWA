@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
+import { ResponsiveService } from 'src/app/service/responsive.service';
+
 import { Router } from "@angular/router";
 @Component({
   selector: 'app-create-quick-order',
@@ -45,6 +47,7 @@ export class CreateQuickOrderComponent implements OnInit {
   role: String;
   name: String;
   IsSupervisor: Number;
+  isMobile: any;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -61,7 +64,7 @@ export class CreateQuickOrderComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private router: Router, private responsiveService: ResponsiveService, private WorkOrderServiceService: WorkOrderServiceService) { }
   //Function for converting date from GMT to yyyy/mm/dd format
   convert_DT(str) {
     var date = new Date(str),
@@ -192,5 +195,12 @@ export class CreateQuickOrderComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.prioritylist = data;
       });
+      this.onResize();
+    this.responsiveService.checkWidth();
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
   }
 }

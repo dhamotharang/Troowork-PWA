@@ -29,7 +29,8 @@ export class ViewEmployeeWeeklyScheduleComponent implements OnInit {
   statusFlag;
   employeestatus;
   EmployeeStatusKey;
-
+  popupAppear;
+    
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -107,7 +108,7 @@ export class ViewEmployeeWeeklyScheduleComponent implements OnInit {
     }
   }
   ngOnInit() {
-
+    this.popupAppear = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -116,6 +117,7 @@ export class ViewEmployeeWeeklyScheduleComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    setTimeout(() => document.querySelector('.alert').classList.add('hide'), 3000);
 
     this.JobTitleKey = "";
     this.EmployeeStatusKey = "";
@@ -212,6 +214,17 @@ export class ViewEmployeeWeeklyScheduleComponent implements OnInit {
             this.showHide1 = false;
           }
         });
+    }
+  }
+
+  popup(){
+    if (this.popupAppear == false){
+    this.popupAppear = true;
+    document.getElementById('popupSection').style.display='block';
+    }
+    else{
+      this.popupAppear = false;
+      document.getElementById('popupSection').style.display='none';
     }
   }
 

@@ -539,6 +539,16 @@ const routes: Routes = [
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/people/schedulerNew/scheduler.module#SchedulerModule',
       },
+      {
+        path: 'SchedulerPWA',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/scheduler-pwa/scheduler-pwa.module#SchedulerPWAModule',
+      },
+      {
+        path: 'SchedulerPWA1',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/scheduler-pwa1/scheduler-pwa.module#SchedulerPWAModule',
+      },
       // {
       //   path: 'ViewSchedulerForEmployee',
       //   outlet: 'ManagerOut',

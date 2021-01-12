@@ -13,15 +13,15 @@ export class DocumentserviceService {
   getDocumentFoldersDataTable(page, itemsCount, empKey, orgid) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getFormDetails?pageno=' + page + '&itemsPerPage=' + itemsCount + '&empkey=' + empKey + '&OrganizationID=' + orgid);
+      .get(ConectionSettings.Url + '/getFormDetails?pageno=' + page + '&itemsPerPage=' + itemsCount + '&empkey=' + empKey + '&OrganizationID=' + orgid);
   }
   SearchDocFolder(orgid, SearchValue) {
     return this
       .http
-      .get(ConectionSettings.Url+'/searchFormList?OrganizationID=' + orgid + '&searchForm=' + SearchValue);
+      .get(ConectionSettings.Url + '/searchFormList?OrganizationID=' + orgid + '&searchForm=' + SearchValue);
   }
   CreateNewDocumentFolder(DocFolderName, servempkey, orgid) {
-    const url = ConectionSettings.Url+'/addNewForms';
+    const url = ConectionSettings.Url + '/addNewForms';
     const obj = {
       newform: DocFolderName,
       serverEmpKey: servempkey,
@@ -34,10 +34,10 @@ export class DocumentserviceService {
   EditDocFolderName(Docfoldername, orgid) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getEditFormDetails?FormtypeId=' + Docfoldername + '&OrganizationID=' + orgid);
+      .get(ConectionSettings.Url + '/getEditFormDetails?FormtypeId=' + Docfoldername + '&OrganizationID=' + orgid);
   }
   UpdateDocumentFolderName(formtypeid, formtype, empKey, orgid) {
-    const url = ConectionSettings.Url+'/updateFormDetails';
+    const url = ConectionSettings.Url + '/updateFormDetails';
     const obj = {
       FormtypeId: formtypeid,
       FormType: formtype,
@@ -49,7 +49,7 @@ export class DocumentserviceService {
       .post(url, obj);
   }
   DeleteDocFolder(deldfkey, orgID) {
-    const url = ConectionSettings.Url+'/deleteForm';
+    const url = ConectionSettings.Url + '/deleteForm';
     const obj = {
       FormtypeId: deldfkey,
       OrganizationID: orgID
@@ -61,27 +61,26 @@ export class DocumentserviceService {
   getDocumentFolderNamesfordropdown(empKey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/allFormtype?empkey=' + empKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/allFormtype?empkey=' + empKey + '&OrganizationID=' + orgID);
   }
   getRecentUploads(page, count, empKey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/view_uploads?pageno=' + page + '&itemsPerPage=' + count + '&empkey=' + empKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/view_uploads?pageno=' + page + '&itemsPerPage=' + count + '&empkey=' + empKey + '&OrganizationID=' + orgID);
   }
   SearchFileNameandDescName(orgID, SearchValue) {
     return this
       .http
-      .get(ConectionSettings.Url+'/searchViewFormList?OrganizationID=' + orgID + '&searchForm=' + SearchValue);
+      .get(ConectionSettings.Url + '/searchViewFormList?OrganizationID=' + orgID + '&searchForm=' + SearchValue);
   }
   getFileDetailsTablewithDropdown(formtype, empKey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/uploadsByFormType?formType=' + formtype + '&empkey=' + empKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/uploadsByFormType?formType=' + formtype + '&empkey=' + empKey + '&OrganizationID=' + orgID);
   }
-  checkforForms(DocFolderName,employeekey,OrganizationID)
-  {
+  checkforForms(DocFolderName, employeekey, OrganizationID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/checkforForms?newform='+DocFolderName+'&serverEmpKey='+employeekey+'&OrganizationID='+OrganizationID);
+      .get(ConectionSettings.Url + '/checkforForms?newform=' + DocFolderName + '&serverEmpKey=' + employeekey + '&OrganizationID=' + OrganizationID);
   }
 }

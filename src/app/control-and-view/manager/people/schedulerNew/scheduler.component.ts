@@ -11,13 +11,14 @@ import { DatepickerOptions } from 'ng2-datepicker';
 @Component({
   selector: 'scheduler-component',
   template: `
-  <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+  
+  <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
 <div *ngIf="!loading">
-  <div style="margin-top: 1%;margin-bottom: 1%;">
-    <div class="row col-md-12 ">
-      <h4 style="margin-left: 35%;">EMPLOYEE SCHEDULER</h4>
-    </div>
-    <div class="row bg-info col-md-12" style="padding-top: 1%;padding-bottom: 1%;margin-left: 0%;">
+  <div style="margin-top:-1px;margin-bottom:2%;">
+  <div class="row col-md-12 ">
+  <h4 style="margin-left: 40%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
+  </div>
+        <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
       <div class="form-group col-md-3">
         <label>Date*</label>
         <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
@@ -25,10 +26,10 @@ import { DatepickerOptions } from 'ng2-datepicker';
       <div class="form-group col-md-3">
         <label>View Range*</label>
         <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color: #d4f4ff;">
-          <option value="Week">Week</option>
+          <option selected value="Week">Week</option>
           <option value="Month">Month</option>
         </select>
-      </div>
+        </div>
 
       <div class="form-group col-md-3">
         <label>Search Employee:</label>
@@ -44,12 +45,16 @@ import { DatepickerOptions } from 'ng2-datepicker';
       </div>
     </div>
   </div>
+  
+  
   <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
 </div>
+
 <create-dialog #create (close)="createClosed($event)"></create-dialog>
 <edit-dialog #edit (close)="editClosed($event)"></edit-dialog>
 `,
   styles: [`
+  
    p, body, td { font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 10pt; }
             body { padding: 0px; margin: 0px; background-color: #ffffff; }
             a { color: #1155a3; }
@@ -58,7 +63,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
             .header a { color: white; }
             .header h1 a { text-decoration: none; }
             .header h1 { padding: 0px; margin: 0px; }
-            .main { padding: 10px; margin-top: 10px; }
+            .main { padding: 5px; margin-top: 5px; }
             .bg-info { background-color: #FFFFFF !important; }
             ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}     
   `]
@@ -97,8 +102,9 @@ export class SchedulerComponent implements AfterViewInit {
   curDate;
   nextschedulerDate;
   disableFlag;
-  loading = false;;
+  loading = false;
   expand;
+  popupAppear;
   copied_event;
   filter = {
     text: [],
@@ -414,6 +420,7 @@ export class SchedulerComponent implements AfterViewInit {
     var n = this.ds.clearExpandVal();
 
     //token starts....
+    this.popupAppear = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -436,8 +443,8 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.dropdownSettings1 = {
       singleSelection: false,
-      idField: 'id',
-      textField: 'name',
+      idField: 'EmployeeKey',
+      textField: 'EmployeeText',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 5,
@@ -476,7 +483,8 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.curDate = this.convert_DT(new Date());
 
-   this.SchedulingService.employeesForSchedulerDropdown('Manager', this.employeekey, this.OrganizationID)
+    this.peopleServ
+      .getallEmployeesList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empList = data;
       });
@@ -554,6 +562,8 @@ export class SchedulerComponent implements AfterViewInit {
       this.config.eventClickHandling = "Select";
     }
   }
+
+ 
   selecteddate() {
     if (this.Range == 'Week') {
       var d = this.date;
@@ -602,7 +612,7 @@ export class SchedulerComponent implements AfterViewInit {
       if (employeeKeListObj.length > 0) {
         if (employeeKeListObj) {
           for (var j = 0; j < employeeKeListObj.length; j++) {
-            employeeKeList.push(employeeKeListObj[j].id);
+            employeeKeList.push(employeeKeListObj[j].EmployeeKey);
           }
         }
         EmployeeKeyString = employeeKeList.join(',');
@@ -624,5 +634,6 @@ export class SchedulerComponent implements AfterViewInit {
     return false;
   }
   //new change for row filtering. ends....
-}
 
+
+}

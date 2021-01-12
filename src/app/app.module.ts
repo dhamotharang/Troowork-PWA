@@ -20,13 +20,13 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ResponsiveService } from './service/responsive.service';
 
 
-import { NgDatepickerModule} from 'ng2-datepicker';
+import { NgDatepickerModule } from 'ng2-datepicker';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -41,9 +41,9 @@ import { environment } from '../environments/environment';
     // CalendarModule,
     // IgxDatePickerModule,NgDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot()
-    
+
   ],
-  providers: [ GooglePieChartService,ResponsiveService],
+  providers: [GooglePieChartService, ResponsiveService],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

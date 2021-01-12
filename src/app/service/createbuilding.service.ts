@@ -8,7 +8,7 @@ export class CreatebuildingService {
 
   constructor(private http: HttpClient) { }
   createBuildings(createbuilding, empKey, orgID) {
-    const url = ConectionSettings.Url+'/addfacility';
+    const url = ConectionSettings.Url + '/addfacility';
     const obj = {
       fac: createbuilding,
       employeekey: empKey,
@@ -16,13 +16,12 @@ export class CreatebuildingService {
     };
     return this
       .http
-      .post (url,obj);
+      .post(url, obj);
   }
-  checkNewBuilding(BuildingName,facility,employeekey,OrganizationID)
-  {
+  checkNewBuilding(BuildingName, facility, employeekey, OrganizationID) {
     return this
-    .http
-    .get(ConectionSettings.Url+'/checkForNewInventory?checkValue='+BuildingName+'&type='+facility+'&employeekey='+employeekey+'&OrganizationID='+OrganizationID);
+      .http
+      .get(ConectionSettings.Url + '/checkForNewInventory?checkValue=' + BuildingName + '&type=' + facility + '&employeekey=' + employeekey + '&OrganizationID=' + OrganizationID);
   }
 
 }

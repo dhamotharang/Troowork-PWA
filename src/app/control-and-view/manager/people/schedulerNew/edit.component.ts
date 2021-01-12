@@ -134,7 +134,7 @@ export class EditComponent implements OnInit {
 
   show(ev: DayPilot.Event) {
     console.log(ev.data);
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       this.event = ev;
       this.form.setValue({
         start: ev.start(),

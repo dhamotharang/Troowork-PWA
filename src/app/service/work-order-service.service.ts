@@ -490,7 +490,7 @@ export class WorkOrderServiceService {
       get(ConectionSettings.Url + '/getLastCleaningDetails?roomKey=' + roomKey + "&orgID=" + orgID);
   }
 
-  
+
   // @Rodney ends...
   // Prakash Code Starts here
   delete_batchWO(obj) {

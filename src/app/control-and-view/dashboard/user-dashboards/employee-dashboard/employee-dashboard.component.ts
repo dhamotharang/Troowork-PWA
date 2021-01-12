@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -14,7 +15,12 @@ export class EmployeeDashboardComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+ 
   isEmployeecalendar;
+ 
+  isMobile: boolean;
+//  popup:boolean = false;
+//   router: any;
   
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -33,7 +39,12 @@ export class EmployeeDashboardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private responsiveService: ResponsiveService) { }
+  // logout() {
+  //   this.popup = true;
+
+  // }
+ 
 
   ngOnInit() {
 
@@ -52,6 +63,46 @@ export class EmployeeDashboardComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.empName = data[0].EmpName;
       });
+      this.onResize();
+      this.responsiveService.checkWidth();
+    }
+    onResize() {
+      this.responsiveService.getMobileStatus().subscribe(isMobile => {
+        this.isMobile = isMobile;
+      });
+    }
+    openNav() {
+      document.getElementById("mySidenav").style.width = "300px";
+      // document.getElementById("main").style.marginLeft = "250px";
+      document.body.style.backgroundColor = "rgba(189, 238, 247, 0.8)";
+      
+    }
+    
+    closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      // document.getElementById("main").style.marginLeft= "0";
+    }
+    dropdownData(){
+      var dropdown = document.getElementsByClassName("dropdown-btn");
+      var i;
+      for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+        } else {
+        dropdownContent.style.display = "block";
+        }
+        });
+      }
+    }
+    // leave(){
+    //   console.log("exit")
+    // }
+    // stayhere(){
+    //   this.popup = false;
+    // }
+   
   }
-
-}
+  

@@ -1,3 +1,116 @@
 .navbar {
   box-shadow: none !important;
 }
+.nav-link[data-toggle].collapsed:before {
+  content: " ▾";
+}
+.nav-link[data-toggle]:not(.collapsed):before {
+  content: " ▴";
+}
+
+
+/* Fixed sidenav, full height */
+#main {
+  text-align: center;
+  font-size: 10px;
+  
+}
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0 !important;
+  left: 0;
+  background-color: #EBFAFF; 
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 18px;
+  
+  
+  
+ 
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  
+}
+
+
+
+.dropdown-btn {
+  padding: 25px;
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  border-bottom: 3px solid #ddd !important;
+  
+}
+
+/* On mouse-over */
+.sidenav a:hover,.dropdown-btn {
+  color:green;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #EBFAFF !important;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+  font-size:30px;
+}
+
+
+/* Some media queries for responsiveness */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+  
+  
+}
+
+.sidenav .homeBtn{
+  font-size: 20px;
+  color: green;
+  padding: 6px 8px 6px 16px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+html {
+  font-family: "Lucida Sans", sans-serif;
+}
+
+@media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
+.picture{
+  width:20%;
+  height:20%;
+
+}
+  }
+
+
+

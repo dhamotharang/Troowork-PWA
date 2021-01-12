@@ -5,6 +5,7 @@ import { Login } from '../../../model-class/login';
 import { LoginService } from '../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
   isAuthenticated: boolean;
   rev_orgid: Number = 103;
   room_key: Number = 100;
-
+  
   isMobile: boolean;
 
   url_base64_decode(str) {
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
     return window.atob(output);
   }
 
-  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router, private responsiveService: ResponsiveService) {
+  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router,private responsiveService: ResponsiveService) {
 
     this.loginForm = fb.group({
       userName: ['', Validators.required],
@@ -83,17 +84,29 @@ export class LoginComponent implements OnInit {
             this.employeekey = profile.employeekey;
             this.OrganizationID = profile.OrganizationID;
             console.log("login successfull");
-            if (this.isMobile) {
-              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);  // redirect to Manager
+            if(this. isMobile){
+              if (profile.role === 'Manager') {
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
+              }
+              else if (profile.role === 'Employee'){
+                this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewSchedulerPWAForEmployee'] } }]); // redirect to Employee
+                
+               }
+               else if (profile.role === 'Supervisor'){
+                 this.router.navigate(['/SupervisorDashboard', { outlets: {Superout: ['SchedulerPWA'] } }]); // redirect to supervisor
+                 
+                }
+               
             }
-            else {
+            else
+            {
               if (passWord == 'troowork') {
                 if (profile.role === 'Admin') {
                   this.router.navigate(['/AdminDashboard', { outlets: { AdminOut: ['changePasswordAdmin', this.employeekey, this.role, this.IsSupervisor] } }]);
                   // this.router.navigate(['/AdminDashboard',{ outlets: { AdminOut: ['welcomePage'] } }]); 
                 }
                 else if (profile.role === 'SuperAdmin') {
-
+  
                   this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['changePasswordSuperAdmin', this.employeekey, this.role, this.IsSupervisor] } }]);
                   // this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['welcomePage'] } }]);
                 }
@@ -129,6 +142,7 @@ export class LoginComponent implements OnInit {
               }
             }
 
+            
           }
 
         },
@@ -141,6 +155,7 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit() {
+   
     this.onResize();
     this.responsiveService.checkWidth();
   }
@@ -151,6 +166,5 @@ export class LoginComponent implements OnInit {
       console.log(this.isMobile);
     });
   }
-
-
-}
+  
+  }

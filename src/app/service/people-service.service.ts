@@ -9,6 +9,10 @@ import { makeStateKey } from '@angular/platform-browser';
   providedIn: 'root'
 })
 export class PeopleServiceService {
+  setdeletePTORequestPWA: any;
+  getRequestdetailsPWA(toServeremployeekey: Number, OrganizationID: Number) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -1383,4 +1387,157 @@ export class PeopleServiceService {
       .http
       .get(ConectionSettings.Url + '/getTradeStatus?orgID=' + orgID);
   }
+  //code by Amritha for PTO PWA start here
+  setPTORequest(curr_date, toServeremployeekey, OrganizationID, startdate, enddate, comments, reason) {
+    console.log(curr_date + "..." + toServeremployeekey + "..." + OrganizationID + "..." + startdate + "..." + enddate + "..." + comments + "..." + reason);
+    const url = ConectionSettings.Url + "/savePTORequest_mob";
+    const obj = {
+      currentdate: curr_date,
+      employeekey: toServeremployeekey,
+      OrganizationID: OrganizationID,
+      startdate: startdate,
+      enddate: enddate,
+      comments: comments,
+      ptoreason: reason
+    };
+    return this.http.post(url, obj);
+  }
+  setgetRequestdetails(employeekey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getPTORequestDetails_mob?OrganizationID=' + orgID + '&employeekey=' + employeekey);
+  }
+  setgetRequestInfoforEmployee(ptorequestID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getPTORequestDetailsforEmployee_mob?ptorequestDetails=' + ptorequestID);
+  }
+  setEditedPTORequest(curr_date, ptorequestID$, StartDate, EndDate, Comments, reason, empKey) {
+    const url = ConectionSettings.Url + "/setEditedPTORequest_mob";
+    const obj = {
+      currdate: curr_date,
+      ptorequestID: ptorequestID$,
+      StartDate: StartDate,
+      EndDate: EndDate,
+      Comments: Comments,
+      ptoReason: reason,
+      EmpKey: empKey
+    };
+    return this.http.post(url, obj);
+  }
+
+  setdeletePTORequest(deleteRequestKey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/deletePTORequest_mob?deleteRequestKey=' + deleteRequestKey + '&OrganizationID=' + orgID);
+  }
+  setcancelPTObyEmployee(ptorequestID$, empKey, orgID, curDate) {
+    const url = ConectionSettings.Url + "/cancelPTORequest_mob";
+    const obj = {
+      todayDate: curDate,
+      ptorequestID: ptorequestID$,
+      EmpKey: empKey,
+      OrgID: orgID
+    };
+    return this.http.post(url, obj);
+  }
+  //code by Amritha for PTO PWA end here
+
+
+
+
+  //code by Amritha for Trade PWA start here
+  setTradeRequest(curr_date, toServeremployeekey, OrganizationID, EmployeeKey, startdate, enddate, comments) {
+    const url = ConectionSettings.Url + "/saveTradeRequest_mob";
+    const obj = {
+      currentdate: curr_date,
+      toServeremployeekey: toServeremployeekey,
+      OrganizationID: OrganizationID,
+      EmployeeKey: EmployeeKey,
+      startdate: startdate,
+      enddate: enddate,
+      comments: comments
+    };
+    return this.http.post(url, obj);
+  }
+  setgetTradeRequestdetails(orgID, employeekey) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getTradeRequestDetails_mob?OrganizationID=' + orgID + '&employeekey=' + employeekey);
+  }
+  setdeleteTradeRequest(deleteRequestKey, empKey) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/deleteTradeRequest_mob?deleteRequestKey=' + deleteRequestKey + '&employeeKey=' + empKey);
+  }
+  setgetTradeRequestInfoforEmployee(traderequestDetails, OrganizationID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getTradeRequestInfoforEmployee_mob?traderequestDetails=' + traderequestDetails + '&OrganizationID=' + OrganizationID);
+  }
+  setEditedPTOTradeRequest(curr_date, traderequestID, OtherEmployee, StartDate, EndDate, Comments) {
+    const url = ConectionSettings.Url + "/setEditedTradeRequest_mob";
+    const obj = {
+      currdate: curr_date,
+      traderequestID: traderequestID,
+      OtherEmployee: OtherEmployee,
+      StartDate: StartDate,
+      EndDate: EndDate,
+      Comments: Comments
+    };
+    return this.http.post(url, obj);
+  }
+  setrequestForTradeCancel(TradeRequestID, empKey, curDate) {
+    const url = ConectionSettings.Url + "/requestForTradeCancel_mob";
+    const obj = {
+      todayDate: curDate,
+      traderequestID: TradeRequestID,
+      EmpKey: empKey
+    };
+    return this.http.post(url, obj);
+  }
+
+
+  settradeCancelApprove(TradeRequestID, empKey, curDate) {
+    const url = ConectionSettings.Url + "/tradeCancelApprove_mob";
+    const obj = {
+      todayDate: curDate,
+      traderequestID: TradeRequestID,
+      EmpKey: empKey
+    };
+    return this.http.post(url, obj);
+  }
+
+  setgetAssignmentTradebyID(traderequestID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getAssignmentTradebyID_mob?traderequestID=' + traderequestID)
+  }
+  setsaveTradeRequestAction(tradeRequestID, employeekey, statuscurrentdate, approvedstartdate, ApprovedEndDate, StatusKey, statuscomments) {
+    const url = ConectionSettings.Url + "/saveTradeRequestAction_mob";
+    const obj = {
+      tradeRequestID: tradeRequestID,
+      employeekey: employeekey,
+      statuscurrentdate: statuscurrentdate,
+      approvedstartdate: approvedstartdate,
+      ApprovedEndDate: ApprovedEndDate,
+      StatusKey: StatusKey,
+      statuscomments: statuscomments
+    };
+    return this.http.post(url, obj);
+  }
+  setgetAllEmployeeNames(OrganizationID, toServeremployeekey) {
+    return this
+      .http
+      // .get(ConectionSettings.Url + '/getAllEmployeeNames?OrganizationID=' + OrganizationID + '&employeekey=' + toServeremployeekey);
+      .get(ConectionSettings.Url + '/getAllEmployeeNames_SuType_mob?OrganizationID=' + OrganizationID + '&employeekey=' + toServeremployeekey);
+  }
+  setlogoutRequest(logoutRequestKey, empKey) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/logoutRequest_mob?exitRequestKey=' + logoutRequestKey + '&employeeKey=' + empKey);
+  }
+
+
+  //code by Amritha for Trade PWA end here
 }

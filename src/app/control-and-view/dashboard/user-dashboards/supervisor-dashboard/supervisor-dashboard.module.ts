@@ -395,6 +395,69 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../manager/people/trade-request-details/trade-request-details.module#TradeRequestDetailsModule',
       },
+      {
+        path: 'SchedulerPWA',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/scheduler-pwa/scheduler-pwa.module#SchedulerPWAModule',
+      },
+      {
+        path: 'SchedulerPWA1',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/scheduler-pwa1/scheduler-pwa.module#SchedulerPWAModule',
+      },
+      {
+        path: 'PtoRequestPWA',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/pto-request-pwa/pto-request-pwa.module#PtoRequestPWAModule',
+      },
+      {
+        path: 'PtoRequestViewPWA',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/pto-request-view-pwa/pto-request-view-pwa.module#PtoRequestViewPWAModule',
+      },
+      {
+        path: 'PtoRequestViewPWA/PtoRequestDetailsPWA/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/pto-request-details-pwa/pto-request-details-pwa.module#PtoRequestDetailsPWAModule',
+      },
+      {
+        path: 'PtoRequestViewPWA/PtoRequestEditPWA/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/pto-request-edit-pwa/pto-request-edit-pwa.module#PtoRequestEditPWAModule',
+      },
+      {
+        path: 'TradeRequestPWA',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-pwa/trade-request-pwa.module#TradeRequestPWAModule',
+      },
+      {
+        path: 'TradeRequestViewPWA',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-view-pwa/trade-request-view-pwa.module#TradeRequestViewPWAModule',
+      },
+      {
+        path: 'TradeRequestViewPWA/TradeRequestEditPWA/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-edit-pwa/trade-request-edit-pwa.module#TradeRequestEditPWAModule',
+      },
+      {
+        path: 'ViewTradeRequest/TradeRequestApprove/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-approve/trade-request-approve.module#TradeRequestApproveModule',
+      },
+      {
+        path: 'TradeRequestViewPWA/TradeRequestDetailsPWA/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-details-pwa/trade-request-details-pwa.module#TradeRequestDetailsPWAModule',
+      },
+      {
+        path: 'ViewSchedulerPWAForEmployee',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/view-employee-scheduler-pwa/view-employee-scheduler-pwa.module#ViewEmployeeSchedulerPWAModule',
+      },
+
+
+      
     ]
   }
 ];

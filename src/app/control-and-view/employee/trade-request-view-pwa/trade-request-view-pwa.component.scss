@@ -1,0 +1,133 @@
+.content1 {
+    display: block;
+   
+    margin: 18px;
+    // height:150px;
+    // line-height: 40px;
+    background-color: white;
+    width: 95%;
+    padding: 0px;
+    border: 1px solid grey;
+}
+.content2 {
+    display: block;
+    margin: 4%;
+    background-color: white;
+    width: 80%;
+    // height: 95px;
+    border: 1px solid grey;
+    padding: 0px 0px 10px 10px;
+//   line-height: 1.6;
+  text-align: center;
+}
+.content {
+    display: block;
+    margin: 0 auto;
+    // height: 200px;
+    // line-height: 40px; 
+    background-color: white;
+    width: 80%;
+    padding: 0px 20px 0px 20px;
+    border: 1px solid grey;
+}
+
+div {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+   // display:inline-block;
+}
+.btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    float: right;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+i {
+    float: right;
+    color: black;
+    color: transparent;
+}  
+
+.my-icon{
+ line-height:70px;   
+}
+.next1{
+    float:right;
+    margin-top:4%;
+    margin-right:7%;
+}
+
+@media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
+    .content1 {
+        display: block;
+       
+        margin: 18px;
+        // height:150px;
+        // line-height: 40px;
+        background-color: white;
+        width: 95%;
+        padding: 0px;
+        border: 1px solid grey;
+    }
+    .content2 {
+        display: block;
+        margin: 4%;
+        background-color: white;
+        width: 95%;
+        // height: 120px;
+        // margin-top:12%;
+        border: 1px solid grey;
+        padding: 0px 0px 10px 10px;
+    //   line-height: 1.6;
+      text-align: center;
+      font-size:74%;
+    }
+    .content {
+        display: block;
+        margin: 0 auto;
+        // height: 200px;
+        // line-height: 40px; 
+        background-color: white;
+        width: 80%;
+        padding: 0px 20px 0px 20px;
+        border: 1px solid grey;
+    }
+    .next1{
+        float:right;
+        margin-top:4%;
+        // width:7%;
+       
+        
+        
+    }
+
+
+}
+@media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
+  .picture{
+    width:190% !important;
+   margin-left:20rem;
+   
+  }
+    }
+  @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
+    .picture{
+      width:180%;
+      margin-left:23rem;
+    }
+  }
+  
+  
+  @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:portrait) {
+    .picture{
+      width:180%;
+      margin-left:25rem;
+    }
+  }
+  
+    

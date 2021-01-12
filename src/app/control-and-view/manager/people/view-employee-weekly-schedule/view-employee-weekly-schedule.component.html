@@ -3,8 +3,10 @@
   <div class="row col-md-12 ">
     <h4 style="margin-left: 35%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
   </div>
+  
+  <button (click)="popup();">Filters</button>
+  <div id = "popupSection" *ngIf="popupAppear == true;disabled">
   <div class="row bg-info col-md-12" style="padding-top: 1%;padding-bottom: 1%;margin-left: 0%;">
-    
     <div class="row col-md-12">
       <br>
       <div class="row col-md-3 col-md-12">
@@ -43,6 +45,7 @@
         <div *ngIf="searchform.controls.SearchEmpDetails.errors?.minlength">Minimum 3 characters required.</div>
       </div>
     </form>
+  </div>
   </div>
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
     <table class="table table-hover table-responsive table-bordered table" style="display: inline-table;">

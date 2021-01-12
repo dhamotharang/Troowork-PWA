@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!isMobile">
   <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
     <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
   </div>
@@ -17,13 +17,15 @@
       <div style="margin-left: 45%;">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png"
+              [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
           </li>
           <li class="nav-item dropdown">
             <img class="imagesize nav-link" src="assets/icons/work order.png">
             <div class="dropdown-content" style="margin-left:1rem;">
               <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['Viewworkordersforemployee']}}]"><b>View
-                  Workorders</b></a></div>
+                  Workorders</b></a>
+            </div>
           </li>
           <li class="nav-item dropdown">
             <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
@@ -66,4 +68,62 @@
   <router-outlet name="EmployeeOut"></router-outlet>
   <!-- varun - child paths are loaded in  EmployeeOut outlet for lazy loading-->
   <!-- </div> -->
+
+</div>
+
+<!-- mobile screen page begins here -->
+
+<div *ngIf="isMobile">
+  <div id="mySidenav" class="sidenav">
+
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+
+
+    <button class="dropdown-btn" [routerLink]="[{outlets:{EmployeeOut:['ViewSchedulerPWAForEmployee']}}]"
+      (click)="dropdownData()"> <i class="fa fa-calendar-o"></i> SCHEDULER VIEW
+    </button>
+
+    <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/pto.png"> PTO</button>
+    <div class="dropdown-container">
+
+      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestPWA']}}]"><b>Create PTO
+        </b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestViewPWA']}}]"><b>View PTO
+        </b></a>
+    </div>
+    <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/Trade.png">
+      TRADE</button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestPWA']}}]"><b>Create Trade
+        </b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestViewPWA']}}]"><b>View Trade
+        </b></a>
+
+
+    </div>
+    <!-- <button class="dropdown-btn" routerLink="/" (click)="dropdownData()"><i class="fa fa-sign-out"></i> Logout
+     
+      </button>
+     -->
+
+  </div>
+  <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>
+  <div class="picture">
+    <a (click)="ionic"><img src="../../../../../assets/icons/logout.png"   routerLink="/" style="width:7%;height:7%;border-radius:7%;float:right;
+    margin-top:-3.8rem;
+    background-color: transparent;
+      border-color: transparent;
+
+      box-shadow: none;"></a>
+  </div>
+  <!-- <div class="container" *ngIf="popup==true; disabled">
+
+    <h2>Are you sure you want to exit?</h2>
+   <div class= "btn">
+    <button type="button"  (click)="leave()" routerlink="" >Yes</button>
+    <button type="button"  (click)="stayhere()">No</button>
+  </div>
+  </div> -->
+
+  <router-outlet name="EmployeeOut"></router-outlet>
 </div>
