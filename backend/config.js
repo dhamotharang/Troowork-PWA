@@ -30,17 +30,17 @@ config.app.views = '../dist/mdb-angular-free';
 //config.db.database = "trooworkdb";
 
 //demo db
-// config.db.host = "trooworkdevdbinstance.c1c3s2r6mw5k.us-west-2.rds.amazonaws.com";
-// config.db.user = "trooworkroot";
-// config.db.password = "Zaq1Zaq1";
-// config.db.database = "trooworkdb";
+config.db.host = "trooworkdevdbinstance.c1c3s2r6mw5k.us-west-2.rds.amazonaws.com";
+config.db.user = "trooworkroot";
+config.db.password = "Zaq1Zaq1";
+config.db.database = "trooworkdb";
 
 
 
 // config.db.host = "192.168.1.113";
-config.db.host = "localhost";
-config.db.user = "root";
-config.db.password = "root";
-config.db.database = "trooworkdb";
+// config.db.host = "localhost";
+// config.db.user = "root";
+// config.db.password = "root";
+// config.db.database = "trooworkdb";
 
 module.exports = config;
