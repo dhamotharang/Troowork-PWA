@@ -73,7 +73,7 @@
 
 <!-- mobile screen page begins here -->
 
-<div *ngIf="isMobile">
+<div *ngIf="isMobile" style= "margin-left: 1%">
   <div id="mySidenav" class="sidenav">
 
     <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
@@ -108,16 +108,16 @@
 
   </div>
   <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>
- 
-    <div class="picture">
-      <a (click)="basicModal.show();logout()"><img src="../../../../../assets/icons/logout.png"   style="width:7%;height:7%;border-radius:7%;float:right;
+
+  <div class="picture">
+    <a (click)="basicModal.show();logout()"><img src="../../../../../assets/icons/logout.png" style="width:7%;height:7%;border-radius:7%;float:right;
       margin-top:-3.8rem;
       background-color: transparent;
         border-color: transparent;
   
         box-shadow: none;"></a>
-    </div>
-    <!-- <div class="alert" style="text-align:center;" *ngIf="popup==true; disabled">
+  </div>
+  <!-- <div class="alert" style="text-align:center;" *ngIf="popup==true; disabled">
   
       <h2>Are you sure you want to exit?</h2>
       <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
@@ -126,7 +126,7 @@
       <button type="button" class= "btn btn-danger"   (click)="stayhere()">No</button>
    
     </div> -->
-    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -141,14 +141,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close"
-            (click)="basicModal.hide();leave()"   routerLink="/"   mdbWavesEffect>Yes</button>
-          <button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.hide();stayhere()"
-            mdbWavesEffect>No</button>
+            (click)="basicModal.hide();leave()" routerLink="/" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="danger" class="relative waves-light"
+            (click)="basicModal.hide();stayhere()" mdbWavesEffect>No</button>
         </div>
       </div>
     </div>
   </div>
-  
+
 
   <router-outlet name="EmployeeOut"></router-outlet>
 </div>

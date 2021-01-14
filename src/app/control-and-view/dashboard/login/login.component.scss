@@ -198,26 +198,26 @@ and open the template in the editor.
     .md-form{
         width:340% !important;
     }}
-@media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:portrait) {
-    .img{
-        margin-left:21rem;
-    }
-    .md-form{
-        width:310%;
-    }
+// @media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:portrait) {
+//     .img{
+//         margin-left:21rem;
+//     }
+//     .md-form{
+//         width:310%;
+//     }
     
-    .login{
-        width:13rem;}
-}
-@media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:landscape) {
-    .navbar-brand{
-        margin-left:28rem;
-    }
-    .md-form{
-        width:250%;
-        margin-left:2rem;
-    }
+//     .login{
+//         width:13rem;}
+// }
+// @media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:landscape) {
+//     .navbar-brand{
+//         margin-left:28rem;
+//     }
+//     .md-form{
+//         width:250%;
+//         margin-left:2rem;
+//     }
     
-    .login{
-        width:70rem;}
-}
+//     .login{
+//         width:70rem;}
+// }
