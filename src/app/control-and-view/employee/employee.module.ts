@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PtoRequestPWAComponent } from './pto-request-pwa/pto-request-pwa.component';
-import { PtoRequestViewPWAComponent } from './pto-request-view-pwa/pto-request-view-pwa.component';
-import { TradeRequestPWAComponent } from './trade-request-pwa/trade-request-pwa.component';
-import { TradeRequestViewPWAComponent } from './trade-request-view-pwa/trade-request-view-pwa.component';
-import { ViewEmployeeSchedulerPWAComponent } from './view-employee-scheduler-pwa/view-employee-scheduler-pwa.component';
+// import { PtoRequestPWAComponent } from './pto-request-pwa/pto-request-pwa.component';
+// import { PtoRequestViewPWAComponent } from './pto-request-view-pwa/pto-request-view-pwa.component';
+// import { TradeRequestPWAComponent } from './trade-request-pwa/trade-request-pwa.component';
+// import { TradeRequestViewPWAComponent } from './trade-request-view-pwa/trade-request-view-pwa.component';
+// import { ViewEmployeeSchedulerPWAComponent } from './view-employee-scheduler-pwa/view-employee-scheduler-pwa.component';
 
-import { PtoRequestDetailsPWAComponent } from './pto-request-details-pwa/pto-request-details-pwa.component';
-import { PtoRequestEditPWAComponent } from './pto-request-edit-pwa/pto-request-edit-pwa.component';
-import { TradeRequestEditPWAComponent } from './trade-request-edit-pwa/trade-request-edit-pwa.component';
-import { TradeRequestDetailsPWAComponent } from './trade-request-details-pwa/trade-request-details-pwa.component';
+// import { PtoRequestDetailsPWAComponent } from './pto-request-details-pwa/pto-request-details-pwa.component';
+// import { PtoRequestEditPWAComponent } from './pto-request-edit-pwa/pto-request-edit-pwa.component';
+// import { TradeRequestEditPWAComponent } from './trade-request-edit-pwa/trade-request-edit-pwa.component';
+// import { TradeRequestDetailsPWAComponent } from './trade-request-details-pwa/trade-request-details-pwa.component';
 // import { ViewmeetingortrainingeventComponent } from './viewmeetingortrainingevent/viewmeetingortrainingevent.component';
 // import { ViewworkordersforemployeeComponent } from './viewworkordersforemployee/viewworkordersforemployee.component';
 // import { PtoRequestComponent } from './pto-request/pto-request.component';
@@ -27,26 +27,6 @@ import { TradeRequestDetailsPWAComponent } from './trade-request-details-pwa/tra
   imports: [
     CommonModule
   ],
-  declarations: [
-  
-  PtoRequestPWAComponent,
-  
-  PtoRequestViewPWAComponent,
-  
-  TradeRequestPWAComponent,
-  
-  TradeRequestViewPWAComponent,
-  
-  ViewEmployeeSchedulerPWAComponent,
-  
-
-  
-  PtoRequestDetailsPWAComponent,
-  
-  PtoRequestEditPWAComponent,
-  
-  TradeRequestEditPWAComponent,
-  
-  TradeRequestDetailsPWAComponent]
+  declarations: []
 })
 export class EmployeeModule { }

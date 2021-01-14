@@ -15,7 +15,7 @@ export class PtoRequestViewPWAComponent implements OnInit {
  OrganizationID: Number;
  requestdetails;
  editflag;
- deleteRequestKey;
+//  deleteRequestKey;
   router: any;
 
  url_base64_decode(str) {
