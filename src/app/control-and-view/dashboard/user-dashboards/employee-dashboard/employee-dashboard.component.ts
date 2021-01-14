@@ -19,8 +19,8 @@ export class EmployeeDashboardComponent implements OnInit {
   isEmployeecalendar;
  
   isMobile: boolean;
-//  popup:boolean = false;
-//   router: any;
+ popup:boolean = false;
+  router: any;
   
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -40,10 +40,10 @@ export class EmployeeDashboardComponent implements OnInit {
   }
 
   constructor(private loginService: LoginService, private responsiveService: ResponsiveService) { }
-  // logout() {
-  //   this.popup = true;
+  logout() {
+    this.popup = true;
 
-  // }
+  }
  
 
   ngOnInit() {
@@ -97,12 +97,12 @@ export class EmployeeDashboardComponent implements OnInit {
         });
       }
     }
-    // leave(){
-    //   console.log("exit")
-    // }
-    // stayhere(){
-    //   this.popup = false;
-    // }
+    leave(){
+      console.log("exit")
+    }
+    stayhere(){
+      this.popup = false;
+    }
    
   }
   

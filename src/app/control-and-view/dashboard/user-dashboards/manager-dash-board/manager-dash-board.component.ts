@@ -16,6 +16,8 @@ export class ManagerDashBoardComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   scheduleIcon;
+  popup:boolean = false;
+  router: any;
   isMobile: boolean;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -35,7 +37,10 @@ export class ManagerDashBoardComponent implements OnInit {
   }
 
   constructor(private loginService: LoginService,private responsiveService: ResponsiveService) { }
+  logout() {
+    this.popup = true;
 
+  }
   ngOnInit() {
 
     var token = localStorage.getItem('token');
@@ -68,14 +73,14 @@ export class ManagerDashBoardComponent implements OnInit {
   }
   openNav() {
     document.getElementById("mySidenav").style.width = "300px";
-    document.getElementById("main").style.marginLeft = "250px";
+    // document.getElementById("main").style.marginLeft = "250px";
     document.body.style.backgroundColor = "rgba(189, 238, 247, 0.8)";
     
   }
   
   closeNav() {
     document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+    // document.getElementById("main").style.marginLeft= "0";
   }
   dropdownData(){
     var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -92,4 +97,11 @@ export class ManagerDashBoardComponent implements OnInit {
       });
     }
   }
+  leave(){
+    console.log("exit")
+  }
+  stayhere(){
+    this.popup = false;
+  }
+ 
 }

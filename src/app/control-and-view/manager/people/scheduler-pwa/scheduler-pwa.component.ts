@@ -15,16 +15,14 @@ import { DatepickerOptions } from 'ng2-datepicker';
   <img [hidden]="!loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
   <div [hidden]="loading">
     <div style="margin-top:-1px;margin-bottom:2%;">
+    <div class="search">
   <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png"style= "width:6.5%;height:6.5%;border-radius:6.5%; margin-left:3rem;
       background-color: transparent;
       margin-top:-5rem;
         border-color: transparent;
         box-shadow: none;"></a>
-        <a (click)="icon"><img src="../../../../../assets/icons/logout.png" routerLink="/"style= "width:6.5%;height:6.5%;border-radius:6.5%;margin-left:0rem;
-        background-color: transparent;
-        margin-top:-5rem;
-          border-color: transparent;
-          box-shadow: none;"></a>
+        </div>
+       
     <div id = "popupSection"*ngIf="filterpopupAppear == true;disabled">
           <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
         <div class="form-group col-md-3">
@@ -75,6 +73,26 @@ import { DatepickerOptions } from 'ng2-datepicker';
             .main { padding: 5px; margin-top: 5px; }
             .bg-info { background-color: #FFFFFF !important; }
             ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}     
+            @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
+              .search{
+                margin-top:-1.3rem;
+              }
+            }
+            @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:landscape) {
+              .search{
+                margin-top:-1rem;
+              }
+            }
+            @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:landscape) {
+              .search{
+                margin-top:-0.8rem;
+              }
+            }
+            @media only screen and (min-device-width:375px) and (max-device-width:812px) and (orientation:landscape) {
+              .search{
+                margin-top:-0.6rem;
+              }
+            }
   `]
 })
 export class SchedulerPWAComponent implements AfterViewInit {

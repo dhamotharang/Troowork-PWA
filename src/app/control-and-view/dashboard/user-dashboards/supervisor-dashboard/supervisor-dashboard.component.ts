@@ -16,6 +16,8 @@ export class SupervisorDashboardComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   scheduleIcon;
+  popup:boolean = false;
+  router: any;
   isMobile: boolean;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -35,7 +37,10 @@ export class SupervisorDashboardComponent implements OnInit {
   }
 
   constructor(private loginService: LoginService, private responsiveService: ResponsiveService) { }
+  logout() {
+    this.popup = true;
 
+  }
   ngOnInit() {
 
     var token = localStorage.getItem('token');
@@ -87,5 +92,12 @@ export class SupervisorDashboardComponent implements OnInit {
       });
     }
   }
+  leave(){
+    console.log("exit")
+  }
+  stayhere(){
+    this.popup = false;
+  }
+ 
 
 }
