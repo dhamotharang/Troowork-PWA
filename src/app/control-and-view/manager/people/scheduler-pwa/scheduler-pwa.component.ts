@@ -8,10 +8,12 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { ModalDirective } from 'angular-bootstrap-md';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'schedulerPWA-component',
   template: `
+  <div *ngIf="isMobile">
   <img [hidden]="!loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
   <div [hidden]="loading">
     <div style="margin-top:-1px;margin-bottom:2%;">
@@ -55,6 +57,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
     
     <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
   </div>
+  </div>
   
   <create-dialog #create (close)="createClosed($event)"></create-dialog>
   <edit-dialog #edit (close)="editClosed($event)"></edit-dialog>
@@ -97,7 +100,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 })
 export class SchedulerPWAComponent implements AfterViewInit {
   filterpopupAppear: boolean;
-  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService) {
+  isMobile: boolean;
+  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService) {
     this.date = new Date;
     this.Range = 'Week';
   }
@@ -133,6 +137,7 @@ export class SchedulerPWAComponent implements AfterViewInit {
   loading: boolean;
   expand;
   popupAppear;
+
   copied_event;
   filter = {
     text: [],
@@ -519,6 +524,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
       .subscribe((data: any[]) => {
         this.empList = data;
       });
+      this.onResize();
+      this.responsiveService.checkWidth();
 
   }
 
@@ -678,5 +685,11 @@ export class SchedulerPWAComponent implements AfterViewInit {
       // document.getElementById('popupSection').style.display = 'none';
     }
   }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+  }
+ 
 }
 

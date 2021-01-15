@@ -6,6 +6,8 @@ import { DataPWAService } from "./data-pwa.service";
 import { SchedulingService } from '../../../service/scheduling.service';
 import { ModalDirective } from 'angular-bootstrap-md';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { ResponsiveService } from 'src/app/service/responsive.service';
+
 @Component({
   selector: 'scheduler-component',
   template: `
@@ -111,10 +113,11 @@ import { DatepickerOptions } from 'ng2-datepicker';
 })
 export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
   filterpopupAppear: boolean;
+  isMobile: boolean;
   router: any;
   toServeremployeekey: any;
   PeopleServiceService: any;
-  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService) {
+  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService,private responsiveService: ResponsiveService) {
     this.Range = 'Month';
   }
   @ViewChild("modal") modal: DayPilotModalComponent;
@@ -343,6 +346,8 @@ ngAfterViewInit(): void {
 
   // });
 
+  this.onResize();
+  this.responsiveService.checkWidth();
 
 
 }
@@ -499,6 +504,11 @@ filterpopup() {
     this.filterpopupAppear = false;
     // document.getElementById('popupSection').style.display = 'none';
   }
+}
+onResize() {
+  this.responsiveService.getMobileStatus().subscribe(isMobile => {
+    this.isMobile = isMobile;
+  });
 }
 
 }
