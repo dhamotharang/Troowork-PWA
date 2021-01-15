@@ -1,0 +1,35 @@
+.bg-info {
+    background-color: #FFFFFF !important;
+    width:300%;
+  }
+  @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
+    .row{
+      margin-left:20rem;
+    }
+  .status1{
+  margin-left:8rem !important;
+  width:96%;
+  }
+  }
+  @media only screen and (min-device-width:375px) and (max-device-width:667px) and (orientation:portrait) {
+  .row{
+    margin-left:25rem;
+  }
+  .status1{
+    margin-left:13rem !important;
+    width:96%;
+    }
+  
+  }
+  @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:portrait) {
+    .row{
+      margin-left:25rem;
+    }
+    .status1{
+      margin-left:17.5rem !important;
+      width:96%;
+      }
+  
+    }
+ 
+  

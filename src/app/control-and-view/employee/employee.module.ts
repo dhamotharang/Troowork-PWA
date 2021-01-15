@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TradeRequestApprovePWAComponent } from './trade-request-approve-pwa/trade-request-approve-pwa.component';
 // import { PtoRequestPWAComponent } from './pto-request-pwa/pto-request-pwa.component';
 // import { PtoRequestViewPWAComponent } from './pto-request-view-pwa/pto-request-view-pwa.component';
 // import { TradeRequestPWAComponent } from './trade-request-pwa/trade-request-pwa.component';
@@ -27,6 +28,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule
   ],
-  declarations: []
+  declarations: [TradeRequestApprovePWAComponent]
 })
 export class EmployeeModule { }
