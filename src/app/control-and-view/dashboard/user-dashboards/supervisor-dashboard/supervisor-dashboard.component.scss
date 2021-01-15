@@ -107,7 +107,7 @@ html {
 @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
   .picture{
     width:190% !important;
-    margin-left:-17rem;
+   margin-left:18rem;
     margin-top:0.5rem;
   
   }
@@ -118,12 +118,12 @@ html {
     //    margin-left:20rem;
     //    margin-top:-2.9rem !important;
     //   }
-    //     }
+    // }
   @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
     .picture{
       width:180%;
-      margin-left:-20rem;
-   
+      margin-left:20rem;
+  
     }
   }
   @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
@@ -149,7 +149,7 @@ html {
   @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:portrait) {
     .picture{
       width:180%;
-      margin-left:-23rem;
+      margin-left:22rem;
       margin-top:0.5rem;
      
     }
@@ -157,7 +157,7 @@ html {
   @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:landscape) {
     .picture{
      
-      margin-top:0.4rem;
+      margin-top:-3.2rem;
     
     }
   }
@@ -167,6 +167,10 @@ html {
   }
 }
 
+// @media only screen and (min-device-width:768px) and (max-device-width: 1024px) and (orientation:portrait) {
+//   .picture{
+//     margin-left:5rem;}
+//   }
 
 
 
