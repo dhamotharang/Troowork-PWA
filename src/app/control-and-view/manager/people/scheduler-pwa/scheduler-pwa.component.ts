@@ -18,7 +18,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
     <div class="search">
   <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png"style= "width:6.5%;height:6.5%;border-radius:6.5%; margin-left:3rem;
       background-color: transparent;
-      margin-top:-5rem;
+      margin-top:-4rem;
         border-color: transparent;
         box-shadow: none;"></a>
         </div>
@@ -75,7 +75,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
             ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}     
             @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
               .search{
-                margin-top:-1.3rem;
+                margin-top:-0.8rem !important;
               }
             }
             @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:landscape) {
