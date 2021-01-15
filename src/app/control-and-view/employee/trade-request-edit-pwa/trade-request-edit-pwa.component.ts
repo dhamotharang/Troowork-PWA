@@ -23,7 +23,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
   OtherEmployeedetails;
   EmployeeDetails;
   deleteRequestKey;
-  
+
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -38,7 +38,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
     // barTitleIfEmpty: 'Click to select a date',
     // placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da','background-color':'white', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da', 'background-color': 'white', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -152,24 +152,24 @@ export class TradeRequestEditPWAComponent implements OnInit {
   deletePass(key) {
     console.log(key);
     this.deleteRequestKey = key;
- 
+
   }
   deleteRequest() {
     console.log(this.deleteRequestKey);
-    this.PeopleServiceService. setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
+    this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
       .subscribe((data) => {
-        
+
         this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
           this.traderequestdetails = data;
           alert('Trade Request Deleted Successfully');
-         // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
-         // if (this.role == 'Employee' && this.IsSupervisor == 0) {
-         if (this.role == 'Employee') {
-           this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
-           // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-         } else if (this.role == 'Supervisor') {
-           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
-         }
+          // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+          // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+          if (this.role == 'Employee') {
+            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
+            // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
+          }
         });
       });
   }
