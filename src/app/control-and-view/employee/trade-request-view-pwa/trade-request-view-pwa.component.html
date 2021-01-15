@@ -42,7 +42,7 @@
       </div>
 
       <div *ngIf="x.StatusKey==1 && x.EmployeeKey!=checkEmp">
-        <a [routerLink]="['TradeRequestApprove', x.trade_requestID]">
+        <a [routerLink]="['TradeRequestApprovePWA', x.trade_requestID]">
           <button class="content2 col-md-12">
             
             <span>{{ x.RequestStatus }}</span>
