@@ -440,11 +440,11 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../employee/trade-request-edit-pwa/trade-request-edit-pwa.module#TradeRequestEditPWAModule',
       },
-      // {
-      //   path: 'ViewTradeRequest/TradeRequestApprove/:requestID',
-      //   outlet: 'Superout',
-      //   loadChildren: '../../../employee/trade-request-approve/trade-request-approve.module#TradeRequestApproveModule',
-      // },
+      {
+        path: 'TradeRequestViewPWA/TradeRequestApprovePWA/:requestID',
+        outlet: 'Superout',
+        loadChildren: '../../../employee/trade-request-approve-pwa/trade-request-approve-pwa.module#TradeRequestApprovePWAModule',
+      },
       {
         path: 'TradeRequestViewPWA/TradeRequestDetailsPWA/:requestID',
         outlet: 'Superout',
