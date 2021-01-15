@@ -141,9 +141,9 @@ const routes: Routes = [
         loadChildren: '../../../employee/trade-request-edit-pwa/trade-request-edit-pwa.module#TradeRequestEditPWAModule',
       },
       {
-        path: 'ViewTradeRequest/TradeRequestApprove/:requestID',
+        path: 'TradeRequestViewPWA/TradeRequestApprovePWA/:requestID',
         outlet: 'EmployeeOut',
-        loadChildren: '../../../employee/trade-request-approve/trade-request-approve.module#TradeRequestApproveModule',
+        loadChildren: '../../../employee/trade-request-approve-pwa/trade-request-approve-pwa.module#TradeRequestApprovePWAModule',
       },
       {
         path: 'TradeRequestViewPWA/TradeRequestDetailsPWA/:requestID',
