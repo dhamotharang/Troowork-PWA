@@ -114,26 +114,26 @@ and open the template in the editor.
 @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
     .img{
     
-        margin-left:13rem;}
+        margin-left:16rem !important;}
    .md-form{
             width: 250%;
         }
         .login{
-            margin-left:20rem;
+            margin-left:21rem;
         }
         
     
     
 }
 @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:landscape) {
-    .img{
-        margin-left:1rem;
-    }}
+    // .img{
+    //     margin-left:1rem !important;}
+    }
 
 @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
     .img{
     
-        margin-left:19rem;}
+        margin-left:20rem !important;}
    .md-form{
             width: 250%;
         }
@@ -161,12 +161,14 @@ and open the template in the editor.
 
 @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:portrait) {
     .img{
-        margin-left:21rem;
+        margin-left:23rem !important;
     }
     .text-center{
         margin-left:2rem;
     }
-   
+    .login{
+        margin-left:26rem !important;
+    }
     
 }
 
@@ -175,7 +177,7 @@ and open the template in the editor.
         width:350%
     }
     .img{
-        margin-left:18rem;
+        margin-left:18rem !important;
     }
     
     .login{
@@ -191,13 +193,21 @@ and open the template in the editor.
         margin-left:17rem;
     }
     .login{
-        margin-left:23rem
+        margin-left:23rem;
     }
 }
 @media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation:landscape) {
     .md-form{
         width:340% !important;
     }}
+    @media only screen and (min-device-width:1024px) and (max-device-width:1366px) and (orientation:portrait) {
+        .img{
+            margin-left:27rem !important;
+        }
+        .login{
+            margin-left:32rem !important;
+        }
+    }
 // @media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:portrait) {
 //     .img{
 //         margin-left:21rem;
