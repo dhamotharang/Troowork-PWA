@@ -202,7 +202,7 @@
 
 <!-- mobile screen page begins here -->
 
-   <div *ngIf="isMobile">
+   <div *ngIf="isMobile" style= "margin-left: 1%">
   
   <div id="mySidenav" class="sidenav">
 
@@ -211,9 +211,9 @@
    
     <button class="dropdown-btn" (click)="dropdownData()"> <i class="fa fa-calendar-o"></i> Scheduler View
 
-    </button>
+    </button> 
     <div class="dropdown-container">
-      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Scheduler']}}]"><b>Scheduler</b></a>
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Scheduler']}}]"><b>Scheduler</b></a> 
        <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule Employee</b></a>  -->
     </div>
     <!-- <button class="dropdown-btn" routerLink="/" (click)="dropdownData()"><i class="fa fa-sign-out"></i> Logout
@@ -288,7 +288,7 @@
   
   <div class="picture">
     <a (click)="basicModal.show();logout()"><img src="../../../../../assets/icons/logout.png"   style="width:7%;height:7%;border-radius:7%;float:right;
-    margin-top:-3.8rem;
+    margin-top:-3rem;
     background-color: transparent;
       border-color: transparent;
 
