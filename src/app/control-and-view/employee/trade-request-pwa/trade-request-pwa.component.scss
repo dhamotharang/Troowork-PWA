@@ -1,13 +1,13 @@
 textarea {
     resize: none;
     width: 23rem !important;
-    background-color: #d4f4ff !important;
+    background-color: white !important;
   }
   
   
   .bg-info {
     background-color: #FFFFFF !important;
-    width:300%;
+    width:315%;
   }
   
   ::ng-deep.ngx-datepicker-position-bottom-right {
@@ -18,8 +18,12 @@ textarea {
       margin-left:20rem;
     }
   .employee1{
-  margin-left:8rem !important;
+  margin-left:9rem !important;
   width:96%;
+  }
+  .bg-info {
+    background-color: #FFFFFF !important;
+    width:315% !important;
   }
   }
   @media only screen and (min-device-width:375px) and (max-device-width:667px) and (orientation:portrait) {
@@ -27,8 +31,12 @@ textarea {
     margin-left:25rem;
   }
   .employee1{
-    margin-left:13rem !important;
+    margin-left:16rem !important;
     width:96%;
+    }
+    .bg-info {
+      background-color: #FFFFFF !important;
+      width:325% !important;
     }
   
   }
@@ -37,9 +45,23 @@ textarea {
       margin-left:25rem;
     }
     .employee1{
-      margin-left:17.5rem !important;
+      margin-left:23rem !important;
       width:96%;
       }
+      .bg-info {
+        background-color: #FFFFFF !important;
+        width:340% !important;
+      }
   
+    }
+    @media only screen and (min-device-width:1024px) and (max-device-width:1366px) and (orientation:portrait) {
+    .employee1{
+      margin-left:9rem !important;
+      width:97%;
+    }
+    .bg-info {
+      background-color: #FFFFFF !important;
+      width:315% !important;
+    }
     }
  

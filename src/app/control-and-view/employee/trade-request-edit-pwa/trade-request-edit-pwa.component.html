@@ -1,7 +1,7 @@
 <div style="padding-left:0rem;padding-right:0rem;">
 
   <div class="row ">
-    <h4 style="margin-left:35%;"><b>EDIT TRADE REQUEST</b></h4>
+    <h4 style="margin-left:35%;margin-top: 3%"><b>EDIT TRADE REQUEST</b></h4>
   </div>
   <div *ngIf="traderequestdetails">
     <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
@@ -34,7 +34,7 @@
                
                   <label style="margin-left: 0rem;">Employee
                     Name*</label>
-                    <div class="group">
+                    <div class="employee1">
                   <select
                     style="background-color:rgb(245, 245, 245) !important; width:31% !important;margin-left:26rem; border: 1px solid rgb(245, 245, 245);"
                     [(ngModel)]="traderequestdetails.OtherEmployeeKey">
@@ -51,8 +51,8 @@
               <div *ngIf="EmployeeDetails">
                 <div class="empl2">
                   <label style="margin-left:0rem;">Comments</label>
-                  <textarea class="form-control" maxlength="200" [(ngModel)]="traderequestdetails.Comments" rows="5"
-                    style="background-color:white !important; width:70% !important;  border: 1px solid white;" ></textarea>
+                  <textarea class="form-control" maxlength="200" [(ngModel)]="traderequestdetails.Comments" 
+                    style="background-color:white !important;   width:30%; margin-left:60%;  border: 1px solid white;" ></textarea>
                 </div>
               </div>
             </td>
