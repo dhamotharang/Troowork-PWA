@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
   room_key: Number = 100;
   
   isMobile: boolean;
+ 
+  passwordCheckbox = true;
+  inputpassword;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -155,6 +158,7 @@ export class LoginComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.inputpassword = 'password';
    
     this.onResize();
     this.responsiveService.checkWidth();
@@ -166,5 +170,14 @@ export class LoginComponent implements OnInit {
       console.log(this.isMobile);
     });
   }
-  
+  showPassword(){
+    if(this.inputpassword === 'password'){
+      this.inputpassword = 'text';
+      this.passwordCheckbox = false;
+    }else{
+      this.inputpassword = 'password';
+      this.passwordCheckbox = true;
+    }
+  }
+ 
   }

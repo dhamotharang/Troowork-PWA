@@ -121,7 +121,9 @@ and open the template in the editor.
         .login{
             margin-left:21rem;
         }
-        
+        .row{
+            margin-left:120%;
+        }
     
     
 }
@@ -207,6 +209,10 @@ and open the template in the editor.
         .login{
             margin-left:32rem !important;
         }
+        .row{
+            margin-left:170%;
+        }
+    
     }
 // @media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:portrait) {
 //     .img{

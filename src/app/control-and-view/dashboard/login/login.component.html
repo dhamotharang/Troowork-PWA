@@ -94,6 +94,12 @@
                 <img src="assets/img/TROOWORK.png" style="width:10rem; margin-left:3rem">
             </div>
         </a>
+        <div class="row">
+            <h4 style="margin-left:150%;"><b>LOGIN</b></h4>
+            <span style="text-align:center;">
+                <!-- <h6>Enter your username and password:</h6> -->
+            </span>
+        </div>
         <form [formGroup]="loginForm">
             <div class="md-form">
                 <i class="fa fa-user-circle prefix grey-text"></i>
@@ -103,9 +109,10 @@
             <div class=" mt-5 ">
                 <div class="md-form">
                     <i class="fa fa-lock prefix grey-text"></i>
-                    <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control"
-                        #passWord>
+                    <input type="{{inputpassword}}" formControlName="passWord" id="defaultForm-pass"
+                        class="form-control" #passWord>
                     <label for="defaultForm-pass">Password</label>
+
                 </div>
             </div>
             <div class=" mt-5 md-form">
@@ -114,12 +121,18 @@
                 <label for="defaultForm-TenantID">Tenant ID</label>
             </div>
 
+            <div class="password" style="margin:auto; text-align:center;">
+                <input type="checkbox" id="checkbox" (click)="showPassword()">
+                <label for="checkbox" *ngIf="!passwordCheckbox">Hide password</label>
+                <label for="checkbox" *ngIf="passwordCheckbox">Show password</label>
+            </div>
             <div class="text-center">
                 <div class="login">
                     <a><input type="submit" mdbBtn color="default"
                             (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
                             mdbWavesEffect value="Login"></a>
                 </div>
+
             </div>
             <div class=" mt-5 md-form">
                 <!-- <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
