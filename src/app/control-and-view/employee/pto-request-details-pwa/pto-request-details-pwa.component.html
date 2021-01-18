@@ -80,7 +80,7 @@
       </div>
      </td>
    </tr>
-   <tr>
+   <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
     <td>
       <label class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;"><b>Approver Details</b></label>
     </td>
@@ -90,13 +90,13 @@
      <td>
       <div class="form-group">
         <label style="margin-left: 0rem;">Approver Comments</label>
-        <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusComment" rows="5"  style="background-color:rgb(245, 245, 245) !important; text-align:right; width:70% !important;  border: 1px solid rgb(245, 245, 245);" />
+        <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusComment" rows="5"  style="background-color:white !important; text-align:right; width:70% !important;  border: 1px solid white;" />
       </div>
    
      </td>
    </tr>
   
- <tr>
+ <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
    <td>
     <div  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
       <div class="form-group">
@@ -108,7 +108,7 @@
     </div>
    </td>
  </tr>
- <tr>
+ <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
    <td>
     <div  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
       <div class="form-group">
@@ -120,35 +120,45 @@
     </div>
    </td>
  </tr>
- <tr>
+ <tr *ngIf="requestdetails.RequestStatus ==  'Cancelled by employee'">
   <td>
+    <div *ngIf="requestdetails.RequestStatus ==  'Cancelled by employee'">
     <label class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;"><b>Cancelled Details</b></label>
+  </div>
   </td>
 </tr>
-   <!-- <tr>
+   <tr *ngIf="requestdetails.RequestStatus ==  'Cancelled by employee'">
      <td>
       <div *ngIf="requestdetails.RequestStatus ==  'Cancelled by employee'">
         <div class="form-group">
           <label  style="margin-left:0rem;">Cancelled Date</label>
-          <label style=" margin-left:17.5rem; width:40%; ">
+          <label style="float:right;  width:40%; ">
           <ng-datepicker [options]="options"  [disabled]="!editflag" [(ngModel)]="requestdetails.CancelledDate"></ng-datepicker>
           </label>
         </div>
       </div>
      </td>
-   </tr> -->
- 
-     <!-- <div class="row col-md-12 ">
-      <div *ngIf="requestdetails.RequestStatus == 'Approved'" style="margin-left: 33%;">
-        <a (click)='cancelPTO()' class="btn btn-warning" style="color:white !important;"><b>Cancel Request</b></a>
-        <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a>
-      </div> 
+   </tr>
+     
+     <tr *ngIf="requestdetails.RequestStatus == 'Approved'">
+       <td>
+        <div *ngIf="requestdetails.RequestStatus == 'Approved'" >
+          <a (click)='cancelPTO()' class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Cancel Request</b></a>
+          <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a> -->
+        </div> 
+       </td>
+     </tr>
+     <!-- <tr>
+       <td>
+        <div *ngIf="requestdetails.RequestStatus == 'Rejected'||requestdetails.RequestStatus == 'Cancelled by employee'" style="margin-left: 40%;">
+          <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a>
+        </div>
+       </td>
+     </tr> -->
 
-      <div *ngIf="requestdetails.RequestStatus == 'Rejected'||requestdetails.RequestStatus == 'Cancelled by employee'" style="margin-left: 40%;">
-        <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a>
-      </div>
+     
 
-    </div> -->
+   
 
 </tbody>
 </table>

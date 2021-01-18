@@ -84,9 +84,9 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     this.PeopleServiceService.setcancelPTObyEmployee(this.ptorequestID$, this.toServeremployeekey, this.OrganizationID, this.convert_DT(new Date())).subscribe((data) => {
       alert("Request successfully cancelled by employee");
       if (this.role == 'Employee') {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequestViewPWA'] } }]);
+        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
       } else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewPtoRequestViewPWA'] } }]);
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
       }
     });
   }
