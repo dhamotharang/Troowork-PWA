@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from '../../../service/people-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router } from "@angular/router";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class PtoRequestPWAComponent implements OnInit {
  enddate;
  comments;
  ptoreason;
+ isMobile: boolean;
 
  url_base64_decode(str) {
    var output = str.replace('-', '+').replace('_', '/');
@@ -78,7 +80,7 @@ export class PtoRequestPWAComponent implements OnInit {
    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
  };
 
- constructor(private PeopleServiceService: PeopleServiceService, private router: Router) { }
+ constructor(private PeopleServiceService: PeopleServiceService, private router: Router,private responsiveService: ResponsiveService) { }
 
  submitRequest() {
 
@@ -144,6 +146,12 @@ export class PtoRequestPWAComponent implements OnInit {
 
 
    var curr_date = this.convert_DT(new Date());
-
+   this.onResize();
+   this.responsiveService.checkWidth();
  }
+ onResize() {
+  this.responsiveService.getMobileStatus().subscribe(isMobile => {
+    this.isMobile = isMobile;
+  });
+}
 }
