@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
 import { Router } from '@angular/router';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-employee-welcome',
@@ -16,6 +17,7 @@ export class EmployeeWelcomeComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   Message;
+  isMobile: boolean;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -34,7 +36,7 @@ export class EmployeeWelcomeComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, private router: Router,private responsiveService: ResponsiveService) { }
 
   callCreateWO() {
     this.router.navigateByUrl('/CreateWorkOrder')
@@ -63,7 +65,14 @@ export class EmployeeWelcomeComponent implements OnInit {
       if (data.length > 0)
         this.Message = data[0].Message;
     });
+    this.onResize();
+    this.responsiveService.checkWidth();
 
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
   }
 
 }
