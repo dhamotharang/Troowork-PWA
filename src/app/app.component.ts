@@ -25,6 +25,7 @@ export class AppComponent {
   }
 
   onResize() {
+    
     this.responsiveService.checkWidth();
   }
   onScroll() {
