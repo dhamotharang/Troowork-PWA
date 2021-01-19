@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   <daypilot-modal #modal (close)="closed($event)">
   <div class="center">
       <h1 style="margin-bottom: 8%;
-      margin-top: 5%;">Create Event</h1>
+      margin-top:2%;">Create Event</h1>
       <div class="row col-md-12">
           <div class="col-md-6">
               <span><label for="scheduling" >Assignment Name: </label></span>

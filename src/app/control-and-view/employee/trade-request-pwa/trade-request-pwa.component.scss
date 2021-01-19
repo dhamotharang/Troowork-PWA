@@ -14,9 +14,9 @@ textarea {
     z-index: 1;
   }
   @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
-    .row{
-      margin-left:20rem;
-    }
+    // .row{
+    //   margin-left:20rem;
+    // }
   .employee1{
   margin-left:9rem !important;
   width:96%;
@@ -27,9 +27,9 @@ textarea {
   }
   }
   @media only screen and (min-device-width:375px) and (max-device-width:667px) and (orientation:portrait) {
-  .row{
-    margin-left:25rem;
-  }
+  // .row{
+  //   margin-left:25rem;
+  // }
   .employee1{
     margin-left:16rem !important;
     width:96%;
@@ -41,9 +41,9 @@ textarea {
   
   }
   @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:portrait) {
-    .row{
-      margin-left:25rem;
-    }
+    // .row{
+    //   margin-left:25rem;
+    // }
     .employee1{
       margin-left:23rem !important;
       width:96%;
