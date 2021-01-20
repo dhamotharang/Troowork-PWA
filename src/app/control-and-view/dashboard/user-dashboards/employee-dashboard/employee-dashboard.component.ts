@@ -68,7 +68,6 @@ export class EmployeeDashboardComponent implements OnInit {
    
   }
   onResize() {
-    debugger;
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
       this.isMobile = isMobile;
     });

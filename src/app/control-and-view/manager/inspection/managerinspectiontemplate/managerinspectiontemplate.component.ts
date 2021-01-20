@@ -427,7 +427,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
             }
             // break;
           }
-          debugger;
+         
           if (observeIndexList[j] === questionid) {
             observe = this.Scoringtype.ObservationDeficiency[questionid];
             if (observe) {
