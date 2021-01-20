@@ -1,7 +1,7 @@
 <div class="container">
 
   <div class="row " style="text-align:center;display:block;margin:auto;">
-    <h4 ><b>EDIT TRADE REQUEST</b></h4>
+    <h4><b>EDIT TRADE REQUEST</b></h4>
   </div>
   <div *ngIf="traderequestdetails">
     <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
@@ -31,18 +31,16 @@
           <tr>
             <td>
               <div *ngIf="EmployeeDetails">
-               
-                  <label style="margin-left: 0rem;">Employee
-                    Name*</label>
-                    <div class="employee1">
-                  <select
-                    style="background-color:rgb(245, 245, 245) !important; width:31% !important;margin-left:26rem; border: 1px solid rgb(245, 245, 245);"
-                    [(ngModel)]="traderequestdetails.OtherEmployeeKey">
-                    <option *ngFor="let s of EmployeeDetails" [value]="s.EmployeeKey">
-                      {{s.EmployeeName}}
-                    </option>
-                  </select>
-                </div>
+
+                <label style="margin-left: 0rem;">Employee
+                  Name*</label>
+                <!-- <div class="employee1"> -->
+                <select style="background-color:rgb(245, 245, 245) !important; width:31% !important;margin-left:60%; border: 1px solid rgb(245, 245, 245);" [(ngModel)]="traderequestdetails.OtherEmployeeKey">
+                  <option *ngFor="let s of EmployeeDetails" [value]="s.EmployeeKey">
+                    {{s.EmployeeName}}
+                  </option>
+                </select>
+                <!-- </div> -->
               </div>
             </td>
           </tr>
@@ -51,8 +49,7 @@
               <div *ngIf="EmployeeDetails">
                 <div class="empl2">
                   <label style="margin-left:0rem;">Comments</label>
-                  <textarea class="form-control" maxlength="200" [(ngModel)]="traderequestdetails.Comments" 
-                    style="background-color:white !important;   width:30%; margin-left:60%;  border: 1px solid white;" ></textarea>
+                  <textarea class="form-control" maxlength="200" [(ngModel)]="traderequestdetails.Comments" style="background-color:white !important;   width:30%; margin-left:60%;  border: 1px solid white;"></textarea>
                 </div>
               </div>
             </td>
@@ -60,8 +57,7 @@
           <tr>
             <td>
               <div>
-                <button type="button" style="text-align:center; width:98%" class="btn btn-primary"
-                  (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
+                <button type="button" style="text-align:center; width:98%" class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
 
                 <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>DELETE</b></a> -->
 
@@ -73,8 +69,7 @@
           <tr>
             <td>
               <div>
-                <button type="button" style="text-align:center; width:98%" class="btn btn-danger"
-                  (click)="basicModal.show();deletePass(traderequestdetails.trade_requestID); "><b>Delete</b></button>
+                <button type="button" style="text-align:center; width:98%" class="btn btn-danger" (click)="basicModal.show();deletePass(traderequestdetails.trade_requestID); "><b>Delete</b></button>
 
               </div>
             </td>
@@ -83,8 +78,7 @@
             <td colspan="7" class="no-data-available">No records found</td>
           </tr>
 
-          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-            aria-hidden="true">
+          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -97,10 +91,8 @@
                   Are you sure you want to delete this?
                 </div>
                 <div class="modal-footer">
-                  <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-                    (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
-                  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-                    mdbWavesEffect>No</button>
+                  <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
+                  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
                 </div>
               </div>
             </div>

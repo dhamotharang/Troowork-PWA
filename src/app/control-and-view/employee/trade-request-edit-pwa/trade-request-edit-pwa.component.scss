@@ -1,113 +1,137 @@
 textarea {
-    resize: none;
-    
-    background-color: white !important;
-    border: 1px solid white;
-  }
-  
-  
-  .bg-info {
-    background-color: #FFFFFF !important;
-    width:320% !important;
-  }
-  
-  ::ng-deep.ngx-datepicker-position-bottom-right {
-    z-index: 1;
-  }
-  @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
-    // .row{
-    //   margin-left:25rem;
-    // }
-    // .group{
-    //   margin-left:7rem;
-    //   width:95%;
-    // }
-    .employee1{
-      margin-left:9rem;
-      width:96%;
-    }
-    
-  
-  }
-  @media only screen and (min-device-width:375px) and (max-device-width:667px) and (orientation:portrait) {
-  // .row{
-  //   margin-left:30rem;
-  // }
-  // .group{
-  //   margin-left:14rem;
-  //   width:95%;
-  // }
-  .employee1{
-    margin-left:16rem;
-    width:96%;
-  }
+  resize: none;
 
- 
-  
-  }
-  @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:portrait) {
-    // .row{
-    //   margin-left:33rem;
-    // }
-    // .group{
-    //   margin-left:18rem;
-    //   width:95%;
-    // }
-    .employee1{
-      margin-left:20rem;
-      width:96%;
-    }
-  
-  
-    }
-    // @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
-    //   .picture{
-    //     width:190% !important;
-    //    margin-left:20rem;
-       
-    //   }
-    //     }
-      // @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
-      //   .picture{
-      //     width:180%;
-      //     margin-left:23rem;
-      //   }
-      // }
-      
-      
-      @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:portrait) {
-        // .picture{
-        //   width:180%;
-        //   margin-left:25rem;
-        // }
-        // .employee1{
-        //   margin-left:24rem !important;
-        //   width:96%;
-        //   }
-      
-        
-      }
-      @media only screen and (min-device-width:1024px) and (max-device-width:1366px) and (orientation:portrait) {
-        .employee1{
-          margin-left:9rem !important;
-          width:97%;
-        }
-        }
-     
-       
-         
-          @media only screen and (min-device-width:372px) and (max-device-width:812px) and (orientation:portrait) {
-       
-            .employee1{
-              margin-left:16rem !important;
-              width:96%;
-              }
-          
-            }
-            @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
-            
-            .employee1{
-            margin-left:9rem !important;
-            width:96%;
-            }
-            }
+  background-color: white !important;
+  border: 1px solid white;
+}
+
+
+.bg-info {
+  background-color: #FFFFFF !important;
+  width: 320% !important;
+}
+
+::ng-deep.ngx-datepicker-position-bottom-right {
+  z-index: 1;
+}
+
+
+// // commented by Rodney starts.
+
+// @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
+
+//   // .row{
+//   //   margin-left:25rem;
+//   // }
+//   // .group{
+//   //   margin-left:7rem;
+//   //   width:95%;
+//   // }
+//   .employee1 {
+//     margin-left: 9rem;
+//     width: 96%;
+//   }
+
+
+// }
+
+// @media only screen and (min-device-width:375px) and (max-device-width:667px) and (orientation:portrait) {
+
+//   // .row{
+//   //   margin-left:30rem;
+//   // }
+//   // .group{
+//   //   margin-left:14rem;
+//   //   width:95%;
+//   // }
+//   .employee1 {
+//     margin-left: 16rem;
+//     width: 96%;
+//   }
+
+
+
+// }
+
+// @media only screen and (min-device-width:414px) and (max-device-width:736px) and (orientation:portrait) {
+
+//   // .row{
+//   //   margin-left:33rem;
+//   // }
+//   // .group{
+//   //   margin-left:18rem;
+//   //   width:95%;
+//   // }
+//   .employee1 {
+//     margin-left: 20rem;
+//     width: 96%;
+//   }
+
+
+// }
+
+
+// commented by Rodney ends.
+
+
+// @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
+//   .picture{
+//     width:190% !important;
+//    margin-left:20rem;
+
+//   }
+//     }
+// @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
+//   .picture{
+//     width:180%;
+//     margin-left:23rem;
+//   }
+// }
+
+
+// commented by Rodney starts.
+
+
+
+// @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:portrait) {
+//   // .picture{
+//   //   width:180%;
+//   //   margin-left:25rem;
+//   // }
+//   // .employee1{
+//   //   margin-left:24rem !important;
+//   //   width:96%;
+//   //   }
+
+
+// }
+
+// @media only screen and (min-device-width:1024px) and (max-device-width:1366px) and (orientation:portrait) {
+//   .employee1 {
+//     margin-left: 9rem !important;
+//     width: 97%;
+//   }
+// }
+
+
+
+// @media only screen and (min-device-width:372px) and (max-device-width:812px) and (orientation:portrait) {
+
+//   .employee1 {
+//     margin-left: 16rem !important;
+//     width: 96%;
+//   }
+
+// }
+
+// @media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:portrait) {
+
+//   .employee1 {
+//     margin-left: 9rem !important;
+//     width: 96%;
+//   }
+// }
+
+
+
+// commented by Rodney ends.
