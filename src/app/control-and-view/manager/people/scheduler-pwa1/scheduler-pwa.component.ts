@@ -31,7 +31,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
       </div>
       <div class="form-group col-md-3">
         <label>View Range*</label>
-        <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color: #d4f4ff;">
+        <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color:white;">
           <option value="Week">Week</option>
           <option value="Month">Month</option>
         </select>
@@ -74,7 +74,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}  
             @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
               .search{
-                margin-top:-0.8rem !important;
+                margin-top:-0.5rem !important;
               }
             }
             @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:landscape) {
@@ -172,7 +172,7 @@ export class SchedulerPWAComponent implements AfterViewInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '85%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem', 'z-index': '99' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '85%',  'background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem', 'z-index': '99' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };

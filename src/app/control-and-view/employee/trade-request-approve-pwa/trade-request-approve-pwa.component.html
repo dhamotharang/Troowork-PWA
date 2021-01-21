@@ -37,7 +37,7 @@
               <div class="form-group">
                 <label style="margin-left:0rem;">Requested Employee Name</label>
                 <input type="text"
-                  style="background-color:rgb(245, 245, 245) !important; width:70% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);"
+                  style="background-color:white !important; width:70% !important;  text-align:right;  border: 1px solid white;"
                   [disabled]="!editflag" [(ngModel)]="traderequestdetailsbyID.Employeename">
               </div>
             </td>
@@ -47,7 +47,7 @@
               <div class="form-group">
                 <label style="margin-left:0rem;">Requested Employee Number</label>
                 <input type="text"
-                  style="background-color:rgb(245, 245, 245) !important; width:70% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);"
+                  style="background-color:rgb(245, 245, 245) !important; width:67% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);"
                   maxlength="19" [disabled]=!editflag [(ngModel)]="traderequestdetailsbyID.OtherEmployeeKey">
               </div>
             </td>
@@ -60,7 +60,7 @@
               <div class="form-group">
                 <label style="margin-left:0rem;">Other Employee Name</label>
                 <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetailsbyID.OtherEmployeename"
-                  style="background-color:rgb(245, 245, 245) !important; width:75% !important; text-align:right;  border: 1px solid rgb(245, 245, 245);" />
+                  style="background-color:white !important; width:73% !important; text-align:right;  border: 1px solid white;" />
               </div>
             </td>
           </tr>
@@ -91,7 +91,7 @@
                 <label style="margin-left: 0rem;">Comments</label>
                 <input type="text" [disabled]="!editflag" maxlength="200" [(ngModel)]="traderequestdetailsbyID.Comments"
                   rows="5"
-                  style="background-color:rgb(245, 245, 245) !important; width:85% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);" />
+                  style="background-color:rgb(245, 245, 245) !important; width:80% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);" />
               </div>
             </td>
           </tr>
@@ -110,14 +110,14 @@
                 <div *ngIf="traderequestdetailsbyID.StatusKey==1">
                   <div class="form-group">
                     <label style="margin-left:0rem; ">Status*</label>
-                    <div class="status1">
-                      <select style="background-color:white !important;  margin-left:26rem; width:31%;"
+                    <!-- <div class="status1"> -->
+                      <select style="background-color:white !important;  margin-left:54%; width:31%;"
                         [(ngModel)]="traderequestdetailsbyID.Status">
                         <option value="">Select</option>
                         <option value="Approved">Approved</option>
                         <option value="Rejected">Rejected</option>
                       </select>
-                    </div>
+                    <!-- </div> -->
                   </div>
                 </div>
             

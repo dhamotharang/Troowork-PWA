@@ -37,7 +37,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
         <h3 style="text-align: right"></h3>
         <div class="form-group" style="width: 85%;">
           <label>View Range*</label>
-           <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" style="background-color: #d4f4ff;">
+           <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" style="background-color:white;">
            <!-- <option value="">--Select--</option> -->
               <!-- <option value="Daily">Daily</option>-->
               <option value="Week">Week</option>
@@ -177,7 +177,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '75%', 'background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
