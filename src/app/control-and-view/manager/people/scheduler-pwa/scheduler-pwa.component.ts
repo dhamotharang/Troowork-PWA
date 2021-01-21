@@ -443,9 +443,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
       }
     },
     onBeforeTimeHeaderRender: args => {
-      // if (args.header.level === 1) {
-      //   args.header.html = "Week " + args.header.html;
-      // }
+      if (args.header.level === 1) {
+        args.header.html = "Week " + args.header.html;
+      }
 
       var dayOfWeek = args.header.start.getDayOfWeek();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -556,9 +556,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month",
         },
-        // {
-        //   "groupBy": "Week",
-        // },
+        {
+          "groupBy": "Week",
+        },
         {
           "groupBy": "Day",
           "format": "dddd"
@@ -586,9 +586,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month"
         },
-        // {
-        //   "groupBy": "Week",
-        // },
+        {
+          "groupBy": "Week",
+        },
         {
           "groupBy": "Day",
           "format": "dddd"
