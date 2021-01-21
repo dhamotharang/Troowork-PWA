@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
   value = false;
   value1;
   show= true;
+  isMobile: boolean;
 
   convert_DT(str) {
     var date = new Date(str),
@@ -89,7 +91,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute,private responsiveService: ResponsiveService) {
     this.route.params.subscribe(params => this.traderequestDetails$ = params.requestID);
   }
 
@@ -124,6 +126,8 @@ export class TradeRequestApprovePWAComponent implements OnInit {
           this.assignmentdetails = "No Assignments found";
         }
       });
+      this.onResize();
+      this.responsiveService.checkWidth();
   }
 
   goBack() {
@@ -196,5 +200,10 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     }else{
       this.show = true;
     }
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
   }
 }

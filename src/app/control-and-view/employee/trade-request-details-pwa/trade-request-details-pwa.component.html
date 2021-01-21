@@ -1,3 +1,4 @@
+<div *ngIf="isMobile">
 <div class="container">
   
   <div class="row" style="text-align:center;display:block;margin:auto;">
@@ -136,7 +137,7 @@
                 <label style="margin-left:0rem;">Other Employee Comment</label>
                 <input type="text" maxlength="200" [disabled]="!editflag"
                   [(ngModel)]="traderequestdetails.OtherEmployeeComments" rows="5"
-                  style="background-color:white !important; width:70% !important;  text-align:right; border: 1px solid white;" />
+                  style="background-color:white !important; width:67% !important;  text-align:right; border: 1px solid white;" />
               </div>
             </td>
           </tr>
@@ -252,4 +253,5 @@
     </table>
   </div>
   </div>
+</div>
 </div>

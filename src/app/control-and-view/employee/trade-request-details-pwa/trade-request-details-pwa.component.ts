@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from "ng2-datepicker";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
   show;
   show1;
   traderequestID$;
+  isMobile: boolean;
 
 
   options: DatepickerOptions = {
@@ -76,7 +78,8 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
   constructor(
     public PeopleServiceService: PeopleServiceService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private responsiveService: ResponsiveService
   ) {
     this.route.params.subscribe(
       (params) => (this.traderequestID$ = params.requestID)
@@ -122,6 +125,8 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
         this.show1 = true; this.show = false;
       }
     });
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
 
 
@@ -144,6 +149,11 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
       } else if (this.role == 'Supervisor') {
         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
       }
+    });
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
     });
   }
 

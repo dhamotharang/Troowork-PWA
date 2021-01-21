@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-trade-request-view-pwa',
@@ -20,6 +21,7 @@ editflag;
 deleteRequestKey;
 OtherEmployeedetails;
 checkEmp;
+isMobile: boolean;
 url_base64_decode(str) {
   var output = str.replace('-', '+').replace('_', '/');
   switch (output.length % 4) {
@@ -37,7 +39,7 @@ url_base64_decode(str) {
   return window.atob(output);
 }
 
-constructor(private PeopleServiceService: PeopleServiceService) { }
+constructor(private PeopleServiceService: PeopleServiceService ,private responsiveService: ResponsiveService) { }
 
 deletePass(key) {
   this.deleteRequestKey = key;
@@ -66,6 +68,13 @@ ngOnInit() {
   this.checkEmp=parseInt(this.toServeremployeekey);
   this.PeopleServiceService.setgetTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
     this.requestdetails = data;
+  });
+  this.onResize();
+   this.responsiveService.checkWidth();
+}
+onResize() {
+  this.responsiveService.getMobileStatus().subscribe(isMobile => {
+    this.isMobile = isMobile;
   });
 }
 }

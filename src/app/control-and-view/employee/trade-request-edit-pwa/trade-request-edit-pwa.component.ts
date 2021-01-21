@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
   OtherEmployeedetails;
   EmployeeDetails;
   deleteRequestKey;
+  isMobile: boolean;
 
 
   options: DatepickerOptions = {
@@ -65,7 +67,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute ,private responsiveService: ResponsiveService) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
 
   submitEditedRequest() {
 
@@ -140,6 +142,8 @@ export class TradeRequestEditPWAComponent implements OnInit {
 
       this.traderequestdetails = data[0];
     });
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
 
   // goBack() {
@@ -172,5 +176,10 @@ export class TradeRequestEditPWAComponent implements OnInit {
           }
         });
       });
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
   }
 }

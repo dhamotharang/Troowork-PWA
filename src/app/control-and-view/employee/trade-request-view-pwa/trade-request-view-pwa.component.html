@@ -2,9 +2,10 @@
   <div class="row col-md-12 ">
     <h4 style="margin-left: 40%;">VIEW TRADE REQUEST</h4>
   </div> -->
-  <div  style="text-align:center;"> 
+  <div *ngIf="isMobile">
+  <!-- <div  style="text-align:center;"> 
     <span><h4><b>VIEW TRADE</b></h4></span>
-  </div>
+  </div> -->
  
 <div *ngFor="let x of requestdetails">
   <div class="content col-md-12">
@@ -80,3 +81,4 @@
           </div>
         </div>
      -->
+    </div>
