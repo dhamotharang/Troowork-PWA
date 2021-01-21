@@ -5,12 +5,12 @@
 <!-- <div class="logout">
     <a (click)="icon"><img src="../../../../../assets/icons/logout.png" routerLink="/"></a>
   </div> -->
-
-<div style="text-align:center;">
+  <div *ngIf="isMobile">
+<!-- <div style="text-align:center;">
   <span>
     <h4><b>VIEW PTO</b></h4>
   </span>
-</div>
+</div> -->
 <div *ngFor="let x of requestdetails">
 
   <div class="content col-md-12">
@@ -102,3 +102,4 @@
     </div>
   </div>
 </div>
+  </div>

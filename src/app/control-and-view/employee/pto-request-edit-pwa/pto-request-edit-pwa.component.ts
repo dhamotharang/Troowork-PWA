@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 @Component({
   selector: 'app-pto-request-edit-pwa',
@@ -19,6 +20,7 @@ export class PtoRequestEditPWAComponent implements OnInit {
    OrganizationID: Number;
    deleteRequestKey;
    requestdetails;
+   isMobile: boolean;
   
    // editflag;
    ptorequestID$;
@@ -65,7 +67,7 @@ export class PtoRequestEditPWAComponent implements OnInit {
      return window.atob(output);
    }
  
-   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute) {
+   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService) {
      this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
    }
    submitEditedRequest() {
@@ -178,7 +180,14 @@ export class PtoRequestEditPWAComponent implements OnInit {
     //  this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
     //   this.requestdetails = data;
     // });
+    this.onResize();
+    this.responsiveService.checkWidth();
    }
+   onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
+    });
+  }
  }
  
  

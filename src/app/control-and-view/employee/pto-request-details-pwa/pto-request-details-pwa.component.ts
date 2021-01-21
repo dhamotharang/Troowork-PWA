@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
   requestdetails;
   editflag;
   ptorequestID$;
+  isMobile: boolean;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -64,7 +66,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
 
@@ -106,6 +108,13 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
 
     this.PeopleServiceService. setgetRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
+    });
+    this.onResize();
+    this.responsiveService.checkWidth();
+  }
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
     });
   }
 }

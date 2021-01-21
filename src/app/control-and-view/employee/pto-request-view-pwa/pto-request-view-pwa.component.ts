@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
+import { ResponsiveService } from 'src/app/service/responsive.service';
 @Component({
   selector: 'app-pto-request-view-pwa',
   templateUrl: './pto-request-view-pwa.component.html',
@@ -15,6 +16,7 @@ export class PtoRequestViewPWAComponent implements OnInit {
  OrganizationID: Number;
  requestdetails;
  editflag;
+ isMobile: boolean;
 //  deleteRequestKey;
   router: any;
 
@@ -35,7 +37,7 @@ export class PtoRequestViewPWAComponent implements OnInit {
    return window.atob(output);
  }
 
- constructor(private PeopleServiceService: PeopleServiceService) { }
+ constructor(private PeopleServiceService: PeopleServiceService,private responsiveService: ResponsiveService) { }
 //  deletePass(key) {
 //    this.deleteRequestKey = key;
 
@@ -63,6 +65,8 @@ export class PtoRequestViewPWAComponent implements OnInit {
    this.PeopleServiceService. setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
      this.requestdetails = data;
    });
+   this.onResize();
+   this.responsiveService.checkWidth();
  }
 //  PtoDetails(request_id){
 //   this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestDetailsPWA', request_id] } }]);
@@ -70,4 +74,9 @@ export class PtoRequestViewPWAComponent implements OnInit {
 //  PtoDetailsEdit(request_id){
 //   this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestEditPWA', request_id] } }]);
 //  }
+onResize() {
+  this.responsiveService.getMobileStatus().subscribe(isMobile => {
+    this.isMobile = isMobile;
+  });
+}
 }
