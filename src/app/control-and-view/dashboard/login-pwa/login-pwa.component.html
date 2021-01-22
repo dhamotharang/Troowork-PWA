@@ -86,48 +86,56 @@
 </div>
 
 <!-- mobile screen page begins here -->
-<div id="header-mobile" *ngIf="isMobile" >
-  <div class=" col-md-4 top-margin ">
-      <!-- <img src="assets/img/TrooWork-sticker-str.png" class="trooworklogo" /> -->
-      <a class="navbar-brand" href="http://troodontechnology.com/">
-          <div class="img">
-          <img src="assets/img/TROOWORK.png" style="width:10rem; margin-left:3rem">
-          </div>
-      </a>
-      <form [formGroup]="loginForm">
-          <div class="md-form">
-              <i class="fa fa-user-circle prefix grey-text"></i>
-              <input type="text" formControlName="userName" id="defaultForm-email" class="form-control" #userName >
-              <label for="defaultForm-email">User Name</label>
-          </div>
-          <div class=" mt-5 ">
-              <div class="md-form">
-                  <i class="fa fa-lock prefix grey-text"></i>
-                  <input type="password" formControlName="passWord" id="defaultForm-pass" class="form-control"
-                      #passWord >
-                  <label for="defaultForm-pass">Password</label>
-              </div>
-          </div>
-          <div class=" mt-5 md-form">
-              <i class="fa fa-university prefix grey-text"></i>
-              <input type="text" formControlName="tenantID" id="defaultForm-TenantID" class="form-control" #tenantID>
-              <label for="defaultForm-TenantID">Tenant ID</label>
-          </div>
+<div id="header-mobile" class="container" *ngIf="isMobile">
+    <div>
+        <!-- <img src="assets/img/TrooWork-sticker-str.png" class="trooworklogo" /> -->
+        <a  href="http://troodontechnology.com/">
 
-          <div class="text-center">
-              <div class="login">
-              <a><input type="submit" mdbBtn color="default"
-                      (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
-                      mdbWavesEffect value="Login"></a>
-              </div>
-          </div>
-          <div class=" mt-5 md-form">
-              <!-- <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
-              <a [routerLink]="['UserWorkRequest',924,1464,4433,2233,223,134593]" class="btn btn-primary"><b>User Work Request</b></a> -->
-          </div>
-      </form>
- 
+            <img src="assets/img/TROOWORK2.png" style=" display:block; margin:auto;">
+
+        </a>
+
+    </div>
+
+    <form [formGroup]="loginForm">
+        <div class="md-form">
+            <i class="fa fa-user-circle prefix grey-text"></i>
+            <input type="text" formControlName="userName" id="defaultForm-email" class="form-control" #userName>
+            <label for="defaultForm-email">User Name</label>
+        </div>
+        <div class=" mt-5 ">
+            <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="{{inputpassword}}" formControlName="passWord" id="defaultForm-pass" class="form-control"
+                    #passWord>
+                <label for="defaultForm-pass">Password</label>
+
+            </div>
+        </div>
+        <div class=" mt-5 md-form">
+            <i class="fa fa-university prefix grey-text"></i>
+            <input type="text" formControlName="tenantID" id="defaultForm-TenantID" class="form-control" #tenantID>
+            <label for="defaultForm-TenantID">Tenant ID</label>
+        </div>
+
+        <div class="password" style="margin:auto; text-align:center;">
+            <input type="checkbox" id="checkbox" (click)="showPassword()">
+            <label for="checkbox" *ngIf="!passwordCheckbox">Hide password</label>
+            <label for="checkbox" *ngIf="passwordCheckbox">Show password</label>
+        </div>
+        <div class="text-center">
+            <div class="login">
+                <a><input type="submit" mdbBtn color="default"
+                        (click)="loginFn(userName.value,passWord.value,tenantID.value)" sclass="waves-light"
+                        mdbWavesEffect value="Login"></a>
+            </div>
+
+        </div>
+        <!-- <div class=" mt-5 md-form">
+                <a [routerLink]="['Reviews',100,1,223]" class="btn btn-primary"><b>Review</b></a>
+                <a [routerLink]="['UserWorkRequest',924,1464,4433,2233,223,134593]" class="btn btn-primary"><b>User Work Request</b></a>
+            </div> -->
+    </form>
+
+
 </div>
-</div>
-
-

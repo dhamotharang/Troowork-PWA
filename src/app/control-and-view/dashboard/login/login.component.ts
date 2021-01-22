@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   isAuthenticated: boolean;
   rev_orgid: Number = 103;
   room_key: Number = 100;
+  popup:boolean = false;
   
   isMobile: boolean;
  
@@ -46,7 +47,10 @@ export class LoginComponent implements OnInit {
   }
 
   loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router,private responsiveService: ResponsiveService) {
-
+    // loginFn() {
+    //   this.popup = true;
+  
+    // }
     this.loginForm = fb.group({
       userName: ['', Validators.required],
       tenantID: ['', Validators.required],
@@ -67,6 +71,7 @@ export class LoginComponent implements OnInit {
         .login(userName, passWord, tenantID)
         .subscribe((data: any[]) => {
           this.tokenobj = data;
+          console.log(data);
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
@@ -74,7 +79,12 @@ export class LoginComponent implements OnInit {
             window.localStorage.removeItem('employeekey');
             delete localStorage.employeekey;
             alert("Invalid login credentials. Please enter correct credentials to login...");
-          } else {
+
+          } else if(this.tokenobj=="Wrong user or password"){
+            alert("Invalid login credentials. Please enter correct credentials to login...");
+          }
+          else {
+
             this.isAuthenticated = true;
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
@@ -178,6 +188,9 @@ export class LoginComponent implements OnInit {
       this.inputpassword = 'password';
       this.passwordCheckbox = true;
     }
+  }
+  stayhere(){
+    this.popup = false;
   }
  
   }

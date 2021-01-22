@@ -64,6 +64,8 @@ export class LoginPWAComponent implements OnInit {
         .login(userName, passWord, tenantID)
         .subscribe((data: any[]) => {
           this.tokenobj = data;
+          console.log(data);
+
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
@@ -71,7 +73,10 @@ export class LoginPWAComponent implements OnInit {
             window.localStorage.removeItem('employeekey');
             delete localStorage.employeekey;
             alert("Invalid login credentials. Please enter correct credentials to login...");
-          } else {
+          } else if(this.tokenobj=="Wrong user or password"){
+            alert("Invalid login credentials. Please enter correct credentials to login...");
+          }
+           else {
             this.isAuthenticated = true;
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;

@@ -19,7 +19,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
     <div class="search">
   <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png"style= "width:6.5%;height:6.5%;border-radius:6.5%; margin-left:3rem;
       background-color: transparent;
-      margin-top:-4rem;
+      margin-top:-5rem;
         border-color: transparent;
         box-shadow: none;"></a>
         </div>
@@ -27,7 +27,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
     <div id = "popupSection"*ngIf="filterpopupAppear == true;disabled">
      
       <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
-      <div class ="row">
+      
         <div class="form-group col-md-3">
           <label>Date*</label>
           <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
@@ -41,8 +41,8 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             <option value="Month">Month</option>
           </select>
         </div>
-      </div>
-        <div class= "row">
+   
+        
         <div class="form-group col-md-3">
           <label>Search Employee:</label>
           <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
@@ -55,7 +55,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
           &nbsp;
           <button (click)="applyFilter()">Apply</button>
         </div>
-        </div>
+      
     
     </div>
     </div>
@@ -100,7 +100,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             }
             @media only screen and (min-device-width:375px) and (max-device-width:812px) and (orientation:landscape) {
               .search{
-                margin-top:-0.6rem;
+                margin-top:-0.4rem;
               }
             }
   `]

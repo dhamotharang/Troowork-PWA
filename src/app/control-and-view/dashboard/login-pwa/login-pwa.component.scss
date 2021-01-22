@@ -106,10 +106,9 @@ and open the template in the editor.
 }
  
 
-// commented by Rodney starts.
 
 // @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
-   
+  
 // }
 
 // @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
@@ -122,8 +121,10 @@ and open the template in the editor.
 //         .login{
 //             margin-left:21rem;
 //         }
-        
-    
+//         .row{
+//             margin-left:120%;
+//         }
+   
     
 // }
 // @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:landscape) {
@@ -208,11 +209,11 @@ and open the template in the editor.
 //         .login{
 //             margin-left:32rem !important;
 //         }
+//         .row{
+//             margin-left:170%;
+//         }
+    
 //     }
-
-
-// commented by Rodney ends.
-
 // @media only screen and (min-device-width:1024px) and (max-device-width: 1366px) and (orientation:portrait) {
 //     .img{
 //         margin-left:21rem;
