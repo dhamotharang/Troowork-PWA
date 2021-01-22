@@ -1,7 +1,7 @@
 <div *ngIf="isMobile">
 <div class="container">
   
-  <div class="row" style="text-align:center;display:block;margin:auto;">
+  <div class="row" style="display:block;margin:auto;">
     <h4 ><b>TRADE REQUEST DETAILS</b></h4>
   </div>
     <div *ngIf="traderequestdetails">
@@ -37,7 +37,7 @@
               <div class="form-group">
                 <label style="margin-left:0rem;">Requested Employee Name</label>
                 <input type="text"
-                  style="background-color:rgb(245, 245, 245) !important; width:70% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);"
+                  style="background-color:rgb(245, 245, 245) !important; width:67% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);"
                   [disabled]="!editflag" [(ngModel)]="traderequestdetails.Employeename">
               </div>
             </td>
@@ -47,7 +47,7 @@
               <div class="form-group">
                 <label style="margin-left:0rem;">Other Employee Name</label>
                 <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeename"
-                  style="background-color:white !important; width:73% !important; text-align:right;  border: 1px solid white;" />
+                  style="background-color:white !important; width:68% !important; text-align:right;  border: 1px solid white;" />
               </div>
             </td>
           </tr>
@@ -70,7 +70,7 @@
                 <label style="margin-left: 0rem;">Comments</label>
                 <input type="text" [disabled]="!editflag" maxlength="200" [(ngModel)]="traderequestdetails.Comments"
                   rows="5"
-                  style="background-color:white !important; width:80% !important;  text-align:right;  border: 1px solid white;" />
+                  style="background-color:white !important; width:75% !important;  text-align:right;  border: 1px solid white;" />
               </div>
             </td>
           </tr>
@@ -137,7 +137,7 @@
                 <label style="margin-left:0rem;">Other Employee Comment</label>
                 <input type="text" maxlength="200" [disabled]="!editflag"
                   [(ngModel)]="traderequestdetails.OtherEmployeeComments" rows="5"
-                  style="background-color:white !important; width:67% !important;  text-align:right; border: 1px solid white;" />
+                  style="background-color:white !important; width:65% !important;  text-align:right; border: 1px solid white;" />
               </div>
             </td>
           </tr>
@@ -156,7 +156,7 @@
                 <div class="form-group">
                   <label style="margin-left:0rem; ">Approver</label>
                   <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverName"
-                    style="background-color:white !important; width:83% !important;  text-align:right;  border: 1px solid white;" />
+                    style="background-color:white !important; width:77% !important;  text-align:right;  border: 1px solid white;" />
                 </div>
                 </div>
               </td>
@@ -181,7 +181,7 @@
                   <label style="margin-left:0rem;">Approver Comments</label>
                   <input type="text" maxlength="200" [disabled]="!editflag"
                     [(ngModel)]="traderequestdetails.ApproverComments" rows="5"
-                    style="background-color:white !important; width:80% !important;  text-align:right;  border: 1px solid white;" />
+                    style="background-color:white !important; width:77% !important;  text-align:right;  border: 1px solid white;" />
                 </div>
                 </div>
               </td>
