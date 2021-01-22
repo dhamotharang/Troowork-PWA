@@ -11,6 +11,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
   styleUrls: ['./trade-request-approve-pwa.component.scss']
 })
 export class TradeRequestApprovePWAComponent implements OnInit {
+////////Author :  Amritha//////
 
   role: String;
   name: String;

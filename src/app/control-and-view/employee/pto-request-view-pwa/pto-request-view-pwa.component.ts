@@ -7,7 +7,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
   styleUrls: ['./pto-request-view-pwa.component.scss']
 })
 export class PtoRequestViewPWAComponent implements OnInit {
- ////////Author :  Aswathy//////
+ ////////Author :  Amritha//////
     
  role: String;
  name: String;

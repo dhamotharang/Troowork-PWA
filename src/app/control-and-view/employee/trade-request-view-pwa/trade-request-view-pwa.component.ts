@@ -9,7 +9,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 })
 export class TradeRequestViewPWAComponent implements OnInit {
 
-////////Author :  Aswathy//////
+////////Author :  Amritha//////
     
 role: String;
 name: String;

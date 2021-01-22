@@ -11,7 +11,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 })
 export class PtoRequestEditPWAComponent implements OnInit {
 
-   ////////Author :  Aswathy//////
+   ////////Author :  Amritha//////
 
    role: String;
    name: String;

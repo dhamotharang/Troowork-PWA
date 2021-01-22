@@ -69,7 +69,7 @@ export class SupervisorDashboardComponent implements OnInit {
   openNav() {
     document.getElementById("mySidenav").style.width = "300px";
     // document.getElementById("main").style.marginLeft = "250px";
-    document.body.style.backgroundColor = "rgba(189, 238, 247, 0.8)";
+    document.body.style.backgroundColor = "#EBFAFF !important";
     
   }
   

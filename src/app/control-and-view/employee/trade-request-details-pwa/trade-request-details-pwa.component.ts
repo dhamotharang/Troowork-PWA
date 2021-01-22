@@ -11,7 +11,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
   styleUrls: ['./trade-request-details-pwa.component.scss']
 })
 export class TradeRequestDetailsPWAComponent implements OnInit {
-  ////////Author :  Aswathy//////
+  ////////Author :  Amritha//////
 
   role: String;
   name: String;
