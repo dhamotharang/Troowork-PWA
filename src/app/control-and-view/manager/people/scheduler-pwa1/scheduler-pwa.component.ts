@@ -14,51 +14,47 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
   selector: 'schedulerPWA-component',
   template: `
   <img [hidden]="!loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
-<div [hidden]="loading">
-  <div style="margin-top:-1px;margin-bottom:2%;">
-  <div class="search">
-  <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png"style= "width:6.5%;height:6.5%;border-radius:6.5%; margin-left:3rem;
-      background-color: transparent;
-      margin-top:-4rem;
-        border-color: transparent;
-        box-shadow: none;"></a>
+  <div [hidden]="loading">
+      <div style="margin-top:-1px;margin-bottom:-2%;">
+          <div class="search">
+              <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png" style="width:6.5%;height:6.5%;border-radius:6.5%; margin-left:3rem;background-color: transparent;margin-top:-4.5rem;border-color: transparent;box-shadow: none;"></a>
+          </div>
+          <div id="popupSection" *ngIf="filterpopupAppear == true;disabled">
+              <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
+                  <div class="row">
+                      <div class="form-group col-md-3">
+                          <label>Date*</label>
+                          <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
+                      </div>
+                      <div class="form-group col-md-3">
+                          <label>View Range*</label>
+                          <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color:white;">
+                              <option value="Week">Week</option>
+                              <option value="Month">Month</option>
+                          </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                          <label>Search Employee:</label>
+                          <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
+                          </ng-multiselect-dropdown>
+                      </div>
+                      <div class="form-group col-md-3">
+                          <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
+                          &nbsp;
+                          <button (click)="clearFilter()">Clear</button>
+                          &nbsp;
+                          <button (click)="applyFilter()">Apply</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-  <div id = "popupSection"*ngIf="filterpopupAppear == true;disabled">
-        <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
-      <div class="form-group col-md-3">
-        <label>Date*</label>
-        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
-      </div>
-      <div class="form-group col-md-3">
-        <label>View Range*</label>
-        <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color:white;">
-          <option value="Week">Week</option>
-          <option value="Month">Month</option>
-        </select>
-        </div>
-
-      <div class="form-group col-md-3">
-        <label>Search Employee:</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
-        </ng-multiselect-dropdown>
-      </div>
-      <div class="form-group col-md-3">
-        <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
-        &nbsp;
-        <button (click)="clearFilter()">Clear</button>
-        &nbsp;
-        <button (click)="applyFilter()">Apply</button>
-      </div>
-    </div>
+      <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
   </div>
-  </div>
-  
-  <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
-</div>
+  <create-dialog #create (close)="createClosed($event)"></create-dialog>
+  <edit-dialog #edit (close)="editClosed($event)"></edit-dialog>
+  `,
 
-<create-dialog #create (close)="createClosed($event)"></create-dialog>
-<edit-dialog #edit (close)="editClosed($event)"></edit-dialog>
-`,
   styles: [`
   
    p, body, td { font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 10pt; }
@@ -72,6 +68,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             .main { padding: 5px; margin-top: 5px; }
             .bg-info { background-color: #FFFFFF !important; }
             ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}  
+            ::ng-deep.scheduler_default_main{border:none;}
             @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
               .search{
                 margin-top:-0.5rem !important;
@@ -91,13 +88,13 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
               .search{
                 margin-top:-0.6rem;
               }
-            }   
+            }
   `]
 })
 export class SchedulerPWAComponent implements AfterViewInit {
   filterpopupAppear: boolean;
   isMobile: boolean;
-  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService,private responsiveService: ResponsiveService) {
+  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService) {
     this.date = new Date;
     this.Range = 'Week';
   }
@@ -172,7 +169,7 @@ export class SchedulerPWAComponent implements AfterViewInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '85%',  'background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem', 'z-index': '99' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '85%', 'background-color': 'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem', 'z-index': '99' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -249,8 +246,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
     // },
     // new features added.... ends
     scale: "Day",
-    cellDuration: 120,
-    cellWidth: 140,
+    cellDuration: 100,
+    cellWidth: 128,
     eventHeight: 30,
     days: DayPilot.Date.today().daysInMonth(),
     startDate: DayPilot.Date.today(),
@@ -273,8 +270,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
       }
     }),
     timeRangeSelectedHandling: 'Hold',
-    tapAndHoldTimeout : 200,
-    eventTapAndHoldHandling : 'ContextMenu',
+    tapAndHoldTimeout: 200,
+    eventTapAndHoldHandling: 'ContextMenu',
     contextMenuResource: this.menu,
     contextMenu: new DayPilot.Menu({
       onShow: args => {
@@ -431,10 +428,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
       }
     },
     onBeforeTimeHeaderRender: args => {
-      if (args.header.level === 1) {
-        args.header.html = "Week " + args.header.html;
-      }
-
+      // if (args.header.level === 1) {
+      //   args.header.html = "Week " + args.header.html;
+      // }
       var dayOfWeek = args.header.start.getDayOfWeek();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         if (args.header.level > 1) {
@@ -481,7 +477,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-   console.log("hi");
     this.loading = true;
 
     this.SchedulingService
@@ -519,8 +514,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
       .subscribe((data: any[]) => {
         this.empList = data;
       });
-      this.onResize();
-      this.responsiveService.checkWidth();
+    this.onResize();
+    this.responsiveService.checkWidth();
 
   }
 
@@ -544,9 +539,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month",
         },
-        {
-          "groupBy": "Week",
-        },
+        // {
+        //   "groupBy": "Week",
+        // },
         {
           "groupBy": "Day",
           "format": "dddd"
@@ -558,8 +553,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 140;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
       this.config.allowMultiSelect = true;
       this.config.eventClickHandling = "Select";
       this.config.days = DayPilot.Date.today().daysInMonth();
@@ -574,9 +569,9 @@ export class SchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month"
         },
-        {
-          "groupBy": "Week",
-        },
+        // {
+        //   "groupBy": "Week",
+        // },
         {
           "groupBy": "Day",
           "format": "dddd"
@@ -587,8 +582,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 140;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
       this.config.days = 7;
       this.config.startDate = this.convert_DT(this.date);
       this.config.allowMultiSelect = true;
@@ -685,5 +680,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
       this.isMobile = isMobile;
     });
   }
+
 }
 

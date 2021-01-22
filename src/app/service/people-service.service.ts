@@ -1420,7 +1420,7 @@ export class PeopleServiceService {
       StartDate: StartDate,
       EndDate: EndDate,
       Comments: Comments,
-      ptoReason: reason,
+      Reason: reason,
       EmpKey: empKey
     };
     return this.http.post(url, obj);
