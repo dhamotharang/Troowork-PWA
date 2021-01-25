@@ -1,5 +1,6 @@
+
 <div *ngIf="isMobile">
-  <div class="container">
+  <div class="container col-md-12 col-lg-12 col-sm-12 col-xs-12">
     <div class="row" style="display:block;margin:auto;">
       <h4><b> CREATE PTO REQUEST</b></h4>
     </div>
@@ -12,12 +13,12 @@
               <!-- <div style="margin-left: 1.5rem;margin-right: 1.5rem;;margin-top: 2%" class="row bg-info col-md-12"> -->
 
 
-              <div class="date" style="margin-top:0rem">
-                <label style="margin-top:0rem;"> Start Date*</label>
-                <label style=" float:right; width:40%; ">
-                  <ng-datepicker [options]="options" background-color="white!important" [(ngModel)]="startdate">
+              <div  class="row "  style="margin-top:0rem">
+                <div class=" col " > <label>Start Date*</label></div>
+                <div class="date col-8 " >
+                  <ng-datepicker   [options]="options" background-color="white!important" [(ngModel)]="startdate">
                   </ng-datepicker>
-                </label>
+                </div>
               </div>
             </td>
           </tr>
@@ -25,7 +26,7 @@
             <td>
               <div class="date" style="margin-top:0rem">
                 <label> End Date*</label>
-                <label style="float:right; width:40%; ">
+                <label style="float:right; width:20%; ">
                   <ng-datepicker [options]="options1" [(ngModel)]="enddate"></ng-datepicker>
                 </label>
               </div>
