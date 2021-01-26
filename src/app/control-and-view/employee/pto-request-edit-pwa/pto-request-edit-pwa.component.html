@@ -1,107 +1,107 @@
 <div *ngIf="isMobile">
-<div class="container">
-  
-  <div class="row " style="display:block;margin:auto;">
-    <h4 ><b>EDIT PTO REQUEST</b></h4>
-  </div>
-  <div *ngIf="requestdetails">
-    <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
-      <table class="table table-striped table-bordered">
-        <tbody>
-          <tr>
-            <td>
+  <div class="container col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div class="row " style="display:block;margin:auto;">
+      <h4><b>EDIT PTO REQUEST</b></h4>
+    </div>
+    <div *ngIf="requestdetails">
+      <div class="col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 1rem">
+        <table class="table table-striped table-bordered">
+          <tbody>
+            <tr>
+              <td>
 
-              <div class="form-group">
-                <label style="margin-left:0rem;">Start Date*</label>
-                <label style=" float:right; width:40%; ">
-                  <ng-datepicker [options]="options" [(ngModel)]="requestdetails.StartDate"></ng-datepicker>
-                </label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="form-group">
-                <label style="margin-left: 0rem;">End Date*</label>
-                <label style="float:right; width:40%; ">
-                  <ng-datepicker [options]="options" [(ngModel)]="requestdetails.EndDate"></ng-datepicker>
-                </label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="form-group">
-                <label style="margin-left: 0rem;"> PTO Remaining</label>
-                <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75"
-                  style="background-color:rgb(245, 245, 245) !important; width:30% !important; margin-left:60%;  border: 1px solid rgb(245, 245, 245);" />
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              <div class="form-group">
-                <label style="margin-left:0rem;">Comments</label>
-                <textarea class ="form-control" placeholder="Comments" maxlength="200" [(ngModel)]="requestdetails.Comments" 
-                  style="resize: none;background-color:white !important; width:30%; margin-left:60%;  border: 1px solid white;" ></textarea>
-              </div>
-            </td>
-          </tr>
-
-
-
-          <tr>
-            <td>
-              <div>
-                <button type="button" style="text-align:center; width:98%" class="btn btn-primary"
-                  (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
-
-                <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>DELETE</b></a> -->
-
-
-
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div>
-                <button type="button" style="text-align:center; width:98%"
-                  class="btn btn-danger" (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
-               
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="requestdetails?.length == 0">
-            <td colspan="7" class="no-data-available">No records found</td>
-          </tr>
-
-          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                  <h4 class="modal-title w-100" id="myModalLabel"></h4>
+                <div>
+                  <div> <label>Start Date*</label></div>
+                  <div class="date">
+                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.StartDate"></ng-datepicker>
+                  </div>
                 </div>
-                <div class="modal-body">
-                  Are you sure you want to delete this?
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <div> <label>End Date*</label></div>
+                  <div class="date">
+                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.EndDate"></ng-datepicker>
+                  </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-                    (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
-                  <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-                    mdbWavesEffect>No</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="row">
+                  <div class="col">
+                    <label>PTO Remaining</label>
+                  </div>
+                  <div class="col-8">
+                    <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75" style="background-color:rgb(245, 245, 245) !important; width:100%; border: 1px solid rgb(245, 245, 245);" />
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="row">
+                  <div class="col-4">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-8">
+                    <textarea class="form-control" placeholder="Comments" maxlength="200" [(ngModel)]="requestdetails.Comments" style="resize: none;background-color:white !important; width:100%; border: 1px solid white;"></textarea>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+
+
+            <tr>
+              <td>
+                <div>
+                  <button type="button" style="text-align:center; width:98%" class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
+
+                  <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>DELETE</b></a> -->
+
+
+
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <button type="button" style="text-align:center; width:98%" class="btn btn-danger" (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
+
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="requestdetails?.length == 0">
+              <td colspan="7" class="no-data-available">No records found</td>
+            </tr>
+
+            <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title w-100" id="myModalLabel"></h4>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to delete this?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
+                    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </div>

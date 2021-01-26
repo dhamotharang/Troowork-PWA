@@ -1,5 +1,5 @@
 <div *ngIf="isMobile">
-  <div class="container">
+  <div class="container col-md-12 col-lg-12 col-sm-12 col-xs-12">
 
     <div class="row" style="display:block;margin:auto;">
       <h4><b>TRADE REQUEST DETAILS</b></h4>
@@ -11,50 +11,64 @@
 
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Start Date</label>
-                  <label style=" float:right; width:40%; ">
+                <div>
+                  <div>
+                    <label>Start Date</label>
+                  </div>
+                  <div>
                     <ng-datepicker [options]="options" [(ngModel)]="traderequestdetails.StartDate">
                     </ng-datepicker>
-                  </label>
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left: 0rem;">End Date</label>
-                  <label style=" float:right;  width:40%; ">
+                <div>
+                  <div>
+                    <label>End Date</label>
+                  </div>
+                  <div>
                     <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.EndDate">
                     </ng-datepicker>
-                  </label>
+                  </div>
                 </div>
               </td>
             </tr>
 
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Requested Employee Name</label>
-                  <input type="text" style="background-color:rgb(245, 245, 245) !important; width:67% !important;  text-align:right;  border: 1px solid rgb(245, 245, 245);" [disabled]="!editflag" [(ngModel)]="traderequestdetails.Employeename">
+                <div>
+                  <div>
+                    <label>Requested Employee Name</label>
+                  </div>
+                  <div>
+                    <input type="text" style="background-color:rgb(245, 245, 245) !important; width:100% !important; border: 1px solid rgb(245, 245, 245);" [disabled]="!editflag" [(ngModel)]="traderequestdetails.Employeename">
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Other Employee Name</label>
-                  <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeename" style="background-color:white !important; width:68% !important; text-align:right;  border: 1px solid white;" />
+                <div>
+                  <div>
+                    <label>Other Employee Name</label>
+                  </div>
+                  <div>
+                    <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeename" style="background-color:white !important; width:100% !important; border: 1px solid white;" />
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Submitted Date</label>
-                  <label style=" float:right;  width:40%; ">
+                <div>
+                  <div>
+                    <label>Submitted Date</label>
+                  </div>
+                  <div>
                     <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.SubmittedDate"></ng-datepicker>
-                  </label>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -62,37 +76,47 @@
 
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left: 0rem;">Comments</label>
-                  <input type="text" [disabled]="!editflag" maxlength="200" [(ngModel)]="traderequestdetails.Comments" rows="5" style="background-color:white !important; width:75% !important;  text-align:right;  border: 1px solid white;" />
+                <div class="row">
+                  <div class="col-4">
+                    <label>Comments</label>
+                  </div>
+                  <div class="col-8">
+                    <input type="text" [disabled]="!editflag" maxlength="200" [(ngModel)]="traderequestdetails.Comments" rows="5" style="background-color:white !important; width:100% !important;  text-align:right;  border: 1px solid white;" />
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Status</label>
-                  <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.RequestStatus" style="background-color:rgb(245, 245, 245) !important; width:85% !important;  text-align:right; border: 1px solid rgb(245, 245, 245);" />
+                <div class="row">
+                  <div class="col">
+                    <label>Status</label>
+                  </div>
+                  <div class="col-9">
+                    <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.RequestStatus" style="background-color:rgb(245, 245, 245) !important; width:100% !important; border: 1px solid rgb(245, 245, 245);" />
+                  </div>
                 </div>
               </td>
             </tr>
 
             <tr>
               <td>
-
-                <label class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;"><b>1st Approval
-                    Details</b></label>
+                <div class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;">
+                  <label><b>1st Approval Details</b></label>
+                </div>
               </td>
             </tr>
 
             <tr>
               <td>
                 <div>
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Other Employee Status Approved Date</label>
-                    <label style=" float:right;  width:40%; ">
+                  <div>
+                    <div>
+                      <label>Other Employee Status Approved Date</label>
+                    </div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeStatusDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -100,22 +124,26 @@
             <tr>
               <td>
                 <div>
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Other Employee Approved Start Date</label>
-                    <label style=" float:right;  width:40%; ">
+                  <div>
+                    <div>
+                      <label>Other Employee Approved Start Date</label>
+                    </div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeApprovedStartDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
             </tr>
             <tr>
               <td>
                 <div>
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Other Employee Approved End Date</label>
-                    <label style=" float:right;  width:40%; ">
+                  <div>
+                    <div>
+                      <label>Other Employee Approved End Date</label>
+                    </div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeApprovedEndDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -123,27 +151,12 @@
 
             <tr>
               <td>
-                <div class="form-group">
-                  <label style="margin-left:0rem;">Other Employee Comment</label>
-                  <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeComments" rows="5" style="background-color:white !important; width:65% !important;  text-align:right; border: 1px solid white;" />
-                </div>
-              </td>
-            </tr>
-            <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-              <td>
-                <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <label class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;"><b>2nd Approval
-                      Details</b></label>
-                </div>
-              </td>
-            </tr>
-
-            <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-              <td>
-                <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <div class="form-group">
-                    <label style="margin-left:0rem; ">Approver</label>
-                    <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverName" style="background-color:white !important; width:77% !important;  text-align:right;  border: 1px solid white;" />
+                <div class="row">
+                  <div class="col-4">
+                    <label>Other Employee Comment</label>
+                  </div>
+                  <div class="col-8">
+                    <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeeComments" rows="5" style="background-color:white !important; width:100% !important;  text-align:right; border: 1px solid white;" />
                   </div>
                 </div>
               </td>
@@ -151,11 +164,33 @@
             <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Status Updated Date</label>
-                    <label style="float:right; width:40%; ">
+                  <div class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;">
+                    <label><b>2nd Approval Details</b></label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+              <td>
+                <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+                  <div class="row">
+                    <div class="col"><label>Approver</label></div>
+                    <div class="col-8">
+                      <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverName" style="background-color:white !important; width:100% !important;  text-align:right;  border: 1px solid white;" />
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+              <td>
+                <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
+                  <div>
+                    <div><label>Status Updated Date</label></div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverStatusDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -163,9 +198,11 @@
             <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 5||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Approver Comments</label>
-                    <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverComments" rows="5" style="background-color:white !important; width:77% !important;  text-align:right;  border: 1px solid white;" />
+                  <div class="row">
+                    <div class="col-4"><label>Approver Comments</label></div>
+                    <div class="col-8">
+                      <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverComments" rows="5" style="background-color:white !important; width:100% !important;  text-align:right;  border: 1px solid white;" />
+                    </div>
                   </div>
                 </div>
               </td>
@@ -175,11 +212,13 @@
             <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Approved Start Date</label>
-                    <label style=" float:right; width:40%; ">
+                  <div>
+                    <div>
+                      <label>Approved Start Date</label>
+                    </div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverApprovedStartDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -187,11 +226,13 @@
             <tr *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey == 4||traderequestdetails.StatusKey == 6||traderequestdetails.StatusKey == 7">
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Approved End Date</label>
-                    <label style="float:right; width:40%; ">
+                  <div>
+                    <div>
+                      <label>Approved End Date</label>
+                    </div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.ApproverApprovedEndDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -200,19 +241,20 @@
             <tr *ngIf="traderequestdetails.StatusKey ==7 ">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey ==7 ">
-                  <label class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;"><b>Cancelled
-                      Details</b></label>
+                  <div class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;">
+                    <label><b>Cancelled Details</b></label>
+                  </div>
                 </div>
               </td>
             </tr>
             <tr *ngIf="traderequestdetails.StatusKey ==7 ">
               <td>
                 <div *ngIf="traderequestdetails.StatusKey ==7 ">
-                  <div class="form-group">
-                    <label style="margin-left:0rem;">Cancelled Date</label>
-                    <label style="float:right; width:40%; ">
+                  <div>
+                    <div><label>Cancelled Date</label></div>
+                    <div>
                       <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="traderequestdetails.CancelledDate"></ng-datepicker>
-                    </label>
+                    </div>
                   </div>
                 </div>
               </td>

@@ -41,7 +41,7 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
     addClass: "form-control", // Optional, value to pass on to [ngClass] on the input field
     addStyle: {
       "font-size": "18px",
-      width: "75%",
+      width: "100%",
       'background-color': 'white',
 
       border: "1px solid #ced4da",

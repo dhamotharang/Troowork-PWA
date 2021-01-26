@@ -11,7 +11,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
   styleUrls: ['./trade-request-approve-pwa.component.scss']
 })
 export class TradeRequestApprovePWAComponent implements OnInit {
-////////Author :  Amritha//////
+  ////////Author :  Amritha//////
 
   role: String;
   name: String;
@@ -33,7 +33,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
   details;
   value = false;
   value1;
-  show= true;
+  show = true;
   isMobile: boolean;
 
   convert_DT(str) {
@@ -55,7 +55,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     // barTitleIfEmpty: 'Click to select a date',
     // placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%','background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'background-color': 'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -72,7 +72,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     // barTitleIfEmpty: 'Click to select a date',
     // placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: 'form-control', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%','background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'background-color': 'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -92,7 +92,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute,private responsiveService: ResponsiveService) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService) {
     this.route.params.subscribe(params => this.traderequestDetails$ = params.requestID);
   }
 
@@ -127,8 +127,8 @@ export class TradeRequestApprovePWAComponent implements OnInit {
           this.assignmentdetails = "No Assignments found";
         }
       });
-      this.onResize();
-      this.responsiveService.checkWidth();
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
 
   goBack() {
@@ -191,14 +191,15 @@ export class TradeRequestApprovePWAComponent implements OnInit {
         this.details = data[0];
         alert("Request updated Successfully");
         this.goBack();
-  
+
         // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequestPWA'] } }]);
       });
   }
-  changed(){
+  changed() {
     this.value1 = this.value;
-    if(this.show == true) { this.show = false;
-    }else{
+    if (this.show == true) {
+      this.show = false;
+    } else {
       this.show = true;
     }
   }

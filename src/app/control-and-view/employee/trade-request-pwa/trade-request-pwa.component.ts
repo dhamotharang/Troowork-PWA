@@ -62,12 +62,12 @@ export class TradeRequestPWAComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da','background-color':'white', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'background-color': 'white', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
- 
-  constructor(private PeopleServiceService: PeopleServiceService, private router: Router ,private responsiveService: ResponsiveService) { }
+
+  constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private responsiveService: ResponsiveService) { }
 
   submitRequest() {
 
@@ -99,12 +99,12 @@ export class TradeRequestPWAComponent implements OnInit {
     //   }
     // }
     var requestcomments;
-   if (this.comments) {
-     requestcomments = this.comments.trim();
-   }
-   else {
-     requestcomments = "";
-   }
+    if (this.comments) {
+      requestcomments = this.comments.trim();
+    }
+    else {
+      requestcomments = "";
+    }
 
     if (this.convert_DT(this.curr_date) > this.convert_DT(this.startdate)) {
       alert("Start Date can't be less than Today...!");
@@ -149,8 +149,8 @@ export class TradeRequestPWAComponent implements OnInit {
       .subscribe((data) => {
         this.EmployeeDetails = data;
       });
-      this.onResize();
-      this.responsiveService.checkWidth();
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
