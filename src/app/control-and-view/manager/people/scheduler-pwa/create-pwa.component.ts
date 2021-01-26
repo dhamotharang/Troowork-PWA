@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'create-dialog',
   template: `
+  
   <daypilot-modal #modal (close)="closed($event)">
   <div class="center">
       <h1 style="margin-bottom: 8%;
@@ -33,6 +34,7 @@ import { ActivatedRoute, Router } from "@angular/router";
       <button (click)='cancel()'>close</button>
   </div>
 </daypilot-modal>
+
   `,
   styles: [`
   .center {
