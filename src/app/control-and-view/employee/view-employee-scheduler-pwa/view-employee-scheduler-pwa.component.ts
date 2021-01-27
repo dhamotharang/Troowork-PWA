@@ -11,8 +11,8 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 @Component({
   selector: 'scheduler-component',
   template: `
-  <div style="padding-left:0rem;padding-right: 0rem;margin-top:1%;margin-bottom: 3%;">
-    <div style="margin-top:-1px;margin-bottom:2%;">
+  <div>
+    <div style="margin-top:-1px;margin-bottom:-2%;">
    <div class="search123">
     <a (click)="filterpopup();"><img src="../../../../../assets/icons/search.png"style= "width:7%;height:7%;border-radius:7%;
     margin-top:-6rem;
@@ -67,48 +67,15 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             .bg-info { background-color: #FFFFFF !important; }
             @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
               .search123{
-                width:180%;
                 margin-left:0rem;
               }
             }
             @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
               .search123{
-                width:180% !important;
                 margin-left:0rem !important;
                
               }
-            }
-            @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:portrait) {
-              .picture{
-                width:180% !important;
-                margin-left:-1rem !important;
-               
-              }
-                }
-                @media only screen and (min-device-width:320px) and (max-device-width: 568px) and (orientation:landscape) {
-                  .picture{
-                  
-                    margin-left:-1rem !important;
-                   
-                  }
-                    }
-              @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
-                .picture{
-                  width:180%;
-                }
-              }
-              @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
-                .picture{
-                  width:180%;
-                }
-              }
-              
-              @media only screen and (min-device-width:414px) and (max-device-width: 736px) and (orientation:portrait) {
-                .picture{
-                  width:180%;
-                }
-              }
-            
+            }            
   `]
 })
 export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
@@ -117,7 +84,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
   router: any;
   toServeremployeekey: any;
   PeopleServiceService: any;
-  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService,private responsiveService: ResponsiveService) {
+  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService) {
     this.Range = 'Month';
   }
   @ViewChild("modal") modal: DayPilotModalComponent;
@@ -177,7 +144,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '75%', 'background-color':'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '75%', 'background-color': 'white', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -270,35 +237,202 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
 
 
 
-ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
 
-  //token starts....
-  this.filterpopupAppear = false;
-  var token = localStorage.getItem('token');
-  var encodedProfile = token.split('.')[1];
-  var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-  this.role = profile.role;
-  this.IsSupervisor = profile.IsSupervisor;
-  this.name = profile.username;
-  this.employeekey = profile.employeekey;
-  this.OrganizationID = profile.OrganizationID;
+    //token starts....
+    this.filterpopupAppear = false;
+    var token = localStorage.getItem('token');
+    var encodedProfile = token.split('.')[1];
+    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = profile.role;
+    this.IsSupervisor = profile.IsSupervisor;
+    this.name = profile.username;
+    this.employeekey = profile.employeekey;
+    this.OrganizationID = profile.OrganizationID;
 
-  var from = this.scheduler.control.visibleStart();
-  var to = this.scheduler.control.visibleEnd();
-  this.ds.getEvents(from, to).subscribe(result => {
-    this.events = result;
-  });
-  this.config.resources = [];
-  this.date = DayPilot.Date.today();
-  // this.SchedulingService
-  //   .employeesViewOnlyForScheduler(this.employeekey, this.OrganizationID)
-  //   .subscribe((data1: any[]) => {
-  //     var empGrpID = [];
-  //     empGrpID.push({ name: data1[0].Description, id: data1[0].Idemployeegrouping, "expanded": true, children: data1, backColor: data1[0].backColor });
+    var from = this.scheduler.control.visibleStart();
+    var to = this.scheduler.control.visibleEnd();
+    this.ds.getEvents(from, to).subscribe(result => {
+      this.events = result;
+    });
+    this.config.resources = [];
+    this.date = DayPilot.Date.today();
+    // this.SchedulingService
+    //   .employeesViewOnlyForScheduler(this.employeekey, this.OrganizationID)
+    //   .subscribe((data1: any[]) => {
+    //     var empGrpID = [];
+    //     empGrpID.push({ name: data1[0].Description, id: data1[0].Idemployeegrouping, "expanded": true, children: data1, backColor: data1[0].backColor });
 
-  //     var new1 = empGrpID;
-  this.SchedulingService.getEmpSchedulerStartDate().subscribe((data: any[]) => {
-    this.CurrentDate = data[0].Date;
+    //     var new1 = empGrpID;
+    this.SchedulingService.getEmpSchedulerStartDate().subscribe((data: any[]) => {
+      this.CurrentDate = data[0].Date;
+      var TempEndDate;
+      var Todate;
+
+      this.maxDate = new Date(this.CurrentDate);
+      this.maxDate.setDate(this.maxDate.getDate() + 55);
+      this.options.maxDate = this.maxDate;
+
+      if (this.Range = 'Month') {
+        TempEndDate = new Date(this.date);
+        var tempCurrDate = new Date(this.date);
+        TempEndDate.setDate(TempEndDate.getDate() + new Date(tempCurrDate.getFullYear(), tempCurrDate.getMonth() + 1, 0).getDate());
+      }
+      else {
+        TempEndDate = new Date(this.date);
+        TempEndDate.setDate(TempEndDate.getDate() + 7);
+      }
+      if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
+        Todate = this.maxDate
+      }
+
+      else {
+        Todate = TempEndDate
+      }
+
+      this.SchedulingService
+        .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.events = data;
+          if (this.events.length > 0) {
+            this.SchedulingService.employeesForScheduler('Employee', this.employeekey, this.OrganizationID)
+              .subscribe((data: any[]) => {
+                this.config.resources = data;
+
+              });
+          }
+          // else {
+          // alert("Please add employees in schedule Group !")
+          // }
+        });
+
+    });
+
+
+
+
+    // });
+
+    this.onResize();
+    this.responsiveService.checkWidth();
+
+
+  }
+
+  createClosed(args) {
+    if (args.result) {
+      this.events.push(args.result);
+      this.scheduler.control.message("Created.");
+    }
+    this.scheduler.control.clearSelection();
+  }
+
+  editClosed(args) {
+    if (args.result) {
+      this.scheduler.control.message("Updated");
+    }
+  }
+  ViewType() {
+
+    if (this.Range == 'Month') {
+      this.config.timeHeaders = [
+        {
+          "groupBy": "Month",
+        },
+        {
+          "groupBy": "Week",
+        },
+        {
+          "groupBy": "Day",
+          "format": "dddd"
+        },
+
+        {
+          "groupBy": "Day",
+          "format": "d"
+        }
+      ];
+      this.config.scale = "Day";
+      this.config.cellDuration = 120;
+      this.config.cellWidth = 150;
+      this.config.days = DayPilot.Date.today().daysInMonth();
+      if (this.date) {
+        this.config.startDate = this.convert_DT(this.date);
+      }
+      else {
+        this.config.startDate = DayPilot.Date.today();
+      }
+    } else if (this.Range == 'Week') {
+      this.config.timeHeaders = [
+        {
+          "groupBy": "Month"
+        },
+        {
+          "groupBy": "Week",
+        },
+        {
+          "groupBy": "Day",
+          "format": "dddd"
+        },
+        {
+          "groupBy": "Day",
+          "format": "d"
+        }
+      ];
+      this.config.scale = "Day";
+      this.config.cellDuration = 120;
+      this.config.cellWidth = 200;
+      this.config.days = 7;
+      this.config.startDate = this.convert_DT(this.date);
+    }
+    // ...
+    // else if (this.Range == 'Daily') {
+    //   this.config.timeHeaders = [
+    //     {
+    //       "groupBy": "Day",
+    //       "format": "dddd, d MMMM yyyy"
+    //     },
+    //     {
+    //       "groupBy": "Hour"
+    //     },
+    //     {
+    //       "groupBy": "Cell",
+    //       "format": "mm"
+    //     }
+    //   ];
+    //   this.config.scale = "CellDuration";
+    //   this.config.cellDuration = 30;
+    //   this.config.days = 1;
+    //   if (this.date) {
+    //     this.config.startDate = this.date;
+    //   }
+    //   else {
+    //     this.config.startDate = DayPilot.Date.today();
+    //   }
+
+    // }
+
+    // ...
+  }
+  selecteddate() {
+    if (this.Range == 'Week') {
+      var d = this.date;
+      var day = d.getDay();
+      var diff = d.getDate() - day + (day == 0 ? -6 : 2);
+      var k = new Date(d.setDate(diff));
+      this.config.startDate = this.convert_DT(k);
+    }
+    else {
+      if (this.date) {
+        this.config.startDate = this.convert_DT(this.date);
+      }
+      else {
+        this.config.startDate = DayPilot.Date.today();
+      }
+    }
+  }
+
+  empCalendarActivities() {
     var TempEndDate;
     var Todate;
 
@@ -308,8 +442,7 @@ ngAfterViewInit(): void {
 
     if (this.Range = 'Month') {
       TempEndDate = new Date(this.date);
-      var tempCurrDate = new Date(this.date);
-      TempEndDate.setDate(TempEndDate.getDate() + new Date(tempCurrDate.getFullYear(), tempCurrDate.getMonth() + 1, 0).getDate());
+      TempEndDate.setDate(TempEndDate.getDate() + new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate());
     }
     else {
       TempEndDate = new Date(this.date);
@@ -318,7 +451,6 @@ ngAfterViewInit(): void {
     if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
       Todate = this.maxDate
     }
-
     else {
       Todate = TempEndDate
     }
@@ -327,189 +459,24 @@ ngAfterViewInit(): void {
       .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
       .subscribe((data: any[]) => {
         this.events = data;
-        if (this.events.length > 0) {
-          this.SchedulingService.employeesForScheduler('Employee', this.employeekey, this.OrganizationID)
-            .subscribe((data: any[]) => {
-              this.config.resources = data;
-
-            });
-        }
-        // else {
-        // alert("Please add employees in schedule Group !")
-        // }
       });
-
-  });
-
-
-
-
-  // });
-
-  this.onResize();
-  this.responsiveService.checkWidth();
-
-
-}
-
-createClosed(args) {
-  if (args.result) {
-    this.events.push(args.result);
-    this.scheduler.control.message("Created.");
   }
-  this.scheduler.control.clearSelection();
-}
+  filterpopup() {
+    if (this.filterpopupAppear == false) {
+      this.filterpopupAppear = true;
+      // document.getElementById('popupSection').style.display = 'block';
 
-editClosed(args) {
-  if (args.result) {
-    this.scheduler.control.message("Updated");
-  }
-}
-ViewType() {
-
-  if (this.Range == 'Month') {
-    this.config.timeHeaders = [
-      {
-        "groupBy": "Month",
-      },
-      {
-        "groupBy": "Week",
-      },
-      {
-        "groupBy": "Day",
-        "format": "dddd"
-      },
-
-      {
-        "groupBy": "Day",
-        "format": "d"
-      }
-    ];
-    this.config.scale = "Day";
-    this.config.cellDuration = 120;
-    this.config.cellWidth = 150;
-    this.config.days = DayPilot.Date.today().daysInMonth();
-    if (this.date) {
-      this.config.startDate = this.convert_DT(this.date);
     }
     else {
-      this.config.startDate = DayPilot.Date.today();
-    }
-  } else if (this.Range == 'Week') {
-    this.config.timeHeaders = [
-      {
-        "groupBy": "Month"
-      },
-      {
-        "groupBy": "Week",
-      },
-      {
-        "groupBy": "Day",
-        "format": "dddd"
-      },
-      {
-        "groupBy": "Day",
-        "format": "d"
-      }
-    ];
-    this.config.scale = "Day";
-    this.config.cellDuration = 120;
-    this.config.cellWidth = 200;
-    this.config.days = 7;
-    this.config.startDate = this.convert_DT(this.date);
-  }
-  // ...
-  // else if (this.Range == 'Daily') {
-  //   this.config.timeHeaders = [
-  //     {
-  //       "groupBy": "Day",
-  //       "format": "dddd, d MMMM yyyy"
-  //     },
-  //     {
-  //       "groupBy": "Hour"
-  //     },
-  //     {
-  //       "groupBy": "Cell",
-  //       "format": "mm"
-  //     }
-  //   ];
-  //   this.config.scale = "CellDuration";
-  //   this.config.cellDuration = 30;
-  //   this.config.days = 1;
-  //   if (this.date) {
-  //     this.config.startDate = this.date;
-  //   }
-  //   else {
-  //     this.config.startDate = DayPilot.Date.today();
-  //   }
-
-  // }
-
-  // ...
-}
-selecteddate() {
-  if (this.Range == 'Week') {
-    var d = this.date;
-    var day = d.getDay();
-    var diff = d.getDate() - day + (day == 0 ? -6 : 2);
-    var k = new Date(d.setDate(diff));
-    this.config.startDate = this.convert_DT(k);
-  }
-  else {
-    if (this.date) {
-      this.config.startDate = this.convert_DT(this.date);
-    }
-    else {
-      this.config.startDate = DayPilot.Date.today();
+      this.filterpopupAppear = false;
+      // document.getElementById('popupSection').style.display = 'none';
     }
   }
-}
-
-empCalendarActivities() {
-  var TempEndDate;
-  var Todate;
-
-  this.maxDate = new Date(this.CurrentDate);
-  this.maxDate.setDate(this.maxDate.getDate() + 55);
-  this.options.maxDate = this.maxDate;
-
-  if (this.Range = 'Month') {
-    TempEndDate = new Date(this.date);
-    TempEndDate.setDate(TempEndDate.getDate() + new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate());
-  }
-  else {
-    TempEndDate = new Date(this.date);
-    TempEndDate.setDate(TempEndDate.getDate() + 7);
-  }
-  if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
-    Todate = this.maxDate
-  }
-  else {
-    Todate = TempEndDate
-  }
-
-  this.SchedulingService
-    .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.events = data;
+  onResize() {
+    this.responsiveService.getMobileStatus().subscribe(isMobile => {
+      this.isMobile = isMobile;
     });
-}
-filterpopup() {
-  if (this.filterpopupAppear == false) {
-    this.filterpopupAppear = true;
-    // document.getElementById('popupSection').style.display = 'block';
-
   }
-  else {
-    this.filterpopupAppear = false;
-    // document.getElementById('popupSection').style.display = 'none';
-  }
-}
-onResize() {
-  this.responsiveService.getMobileStatus().subscribe(isMobile => {
-    this.isMobile = isMobile;
-  });
-}
 
 }
 

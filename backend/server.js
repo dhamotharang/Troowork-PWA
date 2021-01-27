@@ -21992,7 +21992,7 @@ app.post(securedpath + '/setEditedPTORequest_mob', supportCrossOriginScript, fun
     var StartDate = req.body.StartDate;
     var EndDate = req.body.EndDate;
     var Comments = req.body.Comments;
-    var reason = req.body.ptoreason;
+    var reason = req.body.Reason;
     var empKey = req.body.EmpKey;
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -22200,32 +22200,32 @@ app.get(securedpath + '/getTradeRequestDetails_mob', function (req, res) {
 
 -
 
-app.get(securedpath + '/getAssignmentTradebyID_mob', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    var traderequestID = url.parse(req.url, true).query['traderequestID'];
-    pool.getConnection(function (err, connection) {
-        if (err) {
+    app.get(securedpath + '/getAssignmentTradebyID_mob', function (req, res) {
+        res.header("Access-Control-Allow-Origin", "*");
+        var traderequestID = url.parse(req.url, true).query['traderequestID'];
+        pool.getConnection(function (err, connection) {
+            if (err) {
 
-            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-        }
-        else {
-            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @traderequestID=?;call usp_mob_getAssignmentTradebyID(@traderequestID)', [traderequestID], function (err, rows) {
-                if (err) {
-                    console.log("Problem with MySQL" + err);
-                }
-                else {
-
-
-                    res.end(JSON.stringify(rows[1]));
+                console.log("Failed! Connection with Database spicnspan via connection pool failed");
+            }
+            else {
+                console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+                connection.query('set @traderequestID=?;call usp_mob_getAssignmentTradebyID(@traderequestID)', [traderequestID], function (err, rows) {
+                    if (err) {
+                        console.log("Problem with MySQL" + err);
+                    }
+                    else {
 
 
-                }
-            });
-        }
-        connection.release();
+                        res.end(JSON.stringify(rows[1]));
+
+
+                    }
+                });
+            }
+            connection.release();
+        });
     });
-});
 
 
 

@@ -109,5 +109,17 @@ export class LoginService {
       .http
       .get(ConectionSettings.Url + '/getExpiringAssignmentList?orgID=' + orgID + '&limit=' + limit);
   }
+
+  login_mob(userName, passWord, tenantID) {
+    // const uri = ConectionSettings.AbsUrl + '/authenticate';
+    const uri = ConectionSettings.AbsUrl + '/mob_authenticate';
+    const obj = {
+      uname: userName,
+      pwd: passWord,
+      tid: tenantID
+    };
+    return this.http.post(uri, obj);
+  }
+
   // @Rodney ends
 }

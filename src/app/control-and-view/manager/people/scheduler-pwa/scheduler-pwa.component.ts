@@ -23,23 +23,23 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>Date*</label>
+                        <label><b>Date*</b></label>
                         <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>View Range*</label>
+                        <label><b>View Range*</b></label>
                         <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color:white;">
                             <option value="Week">Week</option>
                             <option value="Month">Month</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Search Employee:</label>
+                        <label><b>Search Employee:</b></label>
                         <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
                         </ng-multiselect-dropdown>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
+                        <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> <b>Don't show employees without assignments</b></label>
                         &nbsp;
                         <button (click)="clearFilter()">Clear</button>
                         &nbsp;
