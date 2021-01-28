@@ -483,8 +483,8 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.curDate = this.convert_DT(new Date());
 
-    this.peopleServ
-      .getallEmployeesList(this.employeekey, this.OrganizationID)
+    this.SchedulingService
+      .employeesForSchedulerDropdown('Manager', this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empList = data;
       });
@@ -563,7 +563,7 @@ export class SchedulerComponent implements AfterViewInit {
     }
   }
 
- 
+
   selecteddate() {
     if (this.Range == 'Week') {
       var d = this.date;

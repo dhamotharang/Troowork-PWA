@@ -513,8 +513,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
 
     this.curDate = this.convert_DT(new Date());
 
-    this.peopleServ
-      .getallEmployeesList(this.employeekey, this.OrganizationID)
+    this.SchedulingService
+      .employeesForSchedulerDropdown_PWA('Manager', this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empList = data;
       });

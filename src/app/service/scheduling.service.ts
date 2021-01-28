@@ -547,4 +547,10 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/employeesForSchedulerDropdown?groupID=' + groupID + '&empkey=' + empkey + '&OrganizationID=' + orgID);
   }
+
+  employeesForSchedulerDropdown_PWA(groupID, empkey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/employeesForScheduler_SuType_mob?groupID=' + groupID + '&empkey=' + empkey + '&OrganizationID=' + orgID);
+  }
 }
