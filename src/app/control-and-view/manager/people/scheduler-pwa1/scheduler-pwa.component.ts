@@ -470,8 +470,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
 
     this.dropdownSettings1 = {
       singleSelection: false,
-      idField: 'EmployeeKey',
-      textField: 'EmployeeText',
+      idField: 'id',
+      textField: 'name',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 5,
