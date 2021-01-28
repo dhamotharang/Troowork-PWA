@@ -443,8 +443,8 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.dropdownSettings1 = {
       singleSelection: false,
-      idField: 'EmployeeKey',
-      textField: 'EmployeeText',
+      idField: 'id',
+      textField: 'name',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 5,
@@ -612,7 +612,7 @@ export class SchedulerComponent implements AfterViewInit {
       if (employeeKeListObj.length > 0) {
         if (employeeKeListObj) {
           for (var j = 0; j < employeeKeListObj.length; j++) {
-            employeeKeList.push(employeeKeListObj[j].EmployeeKey);
+            employeeKeList.push(employeeKeListObj[j].id);
           }
         }
         EmployeeKeyString = employeeKeList.join(',');
