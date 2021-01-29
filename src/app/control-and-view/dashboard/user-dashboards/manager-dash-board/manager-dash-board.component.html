@@ -201,18 +201,17 @@
 
   <div id="mySidenav" class="sidenav">
 
-    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+    <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a> -->
 
 
-    <button class="dropdown-btn" (click)="dropdownData()"> <i class="fa fa-calendar-o"></i> Scheduler View
-
+    <button class="dropdown-btn" [routerLink]="[{outlets:{ManagerOut:['SchedulerPWA']}}]" (click)="dropdownData();closeNav()"> <i class="fa fa-calendar-o"></i> SCHEDULER VIEW
     </button>
-    <div class="dropdown-container">
-      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulerPWA']}}]"><b>Scheduler</b></a>
-      <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule Employee</b></a>  -->
-    </div>
-    <button class="dropdown-btn"  (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
-     
+    <!-- <div class="dropdown-container">
+      <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulerPWA']}}]"><b>Scheduler</b></a> -->
+    <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule Employee</b></a>  -->
+    <!-- </div> -->
+    <button class="dropdown-btn" (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
+
     </button>
 
 

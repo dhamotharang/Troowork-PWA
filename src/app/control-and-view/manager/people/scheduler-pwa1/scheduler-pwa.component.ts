@@ -248,6 +248,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
     scale: "Day",
     cellDuration: 100,
     cellWidth: 128,
+    cellWidthSpec: 'Auto',
+    cellWidthMin: 62,
     eventHeight: 30,
     days: DayPilot.Date.today().daysInMonth(),
     startDate: DayPilot.Date.today(),
@@ -555,6 +557,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
       this.config.scale = "Day";
       this.config.cellDuration = 100;
       this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.allowMultiSelect = true;
       this.config.eventClickHandling = "Select";
       this.config.days = DayPilot.Date.today().daysInMonth();
@@ -584,6 +588,8 @@ export class SchedulerPWAComponent implements AfterViewInit {
       this.config.scale = "Day";
       this.config.cellDuration = 100;
       this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.days = 7;
       this.config.startDate = this.convert_DT(this.date);
       this.config.allowMultiSelect = true;

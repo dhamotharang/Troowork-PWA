@@ -17,8 +17,7 @@
       <div style="margin-left: 45%;">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <img class="imagesize nav-link" src="assets/icons/homepage.png"
-              [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
           </li>
           <li class="nav-item dropdown">
             <img class="imagesize nav-link" src="assets/icons/work order.png">
@@ -73,38 +72,37 @@
 
 <!-- mobile screen page begins here -->
 
-<div *ngIf="isMobile" style= "margin-left: 1%">
+<div *ngIf="isMobile" style="margin-left: 1%">
   <div id="mySidenav" class="sidenav">
 
-    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+    <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a> -->
 
 
-    <button class="dropdown-btn" [routerLink]="[{outlets:{EmployeeOut:['ViewSchedulerPWAForEmployee']}}]"
-      (click)="dropdownData()"> <i class="fa fa-calendar-o"></i> SCHEDULER VIEW
+    <button class="dropdown-btn" [routerLink]="[{outlets:{EmployeeOut:['ViewSchedulerPWAForEmployee']}}]" (click)="dropdownData();closeNav()"> <i class="fa fa-calendar-o"></i> SCHEDULER VIEW
     </button>
 
     <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/pto.png"> PTO</button>
     <div class="dropdown-container">
 
-      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestPWA']}}]"><b>Create PTO
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestPWA']}}]"><b>Create PTO
         </b></a>
-      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestViewPWA']}}]"><b>View PTO
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{EmployeeOut:['PtoRequestViewPWA']}}]"><b>View PTO
         </b></a>
     </div>
     <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/Trade.png">
       TRADE</button>
     <div class="dropdown-container">
-      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestPWA']}}]"><b>Create Trade
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestPWA']}}]"><b>Create Trade
         </b></a>
-      <a class="dropdown-item" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestViewPWA']}}]"><b>View Trade
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{EmployeeOut:['TradeRequestViewPWA']}}]"><b>View Trade
         </b></a>
 
 
     </div>
-    <button class="dropdown-btn"  (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
-     
-      </button>
-    
+    <button class="dropdown-btn" (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
+
+    </button>
+
 
   </div>
   <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>
@@ -126,8 +124,7 @@
       <button type="button" class= "btn btn-danger"   (click)="stayhere()">No</button>
    
     </div> -->
-  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-    aria-hidden="true">
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -140,10 +137,8 @@
           Are you sure you want to exit?
         </div>
         <div class="modal-footer">
-          <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close"
-            (click)="basicModal.hide();leave()" routerLink="/" mdbWavesEffect>Yes</button>
-          <button type="button" mdbBtn color="danger" class="relative waves-light"
-            (click)="basicModal.hide();stayhere()" mdbWavesEffect>No</button>
+          <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="basicModal.hide();leave()" routerLink="/" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.hide();stayhere()" mdbWavesEffect>No</button>
         </div>
       </div>
     </div>

@@ -137,8 +137,10 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
     ],
     scale: "Day",
 
-    cellDuration: 120,
-    cellWidth: 150,
+    cellDuration: 100,
+    cellWidth: 128,
+    cellWidthSpec: 'Auto',
+    cellWidthMin: 62,
     eventHeight: 30,
     days: DayPilot.Date.today().daysInMonth(),
     startDate: DayPilot.Date.today(),
@@ -288,8 +290,10 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 150;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.days = DayPilot.Date.today().daysInMonth();
       if (this.date) {
         this.config.startDate = this.convert_DT(this.date);
@@ -315,8 +319,10 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 200;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.days = 7;
       this.config.startDate = this.convert_DT(this.date);
     }

@@ -138,39 +138,39 @@
 </div>
 <!-- mobile screen page begins here -->
 
-<div *ngIf="isMobile" style= "margin-left: 1%">
+<div *ngIf="isMobile" style="margin-left: 1%">
   <div id="mySidenav" class="sidenav">
 
-   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a>
+    <!-- <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">Close Navigation</a> -->
 
-  
-   <button class="dropdown-btn" [routerLink]="[{outlets:{Superout:['SchedulerPWA']}}]"(click)="dropdownData()"> <i class="fa fa-calendar-o" ></i>       SCHEDULER VIEW
-   </button>
 
-   <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/pto.png"> PTO</button>
-   <div class="dropdown-container">
-     
-   <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['PtoRequestPWA']}}]"><b>Create PTO
-     </b></a>
-     <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['PtoRequestViewPWA']}}]"><b>View PTO
-     </b></a>
-   </div>
-   <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/Trade.png" > TRADE</button>
-   <div class="dropdown-container">
-      <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequestPWA']}}]"><b>Create Trade
-     </b></a>
-     <a class="dropdown-item" [routerLink]="[{outlets:{Superout:['TradeRequestViewPWA']}}]"><b>View Trade
-     </b></a>
- 
- 
-   </div>
-     <button class="dropdown-btn"  (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
-    
-     </button>
-   
-   
+    <button class="dropdown-btn" [routerLink]="[{outlets:{Superout:['SchedulerPWA']}}]" (click)="dropdownData();closeNav()"> <i class="fa fa-calendar-o"></i> SCHEDULER VIEW
+    </button>
+
+    <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/pto.png"> PTO</button>
+    <div class="dropdown-container">
+
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{Superout:['PtoRequestPWA']}}]"><b>Create PTO
+        </b></a>
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{Superout:['PtoRequestViewPWA']}}]"><b>View PTO
+        </b></a>
+    </div>
+    <button class="dropdown-btn" (click)="dropdownData()"><img src="../../../../../assets/icons/Trade.png"> TRADE</button>
+    <div class="dropdown-container">
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{Superout:['TradeRequestPWA']}}]"><b>Create Trade
+        </b></a>
+      <a class="dropdown-item" (click)="closeNav()" [routerLink]="[{outlets:{Superout:['TradeRequestViewPWA']}}]"><b>View Trade
+        </b></a>
+
+
+    </div>
+    <button class="dropdown-btn" (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
+
+    </button>
+
+
   </div>
-  <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>  
+  <span style="font-size:40px;cursor:pointer;" (click)="openNav()">&#9776;</span>
   <!-- <div class="picture">
     <a (click)="basicModal.show();logout()"><img src="../../../../../assets/icons/logout.png"   style="width:7%;height:7%;border-radius:7%;float:right;
     margin-top:-3rem;
@@ -188,29 +188,26 @@
     <button type="button" class= "btn btn-danger"   (click)="stayhere()">No</button>
  
   </div> -->
-  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel"></h4>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to exit?
-      </div>
-      <div class="modal-footer">
-        <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close"
-          (click)="basicModal.hide();leave()"   routerLink="/"   mdbWavesEffect>Yes</button>
-        <button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.hide();stayhere()"
-          mdbWavesEffect>No</button>
+  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to exit?
+        </div>
+        <div class="modal-footer">
+          <button type="button" mdbBtn color="success" class="waves-light" aria-label="Close" (click)="basicModal.hide();leave()" routerLink="/" mdbWavesEffect>Yes</button>
+          <button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.hide();stayhere()" mdbWavesEffect>No</button>
+        </div>
       </div>
     </div>
   </div>
+
+
+  <router-outlet name="Superout"></router-outlet>
 </div>
-
-
- <router-outlet name="Superout"></router-outlet>
-</div> 
