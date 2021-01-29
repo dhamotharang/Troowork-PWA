@@ -1,16 +1,21 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {DayPilot} from 'daypilot-pro-angular';
-import {HttpClient} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DayPilot } from 'daypilot-pro-angular';
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class DataPWAService {
-
+  newtype = 'Week';
+  expand: any[];
+  expandFlag;
+  passDate = DayPilot.Date.today();
   resources: any[] = [
-    { name: 'Employee1', id: 'GA',"expanded": true, children: [
-      { name: 'Resource 1', id: 'R1' },
-      { name: 'Resource 2', id: 'R2' }
-    ]},
+    {
+      name: 'Employee1', id: 'GA', "expanded": true, children: [
+        { name: 'Resource 1', id: 'R1' },
+        { name: 'Resource 2', id: 'R2' }
+      ]
+    },
     // { name: 'Employee2', id: 'GB',"expanded": true, children: [
     //   { name: 'Resource 3', id: 'R3'},
     //   { name: 'Resource 4', id: 'R4'}
@@ -25,14 +30,15 @@ export class DataPWAService {
     {
       id: "1",
       resource: "R1",
-      start: "2018-08-03",
-      end: "2018-08-15",
+      start: "2019-06-19",
+      end: "2019-06-19",
       text: "Event 1",
-      scheduleName:"Schedule Manager1"
+      scheduleName: "Schedule Manager1",
+      backColor: "blue"
     }
   ];
 
-  constructor(private http : HttpClient){
+  constructor(private http: HttpClient) {
   }
 
   getEvents(from: DayPilot.Date, to: DayPilot.Date): Observable<any[]> {
@@ -66,8 +72,11 @@ export class DataPWAService {
       resource: data.resource,
       id: DayPilot.guid(),
       text: data.text,
-      ScheduleNameKey:data.ScheduleNameKey,
-      ScheduleName:data.ScheduleName
+      ScheduleNameKey: data.ScheduleNameKey,
+      ScheduleName: data.ScheduleName,
+      backColor: "White",
+      moveDisabled: false,
+      bubbleHtml: data.text
     };
 
     return new Observable(observer => {
@@ -84,11 +93,50 @@ export class DataPWAService {
     console.log(data);
     return new Observable(observer => {
       setTimeout(() => {
-        observer.next({result: "OK"});
+        observer.next({ result: "OK" });
       }, 200);
     });
   }
+  setData(type, Date) {
+    this.newtype = type;
+    this.passDate = Date;
+  }
 
+  getType() {
+    let temp = this.newtype;
+    return temp;
+  }
+  getDate() {
+    let temp = this.passDate;
+    return temp;
+  }
+
+  setExpandFlag() {
+    this.expandFlag = 1;
+  }
+  setExpandFlagNewComp(val) {
+    this.expandFlag = val;
+  }
+  getExpandData() {
+    return this.expand;
+  }
+
+  setExpandData(id, flag) {
+    this.expand.push({ ID: id, Flag: flag });
+  }
+  clearExpandVal() {
+    if (!(this.expandFlag)) {
+      this.expandFlag = 0;
+      this.expand = [];
+    } else if (this.expandFlag == 0 || this.expandFlag == 1) {
+      // this.expandFlag = 0;
+      this.expand = [];
+    } else if (this.expandFlag > 1) {
+
+    }
+
+    return this.expandFlag;
+  }
 }
 
 
@@ -97,9 +145,11 @@ export interface CreateEventParams {
   end: string;
   text: string;
   resource: string | number;
-  ScheduleNameKey:string;
-  ScheduleName:string;
-
+  ScheduleNameKey: string;
+  ScheduleName: string;
+  backColor: string;
+  moveDisabled: boolean;
+  bubbleHtml: string;
 }
 
 export interface UpdateEventParams {
@@ -108,9 +158,11 @@ export interface UpdateEventParams {
   end: string;
   text: string;
   resource: string | number;
-  ScheduleNameKey:string;
-  ScheduleName:string;
-
+  ScheduleNameKey: string;
+  ScheduleName: string;
+  backColor: string;
+  moveDisabled: boolean;
+  bubbleHtml: string;
 }
 
 export interface EventData {
@@ -119,7 +171,9 @@ export interface EventData {
   end: string;
   text: string;
   resource: string | number;
-  ScheduleNameKey:string;
-  ScheduleName:string;
-
+  ScheduleNameKey: string;
+  ScheduleName: string;
+  backColor: string;
+  moveDisabled: boolean;
+  bubbleHtml: string;
 }

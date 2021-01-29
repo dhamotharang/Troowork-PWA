@@ -85,7 +85,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
   toServeremployeekey: any;
   PeopleServiceService: any;
   constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService) {
-    this.Range = 'Month';
+    this.Range = 'Week';
   }
   @ViewChild("modal") modal: DayPilotModalComponent;
   @ViewChild("scheduler") scheduler: DayPilotSchedulerComponent;
@@ -155,9 +155,9 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
       {
         "groupBy": "Month",
       },
-      {
-        "groupBy": "Week",
-      },
+      // {
+      //   "groupBy": "Week",
+      // },
       {
         "groupBy": "Day",
         "format": "dddd"
@@ -170,8 +170,10 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     ],
     scale: "Day",
 
-    cellDuration: 120,
-    cellWidth: 150,
+    cellDuration: 100,
+    cellWidth: 128,
+    cellWidthSpec: 'Auto',
+    cellWidthMin: 62,
     eventHeight: 30,
     days: DayPilot.Date.today().daysInMonth(),
     startDate: DayPilot.Date.today(),
@@ -195,9 +197,9 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     },
     onBeforeTimeHeaderRender: args => {
 
-      if (args.header.level === 1) {
-        args.header.html = "Week " + args.header.html;
-      }
+      // if (args.header.level === 1) {
+      //   args.header.html = "Week " + args.header.html;
+      // }
 
       var dayOfWeek = args.header.start.getDayOfWeek();
       if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -249,7 +251,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-
+    this.Range = this.ds.getType();
     var from = this.scheduler.control.visibleStart();
     var to = this.scheduler.control.visibleEnd();
     this.ds.getEvents(from, to).subscribe(result => {
@@ -257,6 +259,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     });
     this.config.resources = [];
     this.date = DayPilot.Date.today();
+    this.ViewType();
     // this.SchedulingService
     //   .employeesViewOnlyForScheduler(this.employeekey, this.OrganizationID)
     //   .subscribe((data1: any[]) => {
@@ -264,49 +267,47 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     //     empGrpID.push({ name: data1[0].Description, id: data1[0].Idemployeegrouping, "expanded": true, children: data1, backColor: data1[0].backColor });
 
     //     var new1 = empGrpID;
-    this.SchedulingService.getEmpSchedulerStartDate().subscribe((data: any[]) => {
-      this.CurrentDate = data[0].Date;
-      var TempEndDate;
-      var Todate;
+    // this.SchedulingService.getEmpSchedulerStartDate().subscribe((data: any[]) => {
+    //   this.CurrentDate = data[0].Date;
+    //   var TempEndDate;
+    //   var Todate;
 
-      this.maxDate = new Date(this.CurrentDate);
-      this.maxDate.setDate(this.maxDate.getDate() + 55);
-      this.options.maxDate = this.maxDate;
+    //   this.maxDate = new Date(this.CurrentDate);
+    //   this.maxDate.setDate(this.maxDate.getDate() + 55);
+    //   this.options.maxDate = this.maxDate;
 
-      if (this.Range = 'Month') {
-        TempEndDate = new Date(this.date);
-        var tempCurrDate = new Date(this.date);
-        TempEndDate.setDate(TempEndDate.getDate() + new Date(tempCurrDate.getFullYear(), tempCurrDate.getMonth() + 1, 0).getDate());
-      }
-      else {
-        TempEndDate = new Date(this.date);
-        TempEndDate.setDate(TempEndDate.getDate() + 7);
-      }
-      if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
-        Todate = this.maxDate
-      }
+    //   if (this.Range = 'Month') {
+    //     TempEndDate = new Date(this.date);
+    //     var tempCurrDate = new Date(this.date);
+    //     TempEndDate.setDate(TempEndDate.getDate() + new Date(tempCurrDate.getFullYear(), tempCurrDate.getMonth() + 1, 0).getDate());
+    //   }
+    //   else {
+    //     TempEndDate = new Date(this.date);
+    //     TempEndDate.setDate(TempEndDate.getDate() + 7);
+    //   }
+    //   if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
+    //     Todate = this.maxDate
+    //   }
 
-      else {
-        Todate = TempEndDate
-      }
+    //   else {
+    //     Todate = TempEndDate
+    //   }
+    this.SchedulingService
+      .empCalendarDetails_Employee(this.Range, this.convert_DT(this.date), this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+        this.events = data;
+        if (this.events.length > 0) {
+          this.SchedulingService.employeesForScheduler('Employee', this.employeekey, this.OrganizationID)
+            .subscribe((data: any[]) => {
+              this.config.resources = data;
 
-      this.SchedulingService
-        .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.events = data;
-          if (this.events.length > 0) {
-            this.SchedulingService.employeesForScheduler('Employee', this.employeekey, this.OrganizationID)
-              .subscribe((data: any[]) => {
-                this.config.resources = data;
+            });
+        }
+        // else {
+        // alert("Please add employees in schedule Group !")
+        // }
+      });
 
-              });
-          }
-          // else {
-          // alert("Please add employees in schedule Group !")
-          // }
-        });
-
-    });
+    // });
 
 
 
@@ -339,9 +340,9 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month",
         },
-        {
-          "groupBy": "Week",
-        },
+        // {
+        //   "groupBy": "Week",
+        // },
         {
           "groupBy": "Day",
           "format": "dddd"
@@ -353,8 +354,10 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 150;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.days = DayPilot.Date.today().daysInMonth();
       if (this.date) {
         this.config.startDate = this.convert_DT(this.date);
@@ -367,9 +370,9 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
         {
           "groupBy": "Month"
         },
-        {
-          "groupBy": "Week",
-        },
+        // {
+        //   "groupBy": "Week",
+        // },
         {
           "groupBy": "Day",
           "format": "dddd"
@@ -380,8 +383,10 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
         }
       ];
       this.config.scale = "Day";
-      this.config.cellDuration = 120;
-      this.config.cellWidth = 200;
+      this.config.cellDuration = 100;
+      this.config.cellWidth = 128;
+      this.config.cellWidthSpec = 'Auto';
+      this.config.cellWidthMin = 62;
       this.config.days = 7;
       this.config.startDate = this.convert_DT(this.date);
     }
@@ -433,30 +438,10 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
   }
 
   empCalendarActivities() {
-    var TempEndDate;
-    var Todate;
 
-    this.maxDate = new Date(this.CurrentDate);
-    this.maxDate.setDate(this.maxDate.getDate() + 55);
-    this.options.maxDate = this.maxDate;
-
-    if (this.Range = 'Month') {
-      TempEndDate = new Date(this.date);
-      TempEndDate.setDate(TempEndDate.getDate() + new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate());
-    }
-    else {
-      TempEndDate = new Date(this.date);
-      TempEndDate.setDate(TempEndDate.getDate() + 7);
-    }
-    if (this.convert_DT(TempEndDate) > this.convert_DT(this.maxDate)) {
-      Todate = this.maxDate
-    }
-    else {
-      Todate = TempEndDate
-    }
 
     this.SchedulingService
-      .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
+      .empCalendarDetails_Employee(this.Range, this.convert_DT(this.date), this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.events = data;
       });

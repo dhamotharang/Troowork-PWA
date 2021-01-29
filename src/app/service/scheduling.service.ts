@@ -553,4 +553,12 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/employeesForScheduler_SuType_mob?groupID=' + groupID + '&empkey=' + empkey + '&OrganizationID=' + orgID);
   }
+
+  empCalendarDetails_Employee(dateRange, startDate, employeekey, OrgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/employeeCalendarDetailsForScheduler_EmployeeView_PWA?dateRange=' + dateRange + '&startDate=' + startDate + '&OrganizationID=' + OrgID + '&employeekey=' + employeekey);
+  }
+
+
 }

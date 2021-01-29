@@ -22444,6 +22444,35 @@ app.get(securedpath + '/logoutRequest_mob', function (req, res) {
 
 // trade ends
 
+
+app.get(securedpath + '/employeeCalendarDetailsForScheduler_EmployeeView_PWA', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var dateRange = url.parse(req.url, true).query['dateRange'];
+    var startDate = url.parse(req.url, true).query['startDate'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    var employeekey = url.parse(req.url, true).query['employeekey'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @startDate=?;set @dateRange=?;set @employeekey=?;set @OrganizationID=?; call usp_getEmpDetailsFromEmpCalendar_EmployeeView_PWA(@startDate,@dateRange,@employeekey,@OrganizationID)', [startDate, dateRange, employeekey, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[4]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 // @Rodney ends...
 
 //handle generic exceptions
