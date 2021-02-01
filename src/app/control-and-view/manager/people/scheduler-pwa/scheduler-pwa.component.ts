@@ -304,68 +304,68 @@ export class SchedulerPWAComponent implements AfterViewInit {
             });
           }
         },
-        {
-          text: "Copy",
-          onClick: args => {
-            // this.copied_event = args.source.data;
-            // this.clipboard = args.source.data.ScheduleName;
-            let selected = this.scheduler.control.multiselect.events();
-            this.clipboard = selected.sort((e1, e2) => e1.start().getTime() - e2.start().getTime());
-            // this.clipboard = [args.source];
-            console.log(this.clipboard);
-            // console.log("this.copied_event");
-            // console.log(this.copied_event);
+        // {
+        //   text: "Copy",
+        //   onClick: args => {
+        //     // this.copied_event = args.source.data;
+        //     // this.clipboard = args.source.data.ScheduleName;
+        //     let selected = this.scheduler.control.multiselect.events();
+        //     this.clipboard = selected.sort((e1, e2) => e1.start().getTime() - e2.start().getTime());
+        //     // this.clipboard = [args.source];
+        //     console.log(this.clipboard);
+        //     // console.log("this.copied_event");
+        //     // console.log(this.copied_event);
 
-          }
-        }
+        //   }
+        // }
       ]
     }),
 
-    contextMenuSelection: new DayPilot.Menu({
-      onShow: args => {
-        let noItemsInClipboard = this.clipboard.length === 0;
-        args.menu.items[0].disabled = noItemsInClipboard;
-      },
-      items: [
-        {
-          text: "Paste",
-          onClick: args => {
-            if (this.clipboard.length === 0) {
-              return;
-            }
-            let targetStart = args.source.start;
-            let targetResource = args.source.resource;
-            let firstStart = this.clipboard[0].start();
+    // contextMenuSelection: new DayPilot.Menu({
+    //   onShow: args => {
+    //     let noItemsInClipboard = this.clipboard.length === 0;
+    //     args.menu.items[0].disabled = noItemsInClipboard;
+    //   },
+    //   items: [
+    //     {
+    //       text: "Paste",
+    //       onClick: args => {
+    //         if (this.clipboard.length === 0) {
+    //           return;
+    //         }
+    //         let targetStart = args.source.start;
+    //         let targetResource = args.source.resource;
+    //         let firstStart = this.clipboard[0].start();
 
-            this.clipboard.forEach(e => {
+    //         this.clipboard.forEach(e => {
 
-              console.log("args paste");
-              console.log(args);
+    //           console.log("args paste");
+    //           console.log(args);
 
-              let offset = new DayPilot.Duration(firstStart, e.start());
-              // let duration = e.duration();
-              let start = targetStart.addTime(offset);
+    //           let offset = new DayPilot.Duration(firstStart, e.start());
+    //           // let duration = e.duration();
+    //           let start = targetStart.addTime(offset);
 
-              let obj = {
-                resourceEmployee: targetResource,
-                start: start,
-                ScheduleNameKey: e.data.ScheduleNameKey,
-                MetaEmp: this.employeekey,
-                OrganizationID: this.OrganizationID
-              };
-              console.log("obj");
-              console.log(obj);
-              this.loading = true;
-              this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
-                this.loading = false;
-                this.empCalendarActivities();
-                // this.clipboard = "";
-              });
-            });
-          }
-        }
-      ]
-    }),
+    //           let obj = {
+    //             resourceEmployee: targetResource,
+    //             start: start,
+    //             ScheduleNameKey: e.data.ScheduleNameKey,
+    //             MetaEmp: this.employeekey,
+    //             OrganizationID: this.OrganizationID
+    //           };
+    //           console.log("obj");
+    //           console.log(obj);
+    //           this.loading = true;
+    //           this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+    //             this.loading = false;
+    //             this.empCalendarActivities();
+    //             // this.clipboard = "";
+    //           });
+    //         });
+    //       }
+    //     }
+    //   ]
+    // }),
 
     onEventClicked: args => {
       // this.ds.setData(this.Range, this.date);
