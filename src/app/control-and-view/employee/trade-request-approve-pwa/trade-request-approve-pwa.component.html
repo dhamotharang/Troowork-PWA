@@ -43,7 +43,7 @@
                   <div class="col">
                     <label>Requested Employee Name</label>
                   </div>
-                  <div>
+                  <div class="col-8">
                     <input type="text" style="background-color:white !important; width:100% !important;  text-align:right;  border: 1px solid white;" [disabled]="!editflag" [(ngModel)]="traderequestdetailsbyID.Employeename">
                   </div>
                 </div>
@@ -144,36 +144,36 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr *ngIf="traderequestdetailsbyID.Status=='Approved'">
               <td>
-                <div *ngIf="show==true;Disabled">
-                  <div *ngIf="traderequestdetailsbyID.Status=='Approved'">
+                <!-- <div *ngIf="show==true;Disabled"> -->
+                <div *ngIf="traderequestdetailsbyID.Status=='Approved'">
+                  <div>
                     <div>
-                      <div>
-                        <label>Approving Start Date*</label>
-                      </div>
-                      <div>
-                        <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="traderequestdetailsbyID.ApprovedStartDate"></ng-datepicker>
-                      </div>
+                      <label>Approving Start Date*</label>
+                    </div>
+                    <div>
+                      <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="traderequestdetailsbyID.ApprovedStartDate"></ng-datepicker>
                     </div>
                   </div>
                 </div>
+                <!-- </div> -->
               </td>
             </tr>
-            <tr>
+            <tr *ngIf="traderequestdetailsbyID.Status=='Approved'">
               <td>
-                <div *ngIf="show==true;Disabled">
-                  <div *ngIf="traderequestdetailsbyID.Status=='Approved'">
+                <!-- <div *ngIf="show==true;Disabled"> -->
+                <div *ngIf="traderequestdetailsbyID.Status=='Approved'">
+                  <div>
                     <div>
-                      <div>
-                        <label>Approving End Date*</label>
-                      </div>
-                      <div>
-                        <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="traderequestdetailsbyID.ApprovedEndDate"></ng-datepicker>
-                      </div>
+                      <label>Approving End Date*</label>
+                    </div>
+                    <div>
+                      <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="traderequestdetailsbyID.ApprovedEndDate"></ng-datepicker>
                     </div>
                   </div>
                 </div>
+                <!-- </div> -->
               </td>
             </tr>
 
