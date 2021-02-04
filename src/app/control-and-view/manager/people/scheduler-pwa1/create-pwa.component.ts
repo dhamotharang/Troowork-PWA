@@ -176,15 +176,15 @@ export class CreatePWAComponent implements OnInit {
     this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
       // alert("Event has been Created !");
 
-      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
       this.ds.setExpandFlagNewComp(2);
       if (this.role == 'Manager') {
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);  // redirect to Manager
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
        } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['Scheduler'] } }]); // redirect to Employee
+        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['SchedulerPWA'] } }]); // redirect to Employee
        }
        else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);// redirect to supervisor
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA'] } }]);// redirect to supervisor
       }
     });
 
@@ -195,13 +195,13 @@ export class CreatePWAComponent implements OnInit {
     //       this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
     //         alert("Event has been Created !");
 
-    //         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
 
     //         if (this.role == 'Manager') {
-    //           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
     //         // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
     //         }else if (this.role == 'Supervisor') {
-    //           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+    //           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA'] } }]);
     //         }
     //       });
 
@@ -211,13 +211,13 @@ export class CreatePWAComponent implements OnInit {
     //       if (confirmBox == true) {
     //         this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
     //           alert("Event has been Created !");
-    //           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
 
     //           if (this.role == 'Manager') {
-    //             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
     //           // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
     //           }else if (this.role == 'Supervisor') {
-    //             this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+    //             this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA'] } }]);
     //           }
 
     //         });
