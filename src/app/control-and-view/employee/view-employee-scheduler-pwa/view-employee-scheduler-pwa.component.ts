@@ -30,7 +30,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
         <h3 style="text-align: right"></h3>
         <div class="form-group" style="width:100%;">
           <label>Date*</label>
-           <ng-datepicker [options]="options" position="top-right" minDate='CurrentDate' [(ngModel)]="date" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
+           <ng-datepicker [options]="options" position="bottom-right" minDate='CurrentDate' [(ngModel)]="date" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
         </div>
       </div>
       <div class="col-md-6">
@@ -65,6 +65,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
             .header h1 { padding: 0px; margin: 0px; }
             .main { padding: 10px; margin-top: 10px; }
             .bg-info { background-color: #FFFFFF !important; }
+            ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}  
             @media only screen and (min-device-width:375px) and (max-device-width: 667px) and (orientation:portrait) {
               .search123{
                 margin-left:0rem;
