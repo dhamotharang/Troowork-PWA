@@ -17,7 +17,7 @@ export class EquipmentViewComponent implements OnInit {
   equipments: Inventory[];
   delete_EquipKey: number;
   searchform: FormGroup;
-  loading:boolean;
+  loading: boolean;
   role: String;
   name: String;
   employeekey: Number;
@@ -64,13 +64,13 @@ export class EquipmentViewComponent implements OnInit {
 
   //validation ends ..... @rodney
   previousPage() {
-    this.loading=true;
+    this.loading = true;
     this.pageNo = +this.pageNo - 1;
     this.inventoryService
       .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.equipments = data;
-        this.loading=false;
+        this.loading = false;
         if (this.pageNo == 1) {
           this.showHide2 = true;
           this.showHide1 = false;
@@ -82,13 +82,13 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   nextPage() {
-    this.loading=true;
+    this.loading = true;
     this.pageNo = +this.pageNo + 1;
     this.inventoryService
       .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.equipments = data;
-        this.loading=false;
+        this.loading = false;
         this.pagination = +this.equipments[0].totalItems / (+this.pageNo * (+this.itemsPerPage));
         if (this.pagination > 1) {
           this.showHide2 = true;
@@ -103,7 +103,7 @@ export class EquipmentViewComponent implements OnInit {
 
   searchEquipment(SearchValue) {
 
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
 
     if (value.length >= 3) {
       this.inventoryService
@@ -113,15 +113,14 @@ export class EquipmentViewComponent implements OnInit {
           this.showHide1 = false;
         });
     } else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       this.inventoryService
         .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
         .subscribe((data: Inventory[]) => {
           this.equipments = data;
-          this.loading=false;
+          this.loading = false;
           if (this.equipments[0].totalItems > this.itemsPerPage) {
             this.showHide2 = true;
             this.showHide1 = false;
@@ -142,17 +141,18 @@ export class EquipmentViewComponent implements OnInit {
     this.inventoryService
       .DeleteEquipment(this.delete_EquipKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert("Equipment deleted successfully...");
-        this.loading=true;
+        this.loading = true;
         this.inventoryService
           .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
             this.equipments = data;
             if (this.equipments[0].totalItems > this.itemsPerPage) {
-              this.loading=false;
+              this.loading = false;
               this.showHide2 = true;
               this.showHide1 = false;
             }
             else if (this.equipments[0].totalItems <= this.itemsPerPage) {
+              this.loading = false;
               this.showHide2 = false;
               this.showHide1 = false;
             }
@@ -169,12 +169,12 @@ export class EquipmentViewComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-    this.loading=true;
+    this.loading = true;
     this.inventoryService
       .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.equipments = data;
-        this.loading=false;
+        this.loading = false;
         if (this.equipments[0].totalItems > this.itemsPerPage) {
           this.showHide2 = true;
           this.showHide1 = false;
