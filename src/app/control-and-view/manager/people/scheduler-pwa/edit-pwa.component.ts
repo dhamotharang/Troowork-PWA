@@ -257,12 +257,12 @@ export class EditPWAComponent implements OnInit {
       this.SchedulingService.SchedulerEventDelete(this.AssignIDForDelete, this.employeekey, this.OrganizationID).subscribe(data => {
         // alert("Sucessfully Deleted !");
         this.ds.setExpandFlagNewComp(3);
-        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
+        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA1'] } }]);
         if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA1'] } }]);
           // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
         } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA'] } }]);
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA1'] } }]);
         }
       });
     }
