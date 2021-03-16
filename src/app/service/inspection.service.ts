@@ -332,12 +332,11 @@ export class InspectionService {
       .post(url, obj);
   }
   // @Rodney starts
-  getFeedbackTemplateQuestionsEditDetails(orgID) {
+  getFeedbackTemplateQuestionsEditDetails(tempID, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url + '/getFeedbackTemplateQuestionsEditDetails?OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getFeedbackTemplateQuestionsEditDetails?OrganizationID=' + orgID + "&templateID=" + tempID);
   }
-
   deleteSelectedFeedbackQuestion(id, empKey, orgID) {
     const url = ConectionSettings.Url + '/deleteSelectedFeedbackQuestion';
     const obj = {
@@ -382,6 +381,128 @@ export class InspectionService {
       .http
       .get(ConectionSettings.Url + '/getPickValuesListForInspection?OrganizationID=' + orgID);
   }
+  // feedback template starts...
+  checkforFeedbackTemplate(InspTempName, OrganizationID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/checkforFeedbackTemplate?templateName=' + InspTempName + '&OrganizationID=' + OrganizationID);
+  }
+
+  createFeedbackTemplate(ScoreTypeKey, InspTempName, QustArry, empKey, orgID) {
+    const url = ConectionSettings.Url + '/addFeedbackTemplatequestion';
+    const obj = {
+      scoringTypeKey: ScoreTypeKey,
+      question: QustArry,
+      templatename: InspTempName,
+      employeekey: empKey,
+      OrganizationID: orgID
+    };
+    return this
+      .http
+      .post(url, obj);
+  }
+
+  getFeedbackTemplateList(orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getFeedbackTemplateList?OrganizationID=' + orgID);
+  }
+
+  deleteFeedbackTemplate(templateID, empKey, OrganizationID) {
+
+    const url = ConectionSettings.Url + '/deleteSelectedFeedbackTemplate';
+    const obj = {
+      templateID: templateID,
+      empKey: empKey,
+      OrganizationID: OrganizationID
+    }
+    return this
+      .http
+      .post(url, obj);
+  }
+
+  getFeedbackTemplateEditDetails(templateID, OrganizationID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getFeedbackTemplateEditDetails?templateID=' + templateID + '&OrganizationID=' + OrganizationID);
+  }
+
+
+  updateEditedFeedbackTemplateQuestion(obj) {
+
+    const url = ConectionSettings.Url + '/updateFeedbackTemplateQuestion';
+    return this
+      .http
+      .post(url, obj);
+  }
+
+  insertEditedFeedbackTemplateQuestion(obj) {
+
+    const url = ConectionSettings.Url + '/insertFeedbackTemplateQuestion';
+    return this
+      .http
+      .post(url, obj);
+  }
+
+
+  updateFeedbackTemplateDetails(TemplateName, tempID, OrganizationID, ScoreTypeKey, employeekey) {
+
+    const url = ConectionSettings.Url + '/updateFeedbackTemplateDetails';
+    const obj = {
+      templateID: tempID,
+      TemplateName: TemplateName,
+      ScoreTypeKey: ScoreTypeKey,
+      empKey: employeekey,
+      OrganizationID: OrganizationID
+    }
+    return this
+      .http
+      .post(url, obj);
+  }
+
+  getallRoomTypes(OrgId) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getallRoomTypes?OrganizationID=' + OrgId);
+
+  }
+
+  getallRooms_Roomtype(roomtypeKey, OrgId) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getallRooms_Roomtype?roomtypeKey=' + roomtypeKey + '&OrganizationID=' + OrgId);
+
+  }
+
+  getallRoomswithTemplates(roomtypeKey, OrgId) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getallRoomswithTemplates?roomtypeKey=' + roomtypeKey + '&OrganizationID=' + OrgId);
+
+  }
+
+  addRooms_RoomtypeToTemplate(tempID, RoomString, roomtypeKEY, employeekey, OrganizationID) {
+    const url = ConectionSettings.Url + '/addRoomsToTemplate';
+    const obj = {
+      templateID: tempID,
+      RoomList: RoomString,
+      roomtypeKEY: roomtypeKEY,
+      empKey: employeekey,
+      OrganizationID: OrganizationID
+    }
+    return this
+      .http
+      .post(url, obj);
+  }
+
+  getTemplateDetailsForRoom(roomKey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getTemplateDetailsForRoom?roomKey=' + roomKey + '&OrganizationID=' + orgID);
+
+  }
+  // feedback template ends...
+
   // @Rodney ends
 }
 

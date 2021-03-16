@@ -663,10 +663,15 @@ export class InventoryService {
     return this.http.post(url, obj);
   }
 
-  getTemplateDetailsForFeedback(OrgID) {
+  getTemplateDetailsForFeedback(roomKey, OrgID) {
     return this
       .http
-      .get(ConectionSettings.Url + '/getTemplateDetailsForFeedbackByOrgId?OrganizationID=' + OrgID);
+      .get(ConectionSettings.Url + '/getTemplateDetailsForFeedbackByRoomID_OrgId?roomKey=' + roomKey + '&OrganizationID=' + OrgID);
+
+
+    // return this
+    //   .http
+    //   .get(ConectionSettings.Url + '/getTemplateDetailsForFeedbackByOrgId?OrganizationID=' + OrgID);
   }
   // @rodney ends....
 

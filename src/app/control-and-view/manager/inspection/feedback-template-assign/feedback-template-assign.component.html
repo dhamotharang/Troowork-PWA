@@ -1,0 +1,140 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <h4 style="text-align: center;"> {{ tempName }} </h4>
+  <br>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
+      <thead class="tableHead">
+        <th> TEMPLATE NAME </th>
+        <th> SCORE TYPE </th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ tempName }}</td>
+          <td>{{ scorename }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <div class="form-group">
+      <input type="radio" name="checkEvent" [(ngModel)]="radio1" [value]="roomtype" (click)='roomTypeChange()'>&nbsp;
+      <label>Room Type</label> &nbsp;
+
+      <input type="radio" name="checkEvent" [(ngModel)]="radio1" [value]='room' (click)='roomChange()'>&nbsp;
+      <label>Room</label>
+
+    </div>
+
+    <div *ngIf="roomtype">
+
+      <div class="row col-md-12">
+        <br>
+        <div class="row col-md-6">
+          <h6 class="col-sm-3 col-md-3 col-lg-3 col" style="padding-top: 0.3rem"><label for="people">Room Type</label>
+          </h6>
+          <select [(ngModel)]="RoomType" style="background-color: #d4f4ff;"
+            class="col form-control col-sm-9 col-md-9 col-lg-9" (change)="selectroomfromRoomtype($event.target.value)">
+            <option value="">--Select--</option>
+            <option *ngFor="let rt of roomtypeList" [value]="rt.RoomTypeKey">
+              {{rt.RoomType}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <!-- <div>
+        <label>Room Type</label>
+        <select style="background-color: #d4f4ff !important;" class="form-control " [(ngModel)]="RoomType"
+          (change)="selectroomfromRoomtype($event.target.value)">
+          <option value="">--Select--</option>
+          <option *ngFor="let rt of roomtypeList" [value]="rt.RoomTypeKey">
+            {{rt.RoomType}}
+          </option>
+        </select>
+      </div> -->
+      <div *ngIf="RoomType">
+        <table class="table table-responsive table-hover table-bordered table"
+          style="display: inline-table;margin-top: 1%;">
+          <thead class="tableHead">
+            <th> Building </th>
+            <th> Floor </th>
+            <th> Zone </th>
+            <th> Room </th>
+            <th>
+              <button class="btn btn-success" type="button" (click)="valuesSave_RoomType()"><b>SAVE</b></button>
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let x of roomList">
+              <td>{{x.FacilityName}}</td>
+              <td>{{x.FloorName}}</td>
+              <td>{{x.ZoneName}}</td>
+              <td>{{x.RoomId}}<br>
+                <span *ngIf="x.RoomKeyTemp" style="color: red;font-weight: bold;">{{x.RoomKeyTemp}}</span>
+              </td>
+              <td>
+                <input type="checkbox" [value]=x.roomCheck [(ngModel)]="x.roomCheck">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="room">
+      <div style="margin-left: 1.5rem;padding-right: 2rem; padding-top: 2rem;width: 95.5%" class="row col-md-12">
+
+        <div class="form-group col-md-6">
+          <label>Building*</label><br>
+          <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FacilityKey"
+            (change)="getFloorDisp($event.target.value);" required>
+            <option value="">--Select--</option>
+            <option *ngFor="let b of building" [value]="b.FacilityKey">
+              {{b.FacilityText}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Floor*</label><br>
+          <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorKey"
+            [disabled]="!FacilityKey" (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);" required>
+            <option value="">--Select--</option>
+            <option *ngFor="let b of FloorList" [value]="b.FloorKey">
+              {{b.FloorName}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Zone</label><br>
+          <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FloorKey"
+            (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);" required>
+            <option value="">--Select--</option>
+            <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
+              {{b.ZoneName}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label>Room</label><br>
+          <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey"
+            (change)="getRoomDetails($event.target.value)" required>
+            <option value="">--Select--</option>
+            <option *ngFor="let b of RoomList" [value]="b.RoomKey">
+              {{b.RoomName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <span *ngIf="roomTempname" style="color: red;text-align: center;">
+          <h6 style="font-weight: bold;">The room has {{roomTempname}} already assigned to it</h6>
+        </span>
+      </div>
+      <div style="text-align: center;">
+        <button class="btn btn-success" type="button" (click)="valuesSave_Room()"><b>SAVE</b></button>
+      </div>
+    </div>
+  </div>
+</div>

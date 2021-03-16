@@ -1,21 +1,20 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
-    <h4 style="margin-left: 42%;margin-top: 4.5%">REPORTS ON FEEDBACK</h4>
+    <h4 style="margin-left: 42%;">REPORTS ON FEEDBACK</h4>
   </div>
-  <br>
-  <div style="margin-left: 1.5rem;margin-right: 1.5rem;width: 100%;margin-top: 2%;" class="row bg-info col-md-12">
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;width: 100%" class="row bg-info col-md-12">
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
       <div class="form-group">
-        <label style="margin-top: 1rem;" class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <label class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <label style="margin-top: 1.7rem;" class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+        <label class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="todate"></ng-datepicker>
       </div>
     </div>
     <div class="row col-md-12">
@@ -32,6 +31,7 @@
       <thead class="tableHead">
         <th> DATE </th>
         <th> ROOM </th>
+        <th> TEMPLATE NAME</th>
         <th> QUESTION </th>
         <th> STAR RATING </th>
       </thead>
@@ -39,12 +39,13 @@
         <tr *ngFor="let x of viewReport">
           <td>{{x.ReviewDate}}</td>
           <td>{{x.RoomName}}</td>
+          <td>{{x.TemplateName}}</td>
           <td>{{x.Question}} </td>
-          <td *ngIf="x.ReviewTemplateQuestionID != 6">{{x.ReviewValue}}</td>
-          <td *ngIf="x.ReviewTemplateQuestionID == 6">{{x.Comments}}</td>
+          <td *ngIf="x.ReviewValue">{{x.ReviewValue}}</td>
+          <td *ngIf="x.Comments">{{x.Comments}}</td>
         </tr>
         <tr *ngIf="viewReport?.length == 0">
-          <td colspan="4" class="no-data-available">No records found</td>
+          <td colspan="5" class="no-data-available">No records found</td>
         </tr>
       </tbody>
     </table>
@@ -56,6 +57,7 @@
       <thead class="tableHead">
         <th> DATE </th>
         <th> ROOM </th>
+        <th> TEMPLATE NAME</th>
         <th> QUESTION </th>
         <th> STAR RATING </th>
       </thead>
@@ -63,12 +65,13 @@
         <tr *ngFor="let x of viewReport">
           <td>{{x.ReviewDate}}</td>
           <td>{{x.RoomName}}</td>
+          <td>{{x.TemplateName}}</td>
           <td>{{x.Question}} </td>
-          <td *ngIf="x.ReviewTemplateQuestionID != 6">{{x.ReviewValue}}</td>
-          <td *ngIf="x.ReviewTemplateQuestionID == 6">{{x.Comments}}</td>
+          <td *ngIf="x.ReviewValue">{{x.ReviewValue}}</td>
+          <td *ngIf="x.Comments">{{x.Comments}}</td>
         </tr>
         <tr *ngIf="viewReport?.length == 0">
-          <td colspan="4" class="no-data-available">No records found</td>
+          <td colspan="5" class="no-data-available">No records found</td>
         </tr>
       </tbody>
     </table>

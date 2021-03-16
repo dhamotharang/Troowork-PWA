@@ -22473,6 +22473,382 @@ app.get(securedpath + '/employeeCalendarDetailsForScheduler_EmployeeView_PWA', f
         connection.release();
     });
 });
+
+// feedback template starts...
+app.get(securedpath + '/checkforFeedbackTemplate', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var templateName = url.parse(req.url, true).query['templateName'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templateName=?; set@OrganizationID=?; call usp_checkforFeedbackTemplate(@templateName,@OrganizationID)', [templateName, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("Facility Key...from server.." + JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/addFeedbackTemplatequestion', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var question = newobject.question;
+    var templatename = newobject.templatename;
+    var ScoringTypeKey = newobject.scoringTypeKey;
+    var metaupdatedby = newobject.employeekey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templatename=?;set @ScoringTypeKey=?;set @question=?; set @metaupdatedby=?; set@OrganizationID=?; call usp_templateforFeedbackAdd(@templatename,@ScoringTypeKey,@question,@metaupdatedby,@OrganizationID)', [templatename, ScoringTypeKey, question, metaupdatedby, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getFeedbackTemplateList', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set@OrganizationID=?; call usp_getFeedbackTemplateList(@OrganizationID)', [OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/deleteSelectedFeedbackTemplate', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var templateID = newobject.templateID;
+    var empKey = newobject.empKey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templateID=?; set @empKey=?; set@OrganizationID=?; call usp_deleteFeedbackTemplate(@templateID,@empKey,@OrganizationID)', [templateID, empKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getFeedbackTemplateEditDetails', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    var templateID = url.parse(req.url, true).query['templateID'];;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set@templateID=?; set@OrganizationID=?; call usp_getFeedbackTemplateEditDetails(@templateID,@OrganizationID)', [templateID, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.post(securedpath + '/updateFeedbackTemplateQuestion', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var templatequestionid = newobject.templatequestionid;
+    var question = newobject.question;
+    var empkey = newobject.empkey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templatequestionid=?; set @question=?; set @empkey=?; set@OrganizationID=?; call usp_updateFeedbackTemplateQuestion(@templatequestionid,@question,@empkey,@OrganizationID)', [templatequestionid, question, empkey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.post(securedpath + '/insertFeedbackTemplateQuestion', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var templateid = newobject.templateid;
+    var question = newobject.question;
+    var empkey = newobject.empkey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templateid=?; set @question=?; set @empkey=?; set@OrganizationID=?; call usp_insertFeedbackTemplateQuestion(@templateid,@question,@empkey,@OrganizationID)', [templateid, question, empkey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.post(securedpath + '/updateFeedbackTemplateDetails', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var templateID = newobject.templateID;
+    var TemplateName = newobject.TemplateName;
+    var ScoreTypeKey = newobject.ScoreTypeKey;
+    var empkey = newobject.empKey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templateID=?; set @TemplateName=?; set @ScoreTypeKey=?; set @empkey=?; set@OrganizationID=?; call usp_updateFeedbackTemplateDetails(@templateID,@TemplateName,@ScoreTypeKey,@empkey,@OrganizationID)', [templateID, TemplateName, ScoreTypeKey, empkey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getallRoomTypes', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @OrganizationID=?; call usp_getallRoomTypes(@OrganizationID)', [OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getallRooms_Roomtype', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var roomtypeKey = url.parse(req.url, true).query['roomtypeKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @roomtypeKey=?;set @OrganizationID=?; call usp_getallRooms_Roomtype(@roomtypeKey,@OrganizationID)', [roomtypeKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getallRoomswithTemplates', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var roomtypeKey = url.parse(req.url, true).query['roomtypeKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @roomtypeKey=?;set @OrganizationID=?; call usp_getTemplateAssignedRoomList(@roomtypeKey,@OrganizationID)', [roomtypeKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.post(securedpath + '/addRoomsToTemplate', supportCrossOriginScript, function (req, res) {
+    var newobject = req.body;
+
+    var templateID = newobject.templateID;
+    var RoomList = newobject.RoomList;
+    var roomtypeKEY = newobject.roomtypeKEY;
+    var empKey = newobject.empKey;
+    var OrganizationID = newobject.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @templateID=?; set @RoomList=?; set @roomtypeKEY=?; set @empKey=?; set@OrganizationID=?; call usp_addRoomsToFeedbackTemplate(@templateID,@RoomList,@roomtypeKEY,@empKey,@OrganizationID)', [templateID, RoomList, roomtypeKEY, empKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getTemplateDetailsForRoom', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var roomKey = url.parse(req.url, true).query['roomKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @roomKey=?;set @OrganizationID=?; call usp_getTemplateDetailsForRoom(@roomKey,@OrganizationID)', [roomKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getTemplateDetailsForFeedbackByRoomID_OrgId', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var roomKey = url.parse(req.url, true).query['roomKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query(' set @roomKey=?; set @OrganizationID=?;call usp_getTemplateDetailsForFeedbackByRoomID_OrgId(@roomKey,@OrganizationID)', [roomKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+// feedback template ends...
+
 // @Rodney ends...
 
 //handle generic exceptions

@@ -762,7 +762,23 @@ const routes: Routes = [
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/people/trade-request-details/trade-request-details.module#TradeRequestDetailsModule',
       },
+      ,
+      {
+        path: 'createFeedbackTemplate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/create-feedback-template/create-feedback-template.module#CreateFeedbackTemplateModule'
+      },
+      {
+        path: 'feedbackManage/editFeedbackTemplate/:idreviewtemplate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/edit-feedback-template/edit-feedback-template.module#EditFeedbackTemplateModule',
 
+      },
+      {
+        path: 'feedbackManage/assignFeedbackTemplateTo/:idreviewtemplate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/feedback-template-assign/feedback-template-assign.module#FeedbackTemplateAssignModule',
+      },
     ]
   }
 ];

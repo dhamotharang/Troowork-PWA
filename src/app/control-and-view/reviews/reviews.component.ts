@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../../service/review.service';
 import { InventoryService } from '../../service/inventory.service';
+import { InspectionService } from '../../service/inspection.service';
 import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-reviews',
@@ -10,10 +11,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class ReviewsComponent implements OnInit {
 
   comments;
-  fac$;
-  flr$;
-  zone$;
-  rtype$;
+  // fac$;
+  // flr$;
+  // zone$;
+  // rtype$;
   OrgId$;
   rKey$;
   tempKey$;
@@ -32,15 +33,11 @@ export class ReviewsComponent implements OnInit {
 
 
   lastIndexValue;
+  pickValues;
 
-  constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute, private inventoryService: InventoryService) {
-    this.route.params.subscribe(params => this.fac$ = params.Facility_Key);
-    this.route.params.subscribe(params => this.flr$ = params.Floor_Key);
-    this.route.params.subscribe(params => this.zone$ = params.Zone_Key);
-    this.route.params.subscribe(params => this.rtype$ = params.RoomType_Key);
+  constructor(private inspectionService: InspectionService, private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute, private inventoryService: InventoryService) {
     this.route.params.subscribe(params => this.OrgId$ = params.rev_orgid);
     this.route.params.subscribe(params => this.rKey$ = params.room_key);
-    // this.route.params.subscribe(params => this.tempKey$ = params.templateID);
   }
 
   saveRatings(TemplateQuestionID, ScoreName) {
@@ -57,8 +54,29 @@ export class ReviewsComponent implements OnInit {
     else if (ScoreName === '3 Star') {
       this.Scoringtype.ratingValue.push({ rating: this.value, questionID: TemplateQuestionID });
     }
+    else if (ScoreName === '0-25') {
+
+      var length = Object.keys(this.Scoringtype.rating_yn).length;
+      var arrayLength = this.Scoringtype.rating_yn.length;
+      var value = this.Scoringtype.rating_yn[arrayLength - 1];
+
+      this.Scoringtype.ratingValue.push({ rating: value, questionID: TemplateQuestionID });
+
+    }
   }
 
+  setStar3(k, data: any) {
+    this.rating[k] = data + 1;
+    this.value = this.rating[k];
+    for (var i = 0; i <= 2; i++) {
+      if (i <= data) {
+        this.starList[k][i] = false;
+      }
+      else {
+        this.starList[k][i] = true;
+      }
+    }
+  }
   setStar(k, data: any) {
     this.rating[k] = data + 1;
     this.value = this.rating[k];
@@ -125,35 +143,46 @@ export class ReviewsComponent implements OnInit {
     var noteIndexList = [];
     var questionidList = [];
 
-    noteIndexList = Object.keys(this.Scoringtype.inspectionNotes);
-    indexObj = this.Scoringtype.ratingValue;
-    if (indexObj) {
-      for (var j = 0; j < indexObj.length; j++) {
-        ratingIndexlist.push("" + indexObj[j].questionID);
+    if (this.ScoreName === 'Yes/No' || this.ScoreName === 'Pass/Fail' || this.ScoreName === '0-25') {
+
+      for (var j = 0; j < this.reviewQuestions.length; j++) {
+        temp.push("" + this.reviewQuestions[j].idreviewtemplatequestion);
       }
+      ratingIndexlist = Object.keys(this.Scoringtype.rating_yn);
+      noteIndexList = Object.keys(this.Scoringtype.inspectionNotes);
+      questionidList = this.arrayUnique(ratingIndexlist.concat(temp));
+
     }
-    questionidList = this.arrayUnique(noteIndexList.concat(ratingIndexlist));
+    else {
+      noteIndexList = Object.keys(this.Scoringtype.inspectionNotes);
 
+      indexObj = this.Scoringtype.ratingValue;
+      if (indexObj) {
+        for (var j = 0; j < indexObj.length; j++) {
+          ratingIndexlist.push("" + indexObj[j].questionID);
+        }
+      }
+      questionidList = this.arrayUnique(noteIndexList.concat(ratingIndexlist));
+    }
 
-    var questionValues = "";
-    if (questionidList.length === totalQuestions && this.ScoreName !== 'Pass/Fail') {
-      console.log("i am in");
-      questionValues = null;
+    if (this.comments) {
+      this.comments = this.comments.trim();
+    }
+    else {
+      this.comments = null;
+    }
+
+    if (questionidList.length === totalQuestions && this.ScoreName === 'Pass/Fail') {
+      var questionValues = "Pass";
       var starRating = null;
       var notes = null;
       var questionid = null;
+
       var i = 0;
       var j = 0;
       var k = 0;
-      if (this.comments) {
-        this.comments = this.comments.trim();
-      }
-      else {
-        this.comments = null;
-      }
-      console.log(questionidList);
-      console.log(ratingIndexlist);
-      console.log(this.comments);
+
+
       this.reviewAdd = {
         Orgid: this.OrgId$,
         Comments: this.comments,
@@ -162,27 +191,117 @@ export class ReviewsComponent implements OnInit {
         roomKey: this.rKey$
       };
 
+
+      this.reviewservice.submitReview(this.reviewAdd).subscribe((data: any[]) => {
+        console.log("data...");
+        console.log(data[0]);
+        var feedbackmasterID = data[0].feedbackmasterID;
+        var count = 0;
+        console.log("questionidList.length  "+questionidList.length);
+        for (var i = 0; i < questionidList.length; i++) {
+     
+          questionValues = "Pass";
+          notes = null;
+          questionid = questionidList[i];
+          console.log("questionid "+questionid);
+          for (k = 0; k < ratingIndexlist.length; k++) {
+            if (this.Scoringtype.rating_yn[questionid]) {
+              questionValues = this.Scoringtype.rating_yn[questionid];
+              if (questionValues === 'undefined') {
+                questionValues = "Pass";
+              }
+            } else {
+              questionValues = "Pass";
+            }
+          }
+          count = count + 1;
+          console.log(questionValues+"   "+count);
+          const reviewDetail =
+          {
+            OrganizationID: this.OrgId$,
+            feedbackmasterkey: feedbackmasterID,
+            templateQstnValues: questionValues,
+            templateid: this.tempKey$,
+            questionid: questionid,
+            feedback_time: p
+          };
+          this.reviewservice
+            .setReviewDetails(reviewDetail).subscribe();
+          if (count == questionidList.length) {
+            this.redirect();
+          }
+        }
+      });
+
+    }
+    else if (questionidList.length === totalQuestions && this.ScoreName !== 'Pass/Fail') {
+      questionValues = null;
+      var starRating = null;
+      var notes = null;
+      var questionid = null;
+      var i = 0;
+      var j = 0;
+      var k = 0;
+
+
+      this.reviewAdd = {
+        Orgid: this.OrgId$,
+        Comments: this.comments,
+        feedback_time: p,
+        templateid: this.tempKey$,
+        roomKey: this.rKey$
+      };
+
+
       this.reviewservice.submitReview(this.reviewAdd).subscribe((data: any[]) => {
         var feedbackmasterID = data[0].feedbackmasterID;
         var count = 0;
-        for (i = i; i < questionidList.length; i++) {
+        for (i = i; i < questionidList.length; i++) {// includes actual qn ids
           questionValues = null;
           notes = null;
           questionid = questionidList[i];
-          for (k = 0; k < ratingIndexlist.length; k++) {
-            this.lastIndexValue = 0;
-            if (ratingIndexlist[k] === questionid) {
-              this.lastIndexValue = this.lastIndex(ratingIndexlist, questionidList[i]);
-              var x = this.lastIndexValue.length - ratingIndexlist.length;
-              if (this.lastIndexValue != null) {
-                questionValues = this.Scoringtype.ratingValue[this.lastIndexValue].rating;
+
+          if (this.ScoreName === '3 Star') {
+            for (k = 0; k < ratingIndexlist.length; k++) {
+              this.lastIndexValue = 0;
+              if (ratingIndexlist[k] === questionid) {
+                this.lastIndexValue = this.lastIndex(ratingIndexlist, questionidList[i]);
+                var x = this.lastIndexValue.length - ratingIndexlist.length;
+                if (this.lastIndexValue != null) {
+                  questionValues = this.Scoringtype.ratingValue[this.lastIndexValue].rating;
+                }
+                else {
+                  questionValues = null;
+                }
+                break;
               }
-              else {
-                questionValues = null;
-              }
-              break;
             }
           }
+          else if (this.ScoreName === '5 Star') {
+            for (k = 0; k < ratingIndexlist.length; k++) {
+              this.lastIndexValue = 0;
+              if (ratingIndexlist[k] === questionid) {
+                this.lastIndexValue = this.lastIndex(ratingIndexlist, questionidList[i]);
+                var x = this.lastIndexValue.length - ratingIndexlist.length;
+                if (this.lastIndexValue != null) {
+                  questionValues = this.Scoringtype.ratingValue[this.lastIndexValue].rating;
+                }
+                else {
+                  questionValues = null;
+                }
+                break;
+              }
+            }
+          }
+          else {
+
+            if (this.Scoringtype.rating_yn[questionid]) {
+              questionValues = this.Scoringtype.rating_yn[questionid];
+            } else {
+              questionValues = null;
+            }
+          }
+
           count = count + 1;
           const reviewDetail =
           {
@@ -209,7 +328,7 @@ export class ReviewsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.inventoryService.getTemplateDetailsForFeedback(this.OrgId$).subscribe((data) => {
+    this.inventoryService.getTemplateDetailsForFeedback(this.rKey$, this.OrgId$).subscribe((data) => {
       var tempID = data[0];
       if (!tempID) {
         tempID = [];
@@ -221,18 +340,25 @@ export class ReviewsComponent implements OnInit {
         this.reviewQuestions = data;
 
         if (this.reviewQuestions[0].ScoreName === 'Yes/No') {
-          this.names = ['Yes', 'No'];
+          this.names = ['Yes', 'No', 'N/A'];
           this.ScoreName = this.reviewQuestions[0].ScoreName;
         }
         else if (this.reviewQuestions[0].ScoreName === 'Pass/Fail') {
           this.names = ['Fail', 'N/A'];
           this.ScoreName = this.reviewQuestions[0].ScoreName;
+        } else if (this.reviewQuestions[0].ScoreName === '0-25') {
+          this.inspectionService.getPickListValues(this.OrgId$).subscribe((data: any[]) => {
+            this.pickValues = data;
+          });
+          this.ScoreName = this.reviewQuestions[0].ScoreName;
         }
         else if (this.reviewQuestions[0].ScoreName === '5 Star') {
+          this.ScoreName = this.reviewQuestions[0].ScoreName;
           for (var i = 0; i < this.reviewQuestions.length; i++) {
             this.starList[i] = [true, true, true, true, true];
           }
         } else if (this.reviewQuestions[0].ScoreName === '3 Star') {
+          this.ScoreName = this.reviewQuestions[0].ScoreName;
           for (var i = 0; i < this.reviewQuestions.length; i++) {
             this.starList[i] = [true, true, true];
           }
