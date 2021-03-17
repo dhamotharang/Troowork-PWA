@@ -762,7 +762,6 @@ const routes: Routes = [
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/people/trade-request-details/trade-request-details.module#TradeRequestDetailsModule',
       },
-      ,
       {
         path: 'createFeedbackTemplate',
         outlet: 'ManagerOut',
@@ -778,7 +777,7 @@ const routes: Routes = [
         path: 'feedbackManage/assignFeedbackTemplateTo/:idreviewtemplate',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/inspection/feedback-template-assign/feedback-template-assign.module#FeedbackTemplateAssignModule',
-      },
+      }
     ]
   }
 ];
