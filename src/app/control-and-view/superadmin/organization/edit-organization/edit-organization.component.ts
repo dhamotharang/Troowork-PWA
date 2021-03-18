@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ['./edit-organization.component.scss']
 })
 export class EditOrganizationComponent implements OnInit {
-
+  checkFlag;
   OrgId$: Object;
   OrgDetail;
   updatedby: number;
@@ -36,13 +36,15 @@ export class EditOrganizationComponent implements OnInit {
   }
 
   updateOrg(OName, ODesc, state, tid, loc, country, tename, email) {
-
+    this.checkFlag = true;
     if (!(OName) || !(OName.trim())) {
       alert('Organization Name is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (!(tid) || !(tid.trim())) {
       alert('Tenant ID is not provided !');
+      this.checkFlag = false;
       return;
     }
     OName = OName.trim();
@@ -65,6 +67,7 @@ export class EditOrganizationComponent implements OnInit {
     if (tid == this.temp_TenantID) {
       this.organizationService.UpdateOrganizationDetails(OName, ODesc, state, tid, loc, country, tename, email, this.updatedby, this.OrgId$).subscribe((data: any[]) => {
         alert("Organization Updated !");
+        this.checkFlag = false;
         this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
       });
     }
@@ -73,12 +76,14 @@ export class EditOrganizationComponent implements OnInit {
         if (data[0].count == 0) {
           this.organizationService.UpdateOrganizationDetails(OName, ODesc, state, tid, loc, country, tename, email, this.updatedby, this.OrgId$).subscribe((data: any[]) => {
             alert("Organization Updated !");
+            this.checkFlag = false;
             this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
 
           });
         }
         else {
           alert("Tenant ID is already present !");
+          this.checkFlag = false;
           return;
         }
 
@@ -92,6 +97,7 @@ export class EditOrganizationComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrgID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.organizationService.ViewOrgDetailsforedit(this.OrgId$).subscribe((data: any[]) => {
       this.OrgDetail = data;
       this.temp_TenantID = this.OrgDetail.TenantID;

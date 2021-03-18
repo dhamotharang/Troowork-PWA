@@ -19,7 +19,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
       <div class="form-group">
         <label class="col-sm-4 col-md-4 col-lg-4 ">Template Name*</label>
@@ -34,7 +34,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="todate"></ng-datepicker>
       </div>
       <div class="form-group">
         <label class="col-sm-4 col-md-4 col-lg-4 ">Employee</label>
@@ -49,8 +49,7 @@
 
     <div class="row col-md-12">
       <div style="margin-left: 45%">
-        <button type="button" class="btn btn-success"
-          (click)=generateInspectionAuditReport(fromdate,todate,TemplateName,Employee,ReportType)><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateInspectionAuditReport(fromdate,todate,TemplateName,Employee,ReportType)><b>GENERATE</b></button>
       </div>
     </div>
     <br>
@@ -65,8 +64,7 @@
   <br>
 
   <div style="margin-left: 1.5rem;margin-right: 1.5rem; width: 100%">
-    <table *ngIf='showHide1' id="reportexport"
-      class="table table-hover table-responsive table-bordered table" style="display: inline-table">
+    <table *ngIf='showHide1' id="reportexport" class="table table-hover table-responsive table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th colspan="4">Employee Name</th>
         <th colspan="5">{{empNameForview}}</th>
@@ -99,8 +97,7 @@
         </tr>
       </tbody>
     </table>
-    <table *ngIf='showHide2' id="reportexportsummary"
-      class="table table-hover table-responsive table-bordered table" style="display: inline-table">
+    <table *ngIf='showHide2' id="reportexportsummary" class="table table-hover table-responsive table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th colspan="4">Template Name</th>
         <th colspan="5">{{templateNameForview}}</th>
@@ -137,8 +134,7 @@
   <br>
 
   <div id='exportable1' style="visibility: hidden !important;">
-    <table *ngIf='showHide1' cellspacing="0" rules="rows" border="1"
-      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+    <table *ngIf='showHide1' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
       <tr>
         <th>Employee Name</th>
         <th colspan="3">{{empNameForview}}</th>
@@ -174,8 +170,7 @@
     </table>
   </div>
   <div id='exportable2' style="visibility: hidden !important;">
-    <table *ngIf='showHide2' cellspacing="0" rules="rows" border="1"
-      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+    <table *ngIf='showHide2' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
       <tr>
         <th>Template Name</th>
         <th colspan="8">{{templateNameForview}}</th>

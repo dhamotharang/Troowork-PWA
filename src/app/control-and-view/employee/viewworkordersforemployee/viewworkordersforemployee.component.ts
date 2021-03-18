@@ -58,6 +58,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
   BarcodeValue;
   SearchWO;
   showGenerate = false;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -312,10 +313,10 @@ export class ViewworkordersforemployeeComponent implements OnInit {
           this.FloorKey = '';
           this.RoomTypeKey = '';
         });
-    }else{
-    this.ZoneKey = '';
-    this.FloorKey = '';
-    this.RoomTypeKey = '';
+    } else {
+      this.ZoneKey = '';
+      this.FloorKey = '';
+      this.RoomTypeKey = '';
     }
   }
 
@@ -432,6 +433,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
 
   workorderCompleted(i, barcodeRequired, photoRequired, workorderkey, file) {
 
+    this.checkFlag = true;
     var t = new Date();
     var t = new Date();
     var y = t.getFullYear();
@@ -453,6 +455,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     if (!this.BarcodeValue && barcodeRequired === 1) {
       this.BarcodeValue = null;
       alert("Barcode is not provided !");
+      this.checkFlag = false;
       return;
     }
     else if (this.BarcodeValue && barcodeRequired === 1) {
@@ -473,12 +476,14 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     if (!(this.fileName) && photoRequired === 1) {
       this.fileName = null;
       alert("Photo is not provided !");
+      this.checkFlag = false;
       return;
     }
     else if (this.fileName && photoRequired === 1) {
       this.WorkOrderServiceService
         .UpdatewobyPhotoForEmployee(this.fileName, this.toServeremployeekey, workorderkey, this.OrganizationID, p)
         .subscribe((data: any[]) => {
+          this.checkFlag = false;
         });
     }
     if (photoRequired !== 1 && barcodeRequired !== 1) {
@@ -486,6 +491,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
         .CompletewoByempWithoutPhotoandBarcd(this.toServeremployeekey, workorderkey, this.OrganizationID, p)
         .subscribe((data: any[]) => {
           this.FinishButton[i] = true;
+          this.checkFlag = false;
         });
     }
 
@@ -554,6 +560,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag=false;
     //token ends
 
     this.loading = true;// loading

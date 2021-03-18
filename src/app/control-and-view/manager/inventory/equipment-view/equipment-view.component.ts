@@ -24,6 +24,7 @@ export class EquipmentViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -138,9 +139,11 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   deleteEquipments() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteEquipment(this.delete_EquipKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert("Equipment deleted successfully...");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -170,6 +173,7 @@ export class EquipmentViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

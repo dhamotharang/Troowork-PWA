@@ -19,6 +19,7 @@ export class EditMasterShiftsComponent implements OnInit {
   shiftDetails;
   shiftKey$: Object;
   shftNme;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -60,6 +61,7 @@ export class EditMasterShiftsComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     //token ends
 
+    this.checkFlag = false;
     this.scheduleService
       .getMasterShiftDetails(this.shiftKey$, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -73,8 +75,10 @@ export class EditMasterShiftsComponent implements OnInit {
   }
 
   updateShift() {
+    this.checkFlag = true;
     if (!(this.shiftDetails.ShiftName) || !(this.shiftDetails.ShiftName.trim())) {
       alert("Shift Name can't be empty.");
+      this.checkFlag = false;
       return false;
     }
     this.shiftDetails.ShiftName = this.shiftDetails.ShiftName.trim();
@@ -87,11 +91,13 @@ export class EditMasterShiftsComponent implements OnInit {
               .udpateMasterShiftDetails(this.shiftKey$, this.shiftDetails.ShiftName, this.employeekey, this.OrganizationID)
               .subscribe(res => {
                 alert("Shift Name updated Successfully");
+                this.checkFlag = false;
                 this._location.back();
               });
           }
           else {
             alert("Shift Name already present... :(");
+            this.checkFlag = false;
             return false;
           }
 
@@ -100,6 +106,7 @@ export class EditMasterShiftsComponent implements OnInit {
       this.scheduleService
         .udpateMasterShiftDetails(this.shiftKey$, this.shiftDetails.ShiftName, this.employeekey, this.OrganizationID)
         .subscribe(res => {
+          this.checkFlag = false;
           this._location.back();
         });
     }

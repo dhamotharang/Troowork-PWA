@@ -27,7 +27,7 @@ export class TradeRequestPWAComponent implements OnInit {
   EmployeeDetails;
   requestcomments;
   isMobile: boolean;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -71,20 +71,24 @@ export class TradeRequestPWAComponent implements OnInit {
 
   submitRequest() {
 
+    this.checkFlag = true;
     // var requestcomment=this.requestcomments.trim();
 
     if (!(this.startdate)) {
       alert('Start Date is not provided !');
+      this.checkFlag = false;
       return;
     }
 
     if (!(this.enddate)) {
       alert('End Date is not provided !');
+      this.checkFlag = false;
       return;
     }
 
     if (!(this.EmployeeKey)) {
       alert('Employee Name is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -108,11 +112,13 @@ export class TradeRequestPWAComponent implements OnInit {
 
     if (this.convert_DT(this.curr_date) > this.convert_DT(this.startdate)) {
       alert("Start Date can't be less than Today...!");
+      this.checkFlag = false;
       return;
     }
 
     if (this.convert_DT(this.enddate) < this.convert_DT(this.startdate)) {
       alert("End Date can't be less than start date...!");
+      this.checkFlag = false;
       return;
     }
     // if (this.requestcomments) {
@@ -123,6 +129,7 @@ export class TradeRequestPWAComponent implements OnInit {
     this.PeopleServiceService
       .setTradeRequest(this.curr_date, this.toServeremployeekey, this.OrganizationID, this.EmployeeKey, this.convert_DT(this.startdate),
         this.convert_DT(this.enddate), requestcomments).subscribe((data: any[]) => {
+          this.checkFlag = false;
           alert("Trade Request Submitted Successfully");
           if (this.role == 'Employee') {
             this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
@@ -144,6 +151,7 @@ export class TradeRequestPWAComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.EmployeeKey = "";
     this.curr_date = this.convert_DT(new Date());
+    this.checkFlag = false;
 
     this.PeopleServiceService.setgetAllEmployeeNames(this.OrganizationID, this.toServeremployeekey)
       .subscribe((data) => {

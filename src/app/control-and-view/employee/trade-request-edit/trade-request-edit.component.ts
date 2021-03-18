@@ -21,7 +21,7 @@ export class TradeRequestEditComponent implements OnInit {
   // curr_date;
   OtherEmployeedetails;
   EmployeeDetails;
-
+checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -66,28 +66,34 @@ export class TradeRequestEditComponent implements OnInit {
 
   submitEditedRequest() {
 
+    this.checkFlag=true;
     if (!(this.traderequestdetails.StartDate)) {
       alert('Start Date is not provided !');
+      this.checkFlag=false;
       return;
     }
     if (!(this.traderequestdetails.EndDate)) {
       alert('End Date is not provided !');
+      this.checkFlag=false;
       return;
     }
 
     if (!(this.traderequestdetails.Comments)) {
       alert('Comments are not provided !');
+      this.checkFlag=false;
       return;
     } else {
       var comments = this.traderequestdetails.Comments.trim();
       if (!(comments)) {
         alert('Comments are not provided !');
+        this.checkFlag=false;
         return;
       }
     }
 
     if (!(this.traderequestdetails.OtherEmployeeKey)) {
       alert('Employee is not provided !');
+      this.checkFlag=false;
       return;
     }
 
@@ -95,10 +101,12 @@ export class TradeRequestEditComponent implements OnInit {
 
     if (this.convert_DT(curr_date) > this.convert_DT(this.traderequestdetails.StartDate)) {
       alert("Start Date can't be less than Today...!");
+      this.checkFlag=false;
       return;
     }
     if (this.convert_DT(this.traderequestdetails.EndDate) < this.convert_DT(this.traderequestdetails.StartDate)) {
       alert("End Date can't be less than start date...!");
+      this.checkFlag=false;
       return;
     }
 
@@ -108,6 +116,7 @@ export class TradeRequestEditComponent implements OnInit {
     this.PeopleServiceService.setEditedTradeRequest(curr_date, this.traderequestID$, this.traderequestdetails.OtherEmployeeKey,
       this.convert_DT(this.traderequestdetails.StartDate), this.convert_DT(this.traderequestdetails.EndDate), comments).subscribe((data) => {
         this.traderequestdetails = data;
+        this.checkFlag=false;
         alert('Trade Request Updated Successfully');
         if (this.role == 'Employee') {
           this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
@@ -129,6 +138,7 @@ export class TradeRequestEditComponent implements OnInit {
     // this.curr_date = this.convert_DT(new Date());
     this.editflag = false;
 
+    this.checkFlag=false;
     this.PeopleServiceService.getAllEmployeeNames(this.OrganizationID, this.toServeremployeekey)
       .subscribe((data) => {
         this.EmployeeDetails = data;

@@ -59,7 +59,7 @@
             <tr>
               <td>
                 <div>
-                  <button type="button" style="text-align:center; width:98%" class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
+                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
 
                   <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>DELETE</b></a> -->
 
@@ -71,7 +71,7 @@
             <tr>
               <td>
                 <div>
-                  <button type="button" style="text-align:center; width:98%" class="btn btn-danger" (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
+                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
 
                 </div>
               </td>

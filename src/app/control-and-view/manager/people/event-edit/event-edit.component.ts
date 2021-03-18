@@ -18,6 +18,7 @@ export class EventEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -43,14 +44,18 @@ export class EventEditComponent implements OnInit {
   }
 
   updateEventType(type, name, desc) {
- 
-    this.peopleServ.UpdateEventType(type, name, desc, this.actionKey$, this.actionTypeKey$, this.employeekey, this.OrganizationID).subscribe(res =>
-       this.router.navigateByUrl('/EventView')
-       );
+    this.checkFlag = true;
+
+    this.peopleServ.UpdateEventType(type, name, desc, this.actionKey$, this.actionTypeKey$, this.employeekey, this.OrganizationID).subscribe(res => {
+      this.checkFlag = false;
+      this.router.navigateByUrl('/EventView');
+    }
+    );
 
   }
 
   ngOnInit() {
+    this.checkFlag = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));

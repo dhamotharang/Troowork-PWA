@@ -17,6 +17,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
   OrganizationID: Number;
   pageNo: Number = 1;
   itemsPerPage: Number = 25;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -62,6 +63,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
+    this.checkFlag = false;
     this.inspectionService
       .scoringtype(this.OrganizationID).subscribe((data: any[]) => {
 
@@ -86,9 +88,11 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
     this.temparray.push(tempKeys);
   }
   deleteFieldValue(TemplateQuestionID) {
+    this.checkFlag = true;
     if (this.fieldArray.length > 1) {
       this.inspectionService
         .deleteSelectedTemplateQuestion(TemplateQuestionID, this.OrganizationID).subscribe(() => {
+          this.checkFlag = false;
           this.inspectionService
             .getTemplateQuestionsEditDetails(this.tempID, this.OrganizationID).subscribe((data: any[]) => {
               this.fieldArray = data;
@@ -97,6 +101,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
         });
     } else {
       alert("Atleast one question is needed in the template.");
+      this.checkFlag = false;
       return false;
     }
   }
@@ -104,6 +109,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
     this.newAttribute.splice(index, 1);
   }
   savetemplate() {
+    this.checkFlag = true;
     var temp_updateArry = this.fieldArray;
     var temp_insertArry = this.newAttribute;
     var temp_TemplateQuestionID;
@@ -115,13 +121,14 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
         if (this.temparray[j] === temp_updateArry[i].TemplateQuestionID) {
           temp_TemplateQuestionID = temp_updateArry[i].TemplateQuestionID;
           temp_Question = temp_updateArry[i].Question;
-          if(temp_Question){
-            temp_Question=temp_Question.trim();
+          if (temp_Question) {
+            temp_Question = temp_Question.trim();
           }
-          else{
- 
-                    alert("Question  is not provided !");
-                    return;
+          else {
+
+            alert("Question  is not provided !");
+            this.checkFlag = false;
+            return;
           }
         }
       }
@@ -133,19 +140,21 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
       };
       this.inspectionService
         .updateEditedTemplateQuestion(this.insertObj).subscribe(() => {
+          this.checkFlag = false;
 
         });
 
     }
     for (var j = 0; j < temp_insertArry.length; j++) {
 
-      if(temp_insertArry[j]){
-        temp_insertArry[j]=temp_insertArry[j].trim();
+      if (temp_insertArry[j]) {
+        temp_insertArry[j] = temp_insertArry[j].trim();
       }
-      else{
-      
-                alert("Question  is not provided !");
-                return;
+      else {
+
+        alert("Question  is not provided !");
+        this.checkFlag = false;
+        return;
       }
 
       this.insertObj = {
@@ -157,21 +166,24 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
 
       this.inspectionService
         .insertEditedTemplateQuestion(this.insertObj).subscribe(() => {
+          this.checkFlag = false;
 
         });
     }
-    if(!this.TemplateEditDetails.TemplateName && !this.TemplateEditDetails.TemplateName.trim()){
+    if (!this.TemplateEditDetails.TemplateName && !this.TemplateEditDetails.TemplateName.trim()) {
       alert("Template Name Not provided !");
+      this.checkFlag = false;
       return;
     }
-    if(this.TemplateEditDetails.TemplateName){
-      this.TemplateEditDetails.TemplateName=this.TemplateEditDetails.TemplateName.trim();
+    if (this.TemplateEditDetails.TemplateName) {
+      this.TemplateEditDetails.TemplateName = this.TemplateEditDetails.TemplateName.trim();
     }
     // this.inspectionService.checkforTemplate(this.TemplateEditDetails.TemplateName,this.OrganizationID).subscribe(res => {
     //   if (res[0].count == 0){
     this.inspectionService
       .updateTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey).subscribe(() => {
         alert("Successfully Updated");
+        this.checkFlag = false;
         this._location.back();
       });
     // }

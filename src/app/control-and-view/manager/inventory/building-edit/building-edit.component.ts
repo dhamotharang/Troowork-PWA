@@ -15,16 +15,13 @@ import { Location } from '@angular/common';
 export class BuildingEditComponent implements OnInit {
   facKey$: Object;
   build: Inventory[];
-
-
-
   role: String;
   name: String;
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
 
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -48,23 +45,27 @@ export class BuildingEditComponent implements OnInit {
 
   updateBuilding(FacilityName, FacilityKey) {
 
+    this.checkFlag = true;
     var type = 'facility';
 
     if (!(FacilityName) || !(FacilityName.trim())) {
       alert("Please Enter Building Name!");
+      this.checkFlag = false;
       return;
     }
     else {
-      FacilityName=FacilityName.trim();
+      FacilityName = FacilityName.trim();
       this.inventoryService.CheckNewBuilding(FacilityName, type, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data.length > 0) {
           alert("Building already present !");
+          this.checkFlag = false;
           return;
         }
         else {
           this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
             .subscribe((data: Inventory[]) => {
               alert("Building updated successfully");
+              this.checkFlag = false;
               this._location.back();
             });
         }
@@ -83,6 +84,7 @@ export class BuildingEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService.EditFacility(this.facKey$, this.OrganizationID).subscribe((data: Inventory[]) => {
       this.build = data;
     });

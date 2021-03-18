@@ -70,6 +70,7 @@ export class ViewBatchWorkorderComponent implements OnInit {
   checkflag: boolean;
   workorderschedulerCheckValue;
   deleteWO;
+  checkFlag;
   //token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -191,6 +192,7 @@ export class ViewBatchWorkorderComponent implements OnInit {
     this.WorkorderTypeKey = "";
     this.BatchScheduleNameKey = "";
 
+    this.checkFlag = false;
     var on_date = this.convert_DT(new Date());
     this.WorkOrderServiceService
       .getallFacility(this.employeekey, this.OrganizationID)
@@ -587,6 +589,7 @@ export class ViewBatchWorkorderComponent implements OnInit {
   //function for deleting multiple batchworkorders checked
   deletebatchWorkOrdersPage() {
 
+    this.checkFlag = true;
     var deletebatchWorkOrderList = [];
     var deletebatchWorkOrderString;
 
@@ -610,6 +613,7 @@ export class ViewBatchWorkorderComponent implements OnInit {
         this.checkflag = false;
         this.workorderKey = [];
         alert("Batch Work order deleted successfully");
+        this.checkFlag = false;
         this.viewWO_Filter();
       });
   }

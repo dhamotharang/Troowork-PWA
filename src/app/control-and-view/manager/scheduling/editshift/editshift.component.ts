@@ -43,6 +43,7 @@ export class EditshiftComponent implements OnInit {
   end_min: String;
   end_format: String;
 
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -85,6 +86,7 @@ export class EditshiftComponent implements OnInit {
 
     this.isemployeecalendar = profile.isemployeecalendar;
     //token ends
+    this.checkFlag = false;
     this.PeopleServiceService
       .getallschedulingexception(this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -265,14 +267,17 @@ export class EditshiftComponent implements OnInit {
   }
   editShift() {
     this.schedularcount = 0;
+    this.checkFlag = true;
     console.log("initial... " + this.schedularcount);
     if (!(this.edit.Description)) {
       alert("Please enter the Employee Group Name");
+      this.checkFlag = false;
       return;
     }
 
     if (!(this.edit.Colour)) {
       alert("Please select a colour");
+      this.checkFlag = false;
       return;
     }
     if (this.showHide == true) {
@@ -286,6 +291,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("sun... " + this.schedularcount);
         alert('Values Missing in Sunday');
+        this.checkFlag = false;
         return;
       }
 
@@ -299,6 +305,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("mon... " + this.schedularcount);
         alert('Values Missing in Monday');
+        this.checkFlag = false;
         return;
       }
 
@@ -312,6 +319,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("tue... " + this.schedularcount);
         alert('Values Missing in Tuesday');
+        this.checkFlag = false;
         return;
       }
 
@@ -325,6 +333,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("wed... " + this.schedularcount);
         alert('Values Missing in Wednesday');
+        this.checkFlag = false;
         return;
       }
 
@@ -338,6 +347,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("thu... " + this.schedularcount);
         alert('Values Missing in Thursday');
+        this.checkFlag = false;
         return;
       }
 
@@ -351,6 +361,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("fri... " + this.schedularcount);
         alert('Values Missing in Friday');
+        this.checkFlag = false;
         return;
       }
 
@@ -363,6 +374,7 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount++;
         console.log("sat... " + this.schedularcount);
         alert('Values Missing in Saturday');
+        this.checkFlag = false;
         return;
       }
     }
@@ -371,6 +383,7 @@ export class EditshiftComponent implements OnInit {
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
         alert('Values Missing in Start and End Time');
+        this.checkFlag = false;
         return;
       } else {
         this.edit.Start_sun_hour = this.start_hour;
@@ -494,10 +507,12 @@ export class EditshiftComponent implements OnInit {
         this.scheduleServ.checkForEmpGrpDuplicate(this.edit.Description, this.OrganizationID).subscribe((data: any[]) => {
           if (data.length > 0) {
             alert("Group Name already exists");
+            this.checkFlag = false;
             return;
           } else {
             this.scheduleServ.updateShiftDetails(empschobj).subscribe((data: any[]) => {
               alert("Updated Successfully");
+              this.checkFlag = false;
               this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
             });
           }
@@ -506,6 +521,7 @@ export class EditshiftComponent implements OnInit {
       else {
         this.scheduleServ.updateShiftDetails(empschobj).subscribe((data: any[]) => {
           alert("Updated Successfully");
+          this.checkFlag = false;
           this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
         });
       }
@@ -517,6 +533,7 @@ export class EditshiftComponent implements OnInit {
     } else {
       console.log("inside else... " + this.schedularcount);
       alert("Value for weekly schedule is missing somewhere. Please check it!!!");
+      this.checkFlag = false;
       return;
     }
 

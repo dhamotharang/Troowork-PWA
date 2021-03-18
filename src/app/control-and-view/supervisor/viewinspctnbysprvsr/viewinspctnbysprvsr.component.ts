@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class ViewinspctnbysprvsrComponent implements OnInit {
 
   loading: boolean;// loading
-
+  checkFlag1;
   inspectionordertable;
   searchform: FormGroup;
   fromdate: Date;
@@ -164,6 +164,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
 
     //token ends
     this.checkflag = false;
+    this.checkFlag1 = false;
     var curr_date = this.convert_DT(Date.now());
     this.inspectionService
       .getInspectionOrderTablewithCurrentDatefrsprvsr(curr_date, this.toServeremployeekey, this.OrganizationID)
@@ -182,7 +183,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
   // delete inspection..... starts
 
   toggleVisibility(e) {
-    
+
     if (e.target.checked) {
       this.marked = true;
     } else {
@@ -191,7 +192,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
   }
   //for deleting inspection
   checkBoxValueForDelete(index, CheckValue, inspectionorderkey) {
-    
+
     this.checkValue[index] = CheckValue;
     this.inspectionorderKey[index] = inspectionorderkey;
     for (var i = 0; i < this.checkValue.length;) {
@@ -211,6 +212,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
   }
   deleteInspectionOrder() {
 
+    this.checkFlag1 = true;
     var deleteInspectionOrderList = [];
     var deleteInspectionOrderString;
 
@@ -234,6 +236,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
         this.checkflag = false;
         this.inspectionorderKey = [];
         alert("Inspection deleted successfully");
+        this.checkFlag1 = false;
         var curr_date = this.convert_DT(new Date());
         this.inspectionService
           .getInspectionOrderTablewithCurrentDatefrsprvsr(curr_date, this.toServeremployeekey, this.OrganizationID)

@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-room-type-view',
@@ -25,6 +25,7 @@ export class RoomTypeViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -45,7 +46,7 @@ export class RoomTypeViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef,private _location: Location) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private _location: Location) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -104,8 +105,8 @@ export class RoomTypeViewComponent implements OnInit {
 
 
   searchRoomType(SearchValue) {
-    
-    var value=SearchValue.trim();
+
+    var value = SearchValue.trim();
 
     if (value.length >= 3) {
       this.inventoryService
@@ -115,9 +116,8 @@ export class RoomTypeViewComponent implements OnInit {
           this.showHide1 = false;
         });
     } else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       this.inventoryService
         .getRoomTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -141,10 +141,12 @@ export class RoomTypeViewComponent implements OnInit {
   }
 
   deleteRoomType() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteRoomType(this.delete_RoomTypeKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert("Room Type deleted successfully");
-        this.loading=true;
+        this.checkFlag = false;
+        this.loading = true;
         this.inventoryService
           .getRoomTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
@@ -163,6 +165,7 @@ export class RoomTypeViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.checkFlag = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -191,7 +194,7 @@ export class RoomTypeViewComponent implements OnInit {
       SearchRoomType: ['', Validators.required]
     });
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 

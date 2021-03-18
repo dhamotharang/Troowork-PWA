@@ -96,6 +96,7 @@ export class CreateshiftComponent implements OnInit {
   schedularcount = 0;
 
   showHide;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -117,6 +118,7 @@ export class CreateshiftComponent implements OnInit {
 
   createShift() {
 
+    this.checkFlag = true;
     // var q = this.time1.getHours();
     // var q1 = this.time1.getMinutes();
     // var newTime1 = q + ":" + q1;
@@ -126,10 +128,12 @@ export class CreateshiftComponent implements OnInit {
     // var newTime2 = t + ":" + t1;
     if (!(this.Description)) {
       alert("Please provide a Group Name !!!");
+      this.checkFlag = false;
       return;
     }
     if (!(this.color)) {
       alert("Please select a color");
+      this.checkFlag = false;
       return;
     }
     //Code for scheduler starts....
@@ -148,6 +152,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Sunday');
+        this.checkFlag = false;
         return;
       }
 
@@ -160,6 +165,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Monday');
+        this.checkFlag = false;
         return;
       }
 
@@ -172,6 +178,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Tuesday');
+        this.checkFlag = false;
         return;
       }
 
@@ -184,6 +191,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Wednesday');
+        this.checkFlag = false;
         return;
       }
 
@@ -196,6 +204,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Thursday');
+        this.checkFlag = false;
         return;
       }
 
@@ -208,6 +217,7 @@ export class CreateshiftComponent implements OnInit {
       else {
         this.schedularcount++;
         alert('Values Missing in Friday');
+        this.checkFlag = false;
         return;
       }
 
@@ -219,6 +229,7 @@ export class CreateshiftComponent implements OnInit {
       } else {
         this.schedularcount++;
         alert('Values Missing in Saturday');
+        this.checkFlag = false;
         return;
       }
     } else if (this.showHide == false) {
@@ -226,6 +237,7 @@ export class CreateshiftComponent implements OnInit {
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
         alert('Values Missing in Start and End Time');
+        this.checkFlag = false;
         return;
       } else {
         this.start_sun_hour = this.start_hour;
@@ -343,6 +355,7 @@ export class CreateshiftComponent implements OnInit {
 
           this.scheduleServ.createEmpShiftwithColourCode(empschobj).subscribe((data: any[]) => {
             alert("Employee Group Name created successfully");
+            this.checkFlag = false;
             this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
             // code for if staying in the same page....starts
             // this.Description = "";
@@ -407,6 +420,7 @@ export class CreateshiftComponent implements OnInit {
           });
         } else {
           alert("Group Name already exists");
+          this.checkFlag = false;
           return;
         }
       });
@@ -414,6 +428,7 @@ export class CreateshiftComponent implements OnInit {
       //   this.paidhours, newTime2, this.color, this.OrganizationID, this.employeekey).subscribe((data: any[]) => { });
     } else {
       alert("Value for weekly schedule is missing somewhere. Please check it!!!");
+      this.checkFlag = false;
       return;
     }
   }
@@ -437,6 +452,7 @@ export class CreateshiftComponent implements OnInit {
     this.isemployeecalendar = profile.isemployeecalendar;
     //token ends
 
+    this.checkFlag = false;
     this.PeopleServiceService
       .getallschedulingexception(this.OrganizationID)
       .subscribe((data: People[]) => {

@@ -11,11 +11,10 @@
     </h5>
   </div>
   <div style="text-align:center">
-    <button class="btn btn-success" (click)="createCJ()">CREATE </button>
-    <button class="btn btn-danger" [disabled]="disableFlag" (click)="basicModal.show();">DELETE </button>
+    <button class="btn btn-success" [disabled]="checkFlag" (click)="createCJ()">CREATE </button>
+    <button class="btn btn-danger" [disabled]="checkFlag" [disabled]="disableFlag" (click)="basicModal.show();">DELETE </button>
 
-    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-      aria-hidden="true">
+    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -28,15 +27,13 @@
             <h5 style="color: red"><b>Are you sure you want to delete ?</b></h5>
           </div>
           <div class="modal-footer">
-            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-              (click)="basicModal.hide(); deleteCJ()" mdbWavesEffect>Yes</button>
-            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-              mdbWavesEffect>No</button>
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteCJ()" mdbWavesEffect>Yes</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
           </div>
         </div>
       </div>
     </div>
 
   </div>
-  
+
 </div>

@@ -16,7 +16,7 @@ export class ResetPasswordsComponent implements OnInit {
   managerMail: Object;
   userMail: Object;
   build;
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -45,44 +45,47 @@ export class ResetPasswordsComponent implements OnInit {
   }
 
   resetUserPassword(username, password, userLoginId) {
-    if(!(username)){
+    this.checkFlag = true;
+    if (!(username)) {
       alert("Please Enter User Name!");
-        return;
+      this.checkFlag = false;
+      return;
     }
-    else{
-    this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-      this.response = data[0];
-      this.build = data;
-     
-      this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['manageLoginCreds'] } }]);
-    });
+    else {
+      this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+        this.response = data[0];
+        this.build = data;
 
-    if (this.build.length > 0) { // resetUserPassword returns username. just to make sure that the reset action was done properly, we are returnig the username
-
-      this.peopleService.getUserEmail(username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-
-        this.managerMail = data[0].EmailID;
-        this.userMail = data[0].newmail;
-
-        if (this.userMail == null) {
-          alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
-        } else {
-          var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
-          console.log(message);
-          const obj = {
-            from: this.managerMail,
-            to: this.userMail,
-            subject: 'Login Credentials',
-            text: message
-          };
-          const url = ConectionSettings.Url+"/sendmail";
-          return this.http.post(url, obj)
-            .subscribe(res => console.log('Mail Sent Successfully...'));
-        }
+        this.checkFlag = false;
+        this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['manageLoginCreds'] } }]);
       });
 
+      if (this.build.length > 0) { // resetUserPassword returns username. just to make sure that the reset action was done properly, we are returnig the username
+
+        this.peopleService.getUserEmail(username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+
+          this.managerMail = data[0].EmailID;
+          this.userMail = data[0].newmail;
+
+          if (this.userMail == null) {
+            alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+          } else {
+            var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
+            console.log(message);
+            const obj = {
+              from: this.managerMail,
+              to: this.userMail,
+              subject: 'Login Credentials',
+              text: message
+            };
+            const url = ConectionSettings.Url + "/sendmail";
+            return this.http.post(url, obj)
+              .subscribe(res => console.log('Mail Sent Successfully...'));
+          }
+        });
+
+      }
     }
-  }
   }
   ngOnInit() {
 
@@ -95,11 +98,12 @@ export class ResetPasswordsComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleService.getLoginDetailsByEmpKey(this.empKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.build = data;
     });
   }
-  goBack(){
+  goBack() {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['manageLoginCreds'] } }]);
   }
 }

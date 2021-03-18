@@ -24,6 +24,7 @@ export class FloorViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -103,9 +104,11 @@ export class FloorViewComponent implements OnInit {
 
 
   deleteFloor() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteFloor(this.delete_faciKey, this.delete_floorKey, this.employeekey, this.OrganizationID).subscribe(res => {
         alert("Floor deleted successfully");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getFloors(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -172,6 +175,7 @@ export class FloorViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getFloors(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

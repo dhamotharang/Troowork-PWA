@@ -20,6 +20,7 @@ export class ViewEmployeesofEventComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -67,9 +68,11 @@ export class ViewEmployeesofEventComponent implements OnInit {
   }
 
   deleteMeeting() {
+    this.checkFlag = true;
     this.peopleServ
       .DeleteMeetingTraining(this.eventKey, this.OrganizationID)
       .subscribe(res => {
+        this.checkFlag = false;
 
         if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
@@ -93,6 +96,7 @@ export class ViewEmployeesofEventComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleServ.viewEmployeesOfEvent(this.eventKey$, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
       this.eventEmps = data;
     });

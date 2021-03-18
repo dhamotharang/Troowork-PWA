@@ -28,6 +28,7 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
   OrganizationID: Number;
   page: Number = 1;
   count: Number = 25;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -51,17 +52,21 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
   }
   setUsernamePassword() {
+    this.checkFlag = true;
     if (!this.username) {
       alert("User Name can't be empty");
+      this.checkFlag = false;
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].result == 'Exists') {
             alert("User Name already exists");
+            this.checkFlag = false;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.OrganizationID)
               .subscribe((data: any[]) => {
-              
+                this.checkFlag = false;
+
                 this.router.navigate(['/AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }])
                 if (data[0].length > 0) {
                   this.peopleService.getUserEmail(this.username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
@@ -79,7 +84,7 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
                         subject: 'Login Credentials',
                         text: message
                       };
-                      const url = ConectionSettings.Url+"/sendmail";
+                      const url = ConectionSettings.Url + "/sendmail";
                       return this.http.post(url, obj)
                         .subscribe(res => console.log('Mail Sent Successfully...'));
                     }
@@ -102,6 +107,7 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
 
     this.username = this.str$;
     this.peopleService.getuserNamePasswordforsaveandSendemail(this.page, this.count, this.empKey$, this.OrganizationID).subscribe((data: People[]) => {

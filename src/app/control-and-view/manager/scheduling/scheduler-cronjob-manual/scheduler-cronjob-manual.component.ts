@@ -17,6 +17,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
   disableFlag;
   curDate;
   nextschedulerDate;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -44,6 +45,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
   constructor(private scheduleService: SchedulingService) { }
 
   createCJ() {
+    this.checkFlag = true;
     this.scheduleService.getCountForAssignmentManualcreatecheck(this.curDate, this.OrganizationID)
       .subscribe((cdata: any) => {
 
@@ -54,16 +56,19 @@ export class SchedulerCronjobManualComponent implements OnInit {
               this.loading = false;
               this.disableFlag = false;
               alert("Cronjobs created successfully");
+              this.checkFlag = false;
             });
         }
         else {
           alert("Need 8 Weeks of Data to create");
+          this.checkFlag = false;
         }
       });
   }
 
   deleteCJ() {
     this.loading = true;
+    this.checkFlag = true;
     this.scheduleService.deleteSchedulerCronjob(this.OrganizationID, this.curDate, this.employeekey)
       .subscribe((data: any) => {
         this.loading = false;
@@ -84,6 +89,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
           }
         });
         alert("Cronjobs deleted successfully");
+        this.checkFlag = false;
       });
   }
 
@@ -100,6 +106,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
+    this.checkFlag = false;
     this.curDate = this.convert_DT(new Date());
     this.nextschedulerDate = this.curDate;
     this.scheduleService.getCountForDelete(this.OrganizationID, this.curDate).subscribe((data: any) => {

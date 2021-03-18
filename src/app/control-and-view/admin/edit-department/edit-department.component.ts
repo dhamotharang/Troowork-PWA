@@ -10,7 +10,7 @@ import { InventoryService } from '../../../service/inventory.service';
 export class EditDepartmentComponent implements OnInit {
   deptKey$: Object;
   dept;
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -39,17 +39,21 @@ export class EditDepartmentComponent implements OnInit {
   }
 
   updateDepartment(DepartmentName) {
+    this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {
       alert("Please provide a Department Name");
+      this.checkFlag = false;
     } else {
       DepartmentName = DepartmentName.trim();
       this.inventoryService.checkForNewDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe((data: Array<any>) => {
         if (data.length > 0) {
           alert("Department already present");
+          this.checkFlag = false;
         }
         else {
           this.inventoryService.UpdateDepartment(DepartmentName, this.deptKey$, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Department updated successfully");
+            this.checkFlag = false;
             this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['ViewDepartment'] } }]);
           });
         }
@@ -70,6 +74,7 @@ export class EditDepartmentComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService.EditDepartment(this.deptKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.dept = data[0];
     });

@@ -19,7 +19,7 @@ export class DocumentfolderViewComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-  
+  checkFlag ;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -86,9 +86,11 @@ export class DocumentfolderViewComponent implements OnInit {
   };
   deleteFolder() {
 
+    this.checkFlag = true;
     this.documentService
       .DeleteDocFolder(this.delete_foldKey, this.OrganizationID).subscribe(() => {
 
+        this.checkFlag = false;
         this.documentService
           .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Documents[]) => {
@@ -110,6 +112,7 @@ export class DocumentfolderViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.documentService
       .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Documents[]) => {

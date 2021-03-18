@@ -50,6 +50,7 @@ export class CreateemployeeComponent implements OnInit {
   temp_res;
   supervisor;
   SupervisorKey;
+  checkFlag;
   // adding properties and methods that will be used by the igxDatePicker
   public date: Date = new Date(Date.now());
 
@@ -109,25 +110,29 @@ export class CreateemployeeComponent implements OnInit {
     });
   }
   createEmployee() {
-
+    this.checkFlag = true;
     var manKey;
     var superKey;
     var IsSupervisor;
     if (!(this.OrganizationID)) {
       alert("Organization is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.EmployeeNumber) || !(this.EmployeeNumber.trim())) {
       alert("Employee Number is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.UserRoleTypeKey)) {
       alert("User Role Type is not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if (this.showManager === true && !(this.ManagerKey)) {
       alert("Manager is not provided !");
+      this.checkFlag = false;
       return;
     }
     else {
@@ -144,7 +149,7 @@ export class CreateemployeeComponent implements OnInit {
       manKey = -1;
     }
 
-   
+
 
     if (this.UserRoleTypeKey == 5) {
       IsSupervisor = 1;
@@ -155,10 +160,12 @@ export class CreateemployeeComponent implements OnInit {
 
     if (!(this.FirstName) || !(this.FirstName.trim())) {
       alert("First Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.LastName) || !(this.LastName.trim())) {
       alert("Last Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.Gender)) {
@@ -166,10 +173,12 @@ export class CreateemployeeComponent implements OnInit {
     }
     if (!(this.PrimaryPhone) || !(this.PrimaryPhone.trim())) {
       alert("Primary Phone is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.JobTitleKey)) {
@@ -191,6 +200,7 @@ export class CreateemployeeComponent implements OnInit {
     var HD = this.convert_DT(this.HireDate);
     if (BD > currentDate) {
       alert("Wrong Birth Date !");
+      this.checkFlag = false;
       return;
     }
     // if (HD > currentDate) {
@@ -199,6 +209,7 @@ export class CreateemployeeComponent implements OnInit {
     // }
     if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
+      this.checkFlag = false;
       return;
     }
 
@@ -208,6 +219,7 @@ export class CreateemployeeComponent implements OnInit {
       .subscribe((data: any[]) => {
         if (data[0].count > 0) {
           alert("Employee Number already exists");
+          this.checkFlag = false;
         }
         else {
           this.EmployeeNumber = this.EmployeeNumber.trim();
@@ -243,6 +255,7 @@ export class CreateemployeeComponent implements OnInit {
             .subscribe((data: any[]) => {
               this.temp_res = data;
               alert("Employee Created !");
+              this.checkFlag = false;
               var empKey = this.temp_res.EmployeeKey;
               // this.router.navigate(['/setUserLoginSuper', empKey, str, this.UserRoleTypeKey, this.OrganizationID]);
               this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['setUserLoginSuper', empKey, str, this.UserRoleTypeKey, this.OrganizationID] } }]);
@@ -276,6 +289,7 @@ export class CreateemployeeComponent implements OnInit {
     this.UserRoleTypeKey = '';
     this.ManagerKey = '';
     this.SupervisorKey = '';
+    this.checkFlag = false;
 
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];

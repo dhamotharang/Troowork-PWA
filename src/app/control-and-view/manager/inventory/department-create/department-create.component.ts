@@ -18,6 +18,7 @@ export class DepartmentCreateComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -39,20 +40,24 @@ export class DepartmentCreateComponent implements OnInit {
   constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location) { }
 
   addDepartment(DepartmentName) {
+    this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {
       alert("Please provide a Department Name");
+      this.checkFlag = false;
       return;
     }
     else {
-      DepartmentName=DepartmentName.trim();
+      DepartmentName = DepartmentName.trim();
       this.inventoryServ.checkForNewDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         this.dept = data;
         if (data.length > 0) {
           alert("Department already present");
+          this.checkFlag = false;
         }
         else if (data.length == 0) {
           this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Department created successfully");
+            this.checkFlag = false;
             this._location.back();
           });
         }
@@ -70,6 +75,7 @@ export class DepartmentCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
   }
   goBack() {
     this._location.back();

@@ -111,6 +111,7 @@ export class EditBatchWorkorderComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   emp_key;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -202,7 +203,8 @@ export class EditBatchWorkorderComponent implements OnInit {
     this.month1 = "";
     this.month2 = "";
     this.pos2 = "";
-    this.floorvalue=null;
+    this.floorvalue = null;
+    this.checkFlag = false;
     this.WorkOrderServiceService//for getting edit details for selected batchworkorder
       .getBatchWO_edit(this.BatchWO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -295,8 +297,8 @@ export class EditBatchWorkorderComponent implements OnInit {
             .getFloor_batch(this.BatchWO_Key, this.OrganizationID)
             .subscribe((data: any[]) => {
               // if (data.length > 0) {
-                this.floorvalue = parseInt(data[0].FloorKeyList);
-                this.FloorKey = this.floorvalue;
+              this.floorvalue = parseInt(data[0].FloorKeyList);
+              this.FloorKey = this.floorvalue;
               // }
               this.WorkOrderServiceService
                 .getallEquipment(this.WOEditList.FacilityKey, this.floorvalue, this.OrganizationID)
@@ -653,6 +655,7 @@ export class EditBatchWorkorderComponent implements OnInit {
   }
   //function for deleting current workorder
   DeleteWO() {
+    this.checkFlag = true;
     this.deleteWO = {
       workorderSchedulekey: this.BatchWO_Key,
       OrganizationID: this.OrganizationID
@@ -661,6 +664,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       .deleteCurrent_BatchWO(this.deleteWO)
       .subscribe((data: any[]) => {
         alert("Batch work-order deleted successfully");
+        this.checkFlag = false;
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
         if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
@@ -673,6 +677,7 @@ export class EditBatchWorkorderComponent implements OnInit {
   }
   //function for updating workorder
   UpdateWO() {
+    this.checkFlag = true;
     if (this.showEqTypes === false) {
       this.createWorkorder1();//function for updatewo without equipment
       console.log('Equipment***Not');
@@ -685,36 +690,46 @@ export class EditBatchWorkorderComponent implements OnInit {
   createWorkorder1() {//function for updatewo without equipment
     if (!(this.BatchScheduleNameKey)) {
       alert("Please select schedule name!");
+      this.checkFlag = false;
     }
     else if (!this.workordertypekey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderStartDate)) {
       alert("Please provide work-order start date!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderEndDate)) {
-      alert("Please provide work-order end date!")
+      alert("Please provide work-order end date!");
+      this.checkFlag = false;
     }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your start date!");
+      this.checkFlag = false;
 
     }
     else if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
       alert("Recurring Period is not provided !");
+      this.checkFlag = false;
     }
     else if (this.dailyrecurring == true) {
       if (!(this.dailyFrequency)) {
         alert("Please select frequency !");
+        this.checkFlag = false;
       } else if (this.dailyFrequency) {
         for (var i = 0; i < this.dailyFrequency; i++) {
           if (!(this.timetable.times[i])) {
             alert("Please enter time values !");
+            this.checkFlag = false;
           }
         }
         this.withoutequip_wo();
@@ -723,9 +738,11 @@ export class EditBatchWorkorderComponent implements OnInit {
     else if (this.weeklyrecurring == true) {
       if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
         alert("Please select atleast one day!");
+        this.checkFlag = false;
       }
       else if (!this.Time_weekly) {
         alert("Please provide time!");
+        this.checkFlag = false;
       }
       else {
         this.withoutequip_wo();
@@ -734,11 +751,13 @@ export class EditBatchWorkorderComponent implements OnInit {
     else if (this.monthlyrecurring == true) {
       if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
         alert("Select a radio option from monthly reccuring !");
+        this.checkFlag = false;
         return;
       }
       if (this.monthlyreccradio1 == true) {
         if (!(this.day1) || !(this.month1)) {
           alert("Provide entries for monthly recurring !");
+          this.checkFlag = false;
           return;
         }
 
@@ -746,12 +765,14 @@ export class EditBatchWorkorderComponent implements OnInit {
       if (this.monthlyreccradio2 == true) {
         if (!(this.day2) || !(this.pos2) || !(this.month2)) {
           alert("Provide entries for monthly recurring !");
+          this.checkFlag = false;
           return;
         }
 
       }
       if (!this.Time_monthly) {
         alert("Please provide time!");
+        this.checkFlag = false;
       }
       else {
         this.withoutequip_wo();
@@ -820,6 +841,7 @@ export class EditBatchWorkorderComponent implements OnInit {
         }
         else {
           alert("Limit for the maximum Batch workorders have reached. Maximum 100");
+          this.checkFlag = false;
           return;
         }
 
@@ -944,10 +966,12 @@ export class EditBatchWorkorderComponent implements OnInit {
 
     if (this.intervaltype == 'w' && diffDays < 7) {
       alert("Please Select One week Date Range!");
+      this.checkFlag = false;
       return;
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
       alert("Please Select One month Date Range!");
+      this.checkFlag = false;
       return;
     }
     if (this.dailyrecurring == true) {
@@ -972,6 +996,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
     } else if (this.monthlyrecurring == true) {
       if (this.Time_monthly) {
@@ -979,6 +1004,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
@@ -1057,6 +1083,7 @@ export class EditBatchWorkorderComponent implements OnInit {
         .deleteCurrent_BatchWO(this.deleteWO)
         .subscribe((data: any[]) => {
           alert("Batch work-order updated successfully");
+          this.checkFlag = false;
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
           if (this.role == 'Manager') {
             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
@@ -1073,39 +1100,50 @@ export class EditBatchWorkorderComponent implements OnInit {
 
     if (!(this.BatchScheduleNameKey)) {
       alert("Please select schedule name!");
+      this.checkFlag = false;
     }
     else if (!this.workordertypekey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderStartDate)) {
       alert("Please provide work-order start date!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderEndDate)) {
-      alert("Please provide work-order end date!")
+      alert("Please provide work-order end date!");
+      this.checkFlag = false;
     }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your start date!");
+      this.checkFlag = false;
 
     }
     else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
       alert("Please select equipment type!");
+      this.checkFlag = false;
     }
     else if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
       alert("Recurring Period is not provided !");
+      this.checkFlag = false;
     }
     else if (this.dailyrecurring == true) {
       if (!(this.dailyFrequency)) {
         alert("Please select frequency !");
+        this.checkFlag = false;
       } else if (this.dailyFrequency) {
         for (var i = 0; i < this.dailyFrequency; i++) {
           if (!(this.timetable.times[i])) {
             alert("Please enter time values !");
+            this.checkFlag = false;
           }
         }
         this.withequip_wo();
@@ -1114,9 +1152,11 @@ export class EditBatchWorkorderComponent implements OnInit {
     else if (this.weeklyrecurring == true) {
       if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
         alert("Please select atleast one day!");
+        this.checkFlag = false;
       }
       else if (!this.Time_weekly) {
         alert("Please provide time!");
+        this.checkFlag = false;
       }
       else {
         this.withequip_wo();
@@ -1125,11 +1165,13 @@ export class EditBatchWorkorderComponent implements OnInit {
     else if (this.monthlyrecurring == true) {
       if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
         alert("Select a radio option from monthly reccuring !");
+        this.checkFlag = false;
         return;
       }
       if (this.monthlyreccradio1 == true) {
         if (!(this.day1) || !(this.month1)) {
           alert("Provide entries for monthly recurring !");
+          this.checkFlag = false;
           return;
         }
 
@@ -1137,12 +1179,14 @@ export class EditBatchWorkorderComponent implements OnInit {
       if (this.monthlyreccradio2 == true) {
         if (!(this.day2) || !(this.pos2) || !(this.month2)) {
           alert("Provide entries for monthly recurring !");
+          this.checkFlag = false;
           return;
         }
 
       }
       if (!this.Time_monthly) {
         alert("Please provide time!");
+        this.checkFlag = false;
       }
       else {
         this.withequip_wo();
@@ -1264,6 +1308,7 @@ export class EditBatchWorkorderComponent implements OnInit {
         }
         else {
           alert("Limit for the maximum batch workorders have reached. Maximum 100");
+          this.checkFlag = false;
           return;
         }
 
@@ -1340,10 +1385,12 @@ export class EditBatchWorkorderComponent implements OnInit {
 
     if (this.intervaltype == 'w' && diffDays < 7) {
       alert("Please Select One week Date Range!");
+      this.checkFlag = false;
       return;
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
       alert("Please Select One month Date Range!");
+      this.checkFlag = false;
       return;
     }
     if (this.dailyrecurring == true) {
@@ -1439,6 +1486,7 @@ export class EditBatchWorkorderComponent implements OnInit {
         .deleteCurrent_BatchWO(this.deleteWO)
         .subscribe((data: any[]) => {
           alert("Batch work-order updated successfully");
+          this.checkFlag = false;
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
           if (this.role == 'Manager') {
             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);

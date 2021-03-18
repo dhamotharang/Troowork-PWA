@@ -20,7 +20,7 @@ export class WorkorderReportComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -67,11 +67,11 @@ export class WorkorderReportComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
-  
+
 
   fromdate: Date;
   facilitylist: Reports[];
@@ -89,7 +89,7 @@ export class WorkorderReportComponent implements OnInit {
   RoomKey;
   EmployeeKey;
   WorkorderStatusKey;
-  todate:Date;
+  todate: Date;
   workorderTypeList;
   WorkorderTypeKey;
 
@@ -108,7 +108,7 @@ export class WorkorderReportComponent implements OnInit {
     this.EmployeeKey = "";
     this.WorkorderStatusKey = "";
     this.fromdate = new Date();
-    this.WorkorderTypeKey='';
+    this.WorkorderTypeKey = '';
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -118,6 +118,7 @@ export class WorkorderReportComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.ReportServiceService.getBarcodeReport(this.employeekey, this.OrganizationID).subscribe((data: Reports[]) => {
       this.facilitylist = data;
     });
@@ -131,22 +132,22 @@ export class WorkorderReportComponent implements OnInit {
       this.workstatus = data;
     });
     this.WorkOrderServiceService//for getting all workordertypes
-    .getallworkorderType(this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      
-      this.workorderTypeList = data;
-    });
+      .getallworkorderType(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+
+        this.workorderTypeList = data;
+      });
   }
 
   getFloorDisp(key) {
-    if(key){
-    this.ReportServiceService.getFloor(key, this.OrganizationID)
-      .subscribe((data: Reports[]) => {
-        this.floor = data;
-      });
+    if (key) {
+      this.ReportServiceService.getFloor(key, this.OrganizationID)
+        .subscribe((data: Reports[]) => {
+          this.floor = data;
+        });
     }
-    else{
-      this.FloorKey='';
+    else {
+      this.FloorKey = '';
     }
   }
 
@@ -162,7 +163,7 @@ export class WorkorderReportComponent implements OnInit {
         this.room = data;
       });
 
-      this.ReportServiceService
+    this.ReportServiceService
       .getRoom(fkey, floorkey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.rooms = data;
@@ -171,97 +172,96 @@ export class WorkorderReportComponent implements OnInit {
   }
 
   getRoomsName(zonekey, fkey, floorkey) {
-    if(!zonekey && !fkey && !floorkey){
-    this.ReportServiceService
-      .getRooms(fkey, floorkey, zonekey, this.employeekey, this.OrganizationID)
-      .subscribe((data: Reports[]) => {
-        this.rooms = data;
-      });
+    if (!zonekey && !fkey && !floorkey) {
+      this.ReportServiceService
+        .getRooms(fkey, floorkey, zonekey, this.employeekey, this.OrganizationID)
+        .subscribe((data: Reports[]) => {
+          this.rooms = data;
+        });
     }
-    else{
+    else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
     }
   }
 
   generateWorkOrderReport(from_date, to_date, FacilityKey, FloorKey, RoomTypeKey, ZoneKey, RoomKey, EmployeeKey, WorkorderStatusKey) {
+
+    this.checkFlag = true;
     var WorkorderType_Key;
-    if ((to_date) && (this.convert_DT(from_date) >this.convert_DT( to_date))) {
+    if ((to_date) && (this.convert_DT(from_date) > this.convert_DT(to_date))) {
       todate = null;
       alert("Please check your Start Date!");
+      this.checkFlag = false;
       return;
     }
-    else
-    {
+    else {
       var fromdate;
-    this.loading = true;
-    if(!FacilityKey){
-      FacilityKey=null;
-     }
-     if(!FloorKey){
-      FloorKey=null;
-     }
-     if(!RoomTypeKey){
-      RoomTypeKey=null;
-     }
-     if(!ZoneKey){
-      ZoneKey=null;
-     }
-     if(!RoomTypeKey){
-      RoomTypeKey=null;
-     }
-     if(!RoomKey){
-      RoomKey=null;
-     }
-     if(!EmployeeKey){
-      EmployeeKey=null;
-     }
-     if(!WorkorderStatusKey){
-      WorkorderStatusKey=null;
-     }
-//     if (!(this.todate) ) {
-     
-//        var date1 = this.convert_DT(this.fromdate);
-//        fromdate = this.convert_DT(from_date);
-//        this.ReportServiceService
-//       .generateWorkOrderReportServicewithdate(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, fromdate, date1, RoomKey, EmployeeKey, WorkorderStatusKey, this.employeekey, this.OrganizationID)
-//       .subscribe((data: Reports[]) => {
-//         this.viewWorkorderReport = data;
-//         this.loading = false;
-//       });
-//     }
-// else{
+      this.loading = true;
+      if (!FacilityKey) {
+        FacilityKey = null;
+      }
+      if (!FloorKey) {
+        FloorKey = null;
+      }
+      if (!RoomTypeKey) {
+        RoomTypeKey = null;
+      }
+      if (!ZoneKey) {
+        ZoneKey = null;
+      }
+      if (!RoomTypeKey) {
+        RoomTypeKey = null;
+      }
+      if (!RoomKey) {
+        RoomKey = null;
+      }
+      if (!EmployeeKey) {
+        EmployeeKey = null;
+      }
+      if (!WorkorderStatusKey) {
+        WorkorderStatusKey = null;
+      }
+      //     if (!(this.todate) ) {
+
+      //        var date1 = this.convert_DT(this.fromdate);
+      //        fromdate = this.convert_DT(from_date);
+      //        this.ReportServiceService
+      //       .generateWorkOrderReportServicewithdate(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, fromdate, date1, RoomKey, EmployeeKey, WorkorderStatusKey, this.employeekey, this.OrganizationID)
+      //       .subscribe((data: Reports[]) => {
+      //         this.viewWorkorderReport = data;
+      //         this.loading = false;
+      //       });
+      //     }
+      // else{
       var todate;
-      if(!from_date)
-      {
+      if (!from_date) {
         fromdate = this.convert_DT(new Date());
       }
-      else
-      {
+      else {
         fromdate = this.convert_DT(from_date);
       }
-      if(!to_date)
-      {
-        todate=fromdate;
+      if (!to_date) {
+        todate = fromdate;
       }
-      else
-      {
+      else {
         todate = this.convert_DT(to_date);
       }
-      if(this.WorkorderTypeKey){
-        WorkorderType_Key=this.WorkorderTypeKey;
+      if (this.WorkorderTypeKey) {
+        WorkorderType_Key = this.WorkorderTypeKey;
       }
-      else{
-        WorkorderType_Key=null;
+      else {
+        WorkorderType_Key = null;
       }
-       this.ReportServiceService
-      .generateWorkOrderReportService(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, fromdate, todate, RoomKey, EmployeeKey, WorkorderStatusKey, this.employeekey, this.OrganizationID,WorkorderType_Key)
-      .subscribe((data: Reports[]) => {
-        this.viewWorkorderReport = data;
-        this.loading = false;
-      });
-  }
-  // }
+      this.ReportServiceService
+        .generateWorkOrderReportService(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, fromdate, todate, RoomKey, EmployeeKey, WorkorderStatusKey, this.employeekey, this.OrganizationID, WorkorderType_Key)
+        .subscribe((data: Reports[]) => {
+          this.viewWorkorderReport = data;
+          this.checkFlag = false;
+          this.loading = false;
+        });
+    }
+    // }
   }
   //export to excel 
   exportToExcel(): void {
@@ -270,21 +270,20 @@ export class WorkorderReportComponent implements OnInit {
       this.workexcel.splice(i, 1);
       var Work_Type_Name = (this.viewWorkorderReport[i].WorkorderTypeName);
 
-      var date_time = this.viewWorkorderReport[i].WorkorderDate.concat(' ',this.viewWorkorderReport[i].WorkorderTime);
+      var date_time = this.viewWorkorderReport[i].WorkorderDate.concat(' ', this.viewWorkorderReport[i].WorkorderTime);
 
       var Work_status = (this.viewWorkorderReport[i].WorkorderStatus);
-      var employee = this.viewWorkorderReport[i].LastName.concat(',',this.viewWorkorderReport[i].FirstName);
+      var employee = this.viewWorkorderReport[i].LastName.concat(',', this.viewWorkorderReport[i].FirstName);
       var room_id = (this.viewWorkorderReport[i].RoomId);
-      if(room_id=='Dummy')
-      {
-        room_id='Refer notes';
+      if (room_id == 'Dummy') {
+        room_id = 'Refer notes';
       }
       var eq_name = (this.viewWorkorderReport[i].EquipmentName);
       var check_in = (this.viewWorkorderReport[i].checkin);
       var check_out = (this.viewWorkorderReport[i].checkout);
       var duration = (this.viewWorkorderReport[i].duration);
       var delay_time = (this.viewWorkorderReport[i].DelayTime);
-      var work_notes = (this.viewWorkorderReport[i].WorkorderNotes); 
+      var work_notes = (this.viewWorkorderReport[i].WorkorderNotes);
 
       if (this.viewWorkorderReport[i]) {
         this.workexcel.push({
@@ -295,7 +294,7 @@ export class WorkorderReportComponent implements OnInit {
     // this.excelService.exportAsExcelFile(this.workexcel, 'Workorder_Report');
     var blob = new Blob([document.getElementById('exportable1').innerHTML], {
       type: EXCEL_TYPE
-  });
-  FileSaver.saveAs(blob, "Workorder_Report.xls");
+    });
+    FileSaver.saveAs(blob, "Workorder_Report.xls");
   }
 }

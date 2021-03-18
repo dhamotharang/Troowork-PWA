@@ -35,6 +35,7 @@ export class SchedulerReportComponent implements OnInit {
   schedulerReport;
   newList;
 
+  checkFlag;
   d1; d2; d3; d4; d5; d6; d7;
   schedulerReport1; schedulerReport2; schedulerReport3; schedulerReport4; schedulerReport5; schedulerReport6; schedulerReport7;
 
@@ -95,6 +96,7 @@ export class SchedulerReportComponent implements OnInit {
     this.fromdate = new Date();
     this.todate = new Date();
     this.loading = false;
+    this.checkFlag = false;
 
     //Employee Group
     this.SchedulingService.SchedulerEmployeeGroupsForReport(this.OrganizationID)
@@ -129,8 +131,10 @@ export class SchedulerReportComponent implements OnInit {
   }
 
   generateSchedulerReport() {
+    this.checkFlag = true;
     if (!(this.fromdate)) {
       alert("Please select the fromdate...");
+      this.checkFlag = false;
       return;
     }
     this.loading = true;
@@ -270,6 +274,7 @@ export class SchedulerReportComponent implements OnInit {
         }
       });
     this.schReport = this.empListForTable;
+    this.checkFlag = false;
     if (flag == 7) {
       this.bindListToOne();
     }
@@ -285,7 +290,7 @@ export class SchedulerReportComponent implements OnInit {
     //     // var workList = "";
     //     // tableflag = 0;
     //     // console.log("schedulerReport started");
-   
+
     //     // for (var z = 0; z < this.schReport.length; z++) {
     //     //   if ((z + 1) == this.schReport.length) {
     //     //     workList = workList + this.schReport[z].text + "\n";
@@ -314,7 +319,7 @@ export class SchedulerReportComponent implements OnInit {
 
     //     //   }
     //     // }
-    
+
     //     // tableflag = tableflag + 1;
     //     // console.log("schedulerReport completed");
     //     // for (var h = 0; h < this.empListForTable.length; h++) {
@@ -324,7 +329,7 @@ export class SchedulerReportComponent implements OnInit {
     //     //   console.log("i did " + h);
     //     //   for (var d = 0; d < this.dateList.length; d++) {
     //     //     for (var a = 0; a < this.schedulerReport.length; a++) {
-    
+
     //     //       if ((this.schedulerReport[a].EmployeeKey === this.newList[h].EmployeeKey) && (this.schedulerReport[a].start === this.dateList[d].rundate)) {
     //     //         console.log(a + "i won " + d);
     //     //         this.newList[h].textdate = this.schedulerReport[a].start;

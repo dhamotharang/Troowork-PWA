@@ -1,5 +1,7 @@
-
 .bg-info {
-    background-color: #FFFFFF !important;
-  }
-  
+  background-color: #FFFFFF !important;
+}
+
+::ng-deep.ngx-datepicker-position-bottom-right {
+  z-index: 1;
+}

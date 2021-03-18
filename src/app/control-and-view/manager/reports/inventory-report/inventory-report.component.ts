@@ -39,6 +39,7 @@ export class InventoryReportComponent implements OnInit {
   rKey = null;
   flrTypeKey = null;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -237,6 +238,7 @@ export class InventoryReportComponent implements OnInit {
     }
   }
   generateInventoryReport(FacilityKey, FloorKey, ZoneKey, RoomTypeKey, FloorTypeKey, RoomKey) {
+    this.checkFlag = true;
     this.loading = true;
     if (FacilityKey) {
       if (!FloorKey) {
@@ -259,6 +261,7 @@ export class InventoryReportComponent implements OnInit {
         .generateInventoryReportService(FacilityKey, FloorKey, ZoneKey, RoomTypeKey, FloorTypeKey, RoomKey, this.OrganizationID)
         .subscribe((data: any[]) => {
           this.viewInventoryReport = data;
+          this.checkFlag = false;
           this.loading = false;
         });
     }
@@ -301,10 +304,11 @@ export class InventoryReportComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-    this.FloorKey="";
-    this.ZoneKey="";
-    this.RoomTypeKey="";
-    this.FloorTypeKey="";
+    this.FloorKey = "";
+    this.ZoneKey = "";
+    this.RoomTypeKey = "";
+    this.FloorTypeKey = "";
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -312,10 +316,10 @@ export class InventoryReportComponent implements OnInit {
         this.FacilityKey = "";
       });
   }
-  checkBuilding(){
-  
-    if(!(this.FacilityKey)){
-      this.viewInventoryReport=[];
+  checkBuilding() {
+
+    if (!(this.FacilityKey)) {
+      this.viewInventoryReport = [];
     }
   }
 }

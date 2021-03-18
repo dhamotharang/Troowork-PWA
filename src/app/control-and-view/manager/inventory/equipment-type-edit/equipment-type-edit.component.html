@@ -26,8 +26,8 @@
     <br>
     <div class="row col-md-12">
       <div style="margin-left: 40%">
-        <a style="color:white !important" class="btn btn-success" (click)="updateEquipmentType(equipType.EquipmentTypeKey,equipType.EquipmentType,equipType.EquipmentTypeDescription)"><b>Update</b>
-        </a>
+        <button [disabled]="checkFlag" style="color:white !important" class="btn btn-success" (click)="updateEquipmentType(equipType.EquipmentTypeKey,equipType.EquipmentType,equipType.EquipmentTypeDescription)"><b>Update</b>
+        </button>
         <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
             Back
           </b>

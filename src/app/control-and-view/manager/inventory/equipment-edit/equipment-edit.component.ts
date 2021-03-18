@@ -27,6 +27,7 @@ export class EquipmentEditComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -65,24 +66,32 @@ export class EquipmentEditComponent implements OnInit {
     this.FloorKey = floorKey;
   }
   updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode) {
+    this.checkFlag = true;
     if (!(EquipmentName) || !(EquipmentName.trim())) {
       alert("Please Enter Equipment Name!");
+      this.checkFlag = false;
       return;
     }
     if (!EquipmentBarcode) {
       alert("Please Enter Equipment Barcode!");
+      this.checkFlag = false;
       return;
     }
     if (!this.equipTypeKey) {
       alert("Equipment Type is not provided");
+      this.checkFlag = false;
     } else if (!EquipmentName) {
       alert("Equipment Name is not provided");
+      this.checkFlag = false;
     } else if (!EquipmentBarcode) {
       alert("Equipment Barcode is not provided");
+      this.checkFlag = false;
     } else if (!this.FacKey) {
       alert("Building is not provided");
+      this.checkFlag = false;
     } else if (!this.FloorKey) {
       alert("Floor is not provided");
+      this.checkFlag = false;
     } else {
       EquipmentName = EquipmentName.trim();
       if (!(EquipmentDescription) || !(EquipmentName.trim())) {
@@ -97,12 +106,14 @@ export class EquipmentEditComponent implements OnInit {
           this.dept = data;
           if (this.dept[0].count > 0) {
             alert("Equipment already present");
+            this.checkFlag = false;
           }
           else if (this.dept[0].count == 0) {
 
             this.inventoryService.updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode, this.equipTypeKey, this.FacKey, this.FloorKey, this.equipKey$, this.employeekey, this.OrganizationID)
               .subscribe(res => {
                 alert("Equipment updated successfully");
+                this.checkFlag = false;
                 this._location.back();
               });
           }
@@ -113,6 +124,7 @@ export class EquipmentEditComponent implements OnInit {
         this.inventoryService.updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode, this.equipTypeKey, this.FacKey, this.FloorKey, this.equipKey$, this.employeekey, this.OrganizationID)
           .subscribe(res => {
             alert("Equipment updated successfully");
+            this.checkFlag = false;
             this._location.back();
           });
       }
@@ -128,6 +140,7 @@ export class EquipmentEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .EditEquipmentAutoGenerate(this.equipKey$, this.OrganizationID)
       .subscribe((data: any[]) => {

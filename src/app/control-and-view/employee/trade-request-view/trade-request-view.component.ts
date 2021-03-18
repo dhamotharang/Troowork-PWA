@@ -8,8 +8,8 @@ import { PeopleServiceService } from "../../../service/people-service.service";
 })
 export class TradeRequestViewComponent implements OnInit {
 
-    ////////Author :  Aswathy//////
-    
+  ////////Author :  Aswathy//////
+
   role: String;
   name: String;
   toServeremployeekey;
@@ -19,7 +19,8 @@ export class TradeRequestViewComponent implements OnInit {
   editflag;
   deleteRequestKey;
   OtherEmployeedetails;
-checkEmp;
+  checkEmp;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -44,8 +45,10 @@ checkEmp;
   }
 
   deleteRequest() {
+    this.checkFlag = true;
     this.PeopleServiceService.deleteTradeRequest(this.deleteRequestKey, this.toServeremployeekey)
       .subscribe((data) => {
+        this.checkFlag = false;
         alert('Trade Request Deleted Successfully');
         this.PeopleServiceService.getTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
           this.requestdetails = data;
@@ -62,8 +65,9 @@ checkEmp;
     this.name = profile.username;
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
-    this.checkEmp=parseInt(this.toServeremployeekey);
+    this.checkEmp = parseInt(this.toServeremployeekey);
     this.PeopleServiceService.getTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
       this.requestdetails = data;
     });

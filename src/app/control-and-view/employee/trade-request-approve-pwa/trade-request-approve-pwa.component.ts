@@ -12,7 +12,7 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 })
 export class TradeRequestApprovePWAComponent implements OnInit {
   ////////Author :  Amritha//////
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -107,7 +107,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
-
+    this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestdetailsbyID(this.traderequestDetails$)
       .subscribe((data) => {
         this.traderequestdetailsbyID = data[0];
@@ -140,8 +140,10 @@ export class TradeRequestApprovePWAComponent implements OnInit {
   }
   saveTradeRequestAction() {
 
+    this.checkFlag = true;
     if (!(this.traderequestdetailsbyID.Status)) {
       alert('Status is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -149,17 +151,20 @@ export class TradeRequestApprovePWAComponent implements OnInit {
 
       if (!(this.traderequestdetailsbyID.ApprovedStartDate)) {
         alert('Approved Start Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
       if (!(this.traderequestdetailsbyID.ApprovedEndDate)) {
         alert('Approved End Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved start date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApprovedStartDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate);
@@ -167,6 +172,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved end date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApprovedEndDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate);
@@ -174,6 +180,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     } else if ((this.traderequestdetailsbyID.Status) == "Rejected") {
       if (!(this.traderequestdetailsbyID.OtherEmployeeComments)) {
         alert('Comments should be provided!');
+        this.checkFlag = false;
         return;
       }
       this.traderequestdetailsbyID.ApprovedStartDate = null;
@@ -189,6 +196,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
       this.traderequestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
+        this.checkFlag = false;
         alert("Request updated Successfully");
         this.goBack();
 

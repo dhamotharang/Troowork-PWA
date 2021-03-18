@@ -42,7 +42,7 @@
                   <div class="col">
                     <label>Requested Employee Name</label>
                   </div>
-                  <div  class="col-8">
+                  <div class="col-8">
                     <input type="text" style="background-color:rgb(245, 245, 245) !important; width:100% !important; text-align:right; border: 1px solid rgb(245, 245, 245);" [disabled]="!editflag" [(ngModel)]="traderequestdetails.Employeename">
                   </div>
                 </div>
@@ -54,7 +54,7 @@
                   <div class="col">
                     <label>Other Employee Name</label>
                   </div>
-                  <div  class="col-8">
+                  <div class="col-8">
                     <input type="text" [disabled]="!editflag" [(ngModel)]="traderequestdetails.OtherEmployeename" style="background-color:white !important; width:100% !important;text-align:right; border: 1px solid white;" />
                   </div>
                 </div>
@@ -261,11 +261,11 @@
             </tr>
             <!-- <div class="row col-md-12 "> -->
             <div *ngIf="traderequestdetails.StatusKey == 4 && traderequestdetails.EmployeeKey == toServeremployeekey">
-              <a (click)='cancelTrade()' class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Cancel Trade Request</b></a>
+              <button (click)='cancelTrade()' [disabled]="checkFlag" class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Cancel Trade Request</b></button>
               <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important; "><b>Go Back</b></a> -->
             </div>
             <div *ngIf="traderequestdetails.StatusKey == 6 && show1">
-              <a *ngIf="show1" (click)='cancelTradeApproval()' class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Approve Cancel Trade Request</b></a>
+              <button *ngIf="show1" (click)='cancelTradeApproval()' [disabled]="checkFlag" class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Approve Cancel Trade Request</b></button>
               <!-- <a *ngIf="show1" (click)='goBack()' class="btn btn-warning" style="color:white !important; "><b>Go Back</b></a> -->
             </div>
             <!-- <div *ngIf="show" style="margin-left: 40%;">

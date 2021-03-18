@@ -34,6 +34,7 @@ export class PicklistReportComponent implements OnInit {
   todate;
   showHide1: boolean;
   showHide2: boolean;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -91,6 +92,7 @@ export class PicklistReportComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.showHide2 = false;
     this.showHide1 = false;
 
@@ -114,8 +116,10 @@ export class PicklistReportComponent implements OnInit {
   //function for genaerating report
   generateInspectionAuditReport(from_date, to_date, TemplateName, Employee, ReportType) {
     // var Template_Name;
+    this.checkFlag = true;
     if (!TemplateName) {
       alert("Please select a Template Name");
+      this.checkFlag = false;
       return false;
     }
 
@@ -136,6 +140,7 @@ export class PicklistReportComponent implements OnInit {
     if (todate1 && fromdate1 > todate1) {
       todate1 = null;
       alert("Please check your Dates !");
+      this.checkFlag = false;
       return;
     }
 
@@ -154,6 +159,7 @@ export class PicklistReportComponent implements OnInit {
           this.todate = this.convert_DT(todate1);
         }
         this.loading = false;
+        this.checkFlag = false;
       });
   }
   exportToExcel(): void {

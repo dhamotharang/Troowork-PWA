@@ -37,7 +37,7 @@ export class CreateQuickWorkOrderComponent implements OnInit {
   is_PhotoRequired;
   is_BarcodeRequired;
   occurenceinstance;
-
+  checkFlag;
   intervaltype;
   repeatinterval;
   occursonday;
@@ -79,13 +79,17 @@ export class CreateQuickWorkOrderComponent implements OnInit {
     }
   }
   saveQuickWorkOrder() {
+    this.checkFlag = true;
     if (!(this.EmployeeKey)) {
       alert("please select employee!");
+      this.checkFlag = false;
     } else if (!(this.FacilityKey)) {
-      alert("please select building!")
+      alert("please select building!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderNotes) || !(this.WorkorderNotes.trim())) {
       alert("please enter work-order notes!");
+      this.checkFlag = false;
     } else {
 
       this.wot = - 1;
@@ -156,6 +160,7 @@ export class CreateQuickWorkOrderComponent implements OnInit {
       this.WorkOrderServiceService
         .addQuickWorkOrder(this.createworkorder)
         .subscribe(res => {
+          this.checkFlag = false;
           alert("work-order created successfully");
           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
         });
@@ -176,6 +181,7 @@ export class CreateQuickWorkOrderComponent implements OnInit {
     this.FacilityKey = "";
     this.EmployeeKey = "";
     this.PriorityKey = "";
+    this.checkFlag = false;
     this.WorkOrderServiceService
       .getallEmployee(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {

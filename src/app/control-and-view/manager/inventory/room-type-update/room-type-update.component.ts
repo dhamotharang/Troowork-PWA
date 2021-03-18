@@ -26,6 +26,7 @@ export class RoomTypeUpdateComponent implements OnInit {
   MetricTypeValue;
   roomtypeval;
   metricType1;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -79,17 +80,21 @@ export class RoomTypeUpdateComponent implements OnInit {
   }
   updateRoomType(RoomTypeName, MetricTypeValue1) {
 
+    this.checkFlag = true;
     if (!this.metricType || this.metricType == "--Select--") {
       this.metricType = null;
       alert("Select a metric type !");
+      this.checkFlag = false;
     }
     else if (!RoomTypeName || !RoomTypeName.trim()) {
       RoomTypeName = null;
       alert("RoomTypeName is not provided !");
+      this.checkFlag = false;
     }
     else if (this.metricType != 'Default' && !MetricTypeValue1.trim()) {
       MetricTypeValue1 = null;
       alert("MetricTypeValue is not provided !");
+      this.checkFlag = false;
     }
     // else if (MetricTypeValue1 && !MetricTypeValue1.trim()) {
     //   MetricTypeValue1 = null;
@@ -111,12 +116,14 @@ export class RoomTypeUpdateComponent implements OnInit {
       this.inventoryService.CheckRoomType(RoomTypeName, 'roomtype', this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data.length > 0) {
           alert("Room Type already present !");
+          this.checkFlag = false;
           return;
         }
         else {
           this.inventoryService.updateRoomType(this.rTypeKey$, this.metricTypeKey, this.metricType, RoomTypeName, MetricTypeValue1, this.employeekey, this.OrganizationID)
             .subscribe(res => {
               alert("RoomType updated successfully");
+              this.checkFlag = false;
               this._location.back();
             });
         }
@@ -146,6 +153,7 @@ export class RoomTypeUpdateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .EditRoomtTypeAutoGenerate(this.rTypeKey$, this.OrganizationID)
       .subscribe((data: any[]) => {

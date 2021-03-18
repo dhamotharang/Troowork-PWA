@@ -90,6 +90,7 @@ export class ViewWorkOrdersComponent implements OnInit {
   genFlag;
   SearchWo;
   KeepActiveFlag = 0;
+  checkFlag;
   //code for special character restriction
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
@@ -466,6 +467,7 @@ export class ViewWorkOrdersComponent implements OnInit {
     this.ondate = new Date(Date.now());
     this.genFlag = 0;
     this.KeepActiveFlag = 0;
+    this.checkFlag = false;
     this.WorkOrderServiceService//service for getting facility names
       .getallFacility(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
@@ -920,6 +922,7 @@ export class ViewWorkOrdersComponent implements OnInit {
   //function for deleting multiple workorders checked
   deleteWorkOrdersPage() {
 
+    this.checkFlag = true;
     var deleteWorkOrderList = [];
     var deleteWorkOrderString;
 
@@ -943,6 +946,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         this.checkflag = false;
         this.workorderKey = [];
         alert("Work order deleted successfully");
+        this.checkFlag = false;
         this.viewWO_Filter();
 
       });

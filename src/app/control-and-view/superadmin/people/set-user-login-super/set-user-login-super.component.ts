@@ -15,7 +15,7 @@ export class SetUserLoginSuperComponent implements OnInit {
   empKey$: Object;
   userRoleTypeKey$: Object;
   Organization$
-
+checkFlag;
   sasemail: People[];
   password: String = 'troowork';
   reEnterPassword: String = 'troowork';
@@ -59,19 +59,24 @@ export class SetUserLoginSuperComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag=false;
     this.username = this.str$;
   }
   setUsernamePassword() {
+    this.checkFlag=true;
     if (!this.username) {
       alert("User Name can't be empty");
+      this.checkFlag=false;
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].result == 'Exists') {
             alert("User Name already exists");
+            this.checkFlag=false;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.Organization$)
               .subscribe((data: any[]) => {
+                this.checkFlag=false;
                 // this.router.navigateByUrl('/Viewemployee');
                 this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
 

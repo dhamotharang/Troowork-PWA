@@ -28,6 +28,7 @@ export class InspectiontemplateEditComponent implements OnInit {
   showHide1: boolean;
   showHide2: boolean;
   pagination: Number;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -72,9 +73,11 @@ export class InspectiontemplateEditComponent implements OnInit {
     }, 100)
   }
   deleteTemplate() {
+    this.checkFlag = true;
     this.loading = true;// loading
     this.inspectionService
       .DeleteTemplate(this.delete_tempid, this.employeekey, this.OrganizationID).subscribe(() => {
+        this.checkFlag = false;
         this.inspectionService
           .getInspectionTemplateDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Inspection[]) => {
@@ -157,6 +160,7 @@ export class InspectiontemplateEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.loading = true;// loading
 
     this.inspectionService
@@ -205,6 +209,7 @@ export class InspectiontemplateEditComponent implements OnInit {
   }
   submiteditInspectionTemplate(TemplateName, TemplateID, ScoreTypeKey) {
 
+    this.checkFlag = true;
     if (!TemplateName && !TemplateName.trim()) {
       alert("Template Name Not provided !");
       return;
@@ -214,6 +219,7 @@ export class InspectiontemplateEditComponent implements OnInit {
     }
     this.inspectionService
       .updateEditInspection(TemplateName, TemplateID, ScoreTypeKey, this.OrganizationID).subscribe(() => {
+        this.checkFlag = false;
         this.inspectionService
           .getInspectionTemplateDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID).subscribe((data: Inspection[]) => {
             this.inspectiontemplate = data;

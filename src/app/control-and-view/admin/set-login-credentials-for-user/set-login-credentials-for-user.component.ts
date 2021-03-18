@@ -25,7 +25,7 @@ export class SetLoginCredentialsForUserComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -50,41 +50,45 @@ export class SetLoginCredentialsForUserComponent implements OnInit {
   }
 
   setUsernamePassword() {
+    this.checkFlag = true;
     if (!(this.username) || !(this.username.trim())) {
       alert("User Name can't be empty");
+      this.checkFlag = false;
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].result == 'Exists') {
             alert("User Name already exists");
+            this.checkFlag = false;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.OrganizationID)
               .subscribe((data: any[]) => {
-                
+
+                this.checkFlag = false;
                 this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
-               
 
-                  this.peopleService.getUserEmail(this.username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-                    this.managerMail = data[0].EmailID;
-                    this.userMail = data[0].newmail;
 
-                    if (this.userMail == null) {
-                      alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
-                    } else {
-                      var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.password + "                https://troowork.azurewebsites.net";
-                      console.log(message);
-                      const obj = {
-                        from: this.managerMail,
-                        to: this.userMail,
-                        subject: 'Login Credentials',
-                        text: message
-                      };
-                      const url = ConectionSettings.Url+"/sendmail";
-                      return this.http.post(url, obj)
-                        .subscribe(res => console.log('Mail Sent Successfully...'));
-                    }
-                  });
-                
+                this.peopleService.getUserEmail(this.username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+                  this.managerMail = data[0].EmailID;
+                  this.userMail = data[0].newmail;
+
+                  if (this.userMail == null) {
+                    alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                  } else {
+                    var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.password + "                https://troowork.azurewebsites.net";
+                    console.log(message);
+                    const obj = {
+                      from: this.managerMail,
+                      to: this.userMail,
+                      subject: 'Login Credentials',
+                      text: message
+                    };
+                    const url = ConectionSettings.Url + "/sendmail";
+                    return this.http.post(url, obj)
+                      .subscribe(res => console.log('Mail Sent Successfully...'));
+                  }
+                });
+
               });
           }
         });
@@ -102,6 +106,7 @@ export class SetLoginCredentialsForUserComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.username = this.str$;
   }
 }

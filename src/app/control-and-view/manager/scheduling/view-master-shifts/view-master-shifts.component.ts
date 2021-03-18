@@ -19,6 +19,7 @@ export class ViewMasterShiftsComponent implements OnInit {
   shiftdetails;
   delete_shiftKey;
   loading;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -52,6 +53,7 @@ export class ViewMasterShiftsComponent implements OnInit {
 
     //token ends
 
+    this.checkFlag = false;
     this.ReportServiceService.getShiftNameList(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       this.shiftdetails = data;
     });
@@ -60,8 +62,10 @@ export class ViewMasterShiftsComponent implements OnInit {
     this.delete_shiftKey = Idemployeeshift;
   }
   deleteShift() {
+    this.checkFlag = true;
     this.scheduleServ.removeMasterShifts(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       alert("Shift Name deleted successfully");
+      this.checkFlag = false;
       this.ReportServiceService.getShiftNameList(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         this.shiftdetails = data;
       });

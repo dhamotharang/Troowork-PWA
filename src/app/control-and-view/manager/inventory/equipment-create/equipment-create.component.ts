@@ -27,6 +27,7 @@ export class EquipmentCreateComponent implements OnInit {
   OrganizationID: Number;
   EquipmentTypeKey;
   EquipmentDescription; EquipmentName;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -66,25 +67,33 @@ export class EquipmentCreateComponent implements OnInit {
   }
   addEquipment(EquipmentName, EquipmentDescription, Barcode, EquipmentTypeKey) {
 
+    this.checkFlag = true;
     if (!(EquipmentName) || !(EquipmentName.trim())) {
       alert("Please Enter Equipment Name!");
+      this.checkFlag = false;
       return;
     }
     if (EquipmentTypeKey == '--Select--') {
       alert("Equipment Type Name is not provided");
+      this.checkFlag = false;
       return;
     }
     if (!EquipmentTypeKey) {
       alert("Equipment Type Name is not provided");
+      this.checkFlag = false;
     } else if (!EquipmentName) {
       alert("Equipment Name is not provided");
+      this.checkFlag = false;
     } else if (!Barcode) {
       alert("Equipment Barcode is not provided");
+      this.checkFlag = false;
 
     } else if (!this.FacKey) {
       alert("Building is not provided");
+      this.checkFlag = false;
     } else if (!this.FloorKey) {
       alert("Floor is not provided");
+      this.checkFlag = false;
     } else {
       EquipmentName = EquipmentName.trim();
       if (!(EquipmentDescription) || !(EquipmentName.trim())) {
@@ -97,16 +106,19 @@ export class EquipmentCreateComponent implements OnInit {
         this.dept = data;
         if (this.dept[0].count > 0) {
           alert("Equipment already present");
+          this.checkFlag = false;
         }
         else if (this.dept[0].count == 0) {
           this.inventoryService.checkForNewEquipmentbarcode(Barcode, this.OrganizationID).subscribe((data: any[]) => {
             this.dept = data;
             if (this.dept[0].count > 0) {
               alert("Equipment Barcode already present");
+              this.checkFlag = false;
             } else if (this.dept[0].count == 0) {
               this.inventoryService.addEquipment(EquipmentName, EquipmentDescription, Barcode, EquipmentTypeKey, this.FacKey, this.FloorKey, this.employeekey, this.OrganizationID)
                 .subscribe(res => {
                   alert("Equipment created successfully");
+                  this.checkFlag = false;
                   this._location.back();
                 });
             }
@@ -129,6 +141,7 @@ export class EquipmentCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getAllEquipmentType(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

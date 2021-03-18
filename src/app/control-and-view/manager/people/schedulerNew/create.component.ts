@@ -29,7 +29,7 @@ import { ActivatedRoute, Router } from "@angular/router";
               <ng-datepicker [options]="options" position="top-right" [(ngModel)]="Date"></ng-datepicker><br><br>
           </div>
       </div>
-      <button (click)='submit()'>submit</button>
+      <button (click)='submit()' [disabled]='checkFlag'>submit</button>
       <button (click)='cancel()'>close</button>
   </div>
 </daypilot-modal>
@@ -66,6 +66,7 @@ export class CreateComponent implements OnInit {
   scheduleNameList;
   params;
   Date;
+  checkFlag;
   constructor(private fb: FormBuilder, private ds: DataService, private SchedulingService: SchedulingService, private router: Router) {
     this.form = this.fb.group({
       name: ["", Validators.required],
@@ -137,10 +138,12 @@ export class CreateComponent implements OnInit {
 
   submit() {
 
+    this.checkFlag = true;
     // var currDate=new Date();
     // let data = this.form.getRawValue();
     if (!(this.BatchScheduleNameKey)) {
       alert("Please provide Assignment Name !");
+      this.checkFlag = false;
       return;
     }
     // if(this.convert_DT(this.Date.value) < this.convert_DT(currDate)){
@@ -178,6 +181,7 @@ export class CreateComponent implements OnInit {
 
       // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
       this.ds.setExpandFlagNewComp(2);
+      this.checkFlag = false;
       if (this.role == 'Manager') {
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
         // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
@@ -265,6 +269,7 @@ export class CreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.SchedulingService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

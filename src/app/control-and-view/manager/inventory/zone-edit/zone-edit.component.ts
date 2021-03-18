@@ -27,6 +27,7 @@ export class ZoneEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -62,16 +63,20 @@ export class ZoneEditComponent implements OnInit {
 
   updateZone(FacilityKey, FacilityName, FloorName, FloorKey, ZoneKey, ZoneName) {
 
+    this.checkFlag = true;
     if (!(this.zoneEditValues.FacilityKey)) {
       alert("Please Choose Building!");
+      this.checkFlag = false;
       return;
     }
     if (!(this.zoneEditValues.FloorKey)) {
       alert("Please Choose Floor!");
+      this.checkFlag = false;
       return;
     }
     if (!(this.zoneEditValues.ZoneName) || !(this.zoneEditValues.ZoneName.trim())) {
       alert("Please Enter Zone Name!");
+      this.checkFlag = false;
       return;
     }
     this.zoneEditValues.ZoneName = this.zoneEditValues.ZoneName.trim();
@@ -81,11 +86,13 @@ export class ZoneEditComponent implements OnInit {
       this.zone = data;
       if (data.length > 0) {
         alert("Zone already present !");
+        this.checkFlag = false;
       }
       else if (data.length == 0) {
         this.inventoryService.updateZone(FacilityKey, FacilityName, FloorName, FloorKey, ZoneKey, ZoneName, this.employeekey, this.OrganizationID)
           .subscribe(res => {
             alert("Zone updated successfully");
+            this.checkFlag = false;
             this._location.back();
           });
       }
@@ -101,6 +108,7 @@ export class ZoneEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     //building list for dropdown
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)

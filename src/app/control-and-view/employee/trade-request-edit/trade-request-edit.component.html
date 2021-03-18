@@ -34,7 +34,7 @@
     <br>
     <br>
     <div class="row col-md-12" style="margin-left:35%">
-      <button type="button" style="text-align:center" class="btn btn-success" (click)="submitEditedRequest()"><b>UPDATE</b></button>
+      <button type="button" style="text-align:center" [disabled]="checkFlag" class="btn btn-success" (click)="submitEditedRequest()"><b>UPDATE</b></button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>GO BACK</b></a>
     </div>
     <br>

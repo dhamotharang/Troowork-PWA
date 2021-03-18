@@ -15,7 +15,7 @@ const url = ConectionSettings.Url + '/upload_test';
 export class ViewWorkOrderComponent implements OnInit {
 
   loading: boolean;// loading
-
+  checkFlag1;
   pageNo: Number = 1;
   itemsPerPage: Number = 25;
   showHide1: boolean;
@@ -145,7 +145,7 @@ export class ViewWorkOrderComponent implements OnInit {
     this.pageNo = +this.pageNo - 1;
     var fromDate, FacilityKey, ZoneKey, toDate, FloorKey, RoomTypeKey, SearchWO, startDate, endDate;
     var scheduleName, empKey;
-    
+
     if (this.WorkorderDate) {
       fromDate = this.WorkorderDate;
     }
@@ -190,7 +190,7 @@ export class ViewWorkOrderComponent implements OnInit {
       SearchWO = null;
     }
 
-    
+
     if (this.BatchScheduleNameKey) {
       scheduleName = this.BatchScheduleNameKey;
     }
@@ -242,7 +242,7 @@ export class ViewWorkOrderComponent implements OnInit {
     this.pageNo = +this.pageNo + 1;
     var fromDate, FacilityKey, ZoneKey, toDate, FloorKey, RoomTypeKey, SearchWO, startDate, endDate;
     var scheduleName, empKey;
-    
+
     if (this.WorkorderDate) {
       fromDate = this.WorkorderDate;
     }
@@ -287,7 +287,7 @@ export class ViewWorkOrderComponent implements OnInit {
       SearchWO = null;
     }
 
-     if (this.BatchScheduleNameKey) {
+    if (this.BatchScheduleNameKey) {
       scheduleName = this.BatchScheduleNameKey;
     }
     else {
@@ -485,7 +485,7 @@ export class ViewWorkOrderComponent implements OnInit {
   }
 
   workorderCompleted(i, barcodeRequired, photoRequired, workorderkey, file) {
-
+    this.checkFlag1 = true;
     var t = new Date();
     var t = new Date();
     var y = t.getFullYear();
@@ -507,6 +507,7 @@ export class ViewWorkOrderComponent implements OnInit {
     if (!this.BarcodeValue && barcodeRequired === 1) {
       this.BarcodeValue = null;
       alert("Barcode is not provided !");
+      this.checkFlag1 = false;
       return;
     }
     else if (this.BarcodeValue && barcodeRequired === 1) {
@@ -527,18 +528,21 @@ export class ViewWorkOrderComponent implements OnInit {
     if (!(this.fileName) && photoRequired === 1) {
       this.fileName = null;
       alert("Photo is not provided !");
+      this.checkFlag1 = false;
       return;
     }
     else if (this.fileName && photoRequired === 1) {
       this.WorkOrderServiceService
         .UpdatewobyPhotoForEmployee(this.fileName, this.toServeremployeekey, workorderkey, this.OrganizationID, p)
         .subscribe((data: any[]) => {
+          this.checkFlag1 = false;
         });
     }
     if (photoRequired !== 1 && barcodeRequired !== 1) {
       this.WorkOrderServiceService
         .CompletewoByempWithoutPhotoandBarcd(this.toServeremployeekey, workorderkey, this.OrganizationID, p)
         .subscribe((data: any[]) => {
+          this.checkFlag1 = false;
           this.FinishButton[i] = true;
         });
     }
@@ -608,6 +612,7 @@ export class ViewWorkOrderComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag1 = false;
     //token ends
 
     this.loading = true;// loading
@@ -748,7 +753,7 @@ export class ViewWorkOrderComponent implements OnInit {
       return;
     }
 
-    this.pageNo=1;
+    this.pageNo = 1;
     let Wo = {
       startDate: startDate,
       endDate: endDate,
@@ -793,6 +798,7 @@ export class ViewWorkOrderComponent implements OnInit {
   // @Rodney starts
   canceltheWorkorder(woKey) {
 
+    this.checkFlag1 = true;
     var reason = prompt("Enter the reason for cancelling the workorder...");
 
     var t = new Date();
@@ -814,6 +820,7 @@ export class ViewWorkOrderComponent implements OnInit {
         .setCancelWorkorder(woKey, reason, today_DT, p, this.toServeremployeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
 
+          this.checkFlag1 = false;
           this.workorderViewsEmpByAll();
         });
     }
@@ -848,6 +855,7 @@ export class ViewWorkOrderComponent implements OnInit {
 
   deleteWorkOrdersPage() {
 
+    this.checkFlag1 = true;
     var deleteWorkOrderList = [];
     var deleteWorkOrderString;
 
@@ -871,6 +879,7 @@ export class ViewWorkOrderComponent implements OnInit {
         this.checkflag = false;
         this.workorderKey = [];
         alert("Work order deleted successfully");
+        this.checkFlag1 = false;
         this.workorderViewsEmpByAll();
       });
   }

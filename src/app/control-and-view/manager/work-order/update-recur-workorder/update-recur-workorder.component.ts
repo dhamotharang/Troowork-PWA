@@ -102,6 +102,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   monthlyreccradio2;
   emp_key;
 
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -151,11 +152,11 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
-    //converting date from GMT to yyyy/mm/dd
+  //converting date from GMT to yyyy/mm/dd
   convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
@@ -199,21 +200,22 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     this.month1 = "";
     this.month2 = "";
     this.pos2 = "";
+    this.checkFlag = false;
     this.WorkOrderServiceService//getting workorder edit details
       .getWO_edit(this.WO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.WOEditList = data[0];
-        if(this.WOEditList.KeepActive==1){
-          this.keepActive=true;
+        if (this.WOEditList.KeepActive == 1) {
+          this.keepActive = true;
         }
-        else{
-          this.keepActive=false;
+        else {
+          this.keepActive = false;
         }
-        if(this.WOEditList.IsSnapshot==1){
-          this.GpsSnapShot=true;
+        if (this.WOEditList.IsSnapshot == 1) {
+          this.GpsSnapShot = true;
         }
-        else{
-          this.GpsSnapShot=false;
+        else {
+          this.GpsSnapShot = false;
         }
         this.Times = this.tConvert(this.WOEditList.WorkorderTimes);
         this.WorkOrderServiceService//for getting all building names
@@ -378,7 +380,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
               } else if (tempInstance == 'su') {
                 this.day2 = 'Sun';
               }
-              this.pos2  = data[0].OccurrenceDayOfWeek;
+              this.pos2 = data[0].OccurrenceDayOfWeek;
               // if (tempInstanceWeekDay == 1) {
               //   this.pos2 = 'First';
               // }
@@ -397,7 +399,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
               // if (tempInstanceWeekDay == -1) {
               //   this.pos2 = 'Last';
               // }
-              this.month2 =this.WOEditList.OccurrenceInterval;
+              this.month2 = this.WOEditList.OccurrenceInterval;
               var cur_time = new Date(Date.now());
               var timeValue1 = this.WOEditList.WorkorderTime;
               var test = timeValue1.split(":");
@@ -495,7 +497,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
           this.RoomTypeKey = "";
           this.RoomKey = "";
           this.EquipmentTypeKey = "";
-      this.EquipmentKey = "";
+          this.EquipmentKey = "";
         });
     }
     else {
@@ -561,7 +563,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
-      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
+      this.getZoneRoomTypeRoom(this.FloorKey, this.FacilityKey);
     }
   }
   getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
@@ -592,6 +594,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   }
   //function for deleting workorder
   DeleteWO() {
+    this.checkFlag = true;
     this.deleteWO = {
       workorderkey: this.WO_Key,
       OrganizationID: this.OrganizationID
@@ -600,6 +603,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       .deleteCurrent_WO(this.deleteWO)
       .subscribe((data: any[]) => {
         alert("Work-order deleted successfully");
+        this.checkFlag = false;
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
       });
   }
@@ -622,19 +626,20 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   monthlyreccradio1_change() {
     this.monthlyreccradio1 = true;
     this.monthlyreccradio2 = false;
-    this.pos2="";
-    this.day2="";
-    this.month2="";
+    this.pos2 = "";
+    this.day2 = "";
+    this.month2 = "";
   }
   monthlyreccradio2_change() {
     this.monthlyreccradio1 = false;
     this.monthlyreccradio2 = true;
-    this.day1="";
-    this.month1="";
+    this.day1 = "";
+    this.month1 = "";
   }
   //
   //function called on updatewo
   UpdateWO() {
+    this.checkFlag = true;
     if (this.showEqTypes === false) {
       this.createWorkorder1(); //function called on updatewo without equipment
       console.log('Equipment***Not');
@@ -647,31 +652,39 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   createWorkorder1() {//function called on updatewo without equipment
     if (!this.workordertypekey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
-    else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) >this.convert_DT(this.WorkorderEndDate))) {
+    else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your start date!");
+      this.checkFlag = false;
 
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
         alert("Recurring Period is not provided !");
+        this.checkFlag = false;
       }
       if (this.dailyrecurring == true) {
         if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else if (!(this.dailyFrequency)) {
           alert("Please select frequency !");
+          this.checkFlag = false;
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
               alert("Please enter time values !");
+              this.checkFlag = false;
             }
           }
           this.withoutequip_wo();
@@ -682,12 +695,15 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
           alert("Please select atleast one day!");
+          this.checkFlag = false;
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withoutequip_wo();
@@ -696,6 +712,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
           alert("Select a radio option from monthly reccuring !");
+          this.checkFlag = false;
           return;
         }
         if (this.monthlyreccradio1 == true) {
@@ -708,15 +725,18 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
 
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withoutequip_wo();
@@ -907,16 +927,18 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
     }
     var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    
-      if( this.intervaltype == 'w' && diffDays <7){
-        alert("Please Select One week Date Range!");
-        return;
-      }
-      if( this.intervaltype == 'm' && diffDays <31){
-        alert("Please Select One month Date Range!");
-        return;
-      }
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if (this.intervaltype == 'w' && diffDays < 7) {
+      alert("Please Select One week Date Range!");
+      this.checkFlag = false;
+      return;
+    }
+    if (this.intervaltype == 'm' && diffDays < 31) {
+      alert("Please Select One month Date Range!");
+      this.checkFlag = false;
+      return;
+    }
 
     if (this.isRecurring == false) {
       console.log(this.timeValue);
@@ -935,7 +957,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
 
       this.workTime = timeset_corr.join(',');
       if (!(this.DailyrecurringGap)) {
-        this.rep_interval =1;
+        this.rep_interval = 1;
       }
       else {
         this.rep_interval = (parseInt(this.DailyrecurringGap) + 1);
@@ -947,6 +969,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
     } else if (this.isRecurring == true && this.monthlyrecurring == true) {
       if (this.Time_monthly) {
@@ -954,14 +977,15 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
-        this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+        this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
       }
       else if (this.monthlyreccradio2 == true) {
         this.occurs_on = this.day2;
-        this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+        this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
         this.occurs_type = this.pos2;
         switch (this.occurs_on) {
           case 'Sun':
@@ -988,19 +1012,19 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         }
       }
     }
-    if( this.keepActive ==true){
-      this.keep_active=1;
+    if (this.keepActive == true) {
+      this.keep_active = 1;
     }
-    else{
-       this.keep_active=0;
-     }
+    else {
+      this.keep_active = 0;
+    }
 
-     if( this.GpsSnapShot ==true){
-      this.Gps_SnapShot=1;
-     }
-      else{
-       this.Gps_SnapShot=0;
-     }
+    if (this.GpsSnapShot == true) {
+      this.Gps_SnapShot = 1;
+    }
+    else {
+      this.Gps_SnapShot = 0;
+    }
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -1024,8 +1048,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
       occurstype: this.occurs_type,
-      keepActive:this.keep_active,
-      IsSnapshot:this.Gps_SnapShot
+      keepActive: this.keep_active,
+      IsSnapshot: this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {
@@ -1036,6 +1060,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
           alert("Work-order updated successfully");
+          this.checkFlag = false;
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
         });
     });
@@ -1044,34 +1069,43 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   createWorkorder2() {
     if (!this.workordertypekey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
     else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
       alert("Please select equipment type!");
+      this.checkFlag = false;
     }
-    else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) >this.convert_DT(this.WorkorderEndDate))) {
+    else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your start date!");
+      this.checkFlag = false;
 
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
         alert("Recurring Period is not provided !");
+        this.checkFlag = false;
       }
       if (this.dailyrecurring == true) {
         if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else if (!(this.dailyFrequency)) {
           alert("Please select frequency !");
+          this.checkFlag = false;
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
               alert("Please enter time values !");
+              this.checkFlag = false;
             }
           }
           this.withequip_wo();
@@ -1082,12 +1116,15 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
           alert("Please select atleast one day!");
+          this.checkFlag = false;
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withequip_wo();
@@ -1096,11 +1133,13 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
           alert("Select a radio option from monthly reccuring !");
+          this.checkFlag = false;
           return;
         }
         if (this.monthlyreccradio1 == true) {
           if (!(this.day1) || !(this.month1)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
 
@@ -1108,15 +1147,18 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
 
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withequip_wo();
@@ -1308,16 +1350,18 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
     }
     var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    
-      if( this.intervaltype == 'w' && diffDays <7){
-        alert("Please Select One week Date Range!");
-        return;
-      }
-      if( this.intervaltype == 'm' && diffDays <31){
-        alert("Please Select One month Date Range!");
-        return;
-      }
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if (this.intervaltype == 'w' && diffDays < 7) {
+      alert("Please Select One week Date Range!");
+      this.checkFlag = false;
+      return;
+    }
+    if (this.intervaltype == 'm' && diffDays < 31) {
+      alert("Please Select One month Date Range!");
+      this.checkFlag = false;
+      return;
+    }
     if (this.isRecurring == false) {
       if (this.timeValue) {
         this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
@@ -1345,11 +1389,11 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       this.workTime = this.Time_monthly.getHours() + ':' + this.Time_monthly.getMinutes();
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
-        this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+        this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
       }
       else if (this.monthlyreccradio2 == true) {
         this.occurs_on = this.day2;
-        this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+        this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
         this.occurs_type = this.pos2;
         switch (this.occurs_on) {
           case 'Sun':
@@ -1376,19 +1420,19 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         }
       }
     }
-    if( this.keepActive ==true){
-      this.keep_active=1;
+    if (this.keepActive == true) {
+      this.keep_active = 1;
     }
-    else{
-       this.keep_active=0;
-     }
+    else {
+      this.keep_active = 0;
+    }
 
-     if( this.GpsSnapShot ==true){
-      this.Gps_SnapShot=1;
-     }
-      else{
-       this.Gps_SnapShot=0;
-     }
+    if (this.GpsSnapShot == true) {
+      this.Gps_SnapShot = 1;
+    }
+    else {
+      this.Gps_SnapShot = 0;
+    }
 
     this.workorderCreation = {
       occursontime: this.workTime,
@@ -1413,8 +1457,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
       occurstype: this.occurs_type,
-      keepActive:this.keep_active,
-      IsSnapshot:this.Gps_SnapShot
+      keepActive: this.keep_active,
+      IsSnapshot: this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {
@@ -1425,11 +1469,12 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
           alert("Work-order updated successfully");
+          this.checkFlag = false;
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
         });
     });
   }
-   //for time picker (daily recurring)
+  //for time picker (daily recurring)
   addFormField() {
 
     this.timetable.times = [];
@@ -1451,7 +1496,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       this.EquipmentKey = "";
     }
   }
-  goBack(){
+  goBack() {
     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
   }
 }

@@ -27,15 +27,14 @@
 
           <td>
             <a [routerLink]="['masterShiftEdit',x.Master_shiftID]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a *ngIf="x.showFlag==0" class="btn btn-danger" (click)="basicModal.show();deleteShiftPass(x.Master_shiftID); "><b>Delete</b></a>
+            <button *ngIf="x.showFlag==0" class="btn btn-danger" (click)="basicModal.show();deleteShiftPass(x.Master_shiftID); " [disabled]="checkFlag"><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="build?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
 
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-          aria-hidden="true">
+        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -48,10 +47,8 @@
                 Are you sure you want to delete this?
               </div>
               <div class="modal-footer">
-                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-                  (click)="basicModal.hide(); deleteShift()" mdbWavesEffect>Yes</button>
-                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-                  mdbWavesEffect>No</button>
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteShift()" mdbWavesEffect>Yes</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
               </div>
             </div>
           </div>

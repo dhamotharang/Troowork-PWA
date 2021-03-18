@@ -24,7 +24,7 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
   show1;
   traderequestID$;
   isMobile: boolean;
-
+  checkFlag;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -105,7 +105,7 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.editflag = false;
-
+    this.checkFlag = false;
     this.PeopleServiceService.setgetTradeRequestInfoforEmployee(
 
       this.traderequestID$,
@@ -131,7 +131,9 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
 
 
   cancelTrade() {
+    this.checkFlag = true;
     this.PeopleServiceService.setrequestForTradeCancel(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
+      this.checkFlag = false;
       alert("Cancelling the trade requested successfully");
       if (this.role == 'Employee') {
         this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
@@ -142,7 +144,9 @@ export class TradeRequestDetailsPWAComponent implements OnInit {
   }
 
   cancelTradeApproval() {
+    this.checkFlag = true;
     this.PeopleServiceService.settradeCancelApprove(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
+      this.checkFlag = false;
       alert("Trade request cancelled successfully");
       if (this.role == 'Employee') {
         this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);

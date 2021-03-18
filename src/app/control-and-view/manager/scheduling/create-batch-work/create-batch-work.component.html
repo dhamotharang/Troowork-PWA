@@ -8,22 +8,18 @@
   <div class="col-md-12 bg-info" style="padding-top:2rem">
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Name*: </label></h5>
-      <input type="text" maxlength="30" placeholder="Assignment Name" style="background-color: #D4F4FF !important;"
-        class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleName">
+      <input type="text" maxlength="30" placeholder="Assignment Name" style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleName">
     </div>
     <br>
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Description*:
         </label></h5>
-      <input type="text" maxlength="45" placeholder="Assignment Description"
-        style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8"
-        [(ngModel)]="scheduleDescription">
+      <input type="text" maxlength="45" placeholder="Assignment Description" style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleDescription">
     </div>
     <br>
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Employee*: </label></h5>
-      <select style="background-color: #D4F4FF !important;" (change)="setEmployeeForbatchSchedule($event.target.value)"
-        class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="employee_Key">
+      <select style="background-color: #D4F4FF !important;" (change)="setEmployeeForbatchSchedule($event.target.value)" class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="employee_Key">
         <option value="">--Select--</option>
         <option *ngFor="let b of empList" [value]="b.EmployeeKey">
           {{b.EmployeeText}}
@@ -33,8 +29,7 @@
 
     <div class="row col-md-12" style="padding-top: 2rem;">
       <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Shift: </label></h5>
-      <select style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8"
-        [(ngModel)]="MasterShiftID">
+      <select style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="MasterShiftID">
         <option value="0">--Select--</option>
         <option *ngFor="let b of shiftdetails" [value]="b.Master_shiftID">
           {{b.ShiftName}}
@@ -63,8 +58,8 @@
 
     <br>
     <div class="row col-md-12" style="margin-left: 32%;">
-      <a style="color:white !important" (click)="createScheduleName()" class="btn btn-success"><b>Create Assignment
-          Name</b></a>
+      <button style="color:white !important" [disabled]="checkFlag" (click)="createScheduleName()" class="btn btn-success"><b>Create Assignment
+          Name</b></button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back </b>
       </a>

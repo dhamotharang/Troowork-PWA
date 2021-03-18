@@ -24,6 +24,7 @@ export class RoomTypeCreateComponent implements OnInit {
   OrganizationID: Number;
   RoomTypeName;
 
+  checkFlag;
   numberValid(event: any) {
     const pattern = /[0-9\+\-\ ]/;
 
@@ -76,14 +77,17 @@ export class RoomTypeCreateComponent implements OnInit {
   addRoomType(MetricType, RoomTypeName, MetricTypeValue) {
     RoomTypeName = RoomTypeName.trim();
 
+    this.checkFlag = true;
     this.inventoryService
       .checkRoomType(RoomTypeName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         if (data.length > 0) {
           alert("Room Type already present");
+          this.checkFlag = false;
         }
         else if (data.length == 0) {
           if (!RoomTypeName || !RoomTypeName.trim()) {
             alert("Enter RoomType Name!");
+            this.checkFlag = false;
           }
           // } else if (!MetricType) {
           //   alert("Enter MetricType!");
@@ -93,6 +97,7 @@ export class RoomTypeCreateComponent implements OnInit {
           else {
             this.inventoryService.addRoomType(RoomTypeName, MetricTypeValue, MetricType, this.employeekey, this.OrganizationID).subscribe(res => {
               alert("RoomType created successfully");
+              this.checkFlag = false;
               this._location.back();
             });
           }
@@ -109,6 +114,7 @@ export class RoomTypeCreateComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
     this.inventoryService
       .getMetricValues(this.OrganizationID)
       .subscribe((data: Inventory[]) => {

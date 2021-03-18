@@ -19,6 +19,7 @@ export class EquipmentTypeEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -42,10 +43,13 @@ export class EquipmentTypeEditComponent implements OnInit {
 
   updateEquipmentType(equipTypeKey, equipType, equipTypeDesc) {
 
+    this.checkFlag = true;
     if (!equipType || !equipType.trim()) {
       alert("Please provide a Equipment Type");
+      this.checkFlag = false;
     } else if (!equipTypeDesc || !equipTypeDesc.trim()) {
       alert("Please provide a Equipment Type Description");
+      this.checkFlag = false;
     } else {
       equipType = equipType.trim();
       equipTypeDesc = equipTypeDesc.trim();
@@ -53,17 +57,19 @@ export class EquipmentTypeEditComponent implements OnInit {
         this.equipType = data;
         if (this.equipType[0].count == 1) {
           alert("Equipment Type already present");
+          this.checkFlag = false;
           this.inventoryService.getEquipmentTypeListEdit(this.equipTypeKey$, this.OrganizationID).subscribe((data: Array<any>) => {
             console.log(this.equipTypeKey$);
-      
+
             this.equipType = data[0];
             return;
           });
-          
+
         }
         else {
           this.inventoryService.UpdateEquipmentType(equipType, equipTypeDesc, equipTypeKey, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Equipment Type  updated successfully");
+            this.checkFlag = false;
             this._location.back();
           });
         }
@@ -82,6 +88,7 @@ export class EquipmentTypeEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService.getEquipmentTypeListEdit(this.equipTypeKey$, this.OrganizationID).subscribe((data: any[]) => {
       console.log(this.equipTypeKey$);
 

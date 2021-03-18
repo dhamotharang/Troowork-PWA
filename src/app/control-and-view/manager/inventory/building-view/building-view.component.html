@@ -27,7 +27,7 @@
 
           <td>
             <a [routerLink]="['Buildedit',x.FacilityKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a class="btn btn-danger" (click)="basicModal.show();deleteFacPass(x.FacilityKey); "><b>Delete</b></a>
+            <button [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deleteFacPass(x.FacilityKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="build?.length == 0">

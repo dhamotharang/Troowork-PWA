@@ -46,6 +46,7 @@ export class CreateEmployeeComponent implements OnInit {
   IsSupervisor: Number;
   roleTypeKey;
   OrganizationID;
+  checkFlag;
 
   //Author: Prakash Code Starts for Employee Calendar Starts Here
   // start_sun_hour: String;
@@ -199,22 +200,25 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   createEmployee() {
+    this.checkFlag = true;
     // this.schedularcount = 0;
     var managerkey;
     var IsSupervisor;
     // managerkey = this.employeekey;
     if (!(this.EmployeeNumber) || !this.EmployeeNumber.trim()) {
       alert("Employee Number Not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.UserRoleTypeKey)) {
       alert("User Role Type Not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if (this.UserRoleTypeKey == 3) {
       managerkey = this.employeekey;
-      this.SupervisorKey=this.employeekey;
+      this.SupervisorKey = this.employeekey;
     } else if (this.UserRoleTypeKey == 5) {
       managerkey = this.employeekey;
     }
@@ -231,10 +235,12 @@ export class CreateEmployeeComponent implements OnInit {
 
     if (!(this.FirstName) || !this.FirstName.trim()) {
       alert("First Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.LastName) || !this.LastName.trim()) {
       alert("Last Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.Gender)) {
@@ -242,18 +248,22 @@ export class CreateEmployeeComponent implements OnInit {
     }
     if (!(this.PrimaryPhone) || !this.PrimaryPhone.trim()) {
       alert("Primary Phone is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.JobTitleKey)) {
       alert("Job Title is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.DepartmentKey)) {
       alert("Department is not provided !");
+      this.checkFlag = false;
       return;
     }
     var BD;
@@ -270,6 +280,7 @@ export class CreateEmployeeComponent implements OnInit {
     var HD = this.convert_DT(this.HireDate);
     if (BD > currentDate) {
       alert("Wrong Birth Date !");
+      this.checkFlag = false;
       return;
     }
     // if (HD > currentDate) {
@@ -278,6 +289,7 @@ export class CreateEmployeeComponent implements OnInit {
     // }
     if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
+      this.checkFlag = false;
       return;
     }
     var str = "";
@@ -467,9 +479,10 @@ export class CreateEmployeeComponent implements OnInit {
     this.PeopleServiceService.checkEmpNumber(this.EmployeeNumber, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       if (data[0].count == 0) {
         // this.PeopleServiceService.createEmployeebyManager(empschobj).subscribe((data22: any[]) => {
-        this.PeopleServiceService.createEmployeebyManager(this.EmployeeNumber, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender, this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox, this.JobTitleKey, this.SupervisorKey, this.DepartmentKey, this.employeekey, this.OrganizationID, managerkey,IsSupervisor).subscribe((data22: any[]) => {
+        this.PeopleServiceService.createEmployeebyManager(this.EmployeeNumber, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender, this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox, this.JobTitleKey, this.SupervisorKey, this.DepartmentKey, this.employeekey, this.OrganizationID, managerkey, IsSupervisor).subscribe((data22: any[]) => {
           this.temp_res = data22;
           alert("Employee Created !");
+          this.checkFlag = false;
           var empKey = this.temp_res.EmployeeKey;
           // this.router.navigate(['/Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey]);
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey] } }]);
@@ -483,6 +496,7 @@ export class CreateEmployeeComponent implements OnInit {
         });
       } else {
         alert('Employee number already present!');
+        this.checkFlag = false;
         return;
       }
     });
@@ -509,6 +523,7 @@ export class CreateEmployeeComponent implements OnInit {
     this.JobTitleKey = '';
     this.DepartmentKey = '';
     this.UserRoleTypeKey = '';
+    this.checkFlag = false;
 
     //Author: Prakash Code Starts for Employee Calendar Starts Here
 

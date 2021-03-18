@@ -19,6 +19,7 @@ export class EditIntervalTypeColorComponent implements OnInit {
   interval;
   intervalID$;
 
+  checkFlag;
   public convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -58,6 +59,7 @@ export class EditIntervalTypeColorComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.curDate = this.convert_DT(new Date(Date.now()));
     this.WorkOrderServiceService.getIntervalTypeDetails(this.intervalID$, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -68,9 +70,11 @@ export class EditIntervalTypeColorComponent implements OnInit {
     this._location.back();
   }
   updateIntervalColor() {
+    this.checkFlag = true;
 
     if (!(this.interval.Colour)) {
       alert("Please select a colour");
+      this.checkFlag = false;
       return false;
     }
     else {
@@ -78,6 +82,7 @@ export class EditIntervalTypeColorComponent implements OnInit {
       this.WorkOrderServiceService.updateIntervalDetails(this.interval.Colour, this.intervalID$, this.OrganizationID)
         .subscribe(res => {
           alert("Interval colour updated successfully.");
+          this.checkFlag = false;
           this._location.back();
         });
     }

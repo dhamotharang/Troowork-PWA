@@ -30,6 +30,7 @@ export class TradeRequestDetailsComponent implements OnInit {
   Status: String;
   details;
 
+  checkFlag;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -110,6 +111,7 @@ export class TradeRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.checkFlag = false;
 
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];

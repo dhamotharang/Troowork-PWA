@@ -17,11 +17,12 @@ export class EmployeeWorkingHourListComponent implements OnInit {
   OrganizationID: Number;
   employeedetailstable;
   checkflag: boolean;
-  calenderKey=[];
+  calenderKey = [];
   checkValue = [];
   fromdate;
   todate;
-  constructor(private route: ActivatedRoute,private PeopleServiceService: PeopleServiceService) { 
+  checkFlag;
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
   url_base64_decode(str) {
@@ -64,7 +65,8 @@ export class EmployeeWorkingHourListComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
   ngOnInit() {
- //token code
+    this.checkFlag = false;
+    //token code
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -74,24 +76,24 @@ export class EmployeeWorkingHourListComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
-    this.fromdate=new Date();
+    this.fromdate = new Date();
     this.checkflag = false;
 
-   var toDate= new Date();
-   var date= new Date();
-   date.setDate(date.getDate() + 31);
-   var startDT,endDT;
-   startDT=this.convert_DT(toDate);
-   endDT=this.convert_DT(date);
-    
- this.loading=true;
-    this.PeopleServiceService.getWorkingHourListForEmployee(startDT,endDT,this.empk$,this.OrganizationID)
+    var toDate = new Date();
+    var date = new Date();
+    date.setDate(date.getDate() + 31);
+    var startDT, endDT;
+    startDT = this.convert_DT(toDate);
+    endDT = this.convert_DT(date);
+
+    this.loading = true;
+    this.PeopleServiceService.getWorkingHourListForEmployee(startDT, endDT, this.empk$, this.OrganizationID)
       .subscribe((data: any[]) => {//inital page values
-        this.employeedetailstable=data;
-        this.loading=false;
+        this.employeedetailstable = data;
+        this.loading = false;
       });
   }
-  
+
   checkBoxValueForDelete(index, CheckValue, key) {//geting values for delete
 
     this.checkValue[index] = CheckValue;
@@ -111,16 +113,17 @@ export class EmployeeWorkingHourListComponent implements OnInit {
       }
     }
   }
-  
+
   deleteWorkingHour() {// delete service function
 
+    this.checkFlag = true;
     var deleteWorkingHourList = [];
     var deleteWorkingHourString;
 
     if (this.checkValue.length > 0) {
       for (var j = 0; j < this.checkValue.length; j++) {
         if (this.checkValue[j] === true)
-        deleteWorkingHourList.push(this.calenderKey[j]);
+          deleteWorkingHourList.push(this.calenderKey[j]);
       }
       deleteWorkingHourString = deleteWorkingHourList.join(',');
     }
@@ -131,65 +134,66 @@ export class EmployeeWorkingHourListComponent implements OnInit {
     };
     this.PeopleServiceService.deleteWorkingHours(deleteWorkingHour)
       .subscribe((data: any[]) => {
-       alert("Working hours has been deleted !");
-       if(!this.todate){
-       var toDate= new Date();
-        var date= new Date();
-         date.setDate(date.getDate() + 31);
-        var startDT,endDT;
-        startDT=this.convert_DT(toDate);
-        endDT=this.convert_DT(date);
-       this.loading=true;
-       this.PeopleServiceService.getWorkingHourListForEmployee(startDT,endDT,this.empk$,this.OrganizationID)
-         .subscribe((data: any[]) => {//inital page values
-           this.employeedetailstable=data;
-           this.loading=false;
-           this.calenderKey=[];
-            this.checkValue = [];
-            this.checkflag=false;
-         });
+        alert("Working hours has been deleted !");
+        this.checkFlag = false;
+        if (!this.todate) {
+          var toDate = new Date();
+          var date = new Date();
+          date.setDate(date.getDate() + 31);
+          var startDT, endDT;
+          startDT = this.convert_DT(toDate);
+          endDT = this.convert_DT(date);
+          this.loading = true;
+          this.PeopleServiceService.getWorkingHourListForEmployee(startDT, endDT, this.empk$, this.OrganizationID)
+            .subscribe((data: any[]) => {//inital page values
+              this.employeedetailstable = data;
+              this.loading = false;
+              this.calenderKey = [];
+              this.checkValue = [];
+              this.checkflag = false;
+            });
         }
-        else{
+        else {
           this.DateFilter();
-          this.checkflag=false;
-        }  
+          this.checkflag = false;
+        }
       });
   }
-  DateFilter(){//filter function
-   
-    var toDate= new Date();
-    if(this.convert_DT(this.fromdate)<this.convert_DT(toDate)){
+  DateFilter() {//filter function
+
+    var toDate = new Date();
+    if (this.convert_DT(this.fromdate) < this.convert_DT(toDate)) {
       alert("Please select current date or higher !");
       return;
-    }   
-    if(!(this.todate)){
+    }
+    if (!(this.todate)) {
       alert("To Date not provided !");
       return;
     }
-    var timeDiff = Math.abs( this.fromdate.getTime() - this.todate.getTime());
+    var timeDiff = Math.abs(this.fromdate.getTime() - this.todate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    if(diffDays<31){
+    if (diffDays < 31) {
       alert("Please select 31 days gap !");
       return;
     }
 
-    if(this.convert_DT(this.fromdate)>this.convert_DT(this.todate)){
+    if (this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
       alert("Please check dates !");
       return;
     }
-    
-   
-        let workingHourDateFilter={
-          fromDate:this.convert_DT(this.fromdate),
-          toDate:this.convert_DT(this.todate),
-          empkey:this.empk$,
-          OrganizationID: this.OrganizationID
-        }
-        this.loading=true;
-        this.PeopleServiceService.workingHourDateFilter(workingHourDateFilter)
-        .subscribe((data: any[]) => {
-          this.employeedetailstable=data;
-        this.loading=false;
-        });
+
+
+    let workingHourDateFilter = {
+      fromDate: this.convert_DT(this.fromdate),
+      toDate: this.convert_DT(this.todate),
+      empkey: this.empk$,
+      OrganizationID: this.OrganizationID
+    }
+    this.loading = true;
+    this.PeopleServiceService.workingHourDateFilter(workingHourDateFilter)
+      .subscribe((data: any[]) => {
+        this.employeedetailstable = data;
+        this.loading = false;
+      });
   }
 }

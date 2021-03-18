@@ -27,6 +27,7 @@ export class SchedulingViewComponent implements OnInit {
   SearchSchedule;
   BatchScheduleNameKey;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -125,6 +126,7 @@ export class SchedulingViewComponent implements OnInit {
   }
 
   saveEmpChange(batchName, batchDesc, batchKey) {
+    this.checkFlag = true;
     this.loading = true;
     this.editEmp = -1;
     var scheduleDT = this.convert_DT(new Date());
@@ -132,6 +134,7 @@ export class SchedulingViewComponent implements OnInit {
       // this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc)
       .subscribe(res => {
         alert("Assignment Name updated Successfully");
+        this.checkFlag = false;
         this.loading = false;
         if (this.SearchSchedule.trim().length >= 3) {
           this.scheduleService
@@ -233,10 +236,12 @@ export class SchedulingViewComponent implements OnInit {
   }
 
   deleteAssignmentName() {
+    this.checkFlag = true;
     this.loading = true;
     this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         alert("Assignment Name deleted successfully");
+        this.checkFlag = false;
         this.scheduleService
           .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: any[]) => {
@@ -271,6 +276,7 @@ export class SchedulingViewComponent implements OnInit {
 
     //token ends
 
+    this.checkFlag = false;
     this.scheduleService
       .getAllEmpList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

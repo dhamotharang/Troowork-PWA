@@ -31,6 +31,7 @@ export class PtoRequestActionComponent implements OnInit {
   Status: String;
   details;
 
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -113,9 +114,11 @@ export class PtoRequestActionComponent implements OnInit {
   }
 
   saveRequestAction() {
+    this.checkFlag = true;
 
     if (!(this.requestdetailsbyID.Status)) {
       alert('Status is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -124,11 +127,13 @@ export class PtoRequestActionComponent implements OnInit {
 
       if (!(this.requestdetailsbyID.ApprovedStartDate)) {
         alert('Approved Start Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
       if (!(this.requestdetailsbyID.ApprovedEndDate)) {
         alert('Approved End Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
@@ -140,12 +145,14 @@ export class PtoRequestActionComponent implements OnInit {
       if (((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate)) >= (this.requestdetailsbyID.StartDate)) && ((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate)) <= (this.requestdetailsbyID.EndDate))) { }
       else {
         alert("Approved start date must be between requested dates!");
+        this.checkFlag = false;
         return;
       }
 
       if (((this.convert_DT(this.requestdetailsbyID.ApprovedEndDate)) >= (this.requestdetailsbyID.StartDate)) && ((this.convert_DT(this.requestdetailsbyID.ApprovedEndDate)) <= (this.requestdetailsbyID.EndDate))) { }
       else {
         alert("Approved end date must be between requested dates!");
+        this.checkFlag = false;
         return;
       }
 
@@ -169,6 +176,7 @@ export class PtoRequestActionComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.details = data[0];
         alert("Request updated Successfully");
+        this.checkFlag = false;
 
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['RequestsFromEmployees'] } }]);
 
@@ -194,6 +202,7 @@ export class PtoRequestActionComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
+    this.checkFlag = false;
 
     this.PeopleServiceService.getRequestdetailsbyID(this.ptorequestDetails$)
       .subscribe((data) => {

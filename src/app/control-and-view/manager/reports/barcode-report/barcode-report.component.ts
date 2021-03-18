@@ -29,6 +29,7 @@ export class BarcodeReportComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -83,6 +84,7 @@ export class BarcodeReportComponent implements OnInit {
     this.EquipmentTypeKey = "";
     this.EquipmentKey = "";
 
+    this.checkFlag = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -118,15 +120,15 @@ export class BarcodeReportComponent implements OnInit {
   }
 
   getFloorDisp(key) {
-    if(key){
-    this.ReportServiceService.getFloor(key, this.OrganizationID)
-      .subscribe((data: Reports[]) => {
-        this.floor = data;
-        this.FloorKey = "";
-      });
+    if (key) {
+      this.ReportServiceService.getFloor(key, this.OrganizationID)
+        .subscribe((data: Reports[]) => {
+          this.floor = data;
+          this.FloorKey = "";
+        });
     }
-    else{
-      this.FloorKey='';
+    else {
+      this.FloorKey = '';
     }
   }
   getequipments(eqtypekey) {
@@ -137,8 +139,10 @@ export class BarcodeReportComponent implements OnInit {
       });
   }
   generateBarcodeReport(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, EquipmentTypeKey, EquipmentKey) {
+    this.checkFlag = true;
     if (!this.FacilityKey && !this.EquipmentTypeKey && !this.EquipmentKey) {
       alert("Please choose any filter");
+      this.checkFlag = false;
     }
     else {
       this.loading = true;
@@ -160,6 +164,7 @@ export class BarcodeReportComponent implements OnInit {
             this.Equipmentflag = false;
             this.viewBarcodeReport = data;
             this.loading = false;
+            this.checkFlag = false;
           });
       }
       if (EquipmentTypeKey) {
@@ -173,6 +178,7 @@ export class BarcodeReportComponent implements OnInit {
             this.Equipmentflag = true;
             this.viewBarcodeEquipment = data;
             this.loading = false;
+            this.checkFlag = false;
           });
       }
 
@@ -184,6 +190,7 @@ export class BarcodeReportComponent implements OnInit {
             this.Equipmentflag = true;
             this.viewBarcodeEquipment = data;
             this.loading = false;
+            this.checkFlag = false;
           });
       }
     }
@@ -208,9 +215,9 @@ export class BarcodeReportComponent implements OnInit {
 
 
   }
-  zoneChange(){
-    this.RoomTypeKey='';
-    
+  zoneChange() {
+    this.RoomTypeKey = '';
+
   }
 
 
@@ -236,8 +243,8 @@ export class BarcodeReportComponent implements OnInit {
         // this.excelService.exportAsExcelFile(this.reportarray, 'Barcode_Report');
         var blob = new Blob([document.getElementById('exportable').innerHTML], {
           type: EXCEL_TYPE
-      });
-      FileSaver.saveAs(blob, "Room_Report.xls");
+        });
+        FileSaver.saveAs(blob, "Room_Report.xls");
       }
     }
 
@@ -257,8 +264,8 @@ export class BarcodeReportComponent implements OnInit {
         // this.excelService.exportAsExcelFile(this.reportarray1, 'reportsample');
         var blob = new Blob([document.getElementById('exportable1').innerHTML], {
           type: EXCEL_TYPE
-      });
-      FileSaver.saveAs(blob, "Equipment_Report.xls");
+        });
+        FileSaver.saveAs(blob, "Equipment_Report.xls");
       }
     }
 

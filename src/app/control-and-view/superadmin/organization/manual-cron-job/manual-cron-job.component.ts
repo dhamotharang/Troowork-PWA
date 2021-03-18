@@ -10,7 +10,9 @@ export class ManualCronJobComponent implements OnInit {
 
   constructor(private organizationService: OrganizationService) { }
 
+  checkFlag;
   cronJobMST() {
+    this.checkFlag = true;
     /*
     calling api from controller...
     */
@@ -22,16 +24,21 @@ export class ManualCronJobComponent implements OnInit {
 
     this.organizationService.cronJob_MST().subscribe((data: any[]) => {
       alert("CronJob-MST executed successfully");
-     });
+      this.checkFlag = false;
+    });
   }
 
   cronJobCST() {
-    this.organizationService.cronJob_CST().subscribe((data: any[]) => { 
+
+    this.checkFlag = true;
+    this.organizationService.cronJob_CST().subscribe((data: any[]) => {
       alert("CronJob-CST executed successfully");
+      this.checkFlag = false;
     });
   }
 
   ngOnInit() {
+    this.checkFlag = false;
   }
 
 }

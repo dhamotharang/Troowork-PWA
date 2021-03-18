@@ -33,6 +33,7 @@ export class RoomEditComponent implements OnInit {
   update_Room;
   unqBar;
   temp_room;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -106,28 +107,37 @@ export class RoomEditComponent implements OnInit {
   }
 
   updateRoom(RoomName, SquareFoot, Barcode) {
+    this.checkFlag = true;
     if (!this.facKey) {
       alert("Building name is not provided !");
+      this.checkFlag = false;
     } else if (!this.floorKey) {
       alert("Floor name is not provided!");
+      this.checkFlag = false;
     } else if (!this.floorTypeKey) {
       alert("FloorType is not provided !");
+      this.checkFlag = false;
     } else if (!this.zoneKey) {
       alert("Zone name is not provided !");
+      this.checkFlag = false;
     } else if (!this.roomTypeKey) {
       alert("RoomType is not provided !");
+      this.checkFlag = false;
     } else if (!RoomName || !RoomName.trim()) {
       alert("Room name is not provided !");
+      this.checkFlag = false;
     } else if (!SquareFoot || !String(SquareFoot).trim()) {
       alert("Square foot is not provided !");
+      this.checkFlag = false;
     } else if (!Barcode || !Barcode.trim()) {
       alert("Barcode is not provided !");
+      this.checkFlag = false;
     }
     else {
       if (RoomName) {
         RoomName = RoomName.trim();
       }
-    
+
       this.update_Room = {
         FacilityKey: this.facKey,
         FloorKey: this.floorKey,
@@ -147,6 +157,7 @@ export class RoomEditComponent implements OnInit {
           this.unqBar = data;
           if (this.unqBar.Barcode != 0) {
             alert("Barcode already exists !");
+            this.checkFlag = false;
           }
           else if (this.temp_room != RoomName) {
             this.inventoryService
@@ -154,11 +165,13 @@ export class RoomEditComponent implements OnInit {
               .subscribe((data: Inventory[]) => {
                 if (data[0].count > 0) {
                   alert("Room Name already exists !");
+                  this.checkFlag = false;
                 }
                 else {
                   this.inventoryService.updateRoom(this.update_Room)
                     .subscribe(res => {
                       alert("Room updated successfully");
+                      this.checkFlag = false;
                       this._location.back();
                     });
                 }
@@ -168,6 +181,7 @@ export class RoomEditComponent implements OnInit {
             this.inventoryService.updateRoom(this.update_Room)
               .subscribe(res => {
                 alert("Room updated successfully");
+                this.checkFlag = false;
                 this._location.back();
               });
           }
@@ -187,6 +201,7 @@ export class RoomEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getRoomDetailsList(this.roomKey$, this.OrganizationID)
       .subscribe((data: Array<any>) => {

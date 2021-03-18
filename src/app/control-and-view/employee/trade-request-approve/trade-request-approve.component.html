@@ -73,7 +73,7 @@
         </ng-datepicker>
       </div>
       <div class="form-group" style="margin-top: 1.3rem">
-        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Employee Comments</label>
+        <label class="col-sm-6 col-md-6 col-lg-6 " style="margin-left: -1rem;">Employee Comments *</label>
         <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="traderequestdetailsbyID.OtherEmployeeComments" rows="5" style="resize: none;width: 75% !important;"></textarea>
       </div>
     </div>
@@ -161,7 +161,7 @@
         <a (click)='goBack()' class="btn btn-warning" style="text-align:center;margin-left:42%"><b>Go Back</b></a>
       </div>
       <div *ngIf="traderequestdetailsbyID.StatusKey==1" style="margin-left:42%">
-        <button type="button" class="btn btn-success" style="text-align:center;" (click)="saveTradeRequestAction()"><b>SAVE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" style="text-align:center;" (click)="saveTradeRequestAction()"><b>SAVE</b></button>
       </div>
     </div>
   </div>

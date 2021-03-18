@@ -33,14 +33,13 @@
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="building">Zone Name* </label></h5>
       <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
-        <input type="text" maxlength="20" placeholder="Zone Name" style="background-color: #D4F4FF !important;" class="form-control"
-          [(ngModel)]="ZoneName">
+        <input type="text" maxlength="20" placeholder="Zone Name" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneName">
       </div>
     </div>
     <br>
     <div class="row col-md-12" style="margin-left: 36%">
-      <a style="color:white !important" class="btn btn-success" (click)="addZone(FacilityKey,FloorName,ZoneName,FloorKey)"><b>CREATE ZONE</b>
-      </a>
+      <button [disabled]="checkFlag" style="color:white !important" class="btn btn-success" (click)="addZone(FacilityKey,FloorName,ZoneName,FloorKey)"><b>CREATE ZONE</b>
+      </button>
       <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
           Back
         </b>

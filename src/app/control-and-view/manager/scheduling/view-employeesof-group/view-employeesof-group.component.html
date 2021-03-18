@@ -58,7 +58,7 @@
       </tbody>
     </table>
     <div *ngIf="empList?.length > 0" style="margin-left:41%">
-      <a (click)="saveOrderChanges();" class="btn btn-success"><b>Save</b></a>&nbsp;
+      <button [disabled]="checkFlag" (click)="saveOrderChanges();" class="btn btn-success"><b>Save</b></button>&nbsp;
       <a (click)="cancelOrderChange();" class="btn btn-warning"><b>Cancel</b></a>
     </div>
     <div>

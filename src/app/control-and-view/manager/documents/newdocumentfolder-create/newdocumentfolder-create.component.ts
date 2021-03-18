@@ -18,7 +18,7 @@ export class NewdocumentfolderCreateComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -39,27 +39,32 @@ export class NewdocumentfolderCreateComponent implements OnInit {
   constructor(private documentService: DocumentserviceService, private router: Router, private _location: Location) { }
 
   addDocFold() {
+    this.checkFlag = true;
     if (this.DocFolderName && !this.DocFolderName.trim()) {
       alert("Please Enter Document Folder Name!");
+      this.checkFlag = false;
       return;
     }
     if (!this.DocFolderName) {
       alert("Document Folder Name not provided");
+      this.checkFlag = false;
       return;
     }
-    if(this.DocFolderName){
-      this.DocFolderName=this.DocFolderName.trim();
+    if (this.DocFolderName) {
+      this.DocFolderName = this.DocFolderName.trim();
     }
     //  else
     this.documentService.checkforForms(this.DocFolderName, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       if (data[0].count == 0) {
         this.documentService.CreateNewDocumentFolder(this.DocFolderName, this.employeekey, this.OrganizationID).subscribe((data: Documents[]) => {
           alert("Successfully Added");
+          this.checkFlag = false;
           this._location.back();
         });
       }
       else {
         alert("Document Folder Name already exists");
+        this.checkFlag = false;
         return;
       }
     });
@@ -73,6 +78,7 @@ export class NewdocumentfolderCreateComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
   }
 

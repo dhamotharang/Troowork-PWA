@@ -29,7 +29,7 @@
 
           <td>
             <a [routerLink]="['JobTitleEditAdmin', x.JobTitleKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a class="btn btn-danger" (click)="basicModal.show();deleteJobPass(x.JobTitleKey); "><b>Delete</b></a>
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deleteJobPass(x.JobTitleKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="jobView?.length == 0">

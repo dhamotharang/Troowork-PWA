@@ -403,6 +403,6 @@
   <!-- </div>
     </div> -->
   <div class="row col-md-12" style="margin-left: 45%">
-    <button type="button" style="text-align:center" class="btn btn-success" (click)="createShift()"><b>SAVE</b></button>
+    <button type="button" style="text-align:center" [disabled]="checkFlag" class="btn btn-success" (click)="createShift()"><b>SAVE</b></button>
   </div>
 </div>

@@ -48,6 +48,7 @@ export class CreateQuickOrderComponent implements OnInit {
   name: String;
   IsSupervisor: Number;
   isMobile: any;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -82,13 +83,17 @@ export class CreateQuickOrderComponent implements OnInit {
   }
   //function for creating quick work order
   saveQuickWorkOrder() {
+    this.checkFlag = true;
     if (!(this.EmployeeKey)) {
       alert("Please select employee!");
+      this.checkFlag = false;
     } else if (!(this.FacilityKey)) {
-      alert("Please select building!")
+      alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!(this.WorkorderNotes)) {
       alert("Please enter work-order notes!");
+      this.checkFlag = false;
     } else {
 
       this.wot = - 1;
@@ -160,6 +165,7 @@ export class CreateQuickOrderComponent implements OnInit {
         .addQuickWorkOrder(this.createworkorder)
         .subscribe(res => {
           alert("Work-order created successfully");
+          this.checkFlag = false;
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
         });
     }
@@ -180,6 +186,7 @@ export class CreateQuickOrderComponent implements OnInit {
     this.FacilityKey = "";
     this.EmployeeKey = "";
     this.PriorityKey = "";
+    this.checkFlag = false;
     this.WorkOrderServiceService//service for getting employee names
       .getallEmployee(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {

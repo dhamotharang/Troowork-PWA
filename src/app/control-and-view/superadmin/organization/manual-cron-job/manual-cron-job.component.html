@@ -3,7 +3,7 @@
     <h4 style="margin-left: 42%;">MANUAL CRONJOB CALL</h4>
   </div>
   <div class="row bg-info col-md-12" style="padding: 2rem">
-    <a class="btn btn-success" (click)="cronJobMST()" style="margin-left: 40%"><b>CRONJOB MST</b></a>
-    <a class="btn btn-success" (click)="cronJobCST()"><b>CRONJOB CST</b></a>
+    <button class="btn btn-success" [disabled]="checkFlag" (click)="cronJobMST()" style="margin-left: 40%"><b>CRONJOB MST</b></button>
+    <button class="btn btn-success" [disabled]="checkFlag" (click)="cronJobCST()"><b>CRONJOB CST</b></button>
   </div>
 </div>

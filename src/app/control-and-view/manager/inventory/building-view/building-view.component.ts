@@ -23,6 +23,7 @@ export class BuildingViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -101,9 +102,11 @@ export class BuildingViewComponent implements OnInit {
       });
   }
   deleteFacility() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteBuilding(this.delete_faciKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert("Building deleted successfully");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getBuildings(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -126,8 +129,8 @@ export class BuildingViewComponent implements OnInit {
   }
 
   searchFacility(SearchValue) {
-   
-    var value=SearchValue.trim();
+
+    var value = SearchValue.trim();
 
     if (value.length >= 3) {
       this.inventoryService
@@ -138,9 +141,8 @@ export class BuildingViewComponent implements OnInit {
         });
     }
     else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       this.inventoryService
         .getBuildings(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -173,6 +175,7 @@ export class BuildingViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getBuildings(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

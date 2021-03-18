@@ -26,7 +26,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
   employeedetailstable: People[];
   managerList;
   useroletyp;
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -111,24 +111,30 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
   editEmployee(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, JobTitleKey, DepartmentKey, ManagerKey, SupervisorKey) {
     // , start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idmaster_exception_weekend,idemployeegrouping
+
+    this.checkFlag = true;
     var manKey;
     var superKey;
 
     if (!EmployeeNumber || !EmployeeNumber.trim()) {
       alert("Employee Number is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.editempdtails.UserRoleTypeKey)) {
       alert("User Role Type is not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if (!(FirstName) || !(FirstName.trim())) {
       alert("First Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(LastName) || !(LastName.trim())) {
       alert("Last Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.editempdtails.Gender)) {
@@ -136,32 +142,39 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     }
     if (!(this.editempdtails.EmployeeStatusKey)) {
       alert("Employee Status is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(PrimaryPhone) || !(PrimaryPhone.trim())) {
       alert("Primary Phone is not provided !");
+      this.checkFlag = false;
       return;
     }
     if ((EmployeeStatusKey != 1) && !(this.remark)) {
       alert("Remarks are not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.editempdtails.JobTitleKey)) {
       alert("Job Title is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.editempdtails.DepartmentKey)) {
       alert("Department is not provided !");
+      this.checkFlag = false;
       return;
     }
 
 
     if (this.showManager === true && !(ManagerKey)) {
       alert("Manager is not provided !");
+      this.checkFlag = false;
       return;
     }
     else {
@@ -178,7 +191,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       manKey = -1;
     }
 
-    
+
 
     var birthdt;
     var currentDate = this.convert_DT(new Date());
@@ -192,6 +205,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     var hiredt = this.convert_DT(HD)
     if (birthdt > currentDate) {
       alert("Wrong Birth Date !");
+      this.checkFlag = false;
       return;
     }
     // if (hiredt > currentDate) {
@@ -200,6 +214,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     // }
     if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
+      this.checkFlag = false;
       return;
     }
     // if (this.editempdtails.UserRoleTypeKey == 3) {
@@ -242,6 +257,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       // , start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idmaster_exception_weekend,idemployeegrouping)
       .subscribe((data: Array<any>) => {
         alert("Employee Updated !");
+        this.checkFlag = false;
         this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
       });
 
@@ -249,10 +265,12 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
   deleteEmployee() {
 
+    this.checkFlag = true;
     this.PeopleServiceService
       .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey)
       .subscribe((data: Array<any>) => {
         alert("Employee Deleted !");
+        this.checkFlag = false;
         this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
       });
   }
@@ -273,6 +291,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.PeopleServiceService.EditEmployeeDetailsbyManager(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
       this.editempdtails = data[0];
       this.BirthDate = new Date(this.editempdtails.BirthDate);

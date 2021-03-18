@@ -102,6 +102,7 @@ export class CreateWorkOrderComponent implements OnInit {
   name: String;
   employeeKey: Number;
   IsSupervisor: Number;
+  checkFlag;
   //converting date from GMT to yyyy/mm/dd
   public convert_DT(str) {
     var date = new Date(str),
@@ -189,6 +190,7 @@ export class CreateWorkOrderComponent implements OnInit {
     this.month1 = "";
     this.month2 = "";
     this.pos2 = "";
+    this.checkFlag = false;
     this.WorkorderStartDate = new Date(Date.now());
     this.WorkOrderServiceService//for getting all building names
       .getallFacility(this.employeeKey, this.org_id)
@@ -416,42 +418,54 @@ export class CreateWorkOrderComponent implements OnInit {
   }
   createWorkorder1() {
     // ;
+    this.checkFlag = true;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     } else if (this.newType == true && !(this.newworkordertypetext)) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
     } else if (this.newType == true && !(this.newworkordertypetext.trim())) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
     else if ((!(this.timeValue)) && (this.isRecurring == false)) {
       alert("Please provide time!");
+      this.checkFlag = false;
     } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your end date!");
-
+      this.checkFlag = false;
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
         alert("Recurring Period is not provided !");
+        this.checkFlag = false;
       }
       if (this.dailyrecurring == true) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else if (!(this.dailyFrequency)) {
           alert("Please select frequency !");
+          this.checkFlag = false;
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
               alert("Please enter time values !");
+              this.checkFlag = false;
             }
           }
           this.withoutequip_wo();
@@ -460,15 +474,19 @@ export class CreateWorkOrderComponent implements OnInit {
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
           alert("Please select atleast one day!");
+          this.checkFlag = false;
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withoutequip_wo();
@@ -477,28 +495,34 @@ export class CreateWorkOrderComponent implements OnInit {
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
           alert("Select a radio option from monthly reccuring !");
+          this.checkFlag = false;
           return;
         }
         if (this.monthlyreccradio1 == true) {
           if (!(this.day1) || !(this.month1)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
         }
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withoutequip_wo();
@@ -568,6 +592,7 @@ export class CreateWorkOrderComponent implements OnInit {
           }
           else {
             alert("Limit for the maximum workorders have reached. Maximum 100");
+            this.checkFlag = false;
             return;
           }
 
@@ -682,7 +707,8 @@ export class CreateWorkOrderComponent implements OnInit {
       if (this.isRecurring == false) {
         if (this.dateValue) {
           if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-            alert("Start date is less than current date"); return;
+            alert("Start date is less than current date");
+            this.checkFlag = false; return;
           } else {
             this.startDT = this.convert_DT(this.dateValue);
           }
@@ -695,6 +721,7 @@ export class CreateWorkOrderComponent implements OnInit {
         if (this.WorkorderStartDate) {
           if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
             alert("Start date is less than current date");
+            this.checkFlag = false;
             return;
           }
           else {
@@ -713,10 +740,12 @@ export class CreateWorkOrderComponent implements OnInit {
 
         if (this.intervaltype == 'w' && diffDays < 7) {
           alert("Please Select One week Date Range!");
+          this.checkFlag = false;
           return;
         }
         if (this.intervaltype == 'm' && diffDays < 31) {
           alert("Please Select One month Date Range!");
+          this.checkFlag = false;
           return;
         }
       }
@@ -750,6 +779,7 @@ export class CreateWorkOrderComponent implements OnInit {
         }
         else {
           alert("Please Enter Time!");
+          this.checkFlag = false;
         }
       } else if (this.isRecurring == true && this.monthlyrecurring == true) {
         if (this.Time_monthly) {
@@ -757,6 +787,7 @@ export class CreateWorkOrderComponent implements OnInit {
         }
         else {
           alert("Please Enter Time!");
+          this.checkFlag = false;
         }
         if (this.monthlyreccradio1 == true) {
           this.occurs_on = this.day1;
@@ -839,6 +870,7 @@ export class CreateWorkOrderComponent implements OnInit {
                       keepActive: this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
+                      this.checkFlag = false;
                       alert("Work-order created successfully");
                       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
                     });
@@ -874,6 +906,7 @@ export class CreateWorkOrderComponent implements OnInit {
           keepActive: this.keep_active
         };
         this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
+          this.checkFlag = false;
           alert("Work-order created successfully");
           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
         });
@@ -883,47 +916,61 @@ export class CreateWorkOrderComponent implements OnInit {
   //workorder with equipment
   createWorkorder2() {
     // ;
+    this.checkFlag = true;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
+      this.checkFlag = false;
     } else if (this.newType == true && !(this.newworkordertypetext)) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
     } else if (this.newType == true && !(this.newworkordertypetext.trim())) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
     }
     else if (!this.FacilityKey) {
       alert("Please select building!");
+      this.checkFlag = false;
     }
     else if (!this.FloorKey) {
       alert("Please select floor!");
+      this.checkFlag = false;
     }
     // else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
     //   alert("Start date is less than current date");
     // }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your end date!");
+      this.checkFlag = false;
     }
     else if ((!(this.timeValue)) && (this.isRecurring == false)) {
       alert("Please provide time!");
+      this.checkFlag = false;
     } else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
       alert("Please select equipment type!");
+      this.checkFlag = false;
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
         alert("Recurring Period is not provided !");
+        this.checkFlag = false;
       }
       if (this.dailyrecurring == true) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else if (!(this.dailyFrequency)) {
           alert("Please select frequency !");
+          this.checkFlag = false;
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
               alert("Please enter time values !");
+              this.checkFlag = false;
             }
           }
           this.withequip_wo();
@@ -932,15 +979,19 @@ export class CreateWorkOrderComponent implements OnInit {
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
           alert("Please select atleast one day!");
+          this.checkFlag = false;
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withequip_wo();
@@ -949,28 +1000,34 @@ export class CreateWorkOrderComponent implements OnInit {
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
           alert("Select a radio option from monthly reccuring !");
+          this.checkFlag = false;
           return;
         }
         if (this.monthlyreccradio1 == true) {
           if (!(this.day1) || !(this.month1)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
         }
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
             alert("Provide entries for monthly recurring !");
+            this.checkFlag = false;
             return;
           }
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+          this.checkFlag = false;
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
+          this.checkFlag = false;
         }
         else {
           this.withequip_wo();
@@ -1096,6 +1153,7 @@ export class CreateWorkOrderComponent implements OnInit {
           }
           else {
             alert("Limit for the maximum workorders have reached. Maximum 100");
+            this.checkFlag = false;
             return;
           }
 
@@ -1161,7 +1219,8 @@ export class CreateWorkOrderComponent implements OnInit {
       if (this.isRecurring == false) {
         if (this.dateValue) {
           if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-            alert("Start date is less than current date"); return;
+            alert("Start date is less than current date");
+            this.checkFlag = false; return;
           } else {
             this.startDT = this.convert_DT(this.dateValue);
           }
@@ -1174,6 +1233,7 @@ export class CreateWorkOrderComponent implements OnInit {
         if (this.WorkorderStartDate) {
           if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
             alert("Start date is less than current date");
+            this.checkFlag = false;
             return;
           }
           else {
@@ -1192,10 +1252,12 @@ export class CreateWorkOrderComponent implements OnInit {
 
         if (this.intervaltype == 'w' && diffDays < 7) {
           alert("Please Select One week Date Range!");
+          this.checkFlag = false;
           return;
         }
         if (this.intervaltype == 'm' && diffDays < 31) {
           alert("Please Select One month Date Range!");
+          this.checkFlag = false;
           return;
         }
       }
@@ -1305,6 +1367,7 @@ export class CreateWorkOrderComponent implements OnInit {
                       keepActive: this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
+                      this.checkFlag = false;
                       alert("Work-order created successfully");
                       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
                     });
@@ -1341,6 +1404,7 @@ export class CreateWorkOrderComponent implements OnInit {
         };
         this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
+          this.checkFlag = false;
           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
         });
       }
@@ -1349,6 +1413,7 @@ export class CreateWorkOrderComponent implements OnInit {
   //function to create wo with equipment
   withequip_wo() {
     // ;
+    this.checkFlag = true;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];
@@ -1445,33 +1510,34 @@ export class CreateWorkOrderComponent implements OnInit {
       this.eqp_key = this.EquipmentKey;
     } else {
       // var k = confirm("100s of workorders will be created because an individual equipment has not been selected. Do you want to continue ?");
-        // if (k) {
-        //   if (EquListObj) {
-        //     for (var j = 0; j < EquListObj.length; j++) {
-        //       equList.push(EquListObj[j].EquipmentKey);
-        //     }
-        //     this.eqp_key = equList.join(',');
-        //   }
-        // } else {
-        //   return;
-        // }
+      // if (k) {
+      //   if (EquListObj) {
+      //     for (var j = 0; j < EquListObj.length; j++) {
+      //       equList.push(EquListObj[j].EquipmentKey);
+      //     }
+      //     this.eqp_key = equList.join(',');
+      //   }
+      // } else {
+      //   return;
+      // }
 
-        if (EquListObj) {
-          if (EquListObj.length <= 100) {
-            for (var j = 0; j < EquListObj.length; j++) {
-              equList.push(EquListObj[j].EquipmentKey);
-            }
-            this.eqp_key = equList.join(',');
-
+      if (EquListObj) {
+        if (EquListObj.length <= 100) {
+          for (var j = 0; j < EquListObj.length; j++) {
+            equList.push(EquListObj[j].EquipmentKey);
           }
-          else {
-            alert("Limit for the maximum workorders have reached. Maximum 100");
-            return;
-          }
+          this.eqp_key = equList.join(',');
 
-        } else {
+        }
+        else {
+          alert("Limit for the maximum workorders have reached. Maximum 100");
+          this.checkFlag = false;
           return;
         }
+
+      } else {
+        return;
+      }
     }
     if (this.EmployeeKey) {
       this.emp_key = this.EmployeeKey;
@@ -1532,7 +1598,8 @@ export class CreateWorkOrderComponent implements OnInit {
     if (this.isRecurring == false) {
       if (this.dateValue) {
         if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         } else {
           this.startDT = this.convert_DT(this.dateValue);
         }
@@ -1545,6 +1612,7 @@ export class CreateWorkOrderComponent implements OnInit {
       if (this.WorkorderStartDate) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
           alert("Start date is less than current date");
+          this.checkFlag = false;
           return;
         }
         else {
@@ -1563,10 +1631,12 @@ export class CreateWorkOrderComponent implements OnInit {
 
       if (this.intervaltype == 'w' && diffDays < 7) {
         alert("Please Select One week Date Range!");
+        this.checkFlag = false;
         return;
       }
       if (this.intervaltype == 'm' && diffDays < 31) {
         alert("Please Select One month Date Range!");
+        this.checkFlag = false;
         return;
       }
     }
@@ -1677,6 +1747,7 @@ export class CreateWorkOrderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
+                    this.checkFlag = false;
                     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
                   });
                 });
@@ -1712,6 +1783,7 @@ export class CreateWorkOrderComponent implements OnInit {
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
+        this.checkFlag = false;
         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
       });
     }
@@ -1756,6 +1828,7 @@ export class CreateWorkOrderComponent implements OnInit {
   }
   withoutequip_wo() {
     // ;
+    this.checkFlag = true;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];
@@ -1794,35 +1867,36 @@ export class CreateWorkOrderComponent implements OnInit {
       roomsString = this.RoomKey;
     } else {
       // var k = confirm("100s of workorders will be created because an individual room has not been selected. Do you want to continue ?");
-        // if (k) {
-        //   if (roomlistObj) {
-        //     for (var j = 0; j < roomlistObj.length; j++) {
-        //       roomList.push(roomlistObj[j].RoomKey);
-        //     }
-        //     roomsString = roomList.join(',');
-        //   } else {
-        //     return;
-        //   }
-        // } else {
-        //   return;
-        // }
+      // if (k) {
+      //   if (roomlistObj) {
+      //     for (var j = 0; j < roomlistObj.length; j++) {
+      //       roomList.push(roomlistObj[j].RoomKey);
+      //     }
+      //     roomsString = roomList.join(',');
+      //   } else {
+      //     return;
+      //   }
+      // } else {
+      //   return;
+      // }
 
-        if (roomlistObj) {
-          if (roomlistObj.length <= 100) {
-            for (var j = 0; j < roomlistObj.length; j++) {
-              roomList.push(roomlistObj[j].RoomKey);
-            }
-            roomsString = roomList.join(',');
-
+      if (roomlistObj) {
+        if (roomlistObj.length <= 100) {
+          for (var j = 0; j < roomlistObj.length; j++) {
+            roomList.push(roomlistObj[j].RoomKey);
           }
-          else{
-            alert("Limit for the maximum workorders have reached. Maximum 100");
-            return;
-          }
+          roomsString = roomList.join(',');
 
-        } else {
+        }
+        else {
+          alert("Limit for the maximum workorders have reached. Maximum 100");
+          this.checkFlag = false;
           return;
         }
+
+      } else {
+        return;
+      }
     }
     var facilityString;
     if (this.FacilityKey) {
@@ -1931,7 +2005,8 @@ export class CreateWorkOrderComponent implements OnInit {
     if (this.isRecurring == false) {
       if (this.dateValue) {
         if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         } else {
           this.startDT = this.convert_DT(this.dateValue);
         }
@@ -1943,7 +2018,8 @@ export class CreateWorkOrderComponent implements OnInit {
     else {
       if (this.WorkorderStartDate) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date"); return;
+          alert("Start date is less than current date");
+          this.checkFlag = false; return;
         }
         else {
           this.startDT = this.convert_DT(this.WorkorderStartDate);
@@ -1961,10 +2037,12 @@ export class CreateWorkOrderComponent implements OnInit {
 
       if (this.intervaltype == 'w' && diffDays < 7) {
         alert("Please Select One week Date Range!");
+        this.checkFlag = false;
         return;
       }
       if (this.intervaltype == 'm' && diffDays < 31) {
         alert("Please Select One month Date Range!");
+        this.checkFlag = false;
         return;
       }
     }
@@ -1998,6 +2076,7 @@ export class CreateWorkOrderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
     } else if (this.isRecurring == true && this.monthlyrecurring == true) {
       if (this.Time_monthly) {
@@ -2005,6 +2084,7 @@ export class CreateWorkOrderComponent implements OnInit {
       }
       else {
         alert("Please Enter Time!");
+        this.checkFlag = false;
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
@@ -2088,6 +2168,7 @@ export class CreateWorkOrderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
+                    this.checkFlag = false;
                     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
                   });
                 });
@@ -2124,6 +2205,7 @@ export class CreateWorkOrderComponent implements OnInit {
       };
       this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
+        this.checkFlag = false;
         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
       });
     }

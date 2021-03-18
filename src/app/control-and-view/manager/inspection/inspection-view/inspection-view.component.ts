@@ -31,6 +31,7 @@ export class InspectionViewComponent implements OnInit {
   inspectionorderKey = [];
   deleteInspection;
   deletechkbox;
+  checkFlag;
 
   //Variables for pagination
 
@@ -236,6 +237,7 @@ export class InspectionViewComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
+    this.checkFlag = false;
     this.loading = true;// loading
     this.fromdate = new Date();
     var curr_date = this.convert_DT(new Date());
@@ -293,6 +295,7 @@ export class InspectionViewComponent implements OnInit {
   }
   deleteInspectionOrder() {
 
+    this.checkFlag = true;
     var deleteInspectionOrderList = [];
     var deleteInspectionOrderString;
 
@@ -316,6 +319,7 @@ export class InspectionViewComponent implements OnInit {
         this.checkflag = false;
         this.inspectionorderKey = [];
         alert("Inspection deleted successfully");
+        this.checkFlag = false;
         this.filteringInspectionManagerByDate();
 
       });

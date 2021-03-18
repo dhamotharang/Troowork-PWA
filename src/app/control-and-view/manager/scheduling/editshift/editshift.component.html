@@ -424,7 +424,7 @@
   <!-- SCHEDULER ENDS -->
 
   <div class="row col-md-12" style="margin-left: 40%">
-    <button type="button" style="text-align:center" class="btn btn-success" (click)="editShift()"><b>UPDATE</b></button>
+    <button type="button" style="text-align:center" [disabled]="checkFlag" class="btn btn-success" (click)="editShift()"><b>UPDATE</b></button>
     <button type="button" style="text-align:center" class="btn btn-warning" (click)="goBack()"><b>GO BACK</b></button>
   </div>
 </div>

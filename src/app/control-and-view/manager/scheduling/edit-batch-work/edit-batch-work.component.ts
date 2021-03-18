@@ -28,6 +28,7 @@ export class EditBatchWorkComponent implements OnInit {
   BatchScheduleTime;
   BatchScheduleEndTime;
   shiftdetails;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -51,7 +52,7 @@ export class EditBatchWorkComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private ReportServiceService: ReportServiceService,private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private _location: Location) {
+  constructor(private ReportServiceService: ReportServiceService, private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private _location: Location) {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleNameKey);
   }
 
@@ -60,22 +61,28 @@ export class EditBatchWorkComponent implements OnInit {
   }
 
   updateScheduleName() {
+    this.checkFlag = true;
     if (!this.scheduleDetails.BatchSchduleName || !this.scheduleDetails.ScheduleDescription.trim()) {
       alert("Assignment Name is not provided !");
+      this.checkFlag = false;
       return;
     } if (!this.scheduleDetails.ScheduleDescription || !this.scheduleDetails.ScheduleDescription.trim()) {
       alert("Assignment Description is not provided !");
+      this.checkFlag = false;
       return;
     } if (!this.empKey) {
       alert("Employee Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!this.BatchScheduleTime) {
       alert("Start Time is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!this.BatchScheduleEndTime) {
       alert("End Time is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (this.scheduleDetails.BatchSchduleName) {
@@ -104,19 +111,22 @@ export class EditBatchWorkComponent implements OnInit {
         .checkForNewScheduleName(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName)
         .subscribe((data: any[]) => {
           if (data[0].count == 0) {
-            this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime,this.scheduleDetails.Master_shiftID)
+            this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime, this.scheduleDetails.Master_shiftID)
               .subscribe(res => {
                 alert("Assignment Name updated Successfully");
+                this.checkFlag = false;
                 this._location.back();
               });
           } else {
             alert("Assignment Name already present !");
+            this.checkFlag = false;
           }
         });
     } else {
-      this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime,this.scheduleDetails.Master_shiftID)
+      this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime, this.scheduleDetails.Master_shiftID)
         .subscribe(res => {
           alert("Assignment Name updated Successfully");
+          this.checkFlag = false;
           this._location.back();
         });
     }
@@ -135,6 +145,7 @@ export class EditBatchWorkComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
+    this.checkFlag = false;
 
     this.scheduleService
       .getAllEmpList(this.employeekey, this.OrganizationID)
@@ -173,9 +184,11 @@ export class EditBatchWorkComponent implements OnInit {
   }
 
   deleteAssignmentName() {
+    this.checkFlag = true;
     this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         alert("Assignment Name deleted successfully");
+        this.checkFlag = false;
         this.loading = true;
         this._location.back();
       })

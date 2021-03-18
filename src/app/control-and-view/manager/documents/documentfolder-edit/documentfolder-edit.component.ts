@@ -18,7 +18,7 @@ export class DocumentfolderEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   initialFolder;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -42,12 +42,15 @@ export class DocumentfolderEditComponent implements OnInit {
   }
 
   updateFolderName() {
+    this.checkFlag = true;
     if (this.folder.FormType && !this.folder.FormType.trim()) {
       alert("Please Enter Document Folder Name!");
+      this.checkFlag = false;
       return;
     }
     if (!this.folder.FormType) {
       alert("Document Folder Name not provided");
+      this.checkFlag = false;
       return;
     }
     // else
@@ -55,28 +58,31 @@ export class DocumentfolderEditComponent implements OnInit {
       this.folder.FormType = this.folder.FormType.trim();
     }
 
-    if(this.initialFolder===this.folder.FormType){
+    if (this.initialFolder === this.folder.FormType) {
       this.documentService.UpdateDocumentFolderName(this.folder$, this.folder.FormType, this.employeekey, this.OrganizationID)
-      .subscribe((data: Documents[]) => {
-        alert("Successfully Updated");
-        this._location.back();
-      });
+        .subscribe((data: Documents[]) => {
+          alert("Successfully Updated");
+          this.checkFlag = false;
+          this._location.back();
+        });
     }
-    else{ 
-    this.documentService.checkforForms(this.folder.FormType, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        if (data[0].count == 0) {
-          this.documentService.UpdateDocumentFolderName(this.folder$, this.folder.FormType, this.employeekey, this.OrganizationID)
-            .subscribe((data: Documents[]) => {
-              alert("Successfully Updated");
-              this._location.back();
-            });
-        }
-        else {
-          alert("Document Folder Name already exists");
-          return;
-        }
-      });
+    else {
+      this.documentService.checkforForms(this.folder.FormType, this.employeekey, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          if (data[0].count == 0) {
+            this.documentService.UpdateDocumentFolderName(this.folder$, this.folder.FormType, this.employeekey, this.OrganizationID)
+              .subscribe((data: Documents[]) => {
+                alert("Successfully Updated");
+                this.checkFlag = false;
+                this._location.back();
+              });
+          }
+          else {
+            alert("Document Folder Name already exists");
+            this.checkFlag = false;
+            return;
+          }
+        });
     }
   }
 
@@ -89,10 +95,11 @@ export class DocumentfolderEditComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
     this.documentService.EditDocFolderName(this.folder$, this.OrganizationID).subscribe((data: any[]) => {
       this.folder = data[0]
-      this.initialFolder=data[0].FormType
+      this.initialFolder = data[0].FormType
     });
   }
   goBack() {

@@ -11,7 +11,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 export class TradeRequestApproveComponent implements OnInit {
 
   ////////Author :  Aswathy//////
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -103,6 +103,7 @@ export class TradeRequestApproveComponent implements OnInit {
     this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
 
+    this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestdetailsbyID(this.traderequestDetails$)
       .subscribe((data) => {
         this.traderequestdetailsbyID = data[0];
@@ -133,8 +134,10 @@ export class TradeRequestApproveComponent implements OnInit {
   }
   saveTradeRequestAction() {
 
+    this.checkFlag = true;
     if (!(this.traderequestdetailsbyID.Status)) {
       alert('Status is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -142,17 +145,20 @@ export class TradeRequestApproveComponent implements OnInit {
 
       if (!(this.traderequestdetailsbyID.ApprovedStartDate)) {
         alert('Approved Start Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
       if (!(this.traderequestdetailsbyID.ApprovedEndDate)) {
         alert('Approved End Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved start date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApprovedStartDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate);
@@ -160,6 +166,7 @@ export class TradeRequestApproveComponent implements OnInit {
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved end date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApprovedEndDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate);
@@ -167,6 +174,7 @@ export class TradeRequestApproveComponent implements OnInit {
     } else if ((this.traderequestdetailsbyID.Status) == "Rejected") {
       if (!(this.traderequestdetailsbyID.OtherEmployeeComments)) {
         alert('Comments should be provided!');
+        this.checkFlag = false;
         return;
       }
       this.traderequestdetailsbyID.ApprovedStartDate = null;
@@ -182,6 +190,7 @@ export class TradeRequestApproveComponent implements OnInit {
       this.traderequestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
+        this.checkFlag = false;
         alert("Request updated Successfully");
         this.goBack();
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['TradeRequestsFromEmployees'] } }]);

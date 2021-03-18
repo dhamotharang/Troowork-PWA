@@ -55,6 +55,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   ChartOptions = [];
   tableflag = false;
   employeeString;
+  checkFlag;
   constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService) { }
 
   url_base64_decode(str) {
@@ -103,32 +104,39 @@ export class EmployeesDowntimeReportComponent implements OnInit {
 
   // barchart code
   generateDowntimeReport() {
+    this.checkFlag = true;
     var employeeString;
     if (!(this.fromdate)) {
       alert(" Please select from date");
+      this.checkFlag = false;
       return;
     }
     if (!(this.todate)) {
       alert(" Please select to date");
+      this.checkFlag = false;
       return;
     }
     var timeDiff = Math.abs(this.fromdate.getTime() - this.todate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 7) {
       alert("Select date between 7 days");
+      this.checkFlag = false;
       return;
     }
-    if(this.convert_DT(this.fromdate)>this.convert_DT(this.todate)){
+    if (this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
       alert("Please check from Date & to date!");
+      this.checkFlag = false;
       return;
     }
-    if((this.convert_DT(this.fromdate)>=this.convert_DT(new Date()))||(this.convert_DT(this.todate)>=this.convert_DT(new Date()))){
+    if ((this.convert_DT(this.fromdate) >= this.convert_DT(new Date())) || (this.convert_DT(this.todate) >= this.convert_DT(new Date()))) {
       alert("Please provide date less than current date!");
+      this.checkFlag = false;
       return;
     }
     if (this.EmployeeKey.length == 0) {
       employeeString = null;
       alert(" Please select atleast one employee");
+      this.checkFlag = false;
       return;
     } else {
       var employeeList = [];
@@ -148,10 +156,11 @@ export class EmployeesDowntimeReportComponent implements OnInit {
       .generateDowntimeWeeklyReport(this.convert_DT(this.fromdate), this.convert_DT(this.todate), employeeString, this.OrganizationID)
       .subscribe((data1: any) => {
 
+        this.checkFlag = false;
         this.barvalues = data1;
         this.loading = false;
-        this.chartLabels=[];
-        this.downtimes=[];
+        this.chartLabels = [];
+        this.downtimes = [];
 
         for (var i = 0; i < this.barvalues.length; i++) {
 
@@ -159,7 +168,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
 
           // var status = this.barvalues[i].EmployeeName;
           var downtimeval = this.barvalues[i].downtime;
-          this.data4 = ([i+1]);
+          this.data4 = ([i + 1]);
           this.data5 = ([downtimeval]);
           this.chartLabels[i] = (this.data4);
           this.downtimes[i] = (this.data5);
@@ -261,6 +270,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.ReportServiceService
       .getallemployee(this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {

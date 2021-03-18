@@ -20,6 +20,7 @@ export class EquipmentTypeCreateComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,10 +41,13 @@ export class EquipmentTypeCreateComponent implements OnInit {
   constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location) { }
 
   addEquipmentType() {
+    this.checkFlag = true;
     if (!this.EquipmentTypeName || !this.EquipmentTypeName.trim()) {
       alert("Please provide a Equipment Type");
+      this.checkFlag = false;
     } else if (!this.EquipmentTypeDescription || !this.EquipmentTypeDescription.trim()) {
       alert("Please provide a Equipment Type Description");
+      this.checkFlag = false;
     } else {
       this.EquipmentTypeName = this.EquipmentTypeName.trim();
       this.EquipmentTypeDescription = this.EquipmentTypeDescription.trim();
@@ -51,10 +55,12 @@ export class EquipmentTypeCreateComponent implements OnInit {
         this.dept = data;
         if (this.dept[0].count > 0) {
           alert("Equipment Type already present");
+          this.checkFlag = false;
         }
         else if (this.dept[0].count == 0) {
           this.inventoryServ.addEquipmentType(this.EquipmentTypeName, this.EquipmentTypeDescription, this.employeekey, this.OrganizationID).subscribe(res => {
-            alert("Equipment Type Created Successfully")
+            alert("Equipment Type Created Successfully");
+            this.checkFlag = false;
             this._location.back();
           });
         }
@@ -72,6 +78,7 @@ export class EquipmentTypeCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
   }
   goBack() {
     this._location.back();

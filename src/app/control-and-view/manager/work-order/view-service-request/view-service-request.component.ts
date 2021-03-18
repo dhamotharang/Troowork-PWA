@@ -28,6 +28,7 @@ export class ViewServiceRequestComponent implements OnInit {
   curtime;
   EmployeeOption;
 
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -70,7 +71,7 @@ export class ViewServiceRequestComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService,private SchedulingService: SchedulingService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private SchedulingService: SchedulingService) { }
 
   ngOnInit() {
 
@@ -83,6 +84,7 @@ export class ViewServiceRequestComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
 
     this.fromdate = new Date(Date.now());
     this.todate = new Date(Date.now());
@@ -108,7 +110,7 @@ export class ViewServiceRequestComponent implements OnInit {
       .subscribe((data) => {
         this.requestdetails = data;
       });
-      this.SchedulingService.getEmployeesForSchedulerReport(this.OrganizationID)
+    this.SchedulingService.getEmployeesForSchedulerReport(this.OrganizationID)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
       });
@@ -142,8 +144,9 @@ export class ViewServiceRequestComponent implements OnInit {
     }
   }
 
-  createworkorderbyservicerequest(servicerequestid,empKey) {
+  createworkorderbyservicerequest(servicerequestid, empKey) {
 
+    this.checkFlag = true;
     this.curdate = new Date(Date.now());
 
     var h = this.curdate.getHours();
@@ -158,10 +161,11 @@ export class ViewServiceRequestComponent implements OnInit {
       servicerequestid: servicerequestid,
       OrganizationID: this.OrganizationID,
       employeekey: this.employeekey,
-      CreateEmpKey:empKey
+      CreateEmpKey: empKey
     };
-    if(!empKey){
+    if (!empKey) {
       alert("Employee not provided !");
+      this.checkFlag = false;
       return;
     }
     this.WorkOrderServiceService.generateWorkorderbyservicerequest(this.vpto)
@@ -169,6 +173,7 @@ export class ViewServiceRequestComponent implements OnInit {
         this.requestdetails = data;
         if (data.length > 0) {
           alert("WorkOrder created successfully");
+          this.checkFlag = false;
           this.viewserviceRequest(this.fromdate, this.todate);
         }
       });

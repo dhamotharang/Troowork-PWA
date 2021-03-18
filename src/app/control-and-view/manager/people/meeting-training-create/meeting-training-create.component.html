@@ -10,8 +10,7 @@
         <div class="col-md-6 ">
             <label for="mtngTrainingEvent">Meeting/Training/Event*</label>
 
-            <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;" class="form-control"
-                [(ngModel)]="EventType">
+            <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;" class="form-control" [(ngModel)]="EventType">
                 <option value="">--Select--</option>
                 <option *ngFor="let b of event" [value]="b.ActionKey">
                     {{b.ActionType}} - {{b.Action}}
@@ -66,8 +65,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="floorname">Job Title </label>
-                <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="JobTitle"
-                    (change)="selectEmp()">
+                <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="JobTitle" (change)="selectEmp()">
                     <option value="">--Select--</option>
                     <option *ngFor="let f of jobTitle" [value]="f.JobTitleKey">
                         {{f.JobTitleText}}
@@ -78,8 +76,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="floorname">Manager </label>
-                <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager" (onDeSelect)="selectEmp()"
-                    [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+                <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager" (onDeSelect)="selectEmp()" [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
                 </ng-multiselect-dropdown>
                 <!-- <select style="background-color: #D4F4FF !important;" class="form-control "
                     [(ngModel)]="Supervisor" (change)="selectEmpOfSupervisor($event.target.value)">
@@ -93,8 +90,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="Employee">Department </label>
-                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="DepartmentKey"
-                    (change)="selectEmp()">
+                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="DepartmentKey" (change)="selectEmp()">
                     <option value="">--Select--</option>
                     <option *ngFor="let d of department" [value]="d.DepartmentKey">
                         {{d.DepartmentName}}
@@ -105,8 +101,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="Employee">Employee* </label>
-                <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
-                    [(ngModel)]="Employee" [settings]="dropdownSettings1">
+                <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="Employee" [settings]="dropdownSettings1">
                 </ng-multiselect-dropdown>
 
             </div>
@@ -126,15 +121,13 @@
         <div class="row col-md-12">
             <h5 style="text-align:right" class="col-md-4"><label for="eventHost">Event Type* </label></h5>
             <div class=" col-md-8" style="text-align:left">
-                <input type="text" placeholder="Event Type" style="background-color: #D4F4FF !important;" class="form-control"
-                    [(ngModel)]="Event_Type">
+                <input type="text" placeholder="Event Type" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="Event_Type">
             </div>
         </div>
         <div class="row col-md-12">
             <h5 style="text-align:right" class="col-md-4"><label for="Venue">Event Name* </label></h5>
             <div class=" col-md-8" style="text-align:left">
-                <input type="text" placeholder="Event Name" style="background-color: #D4F4FF !important;" class="form-control"
-                    [(ngModel)]="Event_Name">
+                <input type="text" placeholder="Event Name" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="Event_Name">
             </div>
         </div>
         <div class="row col-md-12">
@@ -144,8 +137,8 @@
             </div>
         </div>
         <div class="row col-md-12" style="margin-left: 45%;margin-top: 1.5rem">
-            <a style="color:white !important" class="btn btn-success" (click)="addNewMeeting()"><b>Save</b>
-            </a>
+            <button style="color:white !important" class="btn btn-success" [disabled]="checkFlag" (click)="addNewMeeting()"><b>Save</b>
+            </button>
             <a style="color:white !important" class="btn btn-warning" (click)="refreshValues();newMeet=true;"><b>Go
                     back</b>
             </a>

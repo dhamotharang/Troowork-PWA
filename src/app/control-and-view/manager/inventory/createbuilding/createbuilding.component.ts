@@ -23,6 +23,7 @@ export class CreatebuildingComponent implements OnInit {
   OrganizationID: Number;
 
   BuildingName;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -47,8 +48,10 @@ export class CreatebuildingComponent implements OnInit {
     });
   }
   addBuilding(newbuildingName) {
+    this.checkFlag = true;
     if (!(newbuildingName) || !(newbuildingName.trim())) {
       alert("Please Enter Building Name!");
+      this.checkFlag = false;
       return;
     }
 
@@ -56,12 +59,14 @@ export class CreatebuildingComponent implements OnInit {
     this.CreatebuildingService.checkNewBuilding(this.BuildingName, 'facility', this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data.length > 0) {
         alert("Building name already present !");
+        this.checkFlag = false;
         return;
       }
       else {
         this.CreatebuildingService.createBuildings(newbuildingName, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
             alert("Building created successfully");
+            this.checkFlag = false;
             this._location.back();
           });
       }
@@ -80,6 +85,7 @@ export class CreatebuildingComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
   }
   goBack() {
     this._location.back();

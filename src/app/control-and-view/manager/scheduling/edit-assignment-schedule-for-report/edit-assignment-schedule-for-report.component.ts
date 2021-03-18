@@ -52,6 +52,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
   executeFlag: number = 0;
   wotypeFlag: number = 0;
   //for table view..... ends......
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
-import { ActivatedRoute, Router  } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 
@@ -18,7 +18,7 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
   userMail: Object;
   build;
   UserId;
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -47,44 +47,47 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
   }
 
   resetUserPassword(username, password, userLoginId) {
-    if(!(username)){
+    this.checkFlag = true;
+    if (!(username)) {
       alert("Please Enter User Name!");
-        return;
+      this.checkFlag = false;
+      return;
     }
-    else{
-    this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-      this.response = data[0];
-      this.build = data;
-      // this.router.navigateByUrl('/Managelogincredentials');
-      this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Managelogincredentials'] } }]);
-    });
-  
-  
-    if (this.build.length > 0) { // resetUserPassword returns username. just to make sure that the reset action was done properly, we are returnig the username
-      this.peopleService.getUserEmail(username, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-        this.managerMail = data[0].EmailID;
-        this.userMail = data[0].newmail;
-
-        if (this.userMail == null) {
-          alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
-        } else {
-          var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
-          console.log(message);
-          const obj = {
-            from: this.managerMail,
-            to: this.userMail,
-            subject: 'Login Credentials',
-            text: message
-          };
-          const url = ConectionSettings.Url+"/sendmail";
-          return this.http.post(url, obj)
-            .subscribe(res => console.log('Mail Sent Successfully...'));
-        }
-
+    else {
+      this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+        this.response = data[0];
+        this.build = data;
+        this.checkFlag = false;
+        // this.router.navigateByUrl('/Managelogincredentials');
+        this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Managelogincredentials'] } }]);
       });
 
+
+      if (this.build.length > 0) { // resetUserPassword returns username. just to make sure that the reset action was done properly, we are returnig the username
+        this.peopleService.getUserEmail(username, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+          this.managerMail = data[0].EmailID;
+          this.userMail = data[0].newmail;
+
+          if (this.userMail == null) {
+            alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+          } else {
+            var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
+            console.log(message);
+            const obj = {
+              from: this.managerMail,
+              to: this.userMail,
+              subject: 'Login Credentials',
+              text: message
+            };
+            const url = ConectionSettings.Url + "/sendmail";
+            return this.http.post(url, obj)
+              .subscribe(res => console.log('Mail Sent Successfully...'));
+          }
+
+        });
+
+      }
     }
-  }
   }
 
   ngOnInit() {
@@ -98,12 +101,13 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleService.getLoginDetailsByEmpKey(this.empKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.build = data;
     });
 
   }
-  goBack(){
-    this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Managelogincredentials'] } }]);
+  goBack() {
+    this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Managelogincredentials'] } }]);
   }
 }

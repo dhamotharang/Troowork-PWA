@@ -32,6 +32,7 @@ export class RoomCreateComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -84,40 +85,50 @@ export class RoomCreateComponent implements OnInit {
   }
   addRoom(FacilityKey, FloorKey, FloorTypeKey, ZoneKey, RoomTypeKey, RoomName, SquareFoot, Barcode) {
 
+    this.checkFlag = true;
     if (!FacilityKey) {
       FacilityKey = null;
       alert("Building name is not provided !");
+      this.checkFlag = false;
     } else if (!FloorKey) {
       FloorKey = null;
       alert("Floor name is not provided!");
+      this.checkFlag = false;
     } else if (!FloorTypeKey) {
       FloorTypeKey = null;
       alert("FloorType is not provided !");
+      this.checkFlag = false;
     } else if (!ZoneKey) {
       ZoneKey = null;
       alert("Zone name is not provided !");
+      this.checkFlag = false;
     } else if (!RoomTypeKey) {
       RoomTypeKey = null;
       alert("RoomType is not provided !");
+      this.checkFlag = false;
     } else if (!RoomName || !(RoomName.trim())) {
       RoomName = null;
       alert("Room name is not provided !");
-    } else if (!SquareFoot ) {
+      this.checkFlag = false;
+    } else if (!SquareFoot) {
       SquareFoot = null;
       alert("SquareFoot is not provided !");
-    } else if (!Barcode ) {
+      this.checkFlag = false;
+    } else if (!Barcode) {
       Barcode = null;
       alert("Barcode is not provided !");
+      this.checkFlag = false;
     } else {
       if (RoomName) {
         RoomName = RoomName.trim();
       }
-     
+
       this.inventoryService
         .checkNewRoom(FacilityKey, FloorKey, FloorTypeKey, ZoneKey, RoomTypeKey, RoomName, this.employeekey, this.OrganizationID)
         .subscribe((data: Inventory[]) => {
           if (data.length > 0) {
             alert("Room already present");
+            this.checkFlag = false;
           } else {
             this.inventoryService
               .checkRoomBarcode(Barcode, this.employeekey, this.OrganizationID)
@@ -125,16 +136,19 @@ export class RoomCreateComponent implements OnInit {
                 this.unqBar = data;
                 if (this.unqBar.Barcode != 0) {
                   alert("Barcode already exists! Please enter a unique barcode.");
+                  this.checkFlag = false;
                 } else {
                   this.inventoryService
                     .checkRoomName(FacilityKey, FloorKey, RoomName, this.OrganizationID)
                     .subscribe((data: Inventory[]) => {
                       if (data[0].count > 0) {
                         alert("Room Name already exists !");
+                        this.checkFlag = false;
                       } else {
                         this.inventoryService.addRoom(FacilityKey, FloorKey, FloorTypeKey, ZoneKey, RoomTypeKey, RoomName, SquareFoot, Barcode, this.employeekey, this.OrganizationID)
                           .subscribe(res => {
                             alert("Room created successfully");
+                            this.checkFlag = false;
                             this.inventoryService
                               .getBarcodeForRoom(this.employeekey, this.OrganizationID)
                               .subscribe((data: any[]) => {
@@ -170,6 +184,7 @@ export class RoomCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

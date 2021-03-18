@@ -15,7 +15,7 @@ const url = ConectionSettings.Url + '/inspection_Upload';
   styleUrls: ['./supervsrinspectiontemplate.component.scss']
 })
 export class SupervsrinspectiontemplateComponent implements OnInit {
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -244,7 +244,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
     console.log(this.Scoringtype);
   }
   inspectionCompleted() {
-
+    this.checkFlag = true;
     var temp = [];
     var choices1 = [];
     choices1[0] = this.Scoringtype;
@@ -389,6 +389,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
       };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          this.checkFlag = false;
           if (this.isMailed == true) {//varun-> sending Email for inspection
             this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 
@@ -572,6 +573,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
       };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          this.checkFlag = false;
           if (this.isMailed == true) {//varun-> sending Email for inspection
             this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 

@@ -10,8 +10,7 @@
     <!-- <div> -->
     <h5 class="col-md-3"><label for="scheduling">Assignment Name: </label></h5> &nbsp;
     <div class="col-sm-5 col-md-5 col-lg-5" style="margin-left: -5rem">
-      <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="BatchScheduleNameKey"
-        (change)="getScheduleRoomDetails($event.target.value)">
+      <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="BatchScheduleNameKey" (change)="getScheduleRoomDetails($event.target.value)">
         <option value="">--Select--</option>
         <option *ngFor="let f of scheduleNameList" [value]="f.BatchScheduleNameKey">
           {{f.ScheduleName}}
@@ -19,17 +18,16 @@
       </select>
     </div>
     <div class="col-md-4" style="margin-top: -0.4rem" *ngIf="BatchScheduleNameKey">
-      <a style="color:white !important" class="btn btn-success" (click)="addRoomToSchedule()">
+      <button style="color:white !important" class="btn btn-success" (click)="addRoomToSchedule()" [disabled]="checkFlag">
         <b>Add</b>
-      </a>
+      </button>
     </div>
   </div>
   <br>
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;width: 95.5%" class="row bg-info col-md-12">
     <div class="form-group col-md-6">
       <label>Building*</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey"
-        (change)="getFloorDisp($event.target.value);viewRooms_Filter();" [disabled]="!BatchScheduleNameKey" required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value);viewRooms_Filter();" [disabled]="!BatchScheduleNameKey" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of building" [value]="b.FacilityKey">
           {{b.FacilityText}}
@@ -38,9 +36,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>Floor*</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey"
-        [disabled]="!FacilityKey" (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);viewRooms_Filter();"
-        required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey" (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);viewRooms_Filter();" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of FloorList" [value]="b.FloorKey">
           {{b.FloorName}}
@@ -49,9 +45,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>Zone</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey"
-        [disabled]="!FloorKey" (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);viewRooms_Filter();"
-        required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FloorKey" (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);viewRooms_Filter();" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
           {{b.ZoneName}}
@@ -60,9 +54,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>Room Type</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey"
-        [disabled]="!FloorKey" (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);viewRooms_Filter();"
-        required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey" (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);viewRooms_Filter();" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
           {{b.RoomTypeName}}
@@ -71,8 +63,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>Floor Type</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorTypeKey"
-        [disabled]="!FloorKey" (change)="setFlrTypeKey($event.target.value);viewRooms_Filter();" required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorTypeKey" [disabled]="!FloorKey" (change)="setFlrTypeKey($event.target.value);viewRooms_Filter();" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of floorTypeList" [value]="b.FloorTypeKey">
           {{b.FloorTypeName}}
@@ -81,8 +72,7 @@
     </div>
     <div class="form-group col-md-6">
       <label>Room</label><br>
-      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey"
-        [disabled]="!FloorKey" (change)="viewRooms_Filter();setRoomKey($event.target.value);" required>
+      <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey" (change)="viewRooms_Filter();setRoomKey($event.target.value);" required>
         <option value="">--Select--</option>
         <option *ngFor="let b of RoomList" [value]="b.RoomKey">
           {{b.RoomName}}
@@ -111,9 +101,8 @@
           <td>{{item.ZoneName}}</td>
           <td>{{item.RoomTypeText}}-{{item.WorkorderTypeName}}</td>
           <td>{{item.RoomName}}</td>
-          <td >
-            <button type="button" style="color:white !important" class="btn btn-danger"
-              (click)="basicModal.show();deletekeypass(item.WorkOrderScheduleRoomID); " mdbWavesEffect>
+          <td>
+            <button type="button" style="color:white !important" class="btn btn-danger" (click)="basicModal.show();deletekeypass(item.WorkOrderScheduleRoomID); " mdbWavesEffect>
               <b>Remove</b>
             </button>
           </td>
@@ -126,16 +115,14 @@
           <td>{{x.ZoneName}}</td>
           <td>{{x.RoomTypeText}}</td>
           <td>{{x.RoomName}}</td>
-          <td >
-            <input type="checkbox" [value]=x.roomCheck [(ngModel)]="x.roomCheck"
-              (change)="checkBoxValueForRoom(x.roomCheck, x.RoomKey);">
+          <td>
+            <input type="checkbox" [value]=x.roomCheck [(ngModel)]="x.roomCheck" (change)="checkBoxValueForRoom(x.roomCheck, x.RoomKey);">
           </td>
         </tr>
         <tr *ngIf="((allroomList?.length == 0)&&(scheduledroomList?.length == 0))">
           <td colspan="7" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-          aria-hidden="true">
+        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -148,10 +135,8 @@
                 Are you sure you want to delete this?
               </div>
               <div class="modal-footer">
-                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-                  (click)="basicModal.hide(); delete_room()" mdbWavesEffect>Yes</button>
-                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-                  mdbWavesEffect>No</button>
+                <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); delete_room()" mdbWavesEffect>Yes</button>
+                <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
               </div>
             </div>
           </div>

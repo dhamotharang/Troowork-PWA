@@ -45,6 +45,7 @@ export class RoomViewComponent implements OnInit {
   RoomKey;
   FacilityKey;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -65,7 +66,7 @@ export class RoomViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private scheduleServ: SchedulingService, ) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private scheduleServ: SchedulingService,) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -214,9 +215,11 @@ export class RoomViewComponent implements OnInit {
   }
 
   deleteRoom() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteRoom(this.delete_roomKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert(" Room deleted succesfully");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -394,7 +397,7 @@ export class RoomViewComponent implements OnInit {
         });
     }
     if (!(this.ZoneKey)) {
-      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
+      this.getZoneRoomTypeRoom(this.FloorKey, this.FacilityKey);
       this.RoomTypeKey = '';
       this.FloorTypeKey = '';
       this.RoomKey = '';
@@ -467,6 +470,7 @@ export class RoomViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

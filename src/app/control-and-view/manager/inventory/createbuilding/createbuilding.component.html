@@ -15,7 +15,7 @@
     </div>
     <br>
     <div class="row col-md-12" style="margin-left: 33%">
-      <button style="color:white !important" class="btn btn-success" (click)="addBuilding(BuildingName)"><b>CREATE
+      <button style="color:white !important" class="btn btn-success" [disabled]="checkFlag" (click)="addBuilding(BuildingName)"><b>CREATE
           BUILDING</b>
       </button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important" routerLinkActive="active"><b>Go

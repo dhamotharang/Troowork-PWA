@@ -30,6 +30,7 @@ export class EmployeeChangePasswordComponent implements OnInit {
   UserLoginId: Number;
   managerMail: Object;
   userMail: Object;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -55,15 +56,16 @@ export class EmployeeChangePasswordComponent implements OnInit {
   }
 
   paswordchange() {
+    this.checkFlag = true;
     if (!this.Password) {
-      alert(" Enter new password");
+      alert(" Enter new password"); this.checkFlag = false;
     } else if (!this.repeatPassword) {
-      alert(" Enter retype password");
+      alert(" Enter retype password"); this.checkFlag = false;
     } else if (this.Password === this.newPassword) {
-      alert("Current and new passwords are same.");
+      alert("Current and new passwords are same."); this.checkFlag = false;
     }
     else if (this.newPassword != this.repeatPassword) {
-      alert("New and retype password are not same.");
+      alert("New and retype password are not same."); this.checkFlag = false;
     } else {
       this.loginService
         .setPassword(this.username, this.newPassword, this.employeekey, this.UserLoginId, this.OrganizationID)
@@ -72,7 +74,7 @@ export class EmployeeChangePasswordComponent implements OnInit {
         });
       if (this.passDetails.length > 0) {
         this.peopleService.getUserEmail(this.username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-
+          this.checkFlag = false;
           this.managerMail = data[0].EmailID;
           this.userMail = data[0].newmail;
 
@@ -107,7 +109,7 @@ export class EmployeeChangePasswordComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-
+    this.checkFlag = false;
     this.loginService
       .getUserPasswordDetails(this.employeekey, this.OrganizationID)
       .subscribe((data: Login[]) => {

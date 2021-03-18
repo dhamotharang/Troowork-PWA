@@ -22,6 +22,7 @@ export class PtoRequestComponent implements OnInit {
   enddate;
   comments;
   ptoreason;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -80,30 +81,35 @@ export class PtoRequestComponent implements OnInit {
   constructor(private PeopleServiceService: PeopleServiceService, private router: Router) { }
 
   submitRequest() {
-
+    this.checkFlag = true;
     if (!(this.startdate)) {
       alert('Start Date is not provided !');
+      this.checkFlag = false;
       return;
     }
 
     if (!(this.enddate)) {
       alert('End Date is not provided !');
+      this.checkFlag = false;
       return;
     }
     var timeDiff = Math.abs(this.startdate.getTime() - this.enddate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 365) {
       alert("Dates selected should be in an year");
+      this.checkFlag = false;
       return;
     }
     var curr_date = this.convert_DT(new Date());
     if (this.convert_DT(curr_date) > this.convert_DT(this.startdate)) {
       alert("Start Date can't be less than Today...!");
+      this.checkFlag = false;
       return;
     }
 
     if (this.convert_DT(this.enddate) < this.convert_DT(this.startdate)) {
       alert("End Date can't be less than start date...!");
+      this.checkFlag = false;
       return;
     }
 
@@ -117,6 +123,7 @@ export class PtoRequestComponent implements OnInit {
     this.PeopleServiceService
       .submitRequest(curr_date, this.toServeremployeekey, this.OrganizationID, this.convert_DT(this.startdate),
         this.convert_DT(this.enddate), requestcomments, this.ptoreason).subscribe((data: any[]) => {
+          this.checkFlag = false;
           alert("PTO Request Submitted Successfully");
           // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
 
@@ -141,6 +148,7 @@ export class PtoRequestComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
 
     var curr_date = this.convert_DT(new Date());
 

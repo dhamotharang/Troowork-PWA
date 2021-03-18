@@ -9,8 +9,7 @@
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="RoomTypeName">RoomType name*</label></h5>
       <div class="col-md-8" style="text-align:left">
-        <input type="text" maxlength="40" *ngIf="roomTypeList" style="background-color: #D4F4FF !important;" class="form-control"
-          class="form-control" [(ngModel)]="roomTypeList.RoomTypeName">
+        <input type="text" maxlength="40" *ngIf="roomTypeList" style="background-color: #D4F4FF !important;" class="form-control" class="form-control" [(ngModel)]="roomTypeList.RoomTypeName">
       </div>
     </div>
 
@@ -21,8 +20,8 @@
       <div class="col-md-8" style="text-align:left">
         <select *ngIf="roomTypeList" style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="metricType"
           (change)=showFields($event.target.value)> -->
-          <!-- <option>--Select--</option> -->
-          <!-- <option *ngFor="let f of metricTypeList" [value]="f.MetricType">
+    <!-- <option>--Select--</option> -->
+    <!-- <option *ngFor="let f of metricTypeList" [value]="f.MetricType">
             {{f.MetricType}}
           </option>
         </select>
@@ -34,7 +33,7 @@
     <div class="row col-md-12">
       <!-- <h5 style="text-align:right;" class="col-md-4"><label for="floorname">MetricType Value*</label></h5> -->
 
-      <!-- <div class="col-md-8" style="text-align:left">
+    <!-- <div class="col-md-8" style="text-align:left">
 
         <input type="hidden" *ngIf="roomTypeList" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control"
           [disabled]="metricType=='Default'" placeholder="Metric Value" (keypress)="numberValid($event)" [(ngModel)]="MetricTypeValue">
@@ -42,11 +41,11 @@
     </div> -->
 
     <br>
-    
+
     <div class="row col-md-12" style="margin-left: 35%">
-      <a style="color:white !important" class="btn btn-success" (click)="updateRoomType(roomTypeList.RoomTypeName,MetricTypeValue)">
+      <button [disabled]="checkFlag" style="color:white !important" class="btn btn-success" (click)="updateRoomType(roomTypeList.RoomTypeName,MetricTypeValue)">
         <b>UPDATE</b>
-      </a>
+      </button>
 
       <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
           Back</b></a>

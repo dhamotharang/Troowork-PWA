@@ -14,7 +14,8 @@ export class JobTitleAddComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-  JobtitleName;JobTitleDescription;
+  JobtitleName; JobTitleDescription;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -36,38 +37,45 @@ export class JobTitleAddComponent implements OnInit {
   constructor(private peopleServiceService: PeopleServiceService, private router: Router) { }
 
   addNewJobtitle(JobtitleName, JobTitleDescription) {
+    this.checkFlag = true;
     if (!JobtitleName) {
       alert('Job title is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (!JobTitleDescription) {
       alert('Job title description is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (JobtitleName && !JobtitleName.trim()) {
       alert('Job title is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (JobTitleDescription && !JobTitleDescription.trim()) {
       alert('Job Title Description is not provided !');
+      this.checkFlag = false;
       return;
     }
-    if(JobtitleName){
-      JobtitleName=JobtitleName.trim()
+    if (JobtitleName) {
+      JobtitleName = JobtitleName.trim()
     }
-    if(JobTitleDescription){
-      JobTitleDescription=JobTitleDescription.trim()
+    if (JobTitleDescription) {
+      JobTitleDescription = JobTitleDescription.trim()
     }
 
     this.peopleServiceService.checkfor_jobtitle(JobtitleName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count != 0) {
           alert('Job title already exists !');
+          this.checkFlag = false;
         }
         else {
           this.peopleServiceService.addJobtitle(JobtitleName, JobTitleDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: any[]) => {
               alert('Job title successfully created !');
+              this.checkFlag = false;
               // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
               if (this.role == 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
@@ -90,6 +98,7 @@ export class JobTitleAddComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
   }
   goBack() {

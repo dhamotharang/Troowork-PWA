@@ -26,6 +26,7 @@ export class CreateBatchWorkComponent implements OnInit {
   EndTime;
   shiftdetails;
   MasterShiftID;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -56,31 +57,39 @@ export class CreateBatchWorkComponent implements OnInit {
 
   createScheduleName() {
 
+    this.checkFlag = true;
     if (!this.scheduleName && !this.scheduleName.trim()) {
       alert("Please provide a Assignment Name");
+      this.checkFlag = false;
       return;
     }
     if (!this.scheduleDescription && !this.scheduleDescription.trim()) {
       alert("Assignment Description is not provided!");
+      this.checkFlag = false;
       return;
     }
     if (!this.scheduleName) {
       alert("Assignment Name is not provided !");
+      this.checkFlag = false;
       return;
     } if (!this.scheduleDescription) {
       alert("Assignment Description is not provided!");
+      this.checkFlag = false;
       return;
     }
     if (!this.empKey) {
       alert("Employee Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!this.StartTime) {
       alert("Start Time is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!this.EndTime) {
       alert("End Time is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (this.scheduleName) {
@@ -102,11 +111,13 @@ export class CreateBatchWorkComponent implements OnInit {
       .subscribe((data: any[]) => {
         if (data[0].count > 0) {
           alert("Assignment Name already present");
+          this.checkFlag = false;
         }
         else if (data[0].count == 0) {
           this.scheduleService.addScheduleName(this.scheduleName,this.MasterShiftID, this.empKey, this.scheduleDescription, startTime, endTime, today_DT, this.employeekey, this.OrganizationID)
             .subscribe(res => {
               alert("Assignment Name created successfully.");
+              this.checkFlag = false;
               this._location.back()
             });
         }
@@ -126,6 +137,7 @@ export class CreateBatchWorkComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
+    this.checkFlag = false;
     this.employee_Key = "";
     this.MasterShiftID="0";
     this.scheduleService

@@ -22,9 +22,10 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
   date;
   StartTime;
   EndTime;
-  constructor(private peopleServiceService: PeopleServiceService, private router: Router,private route: ActivatedRoute,private _location: Location) {
+  checkFlag;
+  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private _location: Location) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
-   }
+  }
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -75,54 +76,61 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleServiceService.getallEmployeesList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empList = data;
       });
-      this.employee_Key=this.empk$;
+    this.employee_Key = this.empk$;
   }
-  create(){
-    var cuDate=new Date();
-    if(!this.date){
+  create() {
+    this.checkFlag = true;
+    var cuDate = new Date();
+    if (!this.date) {
       alert("Date not provided !");
+      this.checkFlag = false;
       return;
     }
-    if( this.convert_DT(this.date)<this.convert_DT(cuDate)){
+    if (this.convert_DT(this.date) < this.convert_DT(cuDate)) {
       alert("please select current date or higher !");
+      this.checkFlag = false;
       return;
     }
-    if(!this.StartTime){
+    if (!this.StartTime) {
       alert("Start Time not provided !");
+      this.checkFlag = false;
       return;
     }
-    if(!this.EndTime){
+    if (!this.EndTime) {
       alert("End Time not provided !");
+      this.checkFlag = false;
       return;
     }
-    
+
     var q = this.EndTime.getHours();
     var q1 = this.EndTime.getMinutes();
     var endTime = q + ":" + q1;
 
     var q2 = this.StartTime.getHours();
-    var q3 = this.StartTime.getMinutes();   
+    var q3 = this.StartTime.getMinutes();
     var startTime = q2 + ":" + q3;
-    let obj={
-      date:this.convert_DT(this.date),
-      startTime:startTime,
-      endTime:endTime,
-      CreEmp:this.employee_Key,
-      metaCreate:this.employeekey,
-      OrganizationID:this.OrganizationID
+    let obj = {
+      date: this.convert_DT(this.date),
+      startTime: startTime,
+      endTime: endTime,
+      CreEmp: this.employee_Key,
+      metaCreate: this.employeekey,
+      OrganizationID: this.OrganizationID
     }
     this.peopleServiceService.createEmpWorkingHour(obj)
-    .subscribe((data: any[]) => {
-      this.empList = data;
-      alert("Working Hour has been created !");
-      this._location.back();
-    });
+      .subscribe((data: any[]) => {
+        this.empList = data;
+        alert("Working Hour has been created !");
+        this.checkFlag = false;
+        this._location.back();
+      });
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

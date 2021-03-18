@@ -19,6 +19,7 @@ export class FloorTypeCreateComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   FloorTypeName;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,22 +41,27 @@ export class FloorTypeCreateComponent implements OnInit {
   }
 
   addFloorType(FloorTypeName) {
+    this.checkFlag = true;
     if (FloorTypeName && !FloorTypeName.trim()) {
       alert("Please Enter Floor Type Name!");
+      this.checkFlag = false;
       return;
     }
     if (!FloorTypeName) {
       alert("Please provide a Floor Type Name");
+      this.checkFlag = false;
     } else {
       FloorTypeName = FloorTypeName.trim();
       this.inventoryServ.checkForNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         this.flrType = data;
         if (data.length > 0) {
           alert("Floor Type already present");
+          this.checkFlag = false;
         }
         else if (data.length == 0) {
           this.inventoryServ.addNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("FloorType created successfully");
+            this.checkFlag = false;
             this._location.back();
           });
         }
@@ -73,6 +79,7 @@ export class FloorTypeCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
   }
   goBack() {
     this._location.back();

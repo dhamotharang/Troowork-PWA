@@ -21,6 +21,7 @@ export class WorkorderCancelReportComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -92,6 +93,7 @@ export class WorkorderCancelReportComponent implements OnInit {
     this.EmployeeKey = "";
     this.fromdate = new Date();
 
+    this.checkFlag = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -158,9 +160,11 @@ export class WorkorderCancelReportComponent implements OnInit {
   }
 
   generateWorkOrderReport(from_date, to_date, FacilityKey, FloorKey, RoomTypeKey, ZoneKey, RoomKey, EmployeeKey) {
+    this.checkFlag = true;
     if ((to_date) && (this.convert_DT(from_date) > this.convert_DT(to_date))) {
       todate = null;
       alert("Please check your Start Date!");
+      this.checkFlag = false;
       return;
     }
     else {

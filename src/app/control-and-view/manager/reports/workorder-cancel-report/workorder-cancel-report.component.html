@@ -13,8 +13,7 @@
       </div>
       <div class="form-group">
         <label>Building</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey"
-          (change)="getFloorDisp($event.target.value)">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
             {{b.FacilityText}}
@@ -24,8 +23,7 @@
 
       <div class="form-group">
         <label>Zone</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey"
-          (change)="getRoomsName($event.target.value,FacilityKey,FloorKey)" [disabled]="!FloorKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey" (change)="getRoomsName($event.target.value,FacilityKey,FloorKey)" [disabled]="!FloorKey">
           <option value="">--Select--</option>
           <option *ngFor="let z of zoneroom" [value]="z.ZoneKey">
             {{z.ZoneName}}
@@ -52,8 +50,7 @@
 
       <div class="form-group">
         <label>Floor</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey"
-          (change)="getZoneRoom($event.target.value,FacilityKey)" [disabled]="!FacilityKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" (change)="getZoneRoom($event.target.value,FacilityKey)" [disabled]="!FacilityKey">
           <option value="">--Select--</option>
           <option *ngFor="let f of floor" [value]="f.FloorKey">
             {{f.FloorName}}
@@ -62,8 +59,7 @@
       </div>
       <div class="form-group">
         <label>Room Type</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey"
-          [disabled]="!FloorKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey">
           <option value="">--Select--</option>
           <option *ngFor="let r of room" [value]="r.RoomTypeKey">
             {{r.RoomTypeName}}
@@ -73,8 +69,7 @@
 
       <div class="form-group">
         <label>Room</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey"
-          [disabled]="!FloorKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey">
           <option value="">--Select--</option>
           <option *ngFor="let r of rooms" [value]="r.RoomKey">
             {{r.RoomName}}
@@ -85,8 +80,7 @@
 
     <div class="row col-md-12">
       <div style="margin-left: 45%">
-        <button type="button" class="btn btn-success"
-          (click)=generateWorkOrderReport(fromdate,todate,FacilityKey,FloorKey,RoomTypeKey,ZoneKey,RoomKey,EmployeeKey)><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateWorkOrderReport(fromdate,todate,FacilityKey,FloorKey,RoomTypeKey,ZoneKey,RoomKey,EmployeeKey)><b>GENERATE</b></button>
       </div>
     </div>
     <br>
@@ -97,8 +91,7 @@
   </div>
   <br>
   <div style="margin-left: 1.5rem;width: 100%">
-    <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table"
-      style="display: inline-table">
+    <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th>Employee</th>
         <th>Room</th>
@@ -127,8 +120,7 @@
 
 </div>
 <div id='exportable1' style="visibility: hidden !important;">
-  <table *ngIf='viewWorkorderReport' cellspacing="0" rules="rows" border="1"
-    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+  <table *ngIf='viewWorkorderReport' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
     <thead class="tableHead">
 
       <th>Employee</th>

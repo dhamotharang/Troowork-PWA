@@ -1,5 +1,4 @@
-<div *ngIf='mtngDetails'
-  style="overflow-x: hidden;padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+<div *ngIf='mtngDetails' style="overflow-x: hidden;padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
   <div class="row col-md-12 ">
     <br>
     <h4 style="margin-left: 35%; padding-top: 2.5%;padding-bottom: 2.5%;">EDIT MEETING/TRAINING/EVENT</h4>
@@ -23,8 +22,7 @@
       <div class="col-md-6 ">
         <div class="form-group">
           <label for="mtngTrainingEvent">Meeting/Training/Event*</label>
-          <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.ActionKey"
-            (change)="setActionKey($event.target.value)">
+          <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.ActionKey" (change)="setActionKey($event.target.value)">
             <option value="">--Select--</option>
             <option *ngFor="let b of event" [value]="b.ActionKey">
               {{b.ActionType}} - {{b.Action}}
@@ -33,15 +31,13 @@
         </div>
         <div class="form-group">
           <label>Event Host* </label>
-          <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control"
-            [(ngModel)]="mtngDetails.Eventhost">
+          <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control" [(ngModel)]="mtngDetails.Eventhost">
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group " style="margin-left: 1rem;margin-top: 5.4rem">
           <label>Venue</label>
-          <input type="text" style="background-color: #D4F4FF !important;width: 102%" maxlength="40"
-            class="form-control" [(ngModel)]="mtngDetails.Venue">
+          <input type="text" style="background-color: #D4F4FF !important;width: 102%" maxlength="40" class="form-control" [(ngModel)]="mtngDetails.Venue">
         </div>
       </div>
     </div>
@@ -56,15 +52,13 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Start Time*</label><br>
-        <p-calendar [inputStyle]="{'width':'277%','margin-top':'1rem'}" [(ngModel)]="timeValue1" [timeOnly]="true"
-          hourFormat="12"></p-calendar>
+        <p-calendar [inputStyle]="{'width':'277%','margin-top':'1rem'}" [(ngModel)]="timeValue1" [timeOnly]="true" hourFormat="12"></p-calendar>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label>End Time*</label><br>
-        <p-calendar [inputStyle]="{'width':'277%','margin-top':'1rem'}" [(ngModel)]="timeValue2" [timeOnly]="true"
-          hourFormat="12"></p-calendar>
+        <p-calendar [inputStyle]="{'width':'277%','margin-top':'1rem'}" [(ngModel)]="timeValue2" [timeOnly]="true" hourFormat="12"></p-calendar>
       </div>
     </div>
 
@@ -72,8 +66,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="floorname">Job Title </label>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.JobTitleKey"
-          (change)="selectEmpOfJobTitle($event.target.value)">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.JobTitleKey" (change)="selectEmpOfJobTitle($event.target.value)">
           <option value="0">--Select--</option>
           <option *ngFor="let f of jobTitle" [value]="f.JobTitleKey">
             {{f.JobTitleText}}
@@ -83,17 +76,15 @@
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <label for="floorname">Manager  </label>
-        <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager"
-          [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+        <label for="floorname">Manager </label>
+        <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager" [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
         </ng-multiselect-dropdown>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label for="Employee">Department </label>
-        <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="DepartmentKey"
-          (change)="selectEmp()">
+        <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="DepartmentKey" (change)="selectEmp()">
           <option value="">--Select--</option>
           <option *ngFor="let d of department" [value]="d.DepartmentKey">
             {{d.DepartmentName}}
@@ -104,22 +95,20 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="Employee">Employee* </label>
-        <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="Employee"
-          [settings]="dropdownSettings1">
+        <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="Employee" [settings]="dropdownSettings1">
         </ng-multiselect-dropdown>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label>Notes</label>
-        <textarea class="form-control rounded-1" [(ngModel)]="mtngDetails.MeetingNotes" rows="5"
-          style="resize: none;width: 100%;"></textarea>
+        <textarea class="form-control rounded-1" [(ngModel)]="mtngDetails.MeetingNotes" rows="5" style="resize: none;width: 100%;"></textarea>
       </div>
     </div>
     <div class="row col-md-12" style="margin-left: 30rem;">
-      <a style="color:white !important" class="btn btn-success" (click)="updateMeetingTrainingEvent(
+      <button style="color:white !important" class="btn btn-success" [disabled]="checkFlag" (click)="updateMeetingTrainingEvent(
           mtngDetails.ActionKey,mtngDetails.Eventhost,mtngDetails.Venue,mtngDetails.MeetingNotes)"><b>Update</b>
-      </a>
+      </button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back</b>
       </a>

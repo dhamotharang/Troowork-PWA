@@ -8,12 +8,11 @@
       <h3 style="text-align: right"></h3>
       <div class="form-group">
         <label>From Date*</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
       <div class="form-group">
         <label>Employee Group</label>
-        <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="Idemployeegrouping"
-          (change)="getEmployeeFromGroup($event.target.value);">
+        <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="Idemployeegrouping" (change)="getEmployeeFromGroup($event.target.value);">
           <option value="">--Select--</option>
           <option *ngFor="let b of groupList" [value]="b.Idemployeegrouping">
             {{b.Description}}
@@ -25,12 +24,11 @@
       <h3 style="text-align: right"></h3>
       <div class="form-group" style="visibility: hidden">
         <label>To Date*</label>
-        <ng-datepicker [options]="options" position="top-right"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right"></ng-datepicker>
       </div>
       <div class="form-group">
         <label>Employee</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="empList" [(ngModel)]="EmployeeKey"
-          [settings]="dropdownSettings">
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="empList" [(ngModel)]="EmployeeKey" [settings]="dropdownSettings">
         </ng-multiselect-dropdown>
       </div>
     </div>
@@ -39,7 +37,7 @@
   <div style="margin-left: 2rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="row col-md-12">
       <div style="margin-left: 44%">
-        <button type="button" class="btn btn-success" (click)=generateSchedulerReport()><b>GENERATE REPORT</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateSchedulerReport()><b>GENERATE REPORT</b></button>
       </div>
     </div>
   </div>
@@ -47,8 +45,7 @@
   <div style="margin-left: 2rem;padding-top: 1rem" class="row col-md-12">
     <div class="row col-md-12">
       <div style="margin-left: 44%">
-        <button type="button" *ngIf='schReport?.length > 0' class="btn btn-success" style="widows: 98%"
-          (click)=downloadexcel()><b>EXPORT TO
+        <button type="button" *ngIf='schReport?.length > 0' class="btn btn-success" style="widows: 98%" (click)=downloadexcel()><b>EXPORT TO
             EXCEL</b></button>
       </div>
     </div>
@@ -59,9 +56,7 @@
         EXCEL</b></button>
   </div> -->
 
-  <table *ngIf='schReport?.length > 0' id='exportable123'
-    class="table table-hover table-responsive table-bordered table"
-    style="margin-left: 2%;display: inline-table;margin-top: 2%">
+  <table *ngIf='schReport?.length > 0' id='exportable123' class="table table-hover table-responsive table-bordered table" style="margin-left: 2%;display: inline-table;margin-top: 2%">
     <thead class="tableHead">
       <!-- <th> Group Name</th> -->
       <th> Employee</th>
@@ -91,8 +86,7 @@
   <!-- Hidden table for excel work... -->
   <!--  -->
   <div id='exportable' style="visibility: hidden !important;">
-    <table *ngIf='schReport?.length > 0' cellspacing="0" rules="rows" border="1"
-      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+    <table *ngIf='schReport?.length > 0' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
       <thead class="tableHead">
         <!-- <th> Group Name</th> -->
         <th> Employee</th>

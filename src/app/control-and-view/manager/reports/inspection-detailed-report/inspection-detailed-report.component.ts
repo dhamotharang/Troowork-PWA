@@ -26,6 +26,7 @@ export class InspectionDetailedReportComponent implements OnInit {
   templateNameList;
   TemplateName;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -69,7 +70,7 @@ export class InspectionDetailedReportComponent implements OnInit {
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
-  
+
   supervisoroptions: Reports[];
   inspectionreport: FormGroup;
   viewinspectionReport: Reports[];
@@ -77,7 +78,7 @@ export class InspectionDetailedReportComponent implements OnInit {
     // Template: '', Date: '', Location: '', Auditor: '', Employee: '', Status: ''
   }
   ];
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService,private inspectionService: InspectionService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService) {
     this.inspectionreport = fb.group({
       SupervisorKey: ['', Validators.required],
       SupervisorText: ['', Validators.required]
@@ -94,7 +95,7 @@ export class InspectionDetailedReportComponent implements OnInit {
   ngOnInit() {
     this.SupervisorKey = ""
     this.fromdate = new Date();
-    this.TemplateName='';
+    this.TemplateName = '';
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -104,13 +105,14 @@ export class InspectionDetailedReportComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
 
     this.ReportServiceService//service for getting supervisor names
       .getallAuditors(this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.supervisoroptions = data;
       });
-      this.inspectionService
+    this.inspectionService
       .getTemplateName(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.templateNameList = data;
@@ -118,7 +120,8 @@ export class InspectionDetailedReportComponent implements OnInit {
   }
   //function for genaerating report
   generateInspectionReport(from_date, to_date, SupervisorKey) {
-    var Template_Name,Supervisor_Key;
+    this.checkFlag = true;
+    var Template_Name, Supervisor_Key;
 
     if (!from_date) {
       var fromdate = this.convert_DT(new Date());
@@ -138,34 +141,36 @@ export class InspectionDetailedReportComponent implements OnInit {
     if (todate && fromdate > todate) {
       todate = null;
       alert("Please check your Dates !");
+      this.checkFlag = false;
       return;
     }
-    if(this.TemplateName){
-      Template_Name=this.TemplateName;
+    if (this.TemplateName) {
+      Template_Name = this.TemplateName;
     }
-    else{
-      Template_Name=null;
+    else {
+      Template_Name = null;
     }
-    if(SupervisorKey){
-      Supervisor_Key=SupervisorKey;
+    if (SupervisorKey) {
+      Supervisor_Key = SupervisorKey;
     }
-    else{
-      Supervisor_Key=null;
+    else {
+      Supervisor_Key = null;
     }
-    let inspectData={
-      fromdate:fromdate,
-      todate:todate,
-      TemplateName:Template_Name,
-      SupervisorKey:Supervisor_Key,
-      employeekey:this.employeekey,
-      OrganizationID:this.OrganizationID
+    let inspectData = {
+      fromdate: fromdate,
+      todate: todate,
+      TemplateName: Template_Name,
+      SupervisorKey: Supervisor_Key,
+      employeekey: this.employeekey,
+      OrganizationID: this.OrganizationID
     }
     this.loading = true;
     this.ReportServiceService
-        .getInspectionDetailedReportByAllFilter(inspectData)
-        .subscribe((data: any[]) => {
-          this.viewinspectionReport = data;
-          this.loading = false;
+      .getInspectionDetailedReportByAllFilter(inspectData)
+      .subscribe((data: any[]) => {
+        this.viewinspectionReport = data;
+        this.checkFlag = false;
+        this.loading = false;
       });
   }
 }

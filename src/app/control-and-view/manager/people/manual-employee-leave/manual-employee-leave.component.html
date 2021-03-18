@@ -30,7 +30,7 @@
     <div class="row col-md-12">
       <div class="col-md-6"></div>
       <div style="margin-left: 44%">
-        <button type="button" class="btn btn-success" (click)="saveLeave()"><b>SAVE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)="saveLeave()"><b>SAVE</b></button>
         <button type="button" class="btn btn-warning" (click)="goBack()"><b>GO BACK</b></button>
       </div>
     </div>

@@ -21,7 +21,7 @@ export class PtoRequestEditComponent implements OnInit {
   // editflag;
   ptorequestID$;
   // curr_date;
-
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -68,12 +68,15 @@ export class PtoRequestEditComponent implements OnInit {
   }
   submitEditedRequest() {
 
+    this.checkFlag = true;
     if (!(this.requestdetails.StartDate)) {
       alert('Start Date is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (!(this.requestdetails.EndDate)) {
       alert('End Date is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -92,10 +95,12 @@ export class PtoRequestEditComponent implements OnInit {
     var curr_date = this.convert_DT(new Date());
     if (this.convert_DT(curr_date) > this.convert_DT(this.requestdetails.StartDate)) {
       alert("Start Date can't be less than Today...!");
+      this.checkFlag = false;
       return;
     }
     if (this.convert_DT(this.requestdetails.EndDate) < this.convert_DT(this.requestdetails.StartDate)) {
       alert("End Date can't be less than start date...!");
+      this.checkFlag = false;
       return;
     }
 
@@ -110,6 +115,7 @@ export class PtoRequestEditComponent implements OnInit {
     this.PeopleServiceService.setEditedRequest(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),
       comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
+        this.checkFlag = false;
         alert('PTO Request Updated Successfully');
         // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
         // if (this.role == 'Employee' && this.IsSupervisor == 0) {
@@ -143,6 +149,7 @@ export class PtoRequestEditComponent implements OnInit {
     this.name = profile.username;
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
     // this.editflag = false;
 
     this.PeopleServiceService.getRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {

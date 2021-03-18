@@ -17,6 +17,8 @@ export class ViewOrganizationComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;// loading
+
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -38,9 +40,11 @@ export class ViewOrganizationComponent implements OnInit {
 
   deleteOrganization() {
     this.loading = true;
+    this.checkFlag = true;
     this.organizationService
       .DeleteOrganization(this.delete_orgKey, this.employeekey).subscribe(() => {
         alert("Organization deleted successfully... !");
+        this.checkFlag = false;
         this.organizationService
           .getOrganization(this.pageNo, this.itemsPerPage)
           .subscribe((data: Organization[]) => {
@@ -64,6 +68,7 @@ export class ViewOrganizationComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
     this.organizationService
       .getOrganization(this.pageNo, this.itemsPerPage)

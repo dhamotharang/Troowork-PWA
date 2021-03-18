@@ -21,6 +21,7 @@ export class ViewEmployeesofGroupComponent implements OnInit {
   empList;
   empKey;
   grpname;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -61,6 +62,7 @@ export class ViewEmployeesofGroupComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.scheduleServ.getAllEmployeesofEmpGroup(this.empGroupID$, this.OrganizationID).subscribe((data: any[]) => {
       this.empList = data;
       if (data.length > 0) {
@@ -100,6 +102,7 @@ export class ViewEmployeesofGroupComponent implements OnInit {
 
   // For updating items by single save
   saveOrderChanges() {
+    this.checkFlag = true;
     this.loading = true;
     this.editEmp = -1;
 
@@ -114,6 +117,7 @@ export class ViewEmployeesofGroupComponent implements OnInit {
     }
     if (i === this.empList.length) {
       alert("Seniority Order updated Successfully");
+      this.checkFlag = false;
       this.scheduleServ.getAllEmployeesofEmpGroup(this.empGroupID$, this.OrganizationID).subscribe((data: any[]) => {
         this.empList = data;
         this.loading = false;

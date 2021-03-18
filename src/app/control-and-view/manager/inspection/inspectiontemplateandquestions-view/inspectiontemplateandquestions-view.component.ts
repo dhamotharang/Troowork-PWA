@@ -16,6 +16,7 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
   OrganizationID: Number;
   TemplateID;
   loading;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -78,8 +79,10 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
   }
   deleteInspTemplate() {
 
+    this.checkFlag = true;
     this.inspectionService
       .DeleteInspectionTemplate(this.delete_tempId, this.templateQuestionID, this.employeekey, this.OrganizationID).subscribe(() => {
+        this.checkFlag = false;
         this.inspectionService
           .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
           .subscribe((data: Inspection[]) => {
@@ -123,6 +126,7 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.searchFlag = false;
     this.TemplateID = "";
     this.inspectionService

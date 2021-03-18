@@ -20,6 +20,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  checkFlag;
   //token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -37,7 +38,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
     }
     return window.atob(output);
   }
-  WorkOrderTypeName;MetricKey;
+  WorkOrderTypeName; MetricKey;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
 
@@ -83,68 +84,75 @@ export class CreateWorkorderTypeComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.metricValues = data;
       });
+    this.checkFlag = false;
   }
   //function for creating new workordertype
   addWOT(MetricType, WorkOrderTypeName, MetricTypeValue) {
 
+    this.checkFlag = true;
     if (!WorkOrderTypeName || !WorkOrderTypeName.trim()) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
       return;
     }
     if (!MetricType || !MetricType.trim()) {
       alert("Enter MetricType!");
+      this.checkFlag = false;
       return;
-    } 
-     if (MetricType != 'Default' &&(!MetricTypeValue || !MetricTypeValue.trim())) {
+    }
+    if (MetricType != 'Default' && (!MetricTypeValue || !MetricTypeValue.trim())) {
       alert("Enter MetricTypeValue!");
+      this.checkFlag = false;
       return;
     }
-    if(MetricType){
-      MetricType=MetricType.trim();
+    if (MetricType) {
+      MetricType = MetricType.trim();
     }
-    if(WorkOrderTypeName){
-      WorkOrderTypeName=WorkOrderTypeName.trim();
+    if (WorkOrderTypeName) {
+      WorkOrderTypeName = WorkOrderTypeName.trim();
     }
-    if(MetricType != 'Default' && MetricTypeValue){
-      MetricTypeValue=MetricTypeValue.trim();
+    if (MetricType != 'Default' && MetricTypeValue) {
+      MetricTypeValue = MetricTypeValue.trim();
     }
-      this.add_WOT = {
-        WorkorderTypeName: WorkOrderTypeName,
-        RoomTypeKey: null,
-        Frequency: null,
-        Repeatable: true,
-        WorkorderTime: null,
-        OrganizationID: this.OrganizationID,
-        empkey: this.employeekey,
-        // MetricTypeValue, MetricType,
-        metric: MetricType,
-        MetricType: MetricTypeValue
+    this.add_WOT = {
+      WorkorderTypeName: WorkOrderTypeName,
+      RoomTypeKey: null,
+      Frequency: null,
+      Repeatable: true,
+      WorkorderTime: null,
+      OrganizationID: this.OrganizationID,
+      empkey: this.employeekey,
+      // MetricTypeValue, MetricType,
+      metric: MetricType,
+      MetricType: MetricTypeValue
 
 
-      };
-      this.WorkOrderServiceService//check if wot is already existing
-        .checkforWOT(WorkOrderTypeName, this.employeekey, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          if (data[0].count != 0) {
-            alert("Work-order type already exists!");
-          }
-          else if (data[0].count == 0) {//if not add new wot
-            this.WorkOrderServiceService.createWOT(this.add_WOT)
-              .subscribe((data: any[]) => {
+    };
+    this.WorkOrderServiceService//check if wot is already existing
+      .checkforWOT(WorkOrderTypeName, this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        if (data[0].count != 0) {
+          alert("Work-order type already exists!");
+          this.checkFlag = false;
+        }
+        else if (data[0].count == 0) {//if not add new wot
+          this.WorkOrderServiceService.createWOT(this.add_WOT)
+            .subscribe((data: any[]) => {
 
-                alert("Work-order type created successfully");
-                // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-                if (this.role == 'Manager') {
-                  this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-                }
-                // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-                else if (this.role == 'Supervisor') {
-                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
-                }
-              });
-          }
-        });
-    
+              alert("Work-order type created successfully");
+              this.checkFlag = false;
+              // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+              if (this.role == 'Manager') {
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+              }
+              // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+              else if (this.role == 'Supervisor') {
+                this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+              }
+            });
+        }
+      });
+
   }
   goBack() {
     // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);

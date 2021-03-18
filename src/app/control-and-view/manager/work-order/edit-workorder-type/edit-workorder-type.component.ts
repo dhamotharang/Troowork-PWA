@@ -26,6 +26,7 @@ export class EditWorkorderTypeComponent implements OnInit {
   showField1: boolean = false;
   showField2: boolean = false;
   metricTypeList;
+  checkFlag;
   //token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -70,6 +71,7 @@ export class EditWorkorderTypeComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.WorkOrderServiceService
       .Edit_WOT(this.WOT_Key, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -108,18 +110,22 @@ export class EditWorkorderTypeComponent implements OnInit {
   }
   //function for updating workordertype
   updateWOT(WOTName, WOTKey, MetricTypeValue1) {
+    this.checkFlag = true;
     if (!this.metricType || this.metricType == "--Select--") {
       this.metricType = null;
       alert("Select a metric type !");
+      this.checkFlag = false;
       return;
     }
     if (!WOTName || !WOTName.trim()) {
       alert("Please enter work-order type!");
+      this.checkFlag = false;
       return;
     }
     if (this.metricType != 'Default' && (!MetricTypeValue1 || !MetricTypeValue1.trim())) {
       MetricTypeValue1 = null;
       alert("MetricTypeValue is not provided !");
+      this.checkFlag = false;
       return;
     }
     if(WOTName){
@@ -158,6 +164,7 @@ export class EditWorkorderTypeComponent implements OnInit {
           .subscribe((data: any[]) => {
             if (data[0].count != 0) {
               alert("Work-order type already exists!");
+              this.checkFlag = false;
             }
             else if (data[0].count == 0) {//add new workordertype
               this.WorkOrderServiceService
@@ -167,6 +174,7 @@ export class EditWorkorderTypeComponent implements OnInit {
                     .view_wotype(WOTKey, this.OrganizationID)
                     .subscribe((data: any[]) => {
                       alert("Work-order type updated successfully");
+                      this.checkFlag = false;
                       // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
                       if (this.role == 'Manager') {
                         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
@@ -205,6 +213,7 @@ export class EditWorkorderTypeComponent implements OnInit {
               .view_wotype(WOTKey, this.OrganizationID)
               .subscribe((data: any[]) => {
                 alert("Work-order type updated successfully");
+                this.checkFlag = false;
                 // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
                 if (this.role == 'Manager') {
                   this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);

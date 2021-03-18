@@ -17,7 +17,7 @@ import 'jspdf-autotable';
 export class BarchartReportComponent implements OnInit {
 
   //////////////////////Author : Aswathy///////////////////////////////
-  
+
   loading: boolean;// loading
   role: String;
   name: String;
@@ -56,6 +56,7 @@ export class BarchartReportComponent implements OnInit {
   ChartOptions = [];
   tableflag = false;
   downtime;
+  checkFlag;
 
   constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService) {
     // this.dashboardreport = fb.group({
@@ -114,26 +115,30 @@ export class BarchartReportComponent implements OnInit {
   // barchart code
 
   generateDowntimeReport(fromdate, EmployeeKey) {
+    this.checkFlag = true;
     this.chartDatasets = [];
     this.data4 = [];
     this.data5 = [];
     this.chartLabels = [];
     this.downtimes = [];
-    this.barvalues=[];
+    this.barvalues = [];
     if (!(this.EmployeeKey)) {
       alert("Please choose Employee!");
+      this.checkFlag = false;
       return;
     }
     if (!fromdate) {
       alert("Please choose Date!");
+      this.checkFlag = false;
       return;
     }
     this.loading = true;
     this.ReportServiceService
       .generateDowntimeReportService(this.convert_DT(fromdate), EmployeeKey, this.OrganizationID)
       .subscribe((data1: any) => {
-        
+
         this.loading = false;
+        this.checkFlag = false;
         if (data1.length > 0) {
           this.tableflag = true;
 
@@ -142,13 +147,13 @@ export class BarchartReportComponent implements OnInit {
           for (var i = 0; i < this.barvalues.length; i++) {
             this.downtime = this.downtime + parseInt(this.barvalues[i].DownTime);
 
-            if ( parseInt(this.barvalues[i].DownTime) < 3) {
+            if (parseInt(this.barvalues[i].DownTime) < 3) {
               this.barChartCol.push('SlateBlue')
             }
-            else if ( parseInt(this.barvalues[i].DownTime) >= 3 &&  parseInt( this.barvalues[i].DownTime) < 7) {
+            else if (parseInt(this.barvalues[i].DownTime) >= 3 && parseInt(this.barvalues[i].DownTime) < 7) {
               this.barChartCol.push('Yellow')
             }
-            else if ( parseInt(this.barvalues[i].DownTime) >= 7) {
+            else if (parseInt(this.barvalues[i].DownTime) >= 7) {
               this.barChartCol.push('Red')
             }
             // var test1=this.barvalues[i].checkin1;
@@ -164,7 +169,7 @@ export class BarchartReportComponent implements OnInit {
           }
           console.log(this.chartLabels);
           console.log(this.downtimes);
-          this.chartDatasets = [{ data: this.downtimes}];
+          this.chartDatasets = [{ data: this.downtimes }];
           console.log(this.chartDatasets);
           this.chartColors = [
             {
@@ -266,6 +271,7 @@ export class BarchartReportComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.ReportServiceService
       .getallemployee(this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {

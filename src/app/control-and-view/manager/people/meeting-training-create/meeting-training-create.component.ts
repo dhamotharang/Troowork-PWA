@@ -32,6 +32,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
   Employee = [];
   date1: String;
   t1 = [];
+  checkFlag;
   superVsrKey: Number = 0;
   jobTleKey: Number = 0;
 
@@ -174,13 +175,16 @@ export class MeetingTrainingCreateComponent implements OnInit {
   //   this.selectEmpsDropDown();
   // }
   addMeetingTrainingEvent() {
+    this.checkFlag = true;
     ;
     if (!this.time1) {
       alert("Start Time is not provided");
+      this.checkFlag = false;
       return;
     }
     if (!this.time2) {
       alert("End Time is not provided");
+      this.checkFlag = false;
       return;
     }
 
@@ -192,6 +196,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
 
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
+        this.checkFlag = false;
         return;
       }
 
@@ -199,10 +204,12 @@ export class MeetingTrainingCreateComponent implements OnInit {
 
     if (!this.EventType || !this.EventType.trim()) {
       alert("Select  meeting/training/event to continue");
+      this.checkFlag = false;
       return;
     }
     if (!this.eventHost || !this.eventHost.trim()) {
       alert("Eventhost is not provided");
+      this.checkFlag = false;
       return;
     }
     // if (!this.Venue || !this.Venue.trim()) {
@@ -211,13 +218,14 @@ export class MeetingTrainingCreateComponent implements OnInit {
     // }
 
     if (this.eventHost) {
-      this.eventHost=this.eventHost.trim();
+      this.eventHost = this.eventHost.trim();
     }
     if (this.Venue) {
-      this.Venue=this.Venue.trim();
+      this.Venue = this.Venue.trim();
     }
     if (this.Employee.length == 0) {
       alert("Employee is not selected");
+      this.checkFlag = false;
       return;
     }
 
@@ -261,6 +269,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
       .addMeetingTraining(this.EventType, this.eventHost, this.Venue, newTime, newTime1, this.Notes, EmployeeKeyString, newDate, this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         alert('Meeting/Training is successfully created !');
+        this.checkFlag = false;
         this.EventType = null;
         this.eventHost = null;
         this.Venue = null;
@@ -271,7 +280,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
         this.JobTitle = null;
         this.Supervisor = [];
         this.Employee = [];
-        this.Manager=[];
+        this.Manager = [];
 
         this.superVsrKey = 0;
         this.jobTleKey = 0;
@@ -295,10 +304,10 @@ export class MeetingTrainingCreateComponent implements OnInit {
         //     this.supervisor = data;
         //   });
         this.peopleServ
-        .getmanagersForEmp(this.employeekey, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.managerList = data;
-        });
+          .getmanagersForEmp(this.employeekey, this.OrganizationID)
+          .subscribe((data: any[]) => {
+            this.managerList = data;
+          });
         this.peopleServ
           .getallEventList(this.employeekey, this.OrganizationID)
           .subscribe((data: People[]) => {
@@ -323,6 +332,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
     this.DepartmentKey = "";
     this.EventType = "";
     this.JobTitle = "";
+    this.checkFlag = false;
 
     this.peopleServ
       .getJobTitleList(this.employeekey, this.OrganizationID)
@@ -342,10 +352,10 @@ export class MeetingTrainingCreateComponent implements OnInit {
     //     this.supervisor = data;
     //   });
     this.peopleServ
-    .getmanagersForEmp(this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.managerList = data;
-    });
+      .getmanagersForEmp(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.managerList = data;
+      });
     // Pooja's code for Department dropdown starts
     this.peopleServ
       .getDepartment(this.employeekey, this.OrganizationID)
@@ -388,6 +398,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
       });
   }
   addNewMeeting() {
+    this.checkFlag = true;
     var eventType;
     if (this.Event_Type || this.Event_Type.trim()) {
       eventType = this.Event_Type.trim();
@@ -395,6 +406,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
     else {
       eventType = null;
       alert("Event Type is not provided !");
+      this.checkFlag = false;
       return;
     }
     var eventName;
@@ -404,6 +416,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
     else {
       eventName = null;
       alert("Event Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     var eventDescription;
@@ -431,13 +444,15 @@ export class MeetingTrainingCreateComponent implements OnInit {
           .addMeetinTraingByNewEvent(this.addnewEvent)
           .subscribe((data: People[]) => {
             this.event = data;
-            alert("New Event is Successfully created")
+            alert("New Event is Successfully created");
+            this.checkFlag = false;
             this.Event_Name = null;
             this.Event_Type = null;
             this.Description = null;
           });
       } else {
         alert("Entered event already exists...!!!");
+        this.checkFlag = false;
         return false;
       }
     });

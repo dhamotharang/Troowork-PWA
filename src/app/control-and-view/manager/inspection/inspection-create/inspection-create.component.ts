@@ -19,6 +19,7 @@ export class InspectionCreateComponent implements OnInit {
   Zone;
   Employee;
   RoomType;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -211,6 +212,7 @@ export class InspectionCreateComponent implements OnInit {
   //for Creating inspection starts
 
   createInspection() {
+    this.checkFlag = true;
 
     var t = new Date();
     var t = new Date();
@@ -235,6 +237,7 @@ export class InspectionCreateComponent implements OnInit {
     else {
       if (this.convert_DT(this.fromdate) < this.convert_DT(new Date())){
         alert("Date can't be less than current date");
+        this.checkFlag = false;
         return;
       } else {
         dateFrom = this.convert_DT(this.fromdate);
@@ -246,6 +249,7 @@ export class InspectionCreateComponent implements OnInit {
     else {
       if (this.convert_DT(this.todate) < dateFrom) {
         alert("To date can't be less than start date");
+        this.checkFlag = false;
         return;
       } else {
         date2 = this.convert_DT(this.todate);
@@ -253,25 +257,32 @@ export class InspectionCreateComponent implements OnInit {
     }
     if (!this.TemplateID) {
       alert("Template Name is not provided");
+      this.checkFlag = false;
     }
     else if (!this.Building) {
       alert("Building should be selected");
+      this.checkFlag = false;
     }
     else if (!this.Floor) {
       alert("Floor should be provided");
+      this.checkFlag = false;
     }
     else if (!this.RoomKey && !this.RoomType) {
       alert("Room or Room Type should be provided");
+      this.checkFlag = false;
       return;
     }
     else if (!this.time1) {
       alert("Time should be provided");
+      this.checkFlag = false;
     }
     else if (!(this.SupervisorKey)) {
       alert("Auditor should be provided");
+      this.checkFlag = false;
     }
     else if (this.convert_DT(date2) < this.convert_DT(dateFrom)) {
       alert("Please check your start date!");
+      this.checkFlag = false;
     }
     else {
 
@@ -297,18 +308,21 @@ export class InspectionCreateComponent implements OnInit {
         }
         else {
           alert('Room has no value');
+          this.checkFlag = false;
           return;
         }
       }
       this.RoomKey = roomString;
       if (roomlistObj.length === 0) {
         alert('Room is not provided');
+        this.checkFlag = false;
         return;
       }
 
 
       this.inspectionService.createInspections(this.TemplateID, this.SupervisorKey, dateFrom, date2, this.theCheckbox, newTime, this.RoomKey, this.Employee, this.employeekey, this.OrganizationID, p).subscribe(res => {
         alert("Successfully Added");
+        this.checkFlag = false;
         this.TemplateID = "";
         this.fromdate = null;
         this.todate = null;
@@ -343,6 +357,7 @@ export class InspectionCreateComponent implements OnInit {
     // Pooja's code starts
     // Code for binding current date and '--Select--' while page is initially loaded
 
+    this.checkFlag = false;
     this.fromdate = new Date();
     this.TemplateID = "";
     this.Building = "";

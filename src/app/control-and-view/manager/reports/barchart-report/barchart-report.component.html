@@ -21,29 +21,26 @@
       <h3 style="text-align: right"></h3>
       <div class="form-group" style="width: 68%;">
         <label style="margin-top: 2rem;">Date*</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
     </div>
     <div class="row col-md-12">
       <div style="margin-left: 43%">
-        <button type="button" class="btn btn-success"
-          (click)="generateDowntimeReport(fromdate,EmployeeKey)"><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)="generateDowntimeReport(fromdate,EmployeeKey)"><b>GENERATE</b></button>
       </div>
     </div>
   </div>
 </div>
 <div>
   <div *ngIf="((barvalues?.length> 0)&&(!loading))" style="padding-left: 9rem;padding-right: 9rem;">
-    <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
-      class="row bg-info col-md-12">
+    <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem" class="row bg-info col-md-12">
       <div class="row col-md-12">
         <div *ngIf="((barvalues?.length> 0)&&(!loading))" style="margin-left: 41%;">
           <button type="button" class="btn btn-success" value="CONVERT TO PDF" (click)="captureScreen()">CONVERT TO
             PDF</button>
         </div>
       </div>
-      <div *ngIf="barvalues?.length>0" class="col-sm-12 col-md-12 col-lg-12"
-        style="display: block;width: 800px; height: 400px;" id="part1">
+      <div *ngIf="barvalues?.length>0" class="col-sm-12 col-md-12 col-lg-12" style="display: block;width: 800px; height: 400px;" id="part1">
         <div class='my-legend'>
           <div class='legend-scale'>
             <ul class='legend-labels'>
@@ -52,14 +49,11 @@
             </ul>
           </div>
         </div>
-        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
-          [colors]="chartColors" [options]="barChartOptions" [legend]="false" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)">
+        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="barChartOptions" [legend]="false" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
       <div *ngIf="tableflag" class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 30%;margin-left: 30%">
-        <table id="contentToConvert" style="border: none" *ngIf='barvalues?.length>0'
-          class="table table-hover table-responsive table-bordered table">
+        <table id="contentToConvert" style="border: none" *ngIf='barvalues?.length>0' class="table table-hover table-responsive table-bordered table">
           <thead class="tableHead">
             <tr>
               <th> Label </th>
@@ -91,7 +85,6 @@
     </div>
   </div>
 </div>
-<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
-  *ngIf="((barvalues?.length== 0)&&(!loading))">
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12" *ngIf="((barvalues?.length== 0)&&(!loading))">
   <span style="margin-left: 43%;"><b>No Records Found</b></span>
 </div>

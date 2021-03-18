@@ -19,7 +19,8 @@ export class FloorCreateComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   FacilityKey;
-  FloorName;FloorDescription;
+  FloorName; FloorDescription;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -47,34 +48,40 @@ export class FloorCreateComponent implements OnInit {
   }
 
   addFloor(FacilityKey, FloorName, FloorDescription) {
+    this.checkFlag = true;
     if (!FacilityKey) {
       alert("Please Choose Building!");
+      this.checkFlag = false;
       return;
     }
     if (!FloorName || !FloorName.trim()) {
       alert("Please Enter Floor Name!");
+      this.checkFlag = false;
       return;
     }
     if (!FloorDescription || !FloorDescription.trim()) {
       alert("Please Enter Floor Description!");
+      this.checkFlag = false;
       return;
     }
 
     FloorName = FloorName.trim();
     FloorDescription = FloorDescription.trim();
 
-    console.log("*"+FloorName+"*");
-    console.log("*"+FloorDescription+"*");
+    console.log("*" + FloorName + "*");
+    console.log("*" + FloorDescription + "*");
 
     this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data[0].count > 0) {
         alert("Floor already present !");
+        this.checkFlag = false;
         return;
       }
       else {
         this.inventoryService.createFloors(FacilityKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
             alert("Floor created successfully");
+            this.checkFlag = false;
             this._location.back();
           });
       }
@@ -92,6 +99,7 @@ export class FloorCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

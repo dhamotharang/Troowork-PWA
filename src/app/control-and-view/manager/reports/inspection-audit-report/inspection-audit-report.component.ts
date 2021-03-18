@@ -33,6 +33,7 @@ export class InspectionAuditReportComponent implements OnInit {
   todate;
   showHide1: boolean;
   showHide2: boolean;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -92,6 +93,7 @@ export class InspectionAuditReportComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.ReportType = 'Detail';
 
+    this.checkFlag = false;
     this.showHide2 = false;
     this.showHide1 = false;
 
@@ -114,9 +116,11 @@ export class InspectionAuditReportComponent implements OnInit {
 
   //function for genaerating report
   generateInspectionAuditReport(from_date, to_date, TemplateName, Employee, ReportType) {
+    this.checkFlag = true;
     var Template_Name;
     if (!TemplateName) {
       alert("Please select a Template Name");
+      this.checkFlag = false;
       return false;
     }
 
@@ -137,6 +141,7 @@ export class InspectionAuditReportComponent implements OnInit {
     if (todate1 && fromdate1 > todate1) {
       todate1 = null;
       alert("Please check your Dates !");
+      this.checkFlag = false;
       return;
     }
 
@@ -176,6 +181,7 @@ export class InspectionAuditReportComponent implements OnInit {
             // this.empNameForview = data[0].EmployeeName;
           }
           this.loading = false;
+          this.checkFlag = false;
         });
     }
     else {
@@ -192,6 +198,7 @@ export class InspectionAuditReportComponent implements OnInit {
             // this.empNameForview = data[0].EmployeeName;
           }
           this.loading = false;
+          this.checkFlag = false;
         });
     }
 

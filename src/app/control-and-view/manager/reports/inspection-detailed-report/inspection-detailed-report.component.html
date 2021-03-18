@@ -9,7 +9,7 @@
       <h3 style="text-align: right"></h3>
       <div class="form-group">
         <label style="margin-top: 1rem;" class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
       <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="fromdate"></igx-datePicker> -->
       <div class="form-group">
@@ -26,7 +26,7 @@
       <div class="form-group">
         <label style="margin-top: 1.7rem;" class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"></igx-datePicker> -->
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="todate"></ng-datepicker>
       </div>
       <div class="form-group">
         <label style="margin-top: 1rem;" class="col-sm-4 col-md-4 col-lg-4 ">Template Name</label>
@@ -41,8 +41,7 @@
     <div class="row col-md-12">
       <div class="col-md-6"></div>
       <div style="margin-left: 47%">
-        <button type="button" class="btn btn-success"
-          (click)=generateInspectionReport(fromdate,todate,SupervisorKey)><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateInspectionReport(fromdate,todate,SupervisorKey)><b>GENERATE</b></button>
         <br>
       </div>
     </div>
@@ -52,8 +51,7 @@
     <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
   <div style="margin-left: 1.5rem;margin-right: 1.5rem; width: 100%">
-    <table *ngIf='viewinspectionReport' id="reportexport"
-      class="table table-hover table-responsive table-bordered table" style="display: inline-table">
+    <table *ngIf='viewinspectionReport' id="reportexport" class="table table-hover table-responsive table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th>Template Name</th>
         <th>Template Question</th>
@@ -93,8 +91,7 @@
   <br>
 
   <div id='exportable1' style="visibility: hidden !important;">
-    <table *ngIf='viewinspectionReport' cellspacing="0" rules="rows" border="1"
-      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+    <table *ngIf='viewinspectionReport' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
       <thead class="tableHead">
         <th>Template Name</th>
         <th>Template Question</th>

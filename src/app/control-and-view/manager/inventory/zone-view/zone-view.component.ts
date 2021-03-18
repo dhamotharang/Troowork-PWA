@@ -25,6 +25,7 @@ export class ZoneViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -104,7 +105,7 @@ export class ZoneViewComponent implements OnInit {
 
   searchZone(SearchValue) {
 
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
 
     if (value.length >= 3) {
       this.inventoryService
@@ -114,9 +115,8 @@ export class ZoneViewComponent implements OnInit {
           this.showHide1 = false;
         });
     } else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       this.inventoryService
         .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
@@ -142,15 +142,17 @@ export class ZoneViewComponent implements OnInit {
   }
 
   deleteZone() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteZone(this.delete_faciKey, this.delete_floorKey, this.delete_zoneKey, this.employeekey, this.OrganizationID).subscribe(res => {
         alert("Zone deleted successfully");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
             this.zone = data;
-            this.loading=false;
+            this.loading = false;
             if (this.zone[0].totalItems > this.itemsperPage) {
               this.showHide2 = true;
               this.showHide1 = false;
@@ -175,6 +177,7 @@ export class ZoneViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

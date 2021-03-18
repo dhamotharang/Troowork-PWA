@@ -20,6 +20,7 @@ export class ZoneCreateComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   FloorKey;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,16 +41,20 @@ export class ZoneCreateComponent implements OnInit {
 
   addZone(FacilityKey, FloorName, ZoneName, FloorKey) {
 
+    this.checkFlag = true;
     if (!(this.FacilityKey) || !(this.FacilityKey.trim())) {
       alert("Please Choose Building!");
+      this.checkFlag = false;
       return;
     }
     if (!(this.FloorName) || !(this.FloorName.trim())) {
       alert("Please Choose Floor!");
+      this.checkFlag = false;
       return;
     }
     if (!(this.ZoneName) || !(this.ZoneName.trim())) {
       alert("Please Enter Zone Name!");
+      this.checkFlag = false;
       return;
     }
 
@@ -58,11 +63,13 @@ export class ZoneCreateComponent implements OnInit {
     this.inventoryService.checkForZone(this.FacilityKey, this.FloorName, this.ZoneName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data.length > 0) {
         alert("Zone already present !");
+        this.checkFlag = false;
       }
       else if (data.length == 0) {
         this.inventoryService.createZones(this.FacilityKey, this.FloorName, this.ZoneName, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
             alert("Zone created successfully");
+            this.checkFlag = false;
             this._location.back();
           });
       }
@@ -89,6 +96,7 @@ export class ZoneCreateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

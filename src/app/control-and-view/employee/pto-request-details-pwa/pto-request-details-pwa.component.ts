@@ -23,7 +23,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
   editflag;
   ptorequestID$;
   isMobile: boolean;
-
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -83,7 +83,9 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
   // }
 
   cancelPTO() {
+    this.checkFlag = true;
     this.PeopleServiceService.setcancelPTObyEmployee(this.ptorequestID$, this.toServeremployeekey, this.OrganizationID, this.convert_DT(new Date())).subscribe((data) => {
+      this.checkFlag = false;
       alert("Request successfully cancelled by employee");
       if (this.role == 'Employee') {
         this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
@@ -105,6 +107,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.editflag = false;
+    this.checkFlag = false;
 
     this.PeopleServiceService.setgetRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];

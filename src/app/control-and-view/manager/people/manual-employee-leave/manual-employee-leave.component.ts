@@ -21,6 +21,7 @@ export class ManualEmployeeLeaveComponent implements OnInit {
   reasonID;
   empKey$;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -77,6 +78,7 @@ export class ManualEmployeeLeaveComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     // token ends....
 
+    this.checkFlag = false;
     this.fromdate = new Date();
     this.todate = new Date();
     this.reasonID = ""
@@ -86,19 +88,24 @@ export class ManualEmployeeLeaveComponent implements OnInit {
   }
 
   saveLeave() {
+    this.checkFlag = true;
     if (!this.reasonID) {
       alert("Please select a reason!!!");
+      this.checkFlag = false;
       return;
     }
     if (!this.fromdate) {
       alert("Please provide a from date!!!");
+      this.checkFlag = false;
       return;
     } if (!this.todate) {
       alert("Please provide a to date!!!");
+      this.checkFlag = false;
       return;
     }
     this.peopleService.saveManualLeaveForEmployee(this.reasonID, this.convert_DT(this.fromdate), this.convert_DT(this.todate), this.empKey$, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       alert("Manual leave for employee inserted successfully...");
+      this.checkFlag = false;
 
       this._location.back();
     });

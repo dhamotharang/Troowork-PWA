@@ -18,6 +18,7 @@ export class JobTitleEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   JT;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,12 +41,15 @@ export class JobTitleEditComponent implements OnInit {
     this.route.params.subscribe(params => this.JobTitle_Key$ = params.JobTitle_Key);
   }
   updateJobTitle(JobTitle, JobTitleDescription) {
+    this.checkFlag = true;
     if (!JobTitle || !JobTitle.trim()) {
       alert('Job title Name is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (!JobTitleDescription || !JobTitleDescription.trim()) {
       alert('Job Title Description is not provided !');
+      this.checkFlag = false;
       return;
     }
     if (JobTitle) {
@@ -58,12 +62,14 @@ export class JobTitleEditComponent implements OnInit {
       this.peopleServiceService.CheckNewJobtitle(JobTitle, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data[0].count > 0) {
           alert("Job title already present !");
+          this.checkFlag = false;
           return;
         }
         else {
           this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: any[]) => {
               alert('Job title  successfully updated !');
+              this.checkFlag = false;
               // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
               if (this.role == 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
@@ -79,6 +85,7 @@ export class JobTitleEditComponent implements OnInit {
       this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
           alert('Job title  successfully updated !');
+          this.checkFlag = false;
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
           if (this.role == 'Manager') {
             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
@@ -102,6 +109,7 @@ export class JobTitleEditComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
     this.peopleServiceService.getEditJobtitleDetails(this.JobTitle_Key$, this.OrganizationID).subscribe((data: any[]) => {
       this.JobtitleDetails = data;

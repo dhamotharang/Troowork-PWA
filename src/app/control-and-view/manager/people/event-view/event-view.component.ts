@@ -24,6 +24,7 @@ export class EventViewComponent implements OnInit {
   count: Number = 25;
   editQuestions;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -72,9 +73,11 @@ export class EventViewComponent implements OnInit {
 
 
   deleteEventType() {
+    this.checkFlag = true;
     this.peopleServ
       .DeleteEventType(this.ActionKey, this.ActionTypeKey, this.OrganizationID).subscribe(res => {
         alert('Successfully Deleted !');
+        this.checkFlag = false;
         this.peopleServ
           .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
           .subscribe((data: People[]) => {
@@ -85,6 +88,7 @@ export class EventViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.checkFlag = false;
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));

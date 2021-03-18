@@ -38,6 +38,7 @@ export class EditemployeeComponent implements OnInit {
   supermark;
   supervisor;
   roleTypeKey1;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -118,9 +119,12 @@ export class EditemployeeComponent implements OnInit {
 
   }
   deleteEmployee() {
+    this.checkFlag = true;
     this.PeopleServiceService
-      .DeleteEmployeeDetailsbySuperadmin(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Viewemployee'] } }])
-      );
+      .DeleteEmployeeDetailsbySuperadmin(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
+        this.checkFlag = false;
+        this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Viewemployee'] } }]);
+      });
   }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
@@ -129,21 +133,26 @@ export class EditemployeeComponent implements OnInit {
     var manKey;
     var superKey;
 
+    this.checkFlag = true;
     if (!(EmployeeNumber) || !(EmployeeNumber.trim())) {
       alert("Employee Number is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(UserRoleTypeKey)) {
       alert("User Role Type is not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if (!(FirstName) || !(FirstName.trim())) {
       alert("First Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(LastName) || !(LastName.trim())) {
       alert("Last Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(Gender)) {
@@ -151,32 +160,39 @@ export class EditemployeeComponent implements OnInit {
     }
     if (!(EmployeeStatusKey)) {
       alert("Employee Status is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(PrimaryPhone) || !(PrimaryPhone.trim())) {
       alert("Primary Phone is not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if ((EmployeeStatusKey != 1) && !(this.remark)) {
       alert("Remarks are not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(HD)) {
       alert("Hire Date is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(JobTitleKey)) {
       alert("Job Title is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(DepartmentKey)) {
       alert("Department is not provided !");
+      this.checkFlag = false;
       return;
     }
 
     if (this.showManager === true && !(ManagerKey)) {
       alert("Manager is not provided !");
+      this.checkFlag = false;
       return;
     }
     else {
@@ -206,6 +222,7 @@ export class EditemployeeComponent implements OnInit {
     var hiredt = this.convert_DT(HD)
     if (birthdt > currentDate) {
       alert("Wrong Birth Date !");
+      this.checkFlag = false;
       return;
     }
     // if (hiredt > currentDate) {
@@ -214,6 +231,7 @@ export class EditemployeeComponent implements OnInit {
     // }
     if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
+      this.checkFlag = false;
       return;
     }
 
@@ -252,6 +270,7 @@ export class EditemployeeComponent implements OnInit {
       DepartmentKey, Gender, this.remark)
       .subscribe((data: any[]) => {
         alert("Successfully Updated !");
+        this.checkFlag = false;
         this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Viewemployee'] } }]);
       });
 
@@ -311,6 +330,7 @@ export class EditemployeeComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
     this.PeopleServiceService.EditEmployeeDetailsbySuperadmin(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
       if (data.length > 0) {
         this.editempdtailsbysa = data[0];

@@ -30,7 +30,7 @@ export class ManagerChangePassWordComponent implements OnInit {
   UserLoginId: Number;
   managerMail: Object;
   userMail: Object;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -55,15 +55,16 @@ export class ManagerChangePassWordComponent implements OnInit {
   }
 
   paswordchange() {
+    this.checkFlag = true;
     if (!this.Password) {
-      alert(" Enter new password");
+      alert(" Enter new password"); this.checkFlag = false;
     } else if (!this.repeatPassword) {
-      alert(" Enter retype password");
+      alert(" Enter retype password"); this.checkFlag = false;
     } else if (this.Password === this.newPassword) {
-      alert("Current and new passwords are same.");
+      alert("Current and new passwords are same."); this.checkFlag = false;
     }
     else if (this.newPassword != this.repeatPassword) {
-      alert("New and retype password are not same.");
+      alert("New and retype password are not same."); this.checkFlag = false;
     } else {
       this.loginService
         .setPassword(this.username, this.newPassword, this.employeekey, this.UserLoginId, this.OrganizationID)
@@ -75,7 +76,7 @@ export class ManagerChangePassWordComponent implements OnInit {
 
           this.managerMail = data[0].EmailID;
           this.userMail = data[0].newmail;
-
+          this.checkFlag = false;
           if (this.userMail == null) {
             alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
           } else {
@@ -87,14 +88,14 @@ export class ManagerChangePassWordComponent implements OnInit {
               subject: 'Login Credentials',
               text: message
             };
-            const url = ConectionSettings.Url+"/sendmail";
+            const url = ConectionSettings.Url + "/sendmail";
             return this.http.post(url, obj)
               .subscribe(res => console.log('Mail Sent Successfully...'));
           }
 
         });
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['welcomePage'] } }]);
-       
+
       }
     }
   }
@@ -108,6 +109,7 @@ export class ManagerChangePassWordComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
     this.loginService
       .getUserPasswordDetails(this.employeekey, this.OrganizationID)

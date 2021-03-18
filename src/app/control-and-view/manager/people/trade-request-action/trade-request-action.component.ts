@@ -31,6 +31,7 @@ export class TradeRequestActionComponent implements OnInit {
   Status: String;
   details;
 
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -111,8 +112,10 @@ export class TradeRequestActionComponent implements OnInit {
 
   saveTradeRequestAction() {
 
+    this.checkFlag = true;
     if (!(this.traderequestdetailsbyID.Status)) {
       alert('Status is not provided !');
+      this.checkFlag = false;
       return;
     }
 
@@ -120,23 +123,27 @@ export class TradeRequestActionComponent implements OnInit {
 
       if (!(this.traderequestdetailsbyID.ApproverApprovedStartDate)) {
         alert('Approved Start Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
       if (!(this.traderequestdetailsbyID.ApproverApprovedEndDate)) {
         alert('Approved End Date is not provided !');
+        this.checkFlag = false;
         return;
       }
 
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved start date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApproverApprovedStartDate = this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate);
       }
       if ((this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
         alert("Approved end date must be between requested dates!");
+        this.checkFlag = false;
         return;
       } else {
         this.traderequestdetailsbyID.ApproverApprovedEndDate = this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate);
@@ -147,7 +154,8 @@ export class TradeRequestActionComponent implements OnInit {
       }
     } else if ((this.traderequestdetailsbyID.Status) == "Rejected") {
       if (!(this.traderequestdetailsbyID.ApproverComments)) {
-        alert("Status comments can't be empty"); return;
+        alert("Status comments can't be empty");
+        this.checkFlag = false; return;
       }
       else {
         var comments = this.traderequestdetailsbyID.ApproverComments.trim();
@@ -162,6 +170,7 @@ export class TradeRequestActionComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.details = data[0];
         alert("Request updated Successfully");
+        this.checkFlag = false;
         if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['TradeRequestsFromEmployees'] } }]);
         } else if (this.role == 'Supervisor') {
@@ -183,6 +192,7 @@ export class TradeRequestActionComponent implements OnInit {
     this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
 
+    this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestdetailsbyID(this.traderequestDetails$)
       .subscribe((data) => {
         this.traderequestdetailsbyID = data[0];

@@ -21,7 +21,7 @@ export class TradeRequestDetailsComponent implements OnInit {
   show;
   show1;
   traderequestID$;
-
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -97,7 +97,7 @@ export class TradeRequestDetailsComponent implements OnInit {
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.editflag = false;
-
+    this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestInfoforEmployee(
       this.traderequestID$,
       this.OrganizationID
@@ -118,7 +118,9 @@ export class TradeRequestDetailsComponent implements OnInit {
   }
 
   cancelTrade() {
+    this.checkFlag = true;
     this.PeopleServiceService.requestForTradeCancel(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
+      this.checkFlag = false;
       alert("Cancelling the trade requested successfully");
       if (this.role == 'Employee') {
         this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
@@ -129,7 +131,9 @@ export class TradeRequestDetailsComponent implements OnInit {
   }
 
   cancelTradeApproval() {
+    this.checkFlag = true;
     this.PeopleServiceService.tradeCancelApprove(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
+      this.checkFlag = false;
       alert("Trade request cancelled successfully");
       if (this.role == 'Employee') {
         this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);

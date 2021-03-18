@@ -102,7 +102,7 @@
         <a (click)='goBack()' class="btn btn-warning" style="text-align:center;margin-left:42%"><b>Go Back</b></a>
       </div>
       <div *ngIf="traderequestdetailsbyID.StatusKey==2" style="margin-left:42%">
-        <button type="button" class="btn btn-success" style="text-align:center;" (click)="saveTradeRequestAction()"><b>SAVE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" style="text-align:center;" (click)="saveTradeRequestAction()"><b>SAVE</b></button>
       </div>
     </div>
   </div>

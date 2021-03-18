@@ -23,6 +23,7 @@ export class ResetPassWordComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -45,17 +46,20 @@ export class ResetPassWordComponent implements OnInit {
   }
 
   resetUserPassword(username, password, userLoginId) {
+    this.checkFlag = true;
     if (!(username) || !username.trim()) {
       alert("Please Enter User Name!");
+      this.checkFlag = false;
       return;
     }
     else {
-      if(username){
-        username=username.trim();
+      if (username) {
+        username = username.trim();
       }
       this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         this.response = data[0];
         this.build = data;
+        this.checkFlag = false;
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
         if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
@@ -105,6 +109,7 @@ export class ResetPassWordComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleService.getLoginDetailsByEmpKey(this.empKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.build = data;
     });

@@ -30,7 +30,7 @@ import { ActivatedRoute, Router } from "@angular/router";
               <ng-datepicker [options]="options" position="top-right" [(ngModel)]="Date"></ng-datepicker><br><br>
           </div>
       </div>
-      <button (click)='submit()'>submit</button>
+      <button (click)='submit()' [disabled]='checkFlag'>submit</button>
       <button (click)='cancel()'>close</button>
   </div>
 </daypilot-modal>
@@ -68,6 +68,7 @@ export class CreatePWAComponent implements OnInit {
   scheduleNameList;
   params;
   Date;
+  checkFlag;
   constructor(private fb: FormBuilder, private ds: DataPWAService, private SchedulingService: SchedulingService, private router: Router) {
     this.form = this.fb.group({
       name: ["", Validators.required],
@@ -139,10 +140,12 @@ export class CreatePWAComponent implements OnInit {
 
   submit() {
 
+    this.checkFlag = true;
     // var currDate=new Date();
     // let data = this.form.getRawValue();
     if (!(this.BatchScheduleNameKey)) {
       alert("Please provide Assignment Name !");
+      this.checkFlag = false;
       return;
     }
     // if(this.convert_DT(this.Date.value) < this.convert_DT(currDate)){
@@ -177,15 +180,16 @@ export class CreatePWAComponent implements OnInit {
     //     if (data[0].count == 0) {
     this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
       // alert("Event has been Created !");
+      this.checkFlag = false;
 
       // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
       this.ds.setExpandFlagNewComp(2);
-       if (this.role == 'Manager') {
+      if (this.role == 'Manager') {
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA1'] } }]);  // redirect to Manager
-        } else if (this.role == 'Employee' ) {
-          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['SchedulerPWA1'] } }]); // redirect to Employee
+      } else if (this.role == 'Employee') {
+        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['SchedulerPWA1'] } }]); // redirect to Employee
       }
-       else if (this.role == 'Supervisor') {
+      else if (this.role == 'Supervisor') {
         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['SchedulerPWA1'] } }]);// redirect to supervisor
       }
     });
@@ -269,6 +273,7 @@ export class CreatePWAComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.SchedulingService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

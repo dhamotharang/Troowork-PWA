@@ -47,7 +47,7 @@ export class AddEmployeeComponent implements OnInit {
   employeekey;
   IsSupervisor;
   OrganizationID;
-
+  checkFlag;
   //Author: Prakash Code Starts for Employee Calendar Starts Here
   // start_sun_hour: String;
   // start_sun_min: String;
@@ -196,26 +196,29 @@ export class AddEmployeeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router) { }
 
   createEmployee() {
-
+    this.checkFlag = true;
     var manKey; var superKey;
     var IsSupervisor;
     if (!(this.EmployeeNumber) || !(this.EmployeeNumber.trim())) {
       alert("Employee Number is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.UserRoleTypeKey)) {
       alert("User Role Type is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (this.showManager === true && !(this.ManagerKey)) {
       alert("Manager is not provided !");
+      this.checkFlag = false;
       return;
     }
     else {
       manKey = -1;
     }
 
-   
+
 
 
     if (this.UserRoleTypeKey == 3 && this.ManagerKey) {
@@ -237,10 +240,12 @@ export class AddEmployeeComponent implements OnInit {
     }
     if (!(this.FirstName) || !(this.FirstName.trim())) {
       alert("First Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.LastName) || !(this.LastName.trim())) {
       alert("Last Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.Gender)) {
@@ -248,18 +253,22 @@ export class AddEmployeeComponent implements OnInit {
     }
     if (!(this.PrimaryPhone) || !(this.PrimaryPhone.trim())) {
       alert("Primary Phone is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.JobTitleKey)) {
       alert("Job Title is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (!(this.DepartmentKey)) {
       alert("Department is not provided !");
+      this.checkFlag = false;
       return;
     }
     var BD;
@@ -275,6 +284,7 @@ export class AddEmployeeComponent implements OnInit {
     var HD = this.convert_DT(this.HireDate);
     if (BD > currentDate) {
       alert("Wrong BirthDate !");
+      this.checkFlag = false;
       return;
     }
     // if (HD > currentDate) {
@@ -283,6 +293,7 @@ export class AddEmployeeComponent implements OnInit {
     // }
     if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
+      this.checkFlag = false;
       return;
     }
 
@@ -411,6 +422,7 @@ export class AddEmployeeComponent implements OnInit {
       .subscribe((data: any[]) => {
         if (data[0].count > 0) {
           alert("Employee Number already exists");
+          this.checkFlag = false;
         }
         else {
 
@@ -421,6 +433,7 @@ export class AddEmployeeComponent implements OnInit {
             .subscribe((data22: any[]) => {
               this.temp_res = data22;
               alert("Employee Created !");
+              this.checkFlag = false;
               var empKey = this.temp_res.EmployeeKey;
 
               this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
@@ -445,6 +458,7 @@ export class AddEmployeeComponent implements OnInit {
     this.UserRoleTypeKey = '';
     this.ManagerKey = '';
 
+    this.checkFlag = false;
     //Author: Prakash Code Starts for Employee Calendar Starts Here
 
     // this.start_sun_hour = '-1';

@@ -9,8 +9,7 @@
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="Department">RoomType Name*: </label></h5>
       <div class="col-md-8" style="text-align:left">
-        <input type="text" maxlength="40" placeholder="RoomType Name" style="background-color: #D4F4FF !important;"
-          class="form-control" [(ngModel)]="RoomTypeName">
+        <input type="text" maxlength="40" placeholder="RoomType Name" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeName">
       </div>
     </div>
     <br>
@@ -38,9 +37,9 @@
     </div>
     <br> -->
     <div class="row col-md-12" style="margin-left: 35%">
-      <a style="color:white !important" class="btn btn-success" (click)="addRoomType(MetricKey,RoomTypeName,MetricTypeValue)"><b>Create
+      <button [disabled]="checkFlag" style="color:white !important" class="btn btn-success" (click)="addRoomType(MetricKey,RoomTypeName,MetricTypeValue)"><b>Create
         </b>
-      </a>
+      </button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back
         </b>

@@ -18,6 +18,7 @@ export class PtoRequestViewComponent implements OnInit {
   requestdetails;
   editflag;
   deleteRequestKey;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -42,8 +43,10 @@ export class PtoRequestViewComponent implements OnInit {
 
   }
   deleteRequest() {
+    this.checkFlag = true;
     this.PeopleServiceService.deletePTORequest(this.deleteRequestKey, this.OrganizationID)
       .subscribe((data) => {
+        this.checkFlag = false;
         alert('PTO Request Deleted Successfully');
         this.PeopleServiceService.getRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
           this.requestdetails = data;
@@ -60,6 +63,7 @@ export class PtoRequestViewComponent implements OnInit {
     this.name = profile.username;
     this.toServeremployeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
 
     this.PeopleServiceService.getRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
       this.requestdetails = data;

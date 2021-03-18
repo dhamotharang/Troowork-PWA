@@ -23,7 +23,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   isMailed;
   emp_EmailId;
   audit_EmailId;
-
+  checkFlag;
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
 
   url_base64_decode(str) {
@@ -162,6 +162,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
 
     this.inspectionService.InspectionDetails(this.inspKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.viewEmpInspectionDetails = data;
@@ -231,6 +232,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
 
   }
   inspectionCompleted() {
+    this.checkFlag = true;
     var temp = [];
     var totalQuestions = this.questionsCount;
     var indexObj = [];
@@ -358,6 +360,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
       };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          this.checkFlag = false;
           if (this.isMailed == true) {//varun-> sending Email for inspection
             this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 
@@ -427,7 +430,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
             }
             // break;
           }
-         
+
           if (observeIndexList[j] === questionid) {
             observe = this.Scoringtype.ObservationDeficiency[questionid];
             if (observe) {
@@ -515,6 +518,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
       };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          this.checkFlag = false;
           if (this.isMailed == true) {//varun-> sending Email for inspection
             this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 

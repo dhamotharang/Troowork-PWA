@@ -27,6 +27,7 @@ export class MeetingTrainingEditComponent implements OnInit {
   time1: any;
   time2: any;
 
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -40,7 +41,7 @@ export class MeetingTrainingEditComponent implements OnInit {
   Supervisor = [];
   JobTitle;
   managerList;
-  Manager=[];
+  Manager = [];
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -144,12 +145,15 @@ export class MeetingTrainingEditComponent implements OnInit {
   }
 
   updateMeetingTrainingEvent(ActionKey, Eventhost, Venue, MeetingNotes) {
+    this.checkFlag = true;
     if (!this.timeValue1) {
       alert("Start Time is not provided");
+      this.checkFlag = false;
       return;
     }
     if (!this.timeValue2) {
       alert("End Time is not provided");
+      this.checkFlag = false;
       return;
     }
     else {
@@ -160,6 +164,7 @@ export class MeetingTrainingEditComponent implements OnInit {
 
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
+        this.checkFlag = false;
         return;
       }
 
@@ -167,10 +172,12 @@ export class MeetingTrainingEditComponent implements OnInit {
 
     if (!ActionKey) {
       alert("Select  meeting/training/event to continue");
+      this.checkFlag = false;
       return;
     }
     if (!Eventhost || !Eventhost.trim()) {
       alert("Event host is not provided");
+      this.checkFlag = false;
       return;
     }
     // if (!Venue || !Venue.trim()) {
@@ -180,6 +187,7 @@ export class MeetingTrainingEditComponent implements OnInit {
 
     if (this.Employee.length == 0) {
       alert("Employee is not selected");
+      this.checkFlag = false;
       return;
     }
     if (Eventhost) {
@@ -229,7 +237,8 @@ export class MeetingTrainingEditComponent implements OnInit {
     this.peopleServ
       .updateMeetingTraining(ActionKey, Eventhost, Venue, newTime, newTime1, MeetingNotes, EmployeeKeyString, newDate, this.eventKey$, this.employeekey, this.OrganizationID)
       .subscribe(res => {
-        alert("Meeting/Training is successfully updated !")
+        alert("Meeting/Training is successfully updated !");
+        this.checkFlag = false;
         if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
         }
@@ -250,7 +259,7 @@ export class MeetingTrainingEditComponent implements OnInit {
       this.JobTitle = null;
     }
     if (this.Manager.length == 0) {
-       Mang = null;
+      Mang = null;
     }
     else {
       var ManagerList = [];
@@ -287,6 +296,7 @@ export class MeetingTrainingEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.DepartmentKey = "";
     this.peopleServ
       .getJobTitleList(this.employeekey, this.OrganizationID)
@@ -306,10 +316,10 @@ export class MeetingTrainingEditComponent implements OnInit {
     //     this.supervisor = data;
     //   });
     this.peopleServ
-    .getmanagersForEmp(this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.managerList = data;
-    });
+      .getmanagersForEmp(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.managerList = data;
+      });
     this.peopleServ
       .getallEventList(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {

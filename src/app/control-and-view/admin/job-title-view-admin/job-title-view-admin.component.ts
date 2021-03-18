@@ -13,7 +13,7 @@ export class JobTitleViewAdminComponent implements OnInit {
   jobView: People[];
   deleteJobtitleKey: number;
   searchform: FormGroup;
-
+  checkFlag;
   role: String;
   name: String;
   employeekey: Number;
@@ -47,41 +47,43 @@ export class JobTitleViewAdminComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private peopleServiceService: PeopleServiceService, private router: Router) { }
 
   searchJobTitle(SearchJobTitle) {
-    var value=SearchJobTitle.trim();
+    var value = SearchJobTitle.trim();
     if (value.length >= 3) {
-    this.peopleServiceService.searchJobtitle(value, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-      this.jobView = data;
-      this.showHide2 = false;
-      this.showHide1 = false;
-    });
-  }
-  else if (value.length == 0) {
-    if ((value.length == 0) && (SearchJobTitle.length == 0)) {
-      this.loading = true;
+      this.peopleServiceService.searchJobtitle(value, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+        this.jobView = data;
+        this.showHide2 = false;
+        this.showHide1 = false;
+      });
     }
-    this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-      this.jobView = data;
-      this.loading = false;
-          if (this.jobView[0].totalItems > this.itemsPerPage) {
-            this.showHide2 = true;
-            this.showHide1 = false;
-          }
-          else if (this.jobView[0].totalItems <= this.itemsPerPage) {
-            this.showHide2 = false;
-            this.showHide1 = false;
-          }
-    });
+    else if (value.length == 0) {
+      if ((value.length == 0) && (SearchJobTitle.length == 0)) {
+        this.loading = true;
+      }
+      this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+        this.jobView = data;
+        this.loading = false;
+        if (this.jobView[0].totalItems > this.itemsPerPage) {
+          this.showHide2 = true;
+          this.showHide1 = false;
+        }
+        else if (this.jobView[0].totalItems <= this.itemsPerPage) {
+          this.showHide2 = false;
+          this.showHide1 = false;
+        }
+      });
+    }
   }
-}
   deleteJobPass(key) {
     this.deleteJobtitleKey = key;
 
   }
   deleteJobTitle() {
+    this.checkFlag = true;
     this.peopleServiceService.deleteJobTitle(this.deleteJobtitleKey, this.OrganizationID)
       .subscribe(res =>
         this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
           this.jobView = data;
+          this.checkFlag = false;
 
         })
       );
@@ -126,6 +128,7 @@ export class JobTitleViewAdminComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
       this.jobView = data;
       this.loading = false;

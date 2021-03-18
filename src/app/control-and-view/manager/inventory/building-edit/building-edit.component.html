@@ -9,13 +9,12 @@
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="building">Building Name: </label></h5>
       <div class="col-md-8" style="text-align:left">
-        <input *ngIf="build" type="text" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control"
-          id="Building" [(ngModel)]="build[0].FacilityName">
+        <input *ngIf="build" type="text" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control" id="Building" [(ngModel)]="build[0].FacilityName">
       </div>
     </div>
     <br>
     <div class="row col-md-12" style="margin-left: 35%">
-      <button style="color:white !important" class="btn btn-success" (click)="updateBuilding(build[0].FacilityName,build[0].FacilityKey)"><b>Update</b>
+      <button [disabled]="checkFlag" style="color:white !important" class="btn btn-success" (click)="updateBuilding(build[0].FacilityName,build[0].FacilityKey)"><b>Update</b>
       </button>
       <a class="btn btn-warning" style="color:white !important" (click)='goBack()'><b>Go
           Back

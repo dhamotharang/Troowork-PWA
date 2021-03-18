@@ -17,32 +17,26 @@
     <!-- <tbody> -->
     <tr *ngFor="let x of eventType;let k = index">
       <td>
-        <input type="text" class="form-control" maxlength="40" [disabled]='!(k===editQuestions)'
-          [(ngModel)]=" x.ActionType">
+        <input type="text" class="form-control" maxlength="40" [disabled]='!(k===editQuestions)' [(ngModel)]=" x.ActionType">
       </td>
       <td>
         <input type="text" class="form-control" maxlength="40" [disabled]='!(k===editQuestions)' [(ngModel)]="x.Action">
       </td>
       <td>
-        <input type="text" class="form-control" maxlength="240" [disabled]='!(k===editQuestions)'
-          [(ngModel)]="x.Description">
+        <input type="text" class="form-control" maxlength="240" [disabled]='!(k===editQuestions)' [(ngModel)]="x.Description">
       </td>
       <td>
-        <a *ngIf='!(k===editQuestions)' class="btn btn-primary" (click)='editQuestions=k;'
-          class="btn btn-primary"><b>Edit</b></a>
+        <a *ngIf='!(k===editQuestions)' class="btn btn-primary" (click)='editQuestions=k;' class="btn btn-primary"><b>Edit</b></a>
         &nbsp;
-        <a *ngIf='(k===editQuestions)' class="btn btn-success"
-          (click)='UpdateEventDetais(k,x.ActionType,x.Action,x.Description,x.ActionKey,x.ActionTypeKey)'><b>Update</b></a>&nbsp;
-        <a *ngIf='!(k===editQuestions)' (click)="basicModal.show();deleteEventValuePass(x.ActionKey,x.ActionTypeKey); "
-          class="btn btn-danger"><b>Delete</b></a>
+        <button *ngIf='(k===editQuestions)' class="btn btn-success" [disabled]="checkFlag" (click)='UpdateEventDetais(k,x.ActionType,x.Action,x.Description,x.ActionKey,x.ActionTypeKey)'><b>Update</b></button>&nbsp;
+        <button *ngIf='!(k===editQuestions)' (click)="basicModal.show();deleteEventValuePass(x.ActionKey,x.ActionTypeKey); " [disabled]="checkFlag" class="btn btn-danger"><b>Delete</b></button>
         <a *ngIf='(k===editQuestions)' class="btn btn-warning" (click)='cancelTemplateDetails()'><b>Cancel</b></a>
       </td>
     </tr>
     <tr *ngIf="eventType?.length == 0">
       <td colspan="4" class="no-data-available">No records found</td>
     </tr>
-    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
-      aria-hidden="true">
+    <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -55,10 +49,8 @@
             Are you sure you want to delete this?
           </div>
           <div class="modal-footer">
-            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-              (click)="basicModal.hide(); deleteEventType()" mdbWavesEffect>Yes</button>
-            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()"
-              mdbWavesEffect>No</button>
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteEventType()" mdbWavesEffect>Yes</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
           </div>
         </div>
       </div>

@@ -48,8 +48,8 @@
     </div>
     <br>
     <div class="row col-md-12" style="margin-left: 38%">
-      <a style="color:white !important" class="btn btn-success" (click)="saveQuickWorkOrder()"><b>SAVE</b>
-      </a>
+      <button style="color:white !important" [disabled]="checkFlag" class="btn btn-success" (click)="saveQuickWorkOrder()"><b>SAVE</b>
+      </button>
     </div>
   </div>
 </div>

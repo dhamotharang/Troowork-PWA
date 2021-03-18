@@ -17,6 +17,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
   InspTempName;
   field;
 
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -51,12 +52,14 @@ export class InspectiontemplateCreateComponent implements OnInit {
   }
 
   valuesSave(ScoreTypeKey, InspTempName) {
+    this.checkFlag = true;
 
     var ScoringTypeKey;
     var TemplateID;
     var templatename;
     if (InspTempName && !InspTempName.trim()) {
       alert("Please Enter Inspection Template Name!");
+      this.checkFlag = false;
       return;
     }
     if (ScoreTypeKey) {
@@ -65,6 +68,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
     else {
       ScoringTypeKey = null;
       alert("Scoring Type is not provided !");
+      this.checkFlag = false;
       return;
     }
     if (InspTempName) {
@@ -73,6 +77,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
     else {
       InspTempName = null;
       alert("Inspection Template Name is not provided !");
+      this.checkFlag = false;
       return;
     }
     var arr = [];
@@ -81,6 +86,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
       if (!(this.fieldArray[i])) {
         var index = i + 1;
         alert("Question " + index + " is not provided !");
+        this.checkFlag = false;
         return;
       }
       if (this.fieldArray[i]) {
@@ -98,10 +104,12 @@ export class InspectiontemplateCreateComponent implements OnInit {
     if (QustArry === '') {
       QustArry = null;
       alert(" Questions are not provided !");
+      this.checkFlag = false;
       return;
     }
     if (QustArry && !QustArry.trim()) {
       alert("Please Enter Question!");
+      this.checkFlag = false;
       return;
     }
     this.inspectionService.checkforTemplate(InspTempName, this.OrganizationID).subscribe(res => {
@@ -111,6 +119,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
           this.InspTempName = null;
           this.fieldArray = [];
           alert("Inspection Template Added !");
+          this.checkFlag = false;
           this.addFieldValue();
         });
       }
@@ -120,6 +129,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
         this.InspTempName = null;
         this.fieldArray = [];
         alert("Template Name already exists !");
+        this.checkFlag = false;
         this.addFieldValue();
       }
     });
@@ -139,6 +149,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.addFieldValue();
     this.ScoreTypeKey = "";
+    this.checkFlag = false;
     this.inspectionService
       .getScoreTypeList(this.OrganizationID)
       .subscribe((data: Inspection[]) => {

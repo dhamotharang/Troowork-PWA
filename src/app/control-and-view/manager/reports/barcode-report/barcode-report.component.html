@@ -7,8 +7,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Building*</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value)"
-          (change)='EquipmentKey=null;EquipmentTypeKey=null;'>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value)" (change)='EquipmentKey=null;EquipmentTypeKey=null;'>
           <option value="">--Select--</option>
           <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
             {{b.FacilityText}}
@@ -26,8 +25,7 @@
       </div>
       <div class="form-group">
         <label>Equipment Type</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" (change)='FacilityKey=null;FloorKey=null;ZoneKey=null;RoomTypeKey=null;getequipments($event.target.value);'
-          [(ngModel)]="EquipmentTypeKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" (change)='FacilityKey=null;FloorKey=null;ZoneKey=null;RoomTypeKey=null;getequipments($event.target.value);' [(ngModel)]="EquipmentTypeKey">
           <option value="">--Select--</option>
           <option *ngFor="let f of equipmenttypelist" [value]="f.EquipmentTypeKey">
             {{f.EquipmentTypeText}}
@@ -38,8 +36,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Floor</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" (change)="getZoneRoom($event.target.value,FacilityKey)"
-          [disabled]="!FacilityKey">
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" (change)="getZoneRoom($event.target.value,FacilityKey)" [disabled]="!FacilityKey">
           <option value="">--Select--</option>
           <option *ngFor="let f of floor" [value]="f.FloorKey">
             {{f.FloorName}}
@@ -68,14 +65,13 @@
     <div class="row col-md-12">
       <div class="col-md-6"></div>
       <div style="margin-left: 46.5%">
-        <button type="button" class="btn btn-success" (click)=generateBarcodeReport(FacilityKey,FloorKey,RoomTypeKey,ZoneKey,EquipmentTypeKey,EquipmentKey)><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateBarcodeReport(FacilityKey,FloorKey,RoomTypeKey,ZoneKey,EquipmentTypeKey,EquipmentKey)><b>GENERATE</b></button>
       </div>
     </div>
   </div>
   <br>
   <div style="margin-left: 42%" *ngIf="!loading">
-    <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
-      (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+    <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
   <div style="margin-left: 42%" *ngIf="!loading">
     <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
@@ -105,7 +101,7 @@
       </tr>
     </tbody>
   </table>
- 
+
   <!-- Table for generating barcode for Equipments -->
   <table *ngIf='Equipmentflag' id="reportexport" class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
     <thead class="tableHead">
@@ -122,12 +118,9 @@
     </tbody>
   </table>
   <br>
-  
-  <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;"> 
-    <table  style="visibility: hidden !important;" cellspacing="0" 
-    rules="rows" 
-    border="1" 
-    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+
+  <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;">
+    <table style="visibility: hidden !important;" cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
       <thead class="tableHead">
         <th> Room Name </th>
         <th> Barcode </th>
@@ -150,24 +143,21 @@
         </tr>
       </tbody>
     </table>
-    </div>
-    <div *ngIf='Equipmentflag' id='exportable1' style="visibility: hidden !important;">
-      <table   cellspacing="0" 
-      rules="rows" 
-      border="1" 
-      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
-        <thead class="tableHead">
-          <th> Equpiment Name </th>
-          <th> Barcode </th>
-          <th> Equipment Type</th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let x of viewBarcodeEquipment">
-            <td>{{x.EquipmentName}}</td>
-            <td>{{x.Barcode}}</td>
-            <td>{{x.EquipmentType}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  </div>
+  <div *ngIf='Equipmentflag' id='exportable1' style="visibility: hidden !important;">
+    <table cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Equpiment Name </th>
+        <th> Barcode </th>
+        <th> Equipment Type</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewBarcodeEquipment">
+          <td>{{x.EquipmentName}}</td>
+          <td>{{x.Barcode}}</td>
+          <td>{{x.EquipmentType}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

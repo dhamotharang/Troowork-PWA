@@ -23,6 +23,7 @@ export class ViewDepartmentComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;// loading
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -131,8 +132,10 @@ export class ViewDepartmentComponent implements OnInit {
   }
 
   deleteDepartment() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteDepartment(this.delete_DeptKey, this.OrganizationID).subscribe(() => {
+        this.checkFlag = false;
         this.inventoryService
           .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
@@ -160,6 +163,7 @@ export class ViewDepartmentComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

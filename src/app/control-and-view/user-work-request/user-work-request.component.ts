@@ -13,6 +13,7 @@ export class UserWorkRequestComponent implements OnInit {
   Facility_Key;
   Floor_Key;
   Zone_Key;
+  checkFlag;
   constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute) {
     this.route.params.subscribe(params => this.Facility_Key = params.Facility_Key);
     this.route.params.subscribe(params => this.Floor_Key = params.Floor_Key);
@@ -27,10 +28,13 @@ export class UserWorkRequestComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
   ngOnInit() {
+    this.checkFlag = false;
   }
   Submit() {
+    this.checkFlag = true;
     if (!(this.comments) || !(this.comments.trim())) {
       alert("comment not provided !");
+      this.checkFlag = false;
       return;
     }
     var t = new Date();
@@ -58,6 +62,7 @@ export class UserWorkRequestComponent implements OnInit {
     };
 
     this.reviewservice.UserWorkRequest(reviewAdd).subscribe((data: any[]) => {
+      this.checkFlag = false;
       this.router.navigate(['thankYou', 'workRequest']);
     });
   }

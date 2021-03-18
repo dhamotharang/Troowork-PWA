@@ -1,6 +1,5 @@
-  
 <div style="margin-left: 15rem;margin-right: 15rem;padding-bottom: 1rem;padding-top: 1rem">
- 
+
   <div style="text-align:center">
     <h4 style="color: #174a5e;">CREATE NEW DEPARTMENT</h4>
   </div>
@@ -16,16 +15,18 @@
     <div class="row col-md-12">
       <div class="col col-md-3"></div>
       <div style="text-align:right" class="col-md-3">
-        <a style="color:white !important" class="btn btn-success" (click)="addDepartment(DepartmentName)"><b>Create
+        <button style="color:white !important" [disabled]="checkFlag" class="btn btn-success" (click)="addDepartment(DepartmentName)"><b>Create
             Department</b>
-        </a></div>
+        </button>
+      </div>
       <div style="text-align:left" class="col-md-3">
-        <a (click)='goBack()' class="btn btn-warning" style="color:white !important" ><b>Go
+        <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
             Back
           </b>
-        </a></div>
+        </a>
+      </div>
       <div class="col col-md-3"></div>
     </div>
   </div>
- 
+
 </div>

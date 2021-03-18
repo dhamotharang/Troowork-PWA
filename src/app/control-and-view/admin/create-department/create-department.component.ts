@@ -18,7 +18,7 @@ export class CreateDepartmentComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -40,8 +40,10 @@ export class CreateDepartmentComponent implements OnInit {
 
   addDepartment(DepartmentName) {
 
+    this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {
       alert("Please provide a Department Name");
+      this.checkFlag = false;
     }
 
     else {
@@ -50,10 +52,12 @@ export class CreateDepartmentComponent implements OnInit {
         this.dept = data;
         if (data.length > 0) {
           alert("Department already present");
+          this.checkFlag = false;
         }
         else if (data.length == 0) {
           this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Department created successfully");
+            this.checkFlag = false;
             this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['ViewDepartment'] } }]);
           });
         }
@@ -72,5 +76,6 @@ export class CreateDepartmentComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
   }
 }

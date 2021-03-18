@@ -23,6 +23,7 @@ export class FloorEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
 
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -46,16 +47,20 @@ export class FloorEditComponent implements OnInit {
   }
 
   updateFloor(FacilityKey, FloorKey, FloorName, FloorDescription) {
+    this.checkFlag = true;
     if (FacilityKey == "--Select--") {
       alert("Please Choose Building!");
+      this.checkFlag = false;
       return;
     }
     else if (!FloorName || !FloorName.trim()) {
       alert("Please Enter Floor Name!");
+      this.checkFlag = false;
       return;
     }
     else if (!FloorDescription || !FloorDescription.trim()) {
       alert("Please Enter Floor Description!");
+      this.checkFlag = false;
       return;
     }
     else {
@@ -65,6 +70,7 @@ export class FloorEditComponent implements OnInit {
       this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         if (data[0].count > 0) {
           alert("Floor already present !");
+          this.checkFlag = false;
           return;
         }
         else {
@@ -72,6 +78,7 @@ export class FloorEditComponent implements OnInit {
             .UpdateFloor(FacilityKey, FloorKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: Inventory[]) => {
               alert("Floor updated successfully");
+              this.checkFlag = false;
               this._location.back();
             });
         }
@@ -88,6 +95,7 @@ export class FloorEditComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

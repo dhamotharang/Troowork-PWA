@@ -3,7 +3,7 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-equipment-type-view',
   templateUrl: './equipment-type-view.component.html',
@@ -24,6 +24,7 @@ export class EquipmentTypeViewComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -44,7 +45,7 @@ export class EquipmentTypeViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef,private _location: Location) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private _location: Location) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -103,7 +104,7 @@ export class EquipmentTypeViewComponent implements OnInit {
 
   searchEquipmentType(SearchValue) {
 
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
 
     if (value.length >= 3) {
       this.inventoryService
@@ -113,9 +114,8 @@ export class EquipmentTypeViewComponent implements OnInit {
           this.showHide1 = false;
         });
     } else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       this.inventoryService
         .getEquipmentTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -139,9 +139,11 @@ export class EquipmentTypeViewComponent implements OnInit {
   }
 
   deleteEquipmentType() {
+    this.checkFlag = true;
     this.inventoryService
       .DeleteEquipmentType(this.delete_EquipTypeKey, this.employeekey, this.OrganizationID).subscribe(() => {
         alert("Equipment Type deleted successfully...");
+        this.checkFlag = false;
         this.loading = true;
         this.inventoryService
           .getEquipmentTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -170,6 +172,7 @@ export class EquipmentTypeViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
     this.loading = true;
+    this.checkFlag = false;
     this.inventoryService
       .getEquipmentTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
@@ -190,7 +193,7 @@ export class EquipmentTypeViewComponent implements OnInit {
     });
   }
 
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

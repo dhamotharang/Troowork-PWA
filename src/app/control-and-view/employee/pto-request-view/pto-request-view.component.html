@@ -22,8 +22,8 @@
             <a [routerLink]="['PTORequestDetails', x.request_id]" class="btn btn-primary"><b>Details</b></a>&nbsp;&nbsp;
           </td>
           <td *ngIf="x.RequestStatus=='Pending'">
-            <a [routerLink]="['PTORequestEdit', x.request_id]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a class="btn btn-danger" (click)="basicModal.show();deletePass(x.request_id); "><b>Delete</b></a>
+            <button [routerLink]="['PTORequestEdit', x.request_id]" [disabled]="checkFlag" class="btn btn-primary"><b>Edit</b></button>&nbsp;&nbsp;
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deletePass(x.request_id); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="requestdetails?.length == 0">

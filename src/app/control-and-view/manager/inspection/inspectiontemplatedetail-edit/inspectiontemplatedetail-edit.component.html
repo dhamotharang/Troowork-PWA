@@ -30,8 +30,7 @@
         <!-- already present array -->
         <tr *ngFor="let field of fieldArray">
           <td>
-            <input maxlength="1000" [(ngModel)]="field.Question" (input)='addtempId(field.TemplateQuestionID)' class="form-control" type="text"
-              value="{{field.Question}}" />
+            <input maxlength="1000" [(ngModel)]="field.Question" (input)='addtempId(field.TemplateQuestionID)' class="form-control" type="text" value="{{field.Question}}" />
           </td>
           <td>
             <button class="btn btn-danger" type="button" (click)="deleteFieldValue(field.TemplateQuestionID)"><b>DELETE
@@ -44,7 +43,7 @@
             <input maxlength="1000" class="form-control" type="text" [(ngModel)]="newAttribute[k]" />
           </td>
           <td>
-            <button class="btn btn-danger" type="button" (click)="deleteNewFieldValue(k)"><b>DELETE QUESTION</b></button>
+            <button class="btn btn-danger" type="button" [disabled]="checkFlag" (click)="deleteNewFieldValue(k)"><b>DELETE QUESTION</b></button>
           </td>
 
         </tr>
@@ -53,7 +52,7 @@
             <button class="btn btn-success" type="button" (click)="addFieldValue()"><b>ADD QUESTION</b></button>
           </td>
           <td>
-            <button class="btn btn-success" type="button" (click)="savetemplate()"><b>UPDATE</b></button>&nbsp;&nbsp;
+            <button class="btn btn-success" type="button" [disabled]="checkFlag" (click)="savetemplate()"><b>UPDATE</b></button>&nbsp;&nbsp;
             <a (click)=' goBack()' class="btn btn-warning" style="color:white !important"><b>CANCEL
               </b>
             </a>

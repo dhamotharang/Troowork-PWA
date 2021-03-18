@@ -30,9 +30,9 @@ import { ActivatedRoute, Router } from "@angular/router";
               <ng-datepicker [options]="options" position="top-right" [(ngModel)]="DateEdit" (ngModelChange)="dateChangeNeeded()"></ng-datepicker><br><br>
           </div>
       </div>
-      <button (click)='submitEdit()'>Submit</button>
+      <button (click)='submitEdit()' [disabled]='checkFlag'>Submit</button>
       <button (click)='cancel()'>close</button>      
-      <button (click)='delete()'>Delete</button>
+      <button (click)='delete()' [disabled]='checkFlag'>Delete</button>
   </div>
 </daypilot-modal>
   `,
@@ -88,6 +88,7 @@ export class EditPWAComponent implements OnInit {
   DateEdit;
   AssignIDForDelete;
   scheduleOldKey;
+  checkFlag;
   constructor(private fb: FormBuilder, private ds: DataPWAService, private SchedulingService: SchedulingService, private router: Router) {
     this.form = this.fb.group({
       name: ["", Validators.required],
@@ -164,13 +165,15 @@ export class EditPWAComponent implements OnInit {
     this.DateEdit = this.convert_DT(this.DateEdit);
     console.log("dateChangeNeeded... " + this.DateEdit);
   }
-  
+
   submitEdit() {
+    this.checkFlag = true;
     // var currDate=new Date();
     // let data = this.form.getRawValue();
     var date = this.DateEdit;
     if (!(this.BatchScheduleNameKeyEdit)) {
       alert("Please provide Assignment Name !");
+      this.checkFlag = false;
       return;
     }
     // if(this.DateEdit < this.convert_DT(currDate)){
@@ -191,6 +194,7 @@ export class EditPWAComponent implements OnInit {
     // this.SchedulingService.SchedulerTimeRangeCheck(this.BatchScheduleNameKeyEdit, this.convert_DT(this.event.data.start), this.event.data.resource, this.OrganizationID).subscribe(data => {
     //   if (data[0].count > 0) {
     this.SchedulingService.SchedulerEventUpdate(obj).subscribe(data => {
+      this.checkFlag = false;
       // alert("Event has been Updated !");
       this.ds.setExpandFlagNewComp(3);
       // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);
@@ -252,10 +256,12 @@ export class EditPWAComponent implements OnInit {
   }
 
   delete() {
+    this.checkFlag = true;
     var confirmBox = confirm("Do you want to Delete ?");
     if (confirmBox == true) {
       this.SchedulingService.SchedulerEventDelete(this.AssignIDForDelete, this.employeekey, this.OrganizationID).subscribe(data => {
         // alert("Sucessfully Deleted !");
+        this.checkFlag = false;
         this.ds.setExpandFlagNewComp(3);
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA1'] } }]);
         if (this.role == 'Manager') {
@@ -279,6 +285,7 @@ export class EditPWAComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.checkFlag = false;
     this.SchedulingService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

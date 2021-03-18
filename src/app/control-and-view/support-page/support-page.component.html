@@ -67,7 +67,7 @@
 <div *ngIf="useType" style="padding-left: 2%;padding-top:0% !important; padding-bottom:0% !important;">
   <br>
   <div class="row  col-md-12 col-sm-12 col-xs-12 col-lg-12">
-    <button type="button" style="margin-left: 45%;" class="btn btn-success" (click)="Submit();"><b>SUBMIT</b></button>
+    <button type="button" [disabled]="checkFlag" style="margin-left: 45%;" class="btn btn-success" (click)="Submit();"><b>SUBMIT</b></button>
   </div>
 </div>
 

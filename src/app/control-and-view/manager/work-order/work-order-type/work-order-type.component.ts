@@ -21,6 +21,7 @@ export class WorkOrderTypeComponent implements OnInit {
   showHide2: boolean;
   pagination: Number;
   loading: boolean;// loading
+  checkFlag;
   //decode token
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -65,9 +66,9 @@ export class WorkOrderTypeComponent implements OnInit {
   previousPage() {
     this.pageno = +this.pageno - 1;
     this.WorkOrderServiceService
-    .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.workorderTypeList = data;
+      .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.workorderTypeList = data;
         if (this.pageno == 1) {
           this.showHide2 = true;
           this.showHide1 = false;
@@ -81,9 +82,9 @@ export class WorkOrderTypeComponent implements OnInit {
   nextPage() {
     this.pageno = +this.pageno + 1;
     this.WorkOrderServiceService
-    .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.workorderTypeList = data;
+      .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.workorderTypeList = data;
         this.pagination = +this.workorderTypeList[0].totalItems / (+this.pageno * (+this.items_perpage));
         if (this.pagination > 1) {
           this.showHide2 = true;
@@ -106,6 +107,7 @@ export class WorkOrderTypeComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.checkFlag = false;
     this.WorkOrderServiceService
       .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)//service for gettig all workorder type on pageload
       .subscribe((data: any[]) => {
@@ -127,35 +129,35 @@ export class WorkOrderTypeComponent implements OnInit {
   //function called on search
   searchWOType(key) {
     var value = key.trim();
-    if(value.length>=3)//if search key length>3 search service is called
+    if (value.length >= 3)//if search key length>3 search service is called
     {
-    this.WorkOrderServiceService
-      .search_workordertype(this.OrganizationID, value)
-      .subscribe((data: any[]) => {
-        this.workorderTypeList = data;
-        this.showHide2 = false;
+      this.WorkOrderServiceService
+        .search_workordertype(this.OrganizationID, value)
+        .subscribe((data: any[]) => {
+          this.workorderTypeList = data;
+          this.showHide2 = false;
           this.showHide1 = false;
-      });
+        });
     }
-    else if(value.length==0)//if search key length=0 original table is returned
+    else if (value.length == 0)//if search key length=0 original table is returned
     {
       if ((value.length == 0) && (key.length == 0)) {
         this.loading = true;
       }
       this.WorkOrderServiceService//service for loading current table
-      .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.workorderTypeList = data;
-        this.loading=false;
-        if (this.workorderTypeList[0].totalItems > this.items_perpage) {
-          this.showHide2 = true;
-          this.showHide1 = false;
-        }
-        else if (this.workorderTypeList[0].totalItems <= this.items_perpage) {
-          this.showHide2 = false;
-          this.showHide1 = false;
-        }
-      });
+        .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.workorderTypeList = data;
+          this.loading = false;
+          if (this.workorderTypeList[0].totalItems > this.items_perpage) {
+            this.showHide2 = true;
+            this.showHide1 = false;
+          }
+          else if (this.workorderTypeList[0].totalItems <= this.items_perpage) {
+            this.showHide2 = false;
+            this.showHide1 = false;
+          }
+        });
     }
 
   }
@@ -166,6 +168,7 @@ export class WorkOrderTypeComponent implements OnInit {
   //function to delete current workordertype key
   deleteWOType() {
     this.loading = true;
+    this.checkFlag = true;
     this.delete_WOType = {
       WorkorderTypeKey: this.wot_key,
       OrganizationID: this.OrganizationID
@@ -173,6 +176,7 @@ export class WorkOrderTypeComponent implements OnInit {
     this.WorkOrderServiceService
       .DeleteWOT(this.delete_WOType).subscribe(() => {
         alert("Work-order type deleted successfully");
+        this.checkFlag = false;
         this.WorkOrderServiceService
           .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
           .subscribe((data: any[]) => {
