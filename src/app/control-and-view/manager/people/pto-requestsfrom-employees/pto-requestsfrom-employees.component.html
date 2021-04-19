@@ -4,8 +4,7 @@
     <h4 style="margin-left: 40%;">VIEW PTO REQUESTS</h4>
   </div>
   <br><br><br>
-  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
-    class="row bg-info col-md-12">
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem;width: auto;" class="row bg-info col-md-12">
     <div class="col-md-6">
       <div class="form-group">
         <label>From Date</label>
@@ -20,28 +19,23 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="form-group">
+      <div class="form-group" style="width: 75%;">
         <label for="Manager">Supervisor </label>
-        <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager"
-          (onDeSelect)="selectEmp()" [settings]="dropdownSettings2" (onSelect)="selectEmp()"
-          (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+        <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager" (onDeSelect)="selectEmp()" [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
         </ng-multiselect-dropdown>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="form-group">
+      <div class="form-group" style="width: 75%;">
         <label for="Manager">Shift </label>
-        <ng-multiselect-dropdown [placeholder]="'Select Shift'" [data]="shiftList" [(ngModel)]="Shift"
-          (onDeSelect)="selectEmp()" [settings]="dropdownSettings3" (onSelect)="selectEmp()"
-          (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+        <ng-multiselect-dropdown [placeholder]="'Select Shift'" [data]="shiftList" [(ngModel)]="Shift" (onDeSelect)="selectEmp()" [settings]="dropdownSettings3" (onSelect)="selectEmp()" (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
         </ng-multiselect-dropdown>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="form-group">
+      <div class="form-group" style="width: 75%;">
         <label for="Employee">Employee </label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
-          [(ngModel)]="Employee" [settings]="dropdownSettings1">
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="Employee" [settings]="dropdownSettings1">
         </ng-multiselect-dropdown>
 
       </div>
@@ -59,8 +53,7 @@
     </div>
     <div class="row col-md-12">
       <div style="margin-left: 45%">
-        <button type="button" class="btn btn-success"
-          (click)="viewpto(fromdate,todate,ptoStatus)"><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" (click)="viewpto(fromdate,todate,ptoStatus)"><b>GENERATE</b></button>
       </div>
     </div>
 

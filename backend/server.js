@@ -17593,6 +17593,7 @@ app.get(securedpath + '/getTemplateDetailsForFeedbackByOrgId', function (req, re
 
 app.get(securedpath + '/getFeedbackTemplateQuestionsEditDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
+    var templateID = url.parse(req.url, true).query['templateID'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -17601,13 +17602,13 @@ app.get(securedpath + '/getFeedbackTemplateQuestionsEditDetails', function (req,
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @OrganizationID=?;call usp_getFeedbackTemplateQuestionsEditDetails(@OrganizationID)', [OrganizationID], function (err, rows) {
+            connection.query('set @templateID=?;set @OrganizationID=?;call usp_getFeedbackTemplateQuestionsEditDetails(@templateID,@OrganizationID)', [templateID,OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
 
-                    res.end(JSON.stringify(rows[1]));
+                    res.end(JSON.stringify(rows[2]));
                 }
                 res.end();
             });
@@ -23455,7 +23456,7 @@ app.post(securedpath + '/createMasterShift_supervisor', function (req, res) {
         if (err) {
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-            connection.query('set @shiftName=?; set  @empKey=?;set @orgID=?;set @supervisoremployeekey=? call usp_createMasterShift_supervisor(@shiftName,@empKey,@orgID,@supervisoremployeekey)', [shiftName, empKey, orgID, supervisoremployeekey], function (err, rows) {
+            connection.query('set @shiftName=?; set  @empKey=?;set @orgID=?;set @supervisoremployeekey=?; call usp_createMasterShift_supervisor(@shiftName,@empKey,@orgID,@supervisoremployeekey)', [shiftName, empKey, orgID, supervisoremployeekey], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
