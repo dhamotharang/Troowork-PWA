@@ -23,7 +23,7 @@ export class PtoRequestEditComponent implements OnInit {
   requestdetails;
   startTime;
   EndTime;
- 
+
 
   // editflag;
   ptorequestID$;
@@ -74,12 +74,12 @@ export class PtoRequestEditComponent implements OnInit {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
 
-  convert_Time(str){
+  convert_Time(str) {
     var datePipe = new DatePipe('en-US');
     var setDob = datePipe.transform(str, 'h:mm:ss a');
     return setDob;
-    
-   };
+
+  };
   submitEditedRequest() {
 
     this.checkFlag = true;
@@ -94,19 +94,19 @@ export class PtoRequestEditComponent implements OnInit {
       return;
     }
 
-    if (!(this.requestdetails.StartTime)) {
+    if (!(this.startTime)) {
       alert('Start Time is not provided !');
       this.checkFlag = false;
       return;
     }
-    if (!(this.requestdetails.EndTime)) {
+    if (!(this.EndTime)) {
       alert('End Time is not provided !');
       this.checkFlag = false;
       return;
     }
     else {
-      var time1 = new Date(this.requestdetails.StartTime);
-      var time2 = new Date(this.requestdetails.EndTime);
+      var time1 = new Date(this.startTime);
+      var time2 = new Date(this.EndTime);
       var curTime = new Date();
       var timediff = +time2 - +time1;
 
@@ -117,7 +117,9 @@ export class PtoRequestEditComponent implements OnInit {
       }
 
     }
+    console.log();
 
+    console.log();
     // if (!(this.requestdetails.Comments)) {
     //   alert('Comments are not provided !');
     //   return;
@@ -153,7 +155,7 @@ export class PtoRequestEditComponent implements OnInit {
     // this.startTime=new Date ('2021-04-02T22:59:20.539Z').toLocaleTimeString();
     // this.EndTime= new Date().toLocaleTimeString();
 
-    this.PeopleServiceService.setEditedRequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),this.convert_Time(this.requestdetails.StartTime),this.convert_Time(this.requestdetails.EndTime),
+    this.PeopleServiceService.setEditedRequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate), this.convert_Time(time1), this.convert_Time(time2),
       comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
         this.checkFlag = false;
@@ -204,9 +206,9 @@ export class PtoRequestEditComponent implements OnInit {
       var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
       this.startTime = start;
       this.EndTime = end;
-      
-      
-      
+
+
+
     });
   }
 }
