@@ -3,6 +3,8 @@ import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-pto-request-edit-pwa',
@@ -25,6 +27,8 @@ export class PtoRequestEditPWAComponent implements OnInit {
   // editflag;
   ptorequestID$;
   // curr_date;
+  startTime;
+  EndTime;
 
   options: DatepickerOptions = {
     minYear: 1970,
@@ -70,6 +74,14 @@ export class PtoRequestEditPWAComponent implements OnInit {
   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
+
+  convert_Time(str){
+    var datePipe = new DatePipe('en-US');
+    var setDob = datePipe.transform(str, 'h:mm:ss a');
+    return setDob;
+    
+   };
+
   submitEditedRequest() {
 
     this.checkFlag = true;
@@ -83,6 +95,29 @@ export class PtoRequestEditPWAComponent implements OnInit {
       this.checkFlag = false;
       return;
     }
+
+    if (!(this.requestdetails.StartTime)) {
+      alert('Start Time is not provided !');
+      this.checkFlag = false;
+      return;
+    }
+    if (!(this.requestdetails.EndTime)) {
+      alert('End Time is not provided !');
+      this.checkFlag = false;
+      return;
+    }
+    else {
+      var time1 = new Date(this.requestdetails.StartTime);
+      var time2 = new Date(this.requestdetails.EndTime);
+      var curTime = new Date();
+      var timediff = +time2 - +time1;
+
+      if (timediff < 0) {
+        alert("Start Time can't be after End Time");
+        this.checkFlag = false;
+        return;
+      }
+    }  
 
     // if (!(this.requestdetails.Comments)) {
     //   alert('Comments are not provided !');
@@ -115,8 +150,8 @@ export class PtoRequestEditPWAComponent implements OnInit {
     else {
       comments = "";
     }
-    this.PeopleServiceService.setEditedPTORequest(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),
-      comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
+    this.PeopleServiceService.setEditedPTORequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),
+    this.convert_Time(this.requestdetails.StartTime), this.convert_Time(this.requestdetails.EndTime), comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
         this.checkFlag = false;
         alert('PTO Request Updated Successfully');
@@ -153,7 +188,7 @@ export class PtoRequestEditPWAComponent implements OnInit {
     this.PeopleServiceService.setdeletePTORequest(this.deleteRequestKey, this.OrganizationID)
       .subscribe((data) => {
 
-        this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+        this.PeopleServiceService.setgetRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
           this.requestdetails = data;
           this.checkFlag = false;
           alert('PTO Request Deleted Successfully');
@@ -182,8 +217,17 @@ export class PtoRequestEditPWAComponent implements OnInit {
     // this.editflag = false;
 
     this.checkFlag = false;
-    this.PeopleServiceService.setgetRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
+    this.PeopleServiceService.setgetRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
+      var cur_time = new Date(Date.now());
+      var startTime = this.requestdetails.StartTime;
+      var EndTime = this.requestdetails.EndTime;
+      var test1 = startTime.split(":");
+      var test2 = EndTime.split(":");
+      var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+      var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
+      this.startTime = start;
+      this.EndTime = end;
     });
     //  this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
     //   this.requestdetails = data;

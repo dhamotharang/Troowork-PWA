@@ -48,6 +48,160 @@ import { DatepickerOptions } from 'ng2-datepicker';
   
   
   <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
+  <div *ngIf="OrganizationID==223">
+
+  <div class="row col-md-12 ">
+  <div class="form-group col-md-3">
+        <label>Date</label>
+        <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="date1" style="z-index:1" (ngModelChange)="selecteddate1();empCalendarActivities1();"></ng-datepicker>
+      </div>
+  </div>
+
+  <table class="table table-hover table-responsive table-bordered table"
+  style="margin-left: 2%;display: inline-table;margin-top: 2%">
+    <thead class="tableHead">
+      
+      <th> </th>
+      <th *ngFor="let z of dateList">
+        {{z.date1}}
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of amCountList">
+        <td> <b>{{x.AmType}}</b> </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date1count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date1count}} </span>
+	    	</td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date2count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date2count}} </span>
+	    	</td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date3count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date3count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date4count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date4count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date5count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date5count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date6count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date6count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date7count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date7count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date8count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date8count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date9count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date9count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date10count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date10count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date11count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date11count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date12count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date12count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date13count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date13count}} </span>
+        </td>
+        <td style="text-align:center;">
+          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date14count}} </b></span>
+          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date14count}} </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div *ngIf="OrganizationID==223">
+  <table class="table table-hover table-responsive table-bordered table"
+  style="margin-left: 2%;display: inline-table;margin-top: 2%">
+    <thead class="tableHead">
+      
+      <th> </th>
+      <th *ngFor="let z of dateList">
+        {{z.date1}}
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of pmCountList">
+      <td> <b>{{x.AmType}}</b> </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date1count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date1count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date2count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date2count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date3count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date3count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date4count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date4count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date5count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date5count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date6count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date6count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date7count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date7count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date8count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date8count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date9count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date9count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date10count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date10count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date11count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date11count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date12count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date12count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date13count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date13count}} </span>
+      </td>
+      <td style="text-align:center;">
+        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date14count}} </b></span>
+        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date14count}} </span>
+      </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
 </div>
 
 <create-dialog #create (close)="createClosed($event)"></create-dialog>
@@ -71,6 +225,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 export class SchedulerComponent implements AfterViewInit {
   constructor(private ds: DataService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService) {
     this.date = new Date();
+    this.date1 = new Date();
     this.Range = 'Month';
   }
   @ViewChild("modal") modal: DayPilotModalComponent;
@@ -83,6 +238,7 @@ export class SchedulerComponent implements AfterViewInit {
 
   events: any[] = [];
   date;
+  date1;
   Range;
   role: String;
   empList;
@@ -111,6 +267,11 @@ export class SchedulerComponent implements AfterViewInit {
     eventsOnly: false
   };
   dropdownSettings1;
+  dateList;
+  fromdate;
+  amCountList;
+  pmCountList;
+
   convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
@@ -135,6 +296,20 @@ export class SchedulerComponent implements AfterViewInit {
   }
 
   options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: { 'font-size': '18px', 'width': '85%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem', 'z-index': '99' }, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
+  options1: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
     displayFormat: 'MM/DD/YYYY',
@@ -439,6 +614,7 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.Range = this.ds.getType();
     this.date = this.ds.getDate();
+    this.date1 = this.ds.getDate();
     this.ViewType();
 
     this.dropdownSettings1 = {
@@ -483,6 +659,23 @@ export class SchedulerComponent implements AfterViewInit {
 
     this.curDate = this.convert_DT(new Date());
 
+    if (this.OrganizationID == 223) {
+      this.SchedulingService
+        .iteratedatesForReport_schedulerexcel(this.convert_DT(this.date))
+        .subscribe((data: any) => {
+          this.dateList = data;
+        });
+      this.SchedulingService
+        .getschedulerAMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.amCountList = data;
+        });
+      this.SchedulingService
+        .getschedulerPMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.pmCountList = data;
+        });
+    }
     this.SchedulingService
       .employeesForSchedulerDropdown('Manager', this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -581,8 +774,54 @@ export class SchedulerComponent implements AfterViewInit {
       }
     }
   }
+  selecteddate1() {
+    if (this.Range == 'Week') {
+      var d = this.date;
+      var day = d.getDay();
+      var diff = d.getDate() - day + (day == 0 ? -6 : 2);
+      var k = new Date(d.setDate(diff));
+      this.config.startDate = this.convert_DT(k);
+    }
+    else {
+      if (this.date) {
+        this.config.startDate = this.convert_DT(this.date);
+      }
+      else {
+        this.config.startDate = DayPilot.Date.today();
+      }
+    }
+  }
 
   empCalendarActivities() {
+    this.loading = true;
+    this.date1 = this.date;
+    this.SchedulingService
+      .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.events = data;
+        this.loading = false;
+      });
+
+    if (this.OrganizationID == 223) {
+      this.SchedulingService
+        .iteratedatesForReport_schedulerexcel(this.convert_DT(this.date))
+        .subscribe((data: any) => {
+          this.dateList = data;
+        });
+      this.SchedulingService
+        .getschedulerAMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.amCountList = data;
+        });
+      this.SchedulingService
+        .getschedulerPMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.pmCountList = data;
+        });
+    }
+  }
+
+  empCalendarActivities1() {
     this.loading = true;
     this.SchedulingService
       .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
@@ -590,6 +829,23 @@ export class SchedulerComponent implements AfterViewInit {
         this.events = data;
         this.loading = false;
       });
+    if (this.OrganizationID == 223) {
+      this.SchedulingService
+        .iteratedatesForReport_schedulerexcel(this.convert_DT(this.date1))
+        .subscribe((data: any) => {
+          this.dateList = data;
+        });
+      this.SchedulingService
+        .getschedulerAMCount(this.convert_DT(this.date1), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.amCountList = data;
+        });
+      this.SchedulingService
+        .getschedulerPMCount(this.convert_DT(this.date1), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.pmCountList = data;
+        });
+    }
   }
   //new change for row filtering. starts....
   changeText(text) {
@@ -625,6 +881,27 @@ export class SchedulerComponent implements AfterViewInit {
         this.config.resources = data;
         this.loading = false;
       });
+
+    this.date1 = this.date;
+
+    if (this.OrganizationID == 223) {
+      this.SchedulingService
+        .iteratedatesForReport_schedulerexcel(this.convert_DT(this.date))
+        .subscribe((data: any) => {
+          this.dateList = data;
+        });
+      this.SchedulingService
+        .getschedulerAMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.amCountList = data;
+        });
+      this.SchedulingService
+        .getschedulerPMCount(this.convert_DT(this.date), this.OrganizationID)
+        .subscribe((data: any) => {
+          this.pmCountList = data;
+        });
+    }
+
   }
 
   clearFilter() {

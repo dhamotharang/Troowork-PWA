@@ -1329,7 +1329,8 @@ export class PeopleServiceService {
   }
   getPTORequestdetailsforManager(vpto) {
     // const url = ConectionSettings.Url+'/getPtoRequestdetailsforManager';
-    const url = ConectionSettings.Url + '/getPtoRequestdetailsforManager_SuType';
+    // const url = ConectionSettings.Url + '/getPtoRequestdetailsforManager_SuType';
+    const url = ConectionSettings.Url + '/getPtoRequestdetailsforManager_Emp';
     return this
       .http
       .post(url, vpto);
@@ -1540,4 +1541,114 @@ export class PeopleServiceService {
 
 
   //code by Amritha for Trade PWA end here
+
+  selectEmpWithJobTSprvsrAndDept_pto(employeekey, OrganizationID, JobTitle, Mang, DepartmentKey, Shif) {
+    // const uri = ConectionSettings.Url + '/empSelectWithFilterInMeetCreate';
+    const uri = ConectionSettings.Url + '/empSelectWithFilterInMeetCreate_Supervisor';
+    const obj = {
+      emKey: employeekey,
+      OrgID: OrganizationID,
+      JobT: JobTitle,
+      Mang: Mang,
+      DeptKey: DepartmentKey,
+      Shif: Shif
+    };
+    return this.http.post(uri, obj);
+  }
+
+  getmanagersForEmp_pto(empKey, orgID) {
+    return this
+      .http
+      // .get(ConectionSettings.Url + '/getManagerForEmployee?employeekey=' + empKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getManagerForEmployee_pto?employeekey=' + empKey + '&OrganizationID=' + orgID);
+  }
+  getallEmployeesList_pto(empKey, orgID) {
+    return this
+      .http
+      // .get(ConectionSettings.Url + '/allemployees?empkey=' + empKey + '&OrganizationID=' + OrgID);
+      .get(ConectionSettings.Url + '/allemployees_pto?empkey=' + empKey + '&OrganizationID=' + orgID);
+
+  }
+  //Girsish Code starts here
+  setgetRequestInfoforEmployeeWithTime(ptorequestID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getPTORequestDetailsforEmployeeWithTime_mob?ptorequestDetails=' + ptorequestID);
+  }
+  getRequestInfoforEmployeeWithTime(ptorequestID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getRequestDetailsforEmployeeWithTime?ptorequestDetails=' + ptorequestID);
+  }
+  setEditedPTORequestWithTime(curr_date, ptorequestID$, StartDate, EndDate, StartTime, EndTime, Comments, reason, empKey) {
+    const url = ConectionSettings.Url + "/setEditedPTORequest_mob";
+    const obj = {
+      currdate: curr_date,
+      ptorequestID: ptorequestID$,
+      StartDate: StartDate,
+      EndDate: EndDate,
+      StartTime: StartTime,
+      EndTime: EndTime,
+      Comments: Comments,
+      Reason: reason,
+      EmpKey: empKey
+    };
+    return this.http.post(url, obj);
+  }
+  setgetRequestdetailsWithTime(employeekey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getPTORequestDetailsWithTime_mob?OrganizationID=' + orgID + '&employeekey=' + employeekey);
+  }
+  setEditedRequestWithTime(curr_date, ptorequestID$, StartDate, EndDate, StartTime, EndTime, Comments, reason, empKey) {
+    const url = ConectionSettings.Url + "/setEditedRequestWithTime";
+    const obj = {
+      currdate: curr_date,
+      ptorequestID: ptorequestID$,
+      StartDate: StartDate,
+      EndDate: EndDate,
+      StartTime: StartTime,
+      EndTime: EndTime,
+      Comments: Comments,
+      Reason: reason,
+      EmpKey: empKey
+    };
+    return this.http.post(url, obj);
+  }
+  setPTORequestWithTime(curr_date, toServeremployeekey, OrganizationID, startdate, enddate, starttime, endtime, comments, reason) {
+    console.log(curr_date + "..." + toServeremployeekey + "..." + OrganizationID + "..." + startdate + "..." + enddate + "..." + comments + "..." + reason);
+    const url = ConectionSettings.Url + "/savePTORequest_mob";
+    const obj = {
+      currentdate: curr_date,
+      employeekey: toServeremployeekey,
+      OrganizationID: OrganizationID,
+      startdate: startdate,
+      enddate: enddate,
+      starttime: starttime,
+      endtime: endtime,
+      comments: comments,
+      ptoreason: reason
+    };
+    return this.http.post(url, obj);
+  }
+  getRequestdetailsWithTime(employeekey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getRequestDetailswithTime?OrganizationID=' + orgID + '&employeekey=' + employeekey);
+  }
+  submitRequestWithTime(curr_date, toServeremployeekey, OrganizationID, startdate, enddate, starttime, endtime, comments, reason) {
+    const url = ConectionSettings.Url + "/savePTORequestWithTime";
+    const obj = {
+      currentdate: curr_date,
+      employeekey: toServeremployeekey,
+      OrganizationID: OrganizationID,
+      startdate: startdate,
+      enddate: enddate,
+      starttime: starttime,
+      endtime: endtime,
+      comments: comments,
+      ptoreason: reason
+    };
+    return this.http.post(url, obj);
+  }
 }

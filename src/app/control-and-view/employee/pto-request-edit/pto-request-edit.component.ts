@@ -1,7 +1,10 @@
+import { toDate } from '@angular/common/src/i18n/format_date';
 import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-pto-request-edit',
@@ -18,6 +21,10 @@ export class PtoRequestEditComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   requestdetails;
+  startTime;
+  EndTime;
+ 
+
   // editflag;
   ptorequestID$;
   // curr_date;
@@ -66,6 +73,13 @@ export class PtoRequestEditComponent implements OnInit {
   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
+
+  convert_Time(str){
+    var datePipe = new DatePipe('en-US');
+    var setDob = datePipe.transform(str, 'h:mm:ss a');
+    return setDob;
+    
+   };
   submitEditedRequest() {
 
     this.checkFlag = true;
@@ -78,6 +92,30 @@ export class PtoRequestEditComponent implements OnInit {
       alert('End Date is not provided !');
       this.checkFlag = false;
       return;
+    }
+
+    if (!(this.requestdetails.StartTime)) {
+      alert('Start Time is not provided !');
+      this.checkFlag = false;
+      return;
+    }
+    if (!(this.requestdetails.EndTime)) {
+      alert('End Time is not provided !');
+      this.checkFlag = false;
+      return;
+    }
+    else {
+      var time1 = new Date(this.requestdetails.StartTime);
+      var time2 = new Date(this.requestdetails.EndTime);
+      var curTime = new Date();
+      var timediff = +time2 - +time1;
+
+      if (timediff < 0) {
+        alert("Start Time can't be after End Time");
+        this.checkFlag = false;
+        return;
+      }
+
     }
 
     // if (!(this.requestdetails.Comments)) {
@@ -112,7 +150,10 @@ export class PtoRequestEditComponent implements OnInit {
       comments = "";
     }
 
-    this.PeopleServiceService.setEditedRequest(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),
+    // this.startTime=new Date ('2021-04-02T22:59:20.539Z').toLocaleTimeString();
+    // this.EndTime= new Date().toLocaleTimeString();
+
+    this.PeopleServiceService.setEditedRequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate),this.convert_Time(this.requestdetails.StartTime),this.convert_Time(this.requestdetails.EndTime),
       comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
         this.checkFlag = false;
@@ -152,8 +193,20 @@ export class PtoRequestEditComponent implements OnInit {
     this.checkFlag = false;
     // this.editflag = false;
 
-    this.PeopleServiceService.getRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
+    this.PeopleServiceService.getRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
+      var cur_time = new Date(Date.now());
+      var startTime = this.requestdetails.StartTime;
+      var EndTime = this.requestdetails.EndTime;
+      var test1 = startTime.split(":");
+      var test2 = EndTime.split(":");
+      var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+      var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
+      this.startTime = start;
+      this.EndTime = end;
+      
+      
+      
     });
   }
 }

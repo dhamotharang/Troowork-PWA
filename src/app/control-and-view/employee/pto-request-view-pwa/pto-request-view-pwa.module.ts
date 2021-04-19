@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { EmployeeDashbordModule } from '../../dashboard/user-dashboards/employee-dashboard/employee-dashbord.module';
 import { PtoRequestViewPWAComponent } from './pto-request-view-pwa.component';
+import { CalendarModule } from 'primeng/calendar';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +21,7 @@ const routes: Routes = [
     EmployeeDashbordModule,
     MDBBootstrapModule,
     FormsModule, ReactiveFormsModule,
+    CalendarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [PtoRequestViewPWAComponent]

@@ -19,19 +19,20 @@
     <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th> Shift Name </th>
+        <th> Shift Supervisor </th>
         <th> Edit </th>
       </thead>
       <tbody>
         <tr *ngFor="let x of shiftdetails">
           <td>{{ x.ShiftName }}</td>
-
+          <td>{{ x.SupervisorName }}</td>
           <td>
             <a [routerLink]="['masterShiftEdit',x.Master_shiftID]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
             <button *ngIf="x.showFlag==0" class="btn btn-danger" (click)="basicModal.show();deleteShiftPass(x.Master_shiftID); " [disabled]="checkFlag"><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="build?.length == 0">
-          <td colspan="2" class="no-data-available">No records found</td>
+          <td colspan="3" class="no-data-available">No records found</td>
         </tr>
 
         <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">

@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgDatepickerModule} from 'ng2-datepicker';
 import { EmployeeDashbordModule } from '../../dashboard/user-dashboards/employee-dashboard/employee-dashbord.module';
 import { PtoRequestDetailsComponent } from "./pto-request-details.component";
+import { CalendarModule } from 'primeng/calendar';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     HttpClientModule,
     EmployeeDashbordModule,
     NgDatepickerModule,
+    CalendarModule,
     FormsModule, ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],

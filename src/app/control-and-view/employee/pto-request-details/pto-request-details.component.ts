@@ -106,7 +106,7 @@ export class PtoRequestDetailsComponent implements OnInit {
     this.editflag = false;
     this.checkFlag = false;
 
-    this.PeopleServiceService.getRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
+    this.PeopleServiceService.getRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
     });
   }

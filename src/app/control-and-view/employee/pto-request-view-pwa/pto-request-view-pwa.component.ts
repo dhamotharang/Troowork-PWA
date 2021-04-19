@@ -17,6 +17,7 @@ export class PtoRequestViewPWAComponent implements OnInit {
  requestdetails;
  editflag;
  isMobile: boolean;
+
 //  deleteRequestKey;
   router: any;
 
@@ -62,7 +63,7 @@ export class PtoRequestViewPWAComponent implements OnInit {
    this.toServeremployeekey = profile.employeekey;
    this.OrganizationID = profile.OrganizationID;
 
-   this.PeopleServiceService. setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+   this.PeopleServiceService.setgetRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
      this.requestdetails = data;
    });
    this.onResize();

@@ -12,6 +12,18 @@
         <input type="text" placeholder="Shift Name" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ShiftName">
       </div>
     </div>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="building">Shift Supervisor* </label></h5>
+      <div class="col-md-8 col-lg-8 col-sm-8" style="text-align:left">
+        <select style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="supervisoremployeekey">
+          <option value="">--Select--</option>
+
+          <option *ngFor="let f of supervisorlist" [value]="f.EmployeeKey">
+            {{f.EmployeeText}}
+          </option>
+        </select>
+      </div>
+    </div>
     <br>
     <div class="row col-md-12" style="margin-left: 33%">
       <button style="color:white !important" [disabled]="checkFlag" class="btn btn-success" (click)="addShift(ShiftName)"><b>CREATE

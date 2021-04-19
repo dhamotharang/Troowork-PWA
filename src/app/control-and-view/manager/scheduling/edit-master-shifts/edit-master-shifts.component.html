@@ -9,12 +9,26 @@
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="Shift">Shift Name* </label></h5>
       <div class="col-md-8" style="text-align:left">
-        <input type="text" placeholder="Shift Name" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="shiftDetails.ShiftName">
+        <input type="text" placeholder="Shift Name" maxlength="40" style="background-color: #D4F4FF !important;"
+          class="form-control" [(ngModel)]="shiftDetails.ShiftName">
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Shift Supervisor* </label></h5>
+      <div class="col-md-8">
+        <select style="background-color: #cadfe6 !important;" class="form-control"
+          [(ngModel)]="shiftDetails.SupervisorEmployeeKey">
+          <option>--Select--</option>
+          <option *ngFor="let f of supervisorlist" [value]="f.EmployeeKey">
+            {{f.EmployeeText}}
+          </option>
+        </select>
       </div>
     </div>
     <br>
     <div class="row col-md-12" style="margin-left: 33%">
-      <button style="color:white !important" [disabled]="checkFlag" class="btn btn-success" (click)="updateShift()"><b>UDPATE
+      <button style="color:white !important" [disabled]="checkFlag" class="btn btn-success"
+        (click)="updateShift()"><b>UDPATE
           SHIFT</b>
       </button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important" routerLinkActive="active"><b>GO

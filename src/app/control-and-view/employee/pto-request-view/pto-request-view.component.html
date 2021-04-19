@@ -7,23 +7,25 @@
     <table class="table table-responsive table-hover table-bordered table" style="display: inline-table">
       <thead class="tableHead">
         <th> Submitted Date </th>
-        <th> Start Date </th>
-        <th> End Date </th>
+        <th> Start Date & Time </th>
+        <th> End Date & Time </th>
         <th> Status </th>
         <th> Action </th>
       </thead>
       <tbody>
         <tr *ngFor="let x of requestdetails">
           <td>{{ x.SubmittedDate }}</td>
-          <td>{{ x.StartDate }}</td>
-          <td>{{ x.EndDate }}</td>
+          <td>{{ x.StartDate }} {{ x.StartTime }}</td>
+          <td>{{ x.EndDate }} {{ x.EndTime }}</td>
           <td>{{ x.RequestStatus }}</td>
           <td *ngIf="x.RequestStatus=='Approved'||x.RequestStatus=='Rejected'||x.RequestStatus=='Cancelled by employee'">
             <a [routerLink]="['PTORequestDetails', x.request_id]" class="btn btn-primary"><b>Details</b></a>&nbsp;&nbsp;
           </td>
-          <td *ngIf="x.RequestStatus=='Pending'">
-            <button [routerLink]="['PTORequestEdit', x.request_id]" [disabled]="checkFlag" class="btn btn-primary"><b>Edit</b></button>&nbsp;&nbsp;
+          <td *ngIf="x.RequestStatus=='Pending'">  
+            <div class="btn-group">
+            <button [routerLink]="['PTORequestEdit', x.request_id]" [disabled]="checkFlag" class="btn btn-primary"><b>Edit</b></button>&nbsp;&nbsp;       
             <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deletePass(x.request_id); "><b>Delete</b></button>
+            </div>
           </td>
         </tr>
         <tr *ngIf="requestdetails?.length == 0">

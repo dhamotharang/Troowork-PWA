@@ -14,11 +14,14 @@ export class CreateMasterShiftsComponent implements OnInit {
   role: String;
   name: String;
   employeekey: Number;
+  supervisoremployeekey;
   IsSupervisor: Number;
   OrganizationID: Number;
 
   ShiftName;
   checkFlag;
+
+  supervisorlist;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -54,7 +57,7 @@ export class CreateMasterShiftsComponent implements OnInit {
         return;
       }
       else {
-        this.scheduleServ.createMasterShifts(newshiftName, this.employeekey, this.OrganizationID)
+        this.scheduleServ.createMasterShifts_supervisor(newshiftName, this.employeekey, this.OrganizationID,this.supervisoremployeekey)
           .subscribe((data: any[]) => {
             alert("Shift created successfully");
             this.checkFlag = false;
@@ -74,7 +77,13 @@ export class CreateMasterShiftsComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+    this.supervisoremployeekey = "";
+
     this.checkFlag = false;
+    this.scheduleServ.getallsupervisorlist_shift(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.supervisorlist = data;
+      });
   }
 
   goBack() {

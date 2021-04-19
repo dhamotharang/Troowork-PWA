@@ -21,6 +21,33 @@
     </div>
     <div class="col-md-6">
       <div class="form-group">
+        <label for="Manager">Supervisor </label>
+        <ng-multiselect-dropdown [placeholder]="'Select Manager'" [data]="managerList" [(ngModel)]="Manager"
+          (onDeSelect)="selectEmp()" [settings]="dropdownSettings2" (onSelect)="selectEmp()"
+          (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="Manager">Shift </label>
+        <ng-multiselect-dropdown [placeholder]="'Select Shift'" [data]="shiftList" [(ngModel)]="Shift"
+          (onDeSelect)="selectEmp()" [settings]="dropdownSettings3" (onSelect)="selectEmp()"
+          (onDeSelectAll)="selectEmp()" (onSelectAll)="selectEmp()">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="Employee">Employee </label>
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
+          [(ngModel)]="Employee" [settings]="dropdownSettings1">
+        </ng-multiselect-dropdown>
+
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
         <label>Status</label>
         <select [(ngModel)]="ptoStatus" style="background-color: #d4f4ff;width: 75%;" class="form-control">
           <option value="" selected>--Select--</option>
@@ -56,7 +83,7 @@
           <td>{{ x.EmployeeNumber }}</td>
           <td>{{ x.employeename }}</td>
           <td>{{ x.SubmittedDate }}</td>
-          <td>{{ x.StartDate }} to {{ x.EndDate }}</td>
+          <td>{{ x.StartDate }} {{ x.StartTime }} to {{ x.EndDate }} {{ x.EndTime }}</td>
           <td>{{ x.RequestStatus }}</td>
           <td>
             <a [routerLink]="['PTORequestAction', x.request_id]" class="btn btn-primary"><b>VIEW</b></a>&nbsp;&nbsp;

@@ -12,12 +12,11 @@
 
             <tr>
               <td>
-
-
                 <div class="row">
                   <div class="col"> <label>Start Date</label></div>
                   <div class="date col-8">
-                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.StartDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.StartDate">
+                    </ng-datepicker>
                   </div>
                 </div>
               </td>
@@ -25,9 +24,35 @@
             <tr>
               <td>
                 <div class="row">
+                  <div class="col"> <label>Start Time</label></div>
+                  <div class="date col-8">
+                    <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
+                      [(ngModel)]="requestdetails.StartTime" [timeOnly]="true" hourFormat="12">
+                    </p-calendar>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="row">
                   <div class="col"> <label>End Date</label></div>
                   <div class="date col-8">
-                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.EndDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.EndDate">
+                    </ng-datepicker>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="row">
+                  <div class="col"> <label>End Time</label></div>
+                  <div class="date col-8">
+                    <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
+                      [(ngModel)]="requestdetails.EndTime" [timeOnly]="true" hourFormat="12">
+                    </p-calendar>
                   </div>
                 </div>
               </td>
@@ -39,7 +64,9 @@
                     <label>PTO Remaining</label>
                   </div>
                   <div class="col-8">
-                    <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75" [disabled]="!editflag" style="width:100%; background-color:rgb(245, 245, 245) !important; text-align: right; border: 1px solid rgb(245, 245, 245);" />
+                    <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75"
+                      [disabled]="!editflag"
+                      style="width:100%; background-color:rgb(245, 245, 245) !important; text-align: right; border: 1px solid rgb(245, 245, 245);" />
                   </div>
                 </div>
               </td>
@@ -52,7 +79,8 @@
                     <label>Submitted Date</label>
                   </div>
                   <div class="col-8">
-                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.SubmittedDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" [disabled]="!editflag"
+                      [(ngModel)]="requestdetails.SubmittedDate"></ng-datepicker>
                   </div>
                 </div>
               </td>
@@ -64,7 +92,9 @@
                     <label>Comments</label>
                   </div>
                   <div class="col-8">
-                    <input type="text" placeholder="Comments" [disabled]="!editflag" maxlength="200" [(ngModel)]="requestdetails.Comments" rows="5" style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align: right;  border: 1px solid rgb(245, 245, 245);" />
+                    <input type="text" placeholder="Comments" [disabled]="!editflag" maxlength="200"
+                      [(ngModel)]="requestdetails.Comments" rows="5"
+                      style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align: right;  border: 1px solid rgb(245, 245, 245);" />
                   </div>
                 </div>
               </td>
@@ -78,7 +108,8 @@
                     <label>Status Date</label>
                   </div>
                   <div class="col-8">
-                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusDate">
+                    </ng-datepicker>
                   </div>
                 </div>
               </td>
@@ -90,12 +121,15 @@
                     <label>Status</label>
                   </div>
                   <div class="col-8">
-                    <input type="text" style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align: right; border: 1px solid rgb(245, 245, 245);" [disabled]="!editflag" [(ngModel)]="requestdetails.RequestStatus">
+                    <input type="text"
+                      style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align: right; border: 1px solid rgb(245, 245, 245);"
+                      [disabled]="!editflag" [(ngModel)]="requestdetails.RequestStatus">
                   </div>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+            <tr
+              *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
               <td>
                 <div class="col-md-12 col-lg-12 col-sm-12" style="font-size:16px; margin-left:-1rem;">
                   <label><b>Approver Details</b></label>
@@ -110,35 +144,80 @@
                     <label>Approver Comments</label>
                   </div>
                   <div class="col-8">
-                    <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusComment" rows="5" style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align:right; border: 1px solid rgb(245, 245, 245);" />
+                    <input type="text" maxlength="200" [disabled]="!editflag" [(ngModel)]="requestdetails.StatusComment"
+                      rows="5"
+                      style="width: 100%;background-color:rgb(245, 245, 245) !important; text-align:right; border: 1px solid rgb(245, 245, 245);" />
                   </div>
                 </div>
               </td>
             </tr>
 
-            <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+            <tr
+              *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
               <td>
-                <div *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+                <div
+                  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
                   <div class="row">
                     <div class="col">
                       <label>Approved Start Date</label>
                     </div>
                     <div class="col-8">
-                      <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.ApprovedStartDate"></ng-datepicker>
+                      <ng-datepicker [options]="options" [disabled]="!editflag"
+                        [(ngModel)]="requestdetails.ApprovedStartDate"></ng-datepicker>
                     </div>
                   </div>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+            <tr
+              *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
               <td>
-                <div *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+                <div
+                  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+                  <div class="row">
+                    <div class="col">
+                      <label>Approved Start Time</label>
+                    </div>
+                    <div class="col-8">
+                      <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
+                        [disabled]="!editflag" [(ngModel)]="requestdetails.ApprovedStartTime" [timeOnly]="true"
+                        hourFormat="12">
+                      </p-calendar>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr
+              *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+              <td>
+                <div
+                  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
                   <div class="row">
                     <div class="col">
                       <label>Approved End Date</label>
                     </div>
                     <div class="col-8">
-                      <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.ApprovedEndDate"></ng-datepicker>
+                      <ng-datepicker [options]="options" [disabled]="!editflag"
+                        [(ngModel)]="requestdetails.ApprovedEndDate"></ng-datepicker>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr
+              *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+              <td>
+                <div
+                  *ngIf="requestdetails.RequestStatus == 'Approved'||requestdetails.RequestStatus == 'Cancelled by employee'">
+                  <div class="row">
+                    <div class="col">
+                      <label>Approved End Time</label>
+                    </div>
+                    <div class="col-8">
+                      <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME" [disabled]="!editflag"
+                        [(ngModel)]="requestdetails.ApprovedEndTime" [timeOnly]="true" hourFormat="12">
+                      </p-calendar>
                     </div>
                   </div>
                 </div>
@@ -161,7 +240,8 @@
                       <label>Cancelled Date</label>
                     </div>
                     <div class="col-8">
-                      <ng-datepicker [options]="options" [disabled]="!editflag" [(ngModel)]="requestdetails.CancelledDate"></ng-datepicker>
+                      <ng-datepicker [options]="options" [disabled]="!editflag"
+                        [(ngModel)]="requestdetails.CancelledDate"></ng-datepicker>
                     </div>
                   </div>
                 </div>
@@ -171,7 +251,8 @@
             <tr *ngIf="requestdetails.RequestStatus == 'Approved'">
               <td>
                 <div *ngIf="requestdetails.RequestStatus == 'Approved'">
-                  <button (click)='cancelPTO()' [disabled]="checkFlag" class="btn btn-warning" style="color:white !important;text-align:center; width:98%"><b>Cancel Request</b></button>
+                  <button (click)='cancelPTO()' [disabled]="checkFlag" class="btn btn-warning"
+                    style="color:white !important;text-align:center; width:98%"><b>Cancel Request</b></button>
                   <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>Go Back</b></a> -->
                 </div>
               </td>

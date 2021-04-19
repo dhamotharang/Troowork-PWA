@@ -1,8 +1,8 @@
 export const ConectionSettings = {
 
   // local
-  // AbsUrl: 'http://localhost:3000',
-  // Url: 'http://localhost:3000/api'
+  AbsUrl: 'http://localhost:3000',
+  Url: 'http://localhost:3000/api'
 
   // trooworkweb angular6
   // AbsUrl: 'https://trooworkweb.azurewebsites.net',
@@ -13,8 +13,8 @@ export const ConectionSettings = {
   // Url: 'http://demotroowork.azurewebsites.net/api'
 
   // QA
-  AbsUrl: 'https://troowork-qa.azurewebsites.net',
-  Url: 'https://troowork-qa.azurewebsites.net/api'
+  // AbsUrl: 'https://troowork-qa.azurewebsites.net',
+  // Url: 'https://troowork-qa.azurewebsites.net/api'
 
   // production
   // AbsUrl: 'https://troowork.azurewebsites.net',

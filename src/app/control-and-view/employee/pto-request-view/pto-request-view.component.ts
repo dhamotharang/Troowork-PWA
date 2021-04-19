@@ -48,7 +48,7 @@ export class PtoRequestViewComponent implements OnInit {
       .subscribe((data) => {
         this.checkFlag = false;
         alert('PTO Request Deleted Successfully');
-        this.PeopleServiceService.getRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+        this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
           this.requestdetails = data;
         });
       });
@@ -65,7 +65,7 @@ export class PtoRequestViewComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
     this.checkFlag = false;
 
-    this.PeopleServiceService.getRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+    this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
       this.requestdetails = data;
     });
   }

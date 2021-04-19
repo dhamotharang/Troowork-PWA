@@ -109,7 +109,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     this.editflag = false;
     this.checkFlag = false;
 
-    this.PeopleServiceService.setgetRequestInfoforEmployee(this.ptorequestID$).subscribe((data) => {
+    this.PeopleServiceService.setgetRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
     });
     this.onResize();

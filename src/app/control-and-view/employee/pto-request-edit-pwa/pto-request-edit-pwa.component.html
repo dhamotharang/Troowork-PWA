@@ -13,7 +13,20 @@
                 <div>
                   <div> <label>Start Date*</label></div>
                   <div class="date">
-                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.StartDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.StartDate">
+                    </ng-datepicker>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <div> <label>Start Time*</label></div>
+                  <div class="date">
+                    <p-calendar [inputStyle]="{'width':'180%'}" placeholder="TIME"
+                      [(ngModel)]="startTime" [timeOnly]="true" hourFormat="12">
+                    </p-calendar>
                   </div>
                 </div>
               </td>
@@ -23,11 +36,25 @@
                 <div>
                   <div> <label>End Date*</label></div>
                   <div class="date">
-                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.EndDate"></ng-datepicker>
+                    <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="requestdetails.EndDate">
+                    </ng-datepicker>
                   </div>
                 </div>
               </td>
             </tr>
+            <tr>
+              <td>
+                <div>
+                  <div> <label>End Time*</label></div>
+                  <div class="date">
+                    <p-calendar [inputStyle]="{'width':'180%'}" placeholder="TIME"
+                      [(ngModel)]="EndTime" [timeOnly]="true" hourFormat="12">
+                    </p-calendar>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
             <tr>
               <td>
                 <div class="row">
@@ -35,7 +62,8 @@
                     <label>PTO Remaining</label>
                   </div>
                   <div class="col-8">
-                    <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75" style="background-color:rgb(245, 245, 245) !important; width:100%; border: 1px solid rgb(245, 245, 245);" />
+                    <input type="text" placeholder="PTO Remaining" [(ngModel)]="requestdetails.Reason" maxlength="75"
+                      style="background-color:rgb(245, 245, 245) !important; width:100%; border: 1px solid rgb(245, 245, 245);" />
                   </div>
                 </div>
               </td>
@@ -48,7 +76,9 @@
                     <label>Comments</label>
                   </div>
                   <div class="col-8">
-                    <textarea class="form-control" placeholder="Comments" maxlength="200" [(ngModel)]="requestdetails.Comments" style="resize: none;background-color:white !important; width:100%; border: 1px solid white;"></textarea>
+                    <textarea class="form-control" placeholder="Comments" maxlength="200"
+                      [(ngModel)]="requestdetails.Comments"
+                      style="resize: none;background-color:white !important; width:100%; border: 1px solid white;"></textarea>
                   </div>
                 </div>
               </td>
@@ -59,7 +89,8 @@
             <tr>
               <td>
                 <div>
-                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
+                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag"
+                    class="btn btn-primary" (click)="submitEditedRequest()"><b>UPDATE</b></button> &nbsp;&nbsp;
 
                   <!-- <a (click)='goBack()' class="btn btn-warning" style="color:white !important;"><b>DELETE</b></a> -->
 
@@ -71,7 +102,9 @@
             <tr>
               <td>
                 <div>
-                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
+                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag"
+                    class="btn btn-danger"
+                    (click)="basicModal.show();deletePass(requestdetails.request_id); "><b>Delete</b></button>
 
                 </div>
               </td>
@@ -80,7 +113,8 @@
               <td colspan="7" class="no-data-available">No records found</td>
             </tr>
 
-            <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+            <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -93,8 +127,10 @@
                     Are you sure you want to delete this?
                   </div>
                   <div class="modal-footer">
-                    <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
-                    <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="basicModal.hide()" mdbWavesEffect>No</button>
+                    <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+                      (click)="basicModal.hide(); deleteRequest()" mdbWavesEffect>Yes</button>
+                    <button type="button" mdbBtn color="primary" class="relative waves-light"
+                      (click)="basicModal.hide()" mdbWavesEffect>No</button>
                   </div>
                 </div>
               </div>

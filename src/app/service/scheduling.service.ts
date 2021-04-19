@@ -559,6 +559,58 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/employeeCalendarDetailsForScheduler_EmployeeView_PWA?dateRange=' + dateRange + '&startDate=' + startDate + '&OrganizationID=' + OrgID + '&employeekey=' + employeekey);
   }
+  getschedulerAMCount(fromdate, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getschedulerAMCount?fromdate=' + fromdate + '&OrganizationID=' + orgID);
+  }
+  getschedulerPMCount(fromdate, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getschedulerPMCount?fromdate=' + fromdate + '&OrganizationID=' + orgID);
+  }
+  iteratedatesForReport_schedulerexcel(fromdate) {
 
+    const url = ConectionSettings.Url + "/getIteratedDates_schedulerexcel";
+    const obj = {
+      fromdate: fromdate
+      // todate: todate
+    }
+    return this.http.post(url, obj);
+
+    // return this.
+    //   http.get(ConectionSettings.Url + '/getIteratedDates?fromdate=' + fromdate + '&todate=' + todate);
+  }
+
+  createMasterShifts_supervisor(newshiftName, employeekey, OrganizationID, supervisoremployeekey) {
+    //const url = ConectionSettings.Url + "/createMasterShift";
+    const url = ConectionSettings.Url + "/createMasterShift_supervisor";
+    const obj = {
+      shiftName: newshiftName,
+      empKey: employeekey,
+      orgID: OrganizationID,
+      supervisoremployeekey: supervisoremployeekey
+    }
+    return this.http.post(url, obj);
+  }
+
+  getallsupervisorlist_shift(empKey, orgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/allsupervisoremployees_shift?empkey=' + empKey + '&OrganizationID=' + orgID);
+
+  }
+
+  udpateMasterShiftDetails_supervisor(shiftkey, shiftname, empKey, orgID, supervisorempkey) {
+    const url = ConectionSettings.Url + "/updateMasterShift_supervisor";
+    const obj = {
+      shiftKey: shiftkey,
+      shiftName: shiftname,
+      empKey: empKey,
+      orgID: orgID,
+      supervisorempkey: supervisorempkey
+    }
+    return this.http.post(url, obj);
+  }
 
 }

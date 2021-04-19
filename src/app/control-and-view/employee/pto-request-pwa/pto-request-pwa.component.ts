@@ -3,6 +3,7 @@ import { PeopleServiceService } from '../../../service/people-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Router } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class PtoRequestPWAComponent implements OnInit {
   // curr_date;
   startdate;
   enddate;
+  starttime = new Date();
+  endtime = new Date();
   comments;
   ptoreason;
   isMobile: boolean;
@@ -81,7 +84,21 @@ export class PtoRequestPWAComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private responsiveService: ResponsiveService) { }
+  constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private responsiveService: ResponsiveService) {
+    this.starttime.setHours(0);
+    this.starttime.setMinutes(0);
+    this.starttime.setSeconds(0);
+    this.endtime.setHours(23);
+    this.endtime.setMinutes(59);
+    this.endtime.setSeconds(0);
+   }
+
+   convert_Time(str){
+    var datePipe = new DatePipe('en-US');
+    var setDob = datePipe.transform(str, 'h:mm:ss a');
+    return setDob;
+    
+   };
 
   submitRequest() {
     this.checkFlag = true;
@@ -97,6 +114,30 @@ export class PtoRequestPWAComponent implements OnInit {
       this.checkFlag = false;
       return;
     }
+
+    if (!(this.starttime)) {
+      alert('Start Time is not provided !');
+      this.checkFlag = false;
+      return;
+    } 
+
+    if (!(this.endtime)) {
+      alert('End Time is not provided !');
+      this.checkFlag = false;
+      return;
+    }
+    else {
+      var time1 = new Date(this.starttime);
+      var time2 = new Date(this.endtime);
+      var curTime = new Date();
+      var timediff = +time2 - +time1;
+
+      if (timediff < 0) {
+        alert("Start Time can't be after End Time");
+        this.checkFlag = false;
+        return;
+      }
+    }  
     var timeDiff = Math.abs(this.startdate.getTime() - this.enddate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 365) {
@@ -125,8 +166,8 @@ export class PtoRequestPWAComponent implements OnInit {
       requestcomments = "";
     }
     this.PeopleServiceService
-      .setPTORequest(curr_date, this.toServeremployeekey, this.OrganizationID, this.convert_DT(this.startdate),
-        this.convert_DT(this.enddate), requestcomments, this.ptoreason).subscribe((data: any[]) => {
+      .setPTORequestWithTime(curr_date, this.toServeremployeekey, this.OrganizationID, this.convert_DT(this.startdate),
+        this.convert_DT(this.enddate),this.convert_Time(this.starttime),this.convert_Time(this.endtime), requestcomments, this.ptoreason).subscribe((data: any[]) => {
           this.checkFlag = false;
           alert("PTO Request Submitted Successfully");
           // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);

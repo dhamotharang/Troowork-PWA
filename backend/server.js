@@ -22850,7 +22850,651 @@ app.get(securedpath + '/getTemplateDetailsForFeedbackByRoomID_OrgId', function (
 // feedback template ends...
 
 // @Rodney ends...
+//Manager view PTO After adding Employee Dropdown Starts
 
+app.post(securedpath + '/getPtoRequestdetailsforManager_Emp', supportCrossOriginScript, function (req, res) {
+
+    var newWOObj = {};
+    newWOObj = req.body;
+
+    var OrganizationID = newWOObj.OrganizationID;
+    var employeekey = newWOObj.employeekey;
+    var fromdate = newWOObj.fromdate;
+    var todate = newWOObj.todate;
+    var ptostatus = newWOObj.ptoStatus;
+    var employeeKeyList = newWOObj.EmployeeKeyStr;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @OrganizationID=?;set @employeekey=?;set @fromdate=?;set @todate=?;set @ptostatus=?;set @employeeKeyList=?;call usp_getPTORequestdetailsforManager_Emp(@OrganizationID,@employeekey,@fromdate,@todate,@ptostatus,@employeeKeyList)', [OrganizationID, employeekey, fromdate, todate, ptostatus, employeeKeyList], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[6]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/empSelectWithFilterInMeetCreate_pto', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var emKey = req.body.emKey;
+    var OrgID = req.body.OrgID;
+    var JobT = req.body.JobT;
+    var Mang = req.body.Mang;
+    var DeptKey = req.body.DeptKey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @emKey=?;set @OrgID=?;set @JobT=?;set @Mang=?;set @DeptKey=?; call usp_empSelectWithFilterInMeetCreate_SuType(@emKey,@OrgID,@JobT,@Mang,@DeptKey)', [emKey, OrgID, JobT, Mang, DeptKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[5]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.get(securedpath + '/getManagerForEmployee_pto', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var employeekey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    //    console.log(username);
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @employeekey=?; set@OrganizationID=?; call usp_getManagerForEmployee_SuType(@employeekey,@OrganizationID)', [employeekey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[1]));
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.get(securedpath + '/allemployees_pto', function (req, res) {//empkey
+
+    console.log("Called employyee list fetcjh 2017");
+    res.header("Access-Control-Allow-Origin", "*");
+    var employeekey = url.parse(req.url, true).query['empkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @key=?;set @OrganizationID=?;call usp_properEmployeeList_SuType(@key,@OrganizationID)', [employeekey, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL in allemployees" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[2]));
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/empSelectWithFilterInMeetCreate_Supervisor', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var emKey = req.body.emKey;
+    var OrgID = req.body.OrgID;
+    var JobT = req.body.JobT;
+    var Mang = req.body.Mang;
+    var DeptKey = req.body.DeptKey;
+    var Shif = req.body.Shif;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @emKey=?;set @OrgID=?;set @JobT=?;set @Mang=?;set @DeptKey=?;set @Shif=?; call usp_empSelectWithFilterInMeetCreate_Supervisor(@emKey,@OrgID,@JobT,@Mang,@DeptKey,@Shif)', [emKey, OrgID, JobT, Mang, DeptKey, Shif], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[6]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+//Manager view PTO After adding Employee Dropdown Ends
+//Scheduler Eauclaire AM PM Count starts
+app.get(securedpath + '/getschedulerAMCount', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var fromdate = url.parse(req.url, true).query['fromdate'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set@fromdate=?;set @OrganizationID=?; call usp_getSchedulerAMExcelMEC(@fromdate,@OrganizationID)', [fromdate, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getschedulerPMCount', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var fromdate = url.parse(req.url, true).query['fromdate'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set@fromdate=?;set @OrganizationID=?; call usp_getSchedulerPMExcelMEC(@fromdate,@OrganizationID)', [fromdate, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/getIteratedDates_schedulerexcel', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var fromdate = req.body.fromdate;
+    // var todate = req.body.todate;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @fromdate=?;call usp_getIteratedDates_schedulerexcel(@fromdate)', [fromdate], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+//Scheduler Eauclaire AM PM Count Ends
+
+//PTO With Time By Girish Starts Here. Have Fun, Happy coding!. ;) 
+
+
+
+app.post(securedpath + '/savePTORequestWithTime', supportCrossOriginScript, function (req, res) {
+
+    var currentdate = req.body.currentdate;
+    var employeekey = req.body.employeekey;
+    var OrganizationID = req.body.OrganizationID;
+    var startdate = req.body.startdate;
+    var enddate = req.body.enddate;
+    var starttime = req.body.starttime;
+    var endtime = req.body.endtime;
+    var comments = req.body.comments;
+    var reason = req.body.ptoreason;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @currentdate=?;set @employeekey=?;set @OrganizationID=?;set @startdate=?;set @enddate=?;set @starttime=?;set @endtime=?;set @comments=?; set @reason=?; call usp_SavePTORequestWithTime(@currentdate,@employeekey,@OrganizationID,@startdate,@enddate,@starttime,@endtime,@comments,@reason)", [currentdate, employeekey, OrganizationID, startdate, enddate, starttime, endtime, comments, reason], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getRequestDetailsWithTime', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var empKey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @empKey=?;set @OrganizationID=?;call usp_getRequestDetailsWithTime(@empKey,@OrganizationID)', [empKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[2]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getRequestDetailsforEmployeeWithTime', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var ptorequestDetailsKey = url.parse(req.url, true).query['ptorequestDetails'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @ptorequestDetailsKey=?;call usp_getRequestDetailsbyIDforEmployeeWithTime(@ptorequestDetailsKey)', [ptorequestDetailsKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[1]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/setEditedRequestWithTime', supportCrossOriginScript, function (req, res) {
+
+    var currdate = req.body.currdate;
+    var ptorequestID = req.body.ptorequestID;
+    var StartDate = req.body.StartDate;
+    var EndDate = req.body.EndDate;
+    var StartTime = req.body.StartTime;
+    var EndTime = req.body.EndTime;
+    var Comments = req.body.Comments;
+    var reason = req.body.Reason;
+    var empKey = req.body.EmpKey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @currdate=?;set @ptorequestID=?;set @StartDate=?;set @EndDate=?;set @StartTime=?;set @EndTime=?;set @Comments=?;set @reason=?;set @empKey=?;call usp_setEditedRequestWithTime(@currdate,@ptorequestID,@StartDate,@EndDate,@StartTime,@EndTime,@Comments,@reason,@empKey)", [currdate, ptorequestID, StartDate, EndDate, StartTime, EndTime, Comments, reason, empKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getRequestDetailsbyIDWithTime', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var ptorequestDetailskey = url.parse(req.url, true).query['ptorequestDetailskey'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @ptorequestDetailskey=?;call usp_getRequestDetailsbyIDWithTime(@ptorequestDetailskey)', [ptorequestDetailskey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[1]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/savePTORequestActionWithTime', supportCrossOriginScript, function (req, res) {
+
+    var ptorequestDetails = req.body.ptorequestDetails;
+    var employeekey = req.body.employeekey;
+    var statuscurrentdate = req.body.statuscurrentdate;
+    var approvedstartdate = req.body.approvedstartdate;
+    var ApprovedEndDate = req.body.ApprovedEndDate;
+    var approvedstarttime = req.body.approvedstarttime;
+    var ApprovedEndTime = req.body.ApprovedEndTime;
+    var StatusKey = req.body.StatusKey;
+    var statuscomments = req.body.statuscomments;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @ptorequestDetails=?;set @employeekey=?;set @statuscurrentdate=?;set @approvedstartdate=?;set @ApprovedEndDate=?;set @approvedstarttime=?;set @ApprovedEndTime=?;set @StatusKey=?;set @statuscomments=?; call usp_SavePTORequestActionWithTime(@ptorequestDetails,@employeekey,@statuscurrentdate,@approvedstartdate,@ApprovedEndDate,@approvedstarttime,@ApprovedEndTime,@StatusKey,@statuscomments)", [ptorequestDetails, employeekey, statuscurrentdate, approvedstartdate, ApprovedEndDate, approvedstarttime, ApprovedEndTime, StatusKey, statuscomments], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/getPtoRequestdetailsforManagerWithTime_SuType', supportCrossOriginScript, function (req, res) {
+
+    var newWOObj = {};
+    newWOObj = req.body;
+
+    var OrganizationID = newWOObj.OrganizationID;
+    var employeekey = newWOObj.employeekey;
+    var fromdate = newWOObj.fromdate;
+    var todate = newWOObj.todate;
+    var ptostatus = newWOObj.ptoStatus;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @OrganizationID=?;set @employeekey=?;set @fromdate=?;set @todate=?;set @ptostatus=?;call usp_getPTORequestdetailsforManagerWithTime_SuType(@OrganizationID,@employeekey,@fromdate,@todate,@ptostatus)', [OrganizationID, employeekey, fromdate, todate, ptostatus], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[5]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getPTORequestDetailsWithTime_mob', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var empKey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @empKey=?;set @OrganizationID=?;call usp_mob_getPTORequestDetailsWithTime(@empKey,@OrganizationID)', [empKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[2]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/savePTORequestWithTime_mob', supportCrossOriginScript, function (req, res) {
+
+    var currentdate = req.body.currentdate;
+    var employeekey = req.body.employeekey;
+    var OrganizationID = req.body.OrganizationID;
+    var startdate = req.body.startdate;
+    var enddate = req.body.enddate;
+    var starttime = req.body.starttime;
+    var endtime = req.body.endtime;
+    var comments = req.body.comments;
+    var reason = req.body.ptoreason;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @currentdate=?;set @employeekey=?;set @OrganizationID=?;set @startdate=?;set @enddate=?;set @starttime=?;set @endtime=?;set @comments=?; set @reason=?; call usp_mob_SavePTORequestWithTime(@currentdate,@employeekey,@OrganizationID,@startdate,@enddate,@starttime,@endtime,@comments,@reason)", [currentdate, employeekey, OrganizationID, startdate, enddate, starttime, endtime, comments, reason], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getPTORequestDetailsforEmployeeWithTime_mob', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var ptorequestDetailsKey = url.parse(req.url, true).query['ptorequestDetails'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @ptorequestDetailsKey=?;call usp_mob_getPTORequestDetailsbyIDforEmployeeWithTime(@ptorequestDetailsKey)', [ptorequestDetailsKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+
+                    res.end(JSON.stringify(rows[1]));
+
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/setEditedPTORequestWithTime_mob', supportCrossOriginScript, function (req, res) {
+
+    var currdate = req.body.currdate;
+    var ptorequestID = req.body.ptorequestID;
+    var StartDate = req.body.StartDate;
+    var EndDate = req.body.EndDate;
+    var StartTime = req.body.StartTime;
+    var EndTime = req.body.EndTime;
+    var Comments = req.body.Comments;
+    var reason = req.body.Reason;
+    var empKey = req.body.EmpKey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @currdate=?;set @ptorequestID=?;set @StartDate=?;set @EndDate=?;set @StartTime=?;set @EndTime=?;set @Comments=?;set @reason=?;set @empKey=?;call usp_mob_setEditedPTORequestWithTime(@currdate,@ptorequestID,@StartDate,@EndDate,@StartTime,@EndTime,@Comments,@reason,@empKey)", [currdate, ptorequestID, StartDate, EndDate, StartTime, EndTime, Comments, reason, empKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+//PTO With Time Ends. Adios!
+
+//Adding supervisor in shift Starts
+app.get(securedpath + '/allsupervisoremployees_shift', function (req, res) {//empkey
+
+    console.log("Called employyee list fetcjh 2017");
+    res.header("Access-Control-Allow-Origin", "*");
+    var employeekey = url.parse(req.url, true).query['empkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @key=?;set @OrganizationID=?;call usp_properEmployeeList_schedulerexcel(@key,@OrganizationID)', [employeekey, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL in allemployees" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[2]));
+                }
+                res.end();
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/createMasterShift_supervisor', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var shiftName = req.body.shiftName;
+    var empKey = req.body.empKey;
+    var orgID = req.body.orgID;
+    var supervisoremployeekey = req.body.supervisoremployeekey;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        } else {
+            connection.query('set @shiftName=?; set  @empKey=?;set @orgID=?;set @supervisoremployeekey=? call usp_createMasterShift_supervisor(@shiftName,@empKey,@orgID,@supervisoremployeekey)', [shiftName, empKey, orgID, supervisoremployeekey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[4]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/updateMasterShift_supervisor', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var shiftKey = req.body.shiftKey;
+    var shiftName = req.body.shiftName;
+    var empKey = req.body.empKey;
+    var orgID = req.body.orgID;
+    var supervisorempkey = req.body.supervisorempkey;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        } else {
+            connection.query('set @shiftKey=?;set @shiftName=?; set  @empKey=?;set @orgID=?;set @supervisorempkey=?; call usp_updateMasterShiftDetails_supervisor(@shiftKey,@shiftName,@empKey,@orgID,@supervisorempkey)', [shiftKey, shiftName, empKey, orgID, supervisorempkey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[5]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+//Adding supervisor in shift ends
 //handle generic exceptions
 //catch all other resource routes that are not defined above
 app.get(securedpath + '/*', function (req, res) {
