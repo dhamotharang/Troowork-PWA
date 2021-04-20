@@ -1651,4 +1651,24 @@ export class PeopleServiceService {
     };
     return this.http.post(url, obj);
   }
+  getRequestdetailsbyIDWithTime(ptorequestDetails$) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getRequestDetailsbyIDWithTime?ptorequestDetailskey=' + ptorequestDetails$);
+  }
+  saveRequestActionWithTime(ptorequestDetails$, employeekey, statuscurrentdate, approvedstartdate, ApprovedEndDate, approvedstarttime, ApprovedEndTime, StatusKey, statuscomments) {
+    const url = ConectionSettings.Url + "/savePTORequestActionWithTime";
+    const obj = {
+      ptorequestDetails: ptorequestDetails$,
+      employeekey: employeekey,
+      statuscurrentdate: statuscurrentdate,
+      approvedstartdate: approvedstartdate,
+      ApprovedEndDate: ApprovedEndDate,
+      approvedstarttime: approvedstarttime,
+      ApprovedEndTime: ApprovedEndTime,
+      StatusKey: StatusKey,
+      statuscomments: statuscomments
+    };
+    return this.http.post(url, obj);
+  }
 }

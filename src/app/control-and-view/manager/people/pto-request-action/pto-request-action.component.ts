@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../../service/people-service.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-pto-request-action',
@@ -30,6 +32,8 @@ export class PtoRequestActionComponent implements OnInit {
   editflag;
   Status: String;
   details;
+  startTime;
+  EndTime;
 
   checkFlag;
   options: DatepickerOptions = {
@@ -113,6 +117,13 @@ export class PtoRequestActionComponent implements OnInit {
     this.route.params.subscribe(params => this.ptorequestDetails$ = params.requestID);
   }
 
+  convert_Time(str){
+    var datePipe = new DatePipe('en-US');
+    var setDob = datePipe.transform(str, 'h:mm:ss a');
+    return setDob;
+    
+   };
+
   saveRequestAction() {
     this.checkFlag = true;
 
@@ -137,6 +148,32 @@ export class PtoRequestActionComponent implements OnInit {
         return;
       }
 
+      if (!(this.requestdetailsbyID.ApprovedStartTime)) {
+        alert('Approved Start Time is not provided !');
+        this.checkFlag = false;
+        return;
+      }
+
+      if (!(this.requestdetailsbyID.ApprovedEndTime)) {
+        alert('Approved End Time is not provided !');
+        this.checkFlag = false;
+        return;
+      }
+
+      else {
+        var time1 = new Date(this.requestdetailsbyID.ApprovedStartTime);
+        var time2 = new Date(this.requestdetailsbyID.ApprovedEndTime);
+        var curTime = new Date();
+        var timediff = +time2 - +time1;
+        
+        if (timediff < 0) {
+          alert("Start Time can't be after End Time");
+          this.checkFlag = false;
+          return;
+        }
+          
+      }
+
       // if (this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) < this.statuscurrentdate) {
       //   alert("Approved start date can't be less than Today!");
       //   return;
@@ -156,6 +193,8 @@ export class PtoRequestActionComponent implements OnInit {
         return;
       }
 
+      
+
       // if ((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) < this.convert_DT(this.requestdetailsbyID.StartDate)) || (this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) > this.convert_DT(this.requestdetailsbyID.EndDate))) {
       //   alert("Approved start date must be between requested dates!");
       //   return;
@@ -170,8 +209,8 @@ export class PtoRequestActionComponent implements OnInit {
 
 
     var comments = this.requestdetailsbyID.StatusComment
-    this.PeopleServiceService.saveRequestAction(this.ptorequestDetails$, this.employeekey,
-      this.statuscurrentdate, this.convert_DT(this.requestdetailsbyID.ApprovedStartDate), this.convert_DT(this.requestdetailsbyID.ApprovedEndDate),
+    this.PeopleServiceService.saveRequestActionWithTime(this.ptorequestDetails$, this.employeekey,
+      this.statuscurrentdate, this.convert_DT(this.requestdetailsbyID.ApprovedStartDate), this.convert_DT(this.requestdetailsbyID.ApprovedEndDate),this.convert_Time(this.requestdetailsbyID.ApprovedStartTime),this.convert_Time(this.requestdetailsbyID.ApprovedEndTime),
       this.requestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
@@ -204,10 +243,21 @@ export class PtoRequestActionComponent implements OnInit {
     this.editflag = false;
     this.checkFlag = false;
 
-    this.PeopleServiceService.getRequestdetailsbyID(this.ptorequestDetails$)
+    this.PeopleServiceService.getRequestdetailsbyIDWithTime(this.ptorequestDetails$)
       .subscribe((data) => {
         this.requestdetailsbyID = data[0];
         this.requestdetailsbyID.Status = '';
+        var cur_time = new Date(Date.now());
+        var startTime = this.requestdetailsbyID.StartTime;
+        var EndTime = this.requestdetailsbyID.EndTime;
+        var test1 = startTime.split(":");
+        var test2 = EndTime.split(":");
+        var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+        var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
+        this.startTime = start;
+        this.EndTime = end;
+        
+      
       });
     this.PeopleServiceService.getassignmentdetailsbyID(this.ptorequestDetails$)
       .subscribe((data: any) => {
