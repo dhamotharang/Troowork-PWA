@@ -28,7 +28,7 @@ export class PtoRequestPWAComponent implements OnInit {
   comments;
   ptoreason;
   isMobile: boolean;
- checkFlag ;
+  checkFlag;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -91,14 +91,14 @@ export class PtoRequestPWAComponent implements OnInit {
     this.endtime.setHours(23);
     this.endtime.setMinutes(59);
     this.endtime.setSeconds(0);
-   }
+  }
 
-   convert_Time(str){
+  convert_Time(str) {
     var datePipe = new DatePipe('en-US');
     var setDob = datePipe.transform(str, 'h:mm:ss a');
     return setDob;
-    
-   };
+
+  };
 
   submitRequest() {
     this.checkFlag = true;
@@ -119,7 +119,7 @@ export class PtoRequestPWAComponent implements OnInit {
       alert('Start Time is not provided !');
       this.checkFlag = false;
       return;
-    } 
+    }
 
     if (!(this.endtime)) {
       alert('End Time is not provided !');
@@ -137,7 +137,7 @@ export class PtoRequestPWAComponent implements OnInit {
         this.checkFlag = false;
         return;
       }
-    }  
+    }
     var timeDiff = Math.abs(this.startdate.getTime() - this.enddate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 365) {
@@ -165,9 +165,18 @@ export class PtoRequestPWAComponent implements OnInit {
     else {
       requestcomments = "";
     }
+
+    var q = this.starttime.getHours();
+    var q1 = this.starttime.getMinutes();
+    var newTime = q + ":" + q1;
+
+    var q2 = this.endtime.getHours();
+    var q3 = this.endtime.getMinutes();
+    var newTime1 = q2 + ":" + q3;
+
     this.PeopleServiceService
       .setPTORequestWithTime(curr_date, this.toServeremployeekey, this.OrganizationID, this.convert_DT(this.startdate),
-        this.convert_DT(this.enddate),this.convert_Time(this.starttime),this.convert_Time(this.endtime), requestcomments, this.ptoreason).subscribe((data: any[]) => {
+        this.convert_DT(this.enddate), newTime, newTime1, requestcomments, this.ptoreason).subscribe((data: any[]) => {
           this.checkFlag = false;
           alert("PTO Request Submitted Successfully");
           // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);

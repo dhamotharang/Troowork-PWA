@@ -35,6 +35,9 @@ export class PtoRequestActionComponent implements OnInit {
   startTime;
   EndTime;
 
+  ApprovedStartTime;
+  ApprovedEndTime
+
   checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
@@ -117,12 +120,12 @@ export class PtoRequestActionComponent implements OnInit {
     this.route.params.subscribe(params => this.ptorequestDetails$ = params.requestID);
   }
 
-  convert_Time(str){
+  convert_Time(str) {
     var datePipe = new DatePipe('en-US');
     var setDob = datePipe.transform(str, 'h:mm:ss a');
     return setDob;
-    
-   };
+
+  };
 
   saveRequestAction() {
     this.checkFlag = true;
@@ -165,13 +168,13 @@ export class PtoRequestActionComponent implements OnInit {
         var time2 = new Date(this.requestdetailsbyID.ApprovedEndTime);
         var curTime = new Date();
         var timediff = +time2 - +time1;
-        
+
         if (timediff < 0) {
           alert("Start Time can't be after End Time");
           this.checkFlag = false;
           return;
         }
-          
+
       }
 
       // if (this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) < this.statuscurrentdate) {
@@ -193,7 +196,7 @@ export class PtoRequestActionComponent implements OnInit {
         return;
       }
 
-      
+
 
       // if ((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) < this.convert_DT(this.requestdetailsbyID.StartDate)) || (this.convert_DT(this.requestdetailsbyID.ApprovedStartDate) > this.convert_DT(this.requestdetailsbyID.EndDate))) {
       //   alert("Approved start date must be between requested dates!");
@@ -205,12 +208,18 @@ export class PtoRequestActionComponent implements OnInit {
       // }
     }
 
+    var q = this.requestdetailsbyID.ApprovedStartTime.getHours();
+    var q1 = this.requestdetailsbyID.ApprovedStartTime.getMinutes();
+    var newTime = q + ":" + q1;
 
+    var q2 = this.requestdetailsbyID.ApprovedEndTime.getHours();
+    var q3 = this.requestdetailsbyID.ApprovedEndTime.getMinutes();
+    var newTime1 = q2 + ":" + q3;
 
 
     var comments = this.requestdetailsbyID.StatusComment
     this.PeopleServiceService.saveRequestActionWithTime(this.ptorequestDetails$, this.employeekey,
-      this.statuscurrentdate, this.convert_DT(this.requestdetailsbyID.ApprovedStartDate), this.convert_DT(this.requestdetailsbyID.ApprovedEndDate),this.convert_Time(this.requestdetailsbyID.ApprovedStartTime),this.convert_Time(this.requestdetailsbyID.ApprovedEndTime),
+      this.statuscurrentdate, this.convert_DT(this.requestdetailsbyID.ApprovedStartDate), this.convert_DT(this.requestdetailsbyID.ApprovedEndDate), newTime, newTime1,
       this.requestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
@@ -256,8 +265,19 @@ export class PtoRequestActionComponent implements OnInit {
         var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
         this.startTime = start;
         this.EndTime = end;
-        
-      
+
+        var ApprovedStartTime = this.requestdetailsbyID.ApprovedStartTime;
+        var ApprovedEndTime = this.requestdetailsbyID.ApprovedEndTime;
+        var test3 = ApprovedStartTime.split(":");
+        var test4 = ApprovedEndTime.split(":");
+        var start1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test3[0], test3[1], 0);
+        var end1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test4[0], test4[1], 0);
+        this.ApprovedStartTime = start1;
+        this.ApprovedEndTime = end1;
+
+
+
+
       });
     this.PeopleServiceService.getassignmentdetailsbyID(this.ptorequestDetails$)
       .subscribe((data: any) => {

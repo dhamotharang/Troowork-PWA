@@ -79,7 +79,7 @@
         <div class="form-group" style="margin-left: -1rem;" top-right>
           <label> Approved Start Time </label>
           <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME"
-            [(ngModel)]="requestdetailsbyID.ApprovedStartTime" [disabled]=!editflag [timeOnly]="true" hourFormat="12">
+            [(ngModel)]="ApprovedStartTime" [disabled]=!editflag [timeOnly]="true" hourFormat="12">
           </p-calendar>
         </div>
       </div>
@@ -108,7 +108,7 @@
     <div class="col-md-6" style="margin-top: 1.6rem" *ngIf="requestdetailsbyID.RequestStatus=='Approved'">
       <div class="form-group" style="margin-left: -1rem;" top-right>
         <label> Approved End Time </label>
-        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="requestdetailsbyID.ApprovedEndTime"
+        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="ApprovedEndTime"
           [disabled]=!editflag [timeOnly]="true" hourFormat="12">
         </p-calendar>
       </div>

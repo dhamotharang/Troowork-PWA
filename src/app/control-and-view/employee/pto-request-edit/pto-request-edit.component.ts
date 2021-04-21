@@ -117,9 +117,7 @@ export class PtoRequestEditComponent implements OnInit {
       }
 
     }
-    console.log();
 
-    console.log();
     // if (!(this.requestdetails.Comments)) {
     //   alert('Comments are not provided !');
     //   return;
@@ -152,10 +150,18 @@ export class PtoRequestEditComponent implements OnInit {
       comments = "";
     }
 
+    var q = this.startTime.getHours();
+    var q1 = this.startTime.getMinutes();
+    var newTime = q + ":" + q1;
+
+    var q2 = this.EndTime.getHours();
+    var q3 = this.EndTime.getMinutes();
+    var newTime1 = q2 + ":" + q3;
+
     // this.startTime=new Date ('2021-04-02T22:59:20.539Z').toLocaleTimeString();
     // this.EndTime= new Date().toLocaleTimeString();
 
-    this.PeopleServiceService.setEditedRequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate), this.convert_Time(time1), this.convert_Time(time2),
+    this.PeopleServiceService.setEditedRequestWithTime(curr_date, this.ptorequestID$, this.convert_DT(this.requestdetails.StartDate), this.convert_DT(this.requestdetails.EndDate), newTime, newTime1,
       comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
         this.checkFlag = false;

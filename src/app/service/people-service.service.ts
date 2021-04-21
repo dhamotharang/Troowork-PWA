@@ -1581,7 +1581,7 @@ export class PeopleServiceService {
       .get(ConectionSettings.Url + '/getRequestDetailsforEmployeeWithTime?ptorequestDetails=' + ptorequestID);
   }
   setEditedPTORequestWithTime(curr_date, ptorequestID$, StartDate, EndDate, StartTime, EndTime, Comments, reason, empKey) {
-    const url = ConectionSettings.Url + "/setEditedPTORequest_mob";
+    const url = ConectionSettings.Url + "/setEditedPTORequestWithTime_mob";
     const obj = {
       currdate: curr_date,
       ptorequestID: ptorequestID$,
@@ -1617,7 +1617,7 @@ export class PeopleServiceService {
   }
   setPTORequestWithTime(curr_date, toServeremployeekey, OrganizationID, startdate, enddate, starttime, endtime, comments, reason) {
     console.log(curr_date + "..." + toServeremployeekey + "..." + OrganizationID + "..." + startdate + "..." + enddate + "..." + comments + "..." + reason);
-    const url = ConectionSettings.Url + "/savePTORequest_mob";
+    const url = ConectionSettings.Url + "/savePTORequestWithTime_mob";
     const obj = {
       currentdate: curr_date,
       employeekey: toServeremployeekey,
