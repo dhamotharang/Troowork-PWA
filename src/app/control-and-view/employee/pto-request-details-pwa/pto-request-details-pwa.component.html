@@ -27,7 +27,7 @@
                   <div class="col"> <label>Start Time</label></div>
                   <div class="date col-8">
                     <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
-                      [(ngModel)]="requestdetails.StartTime" [timeOnly]="true" hourFormat="12">
+                      [(ngModel)]="StartTime" [timeOnly]="true" hourFormat="12">
                     </p-calendar>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                   <div class="col"> <label>End Time</label></div>
                   <div class="date col-8">
                     <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
-                      [(ngModel)]="requestdetails.EndTime" [timeOnly]="true" hourFormat="12">
+                      [(ngModel)]="EndTime" [timeOnly]="true" hourFormat="12">
                     </p-calendar>
                   </div>
                 </div>
@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-8">
                       <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME"
-                        [disabled]="!editflag" [(ngModel)]="requestdetails.ApprovedStartTime" [timeOnly]="true"
+                        [disabled]="!editflag" [(ngModel)]="ApprovedStartTime" [timeOnly]="true"
                         hourFormat="12">
                       </p-calendar>
                     </div>
@@ -216,7 +216,7 @@
                     </div>
                     <div class="col-8">
                       <p-calendar [inputStyle]="{'width':'105%'}" placeholder="TIME" [disabled]="!editflag"
-                        [(ngModel)]="requestdetails.ApprovedEndTime" [timeOnly]="true" hourFormat="12">
+                        [(ngModel)]="ApprovedEndTime" [timeOnly]="true" hourFormat="12">
                       </p-calendar>
                     </div>
                   </div>

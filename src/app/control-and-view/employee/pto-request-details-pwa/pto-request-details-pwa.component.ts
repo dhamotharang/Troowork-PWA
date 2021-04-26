@@ -24,6 +24,13 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
   ptorequestID$;
   isMobile: boolean;
   checkFlag;
+
+  startTime;
+  EndTime;
+
+  ApprovedStartTime;
+  ApprovedEndTime
+
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -111,6 +118,24 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
 
     this.PeopleServiceService.setgetRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
+      var cur_time = new Date(Date.now());
+      var startTime = this.requestdetails.StartTime;
+      var EndTime = this.requestdetails.EndTime;
+      var test1 = startTime.split(":");
+      var test2 = EndTime.split(":");
+      var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+      var end = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test2[0], test2[1], 0);
+      this.startTime = start;
+      this.EndTime = end;
+
+      var ApprovedStartTime = this.requestdetails.ApprovedStartTime;
+      var ApprovedEndTime = this.requestdetails.ApprovedEndTime;
+      var test3 = ApprovedStartTime.split(":");
+      var test4 = ApprovedEndTime.split(":");
+      var start1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test3[0], test3[1], 0);
+      var end1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test4[0], test4[1], 0);
+      this.ApprovedStartTime = start1;
+      this.ApprovedEndTime = end1;
     });
     this.onResize();
     this.responsiveService.checkWidth();
