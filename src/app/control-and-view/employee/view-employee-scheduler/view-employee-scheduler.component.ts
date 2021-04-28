@@ -18,7 +18,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
         <h3 style="text-align: right"></h3>
         <div class="form-group" style="width: 85%;">
           <label>Date*</label>
-           <ng-datepicker [options]="options" position="top-right" minDate='CurrentDate' [(ngModel)]="date" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
+           <ng-datepicker [options]="options" position="bottom-right" minDate='CurrentDate' [(ngModel)]="date" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
         </div>
       </div>
       <div class="col-md-6">

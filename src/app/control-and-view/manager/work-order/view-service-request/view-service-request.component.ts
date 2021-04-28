@@ -118,11 +118,29 @@ export class ViewServiceRequestComponent implements OnInit {
 
   viewserviceRequest(fromdate, todate) {
 
-    if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {
-      todate = null;
+    if (!this.fromdate) {
+      var date1 = this.convert_DT(new Date());
+    }
+    else {
+      date1 = this.convert_DT(this.fromdate);
+    }
+    if (!this.todate) {
+      var date2 = date1;
+    }
+    else {
+      date2 = this.convert_DT(this.todate);
+    }
+
+    if (date2 && date1 > date2) {
       alert("Please check your Start Date!");
       return;
     }
+
+    // if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {
+    //   todate = null;
+    //   alert("Please check your Start Date!");
+    //   return;
+    // }
     else {
       var fdate;
       var tdate;
