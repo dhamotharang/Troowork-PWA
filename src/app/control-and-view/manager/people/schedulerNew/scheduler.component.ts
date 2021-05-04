@@ -46,8 +46,9 @@ import { DatepickerOptions } from 'ng2-datepicker';
     </div>
   </div>
   
-  
-  <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
+  <div style="width:100vw;overflow:auto;height:100vh;">
+    <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
+  </div>
   <div *ngIf="OrganizationID==223">
 
   <div class="row col-md-12 ">
