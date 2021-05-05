@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Reports } from '../../../../model-class/reports';
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
-import { ChartOptions } from 'chart.js';
+// import { ChartOptions } from 'chart.js';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
@@ -48,11 +48,11 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   viewBarchartReport = [];
   barvalues = [];
   downtimes = [];
-  chartLabels = [];
-  chartDatasets;
+  // chartLabels = [];
+  // chartDatasets;
   barChartCol = [];
-  chartColors = [];
-  ChartOptions = [];
+  // chartColors = [];
+  // ChartOptions = [];
   tableflag = false;
   employeeString;
   checkFlag;
@@ -103,6 +103,14 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   public date: Date = new Date(Date.now());
 
   // barchart code
+  public chartType: string = 'bar';
+
+  public chartDatasets: Array<any> = [];
+
+  public chartLabels: Array<any> = [];
+
+  public chartColors: Array<any> = [];
+
   generateDowntimeReport() {
     this.checkFlag = true;
     var employeeString;
@@ -159,7 +167,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
         this.checkFlag = false;
         this.barvalues = data1;
         this.loading = false;
-        this.chartLabels = [];
+        // this.chartLabels = [];
         this.downtimes = [];
 
         for (var i = 0; i < this.barvalues.length; i++) {
@@ -170,10 +178,10 @@ export class EmployeesDowntimeReportComponent implements OnInit {
           var downtimeval = this.barvalues[i].downtime;
           this.data4 = ([i + 1]);
           this.data5 = ([downtimeval]);
-          this.chartLabels[i] = (this.data4);
-          this.downtimes[i] = (this.data5);
+          this.chartLabels[i] = i + 1;
+          this.downtimes[i] = this.barvalues[i].downtime;
         }
-        this.chartDatasets = [{ data: this.downtimes, label: 'Down Time' }];
+        this.chartDatasets = [{ data: this.downtimes }];
         this.chartColors = [
           {
             backgroundColor: this.barChartCol,
@@ -186,54 +194,54 @@ export class EmployeesDowntimeReportComponent implements OnInit {
 
       });
   }
-  public barChartLegend = true;
+  // public barChartLegend = true;
 
-  public chartType: string = 'bar';
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    legend: {
-      "display": true
-    },
-    tooltips: {
-      "enabled": true
-    },
-    scales: {
-      xAxes: [{
-        gridLines: {
-          display: true
-        },
-        // categoryPercentage: 1.0,
-        // barPercentage: 0.5,
-        ticks: {
-          beginAtZero: true,
-          fontFamily: "'Open Sans Bold', sans-serif",
-          fontSize: 9,
-          autoSkip: false,
-          // maxRotation: 90,
-          // minRotation: 90
-        },
-        scaleLabel: {
-          display: true
-        },
-      }],
-      yAxes: [{
-        // barThickness: 100,
-        display: true,
-        gridLines: {
-          display: true
-        },
-        ticks: {
-          display: true,
-          beginAtZero: true,
-          fontFamily: "'Open Sans Bold', sans-serif",
-          fontSize: 10
-        },
-        stacked: true
-      }]
-    },
-  };
-  public chartClicked(e: any): void { }
-  public chartHovered(e: any): void { }
+  // public chartType: string = 'bar';
+  // public barChartOptions: ChartOptions = {
+  //   responsive: true,
+  //   legend: {
+  //     "display": true
+  //   },
+  //   tooltips: {
+  //     "enabled": true
+  //   },
+  //   scales: {
+  //     xAxes: [{
+  //       gridLines: {
+  //         display: true
+  //       },
+  //       // categoryPercentage: 1.0,
+  //       // barPercentage: 0.5,
+  //       ticks: {
+  //         beginAtZero: true,
+  //         fontFamily: "'Open Sans Bold', sans-serif",
+  //         fontSize: 9,
+  //         autoSkip: false,
+  //         // maxRotation: 90,
+  //         // minRotation: 90
+  //       },
+  //       scaleLabel: {
+  //         display: true
+  //       },
+  //     }],
+  //     yAxes: [{
+  //       // barThickness: 100,
+  //       display: true,
+  //       gridLines: {
+  //         display: true
+  //       },
+  //       ticks: {
+  //         display: true,
+  //         beginAtZero: true,
+  //         fontFamily: "'Open Sans Bold', sans-serif",
+  //         fontSize: 10
+  //       },
+  //       stacked: true
+  //     }]
+  //   },
+  // };
+  // public chartClicked(e: any): void { }
+  // public chartHovered(e: any): void { }
 
   // barchart code ends
 

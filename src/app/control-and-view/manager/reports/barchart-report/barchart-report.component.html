@@ -49,8 +49,17 @@
             </ul>
           </div>
         </div>
-        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="barChartOptions" [legend]="false" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-        </canvas>
+        <!-- <div>
+          <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" 
+          [colors]="chartColors" [options]="barChartOptions" [legend]="false" (chartHover)="chartHovered($event)"
+           (chartClick)="chartClicked($event)">
+          </canvas>
+        </div> -->
+        <div style="display: block">
+          <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="chartOptions" [legend]="false" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+
       </div>
       <div *ngIf="tableflag" class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 30%;margin-left: 30%">
         <table id="contentToConvert" style="border: none" *ngIf='barvalues?.length>0' class="table table-hover table-responsive table-bordered table">

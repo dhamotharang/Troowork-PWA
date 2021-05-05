@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Reports } from '../../../../model-class/reports';
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
-import { ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
 // import { Label } from 'ng2-charts';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -49,10 +49,10 @@ export class BarchartReportComponent implements OnInit {
   viewBarchartReport = [];
   barvalues = [];
   downtimes = [];
-  chartLabels = [];
-  chartDatasets;
+  // chartLabels = [];
+  // chartDatasets;
   barChartCol = [];
-  chartColors = [];
+  // chartColors = [];
   ChartOptions = [];
   tableflag = false;
   downtime;
@@ -113,15 +113,23 @@ export class BarchartReportComponent implements OnInit {
   public date: Date = new Date(Date.now());
 
   // barchart code
+  public chartType: string = 'bar';
 
+  public chartDatasets: Array<any> = [];
+
+  public chartLabels: Array<any> = [];
+
+  public chartColors: Array<any> = [];
   generateDowntimeReport(fromdate, EmployeeKey) {
     this.checkFlag = true;
-    this.chartDatasets = [];
+    // this.chartDatasets = [];
     this.data4 = [];
     this.data5 = [];
-    this.chartLabels = [];
+    // this.chartLabels = [];
     this.downtimes = [];
     this.barvalues = [];
+
+
     if (!(this.EmployeeKey)) {
       alert("Please choose Employee!");
       this.checkFlag = false;
@@ -161,16 +169,20 @@ export class BarchartReportComponent implements OnInit {
             // var status = test1 + " - " + test2;
 
             var status = i + 1;
-            var downtimeval = this.barvalues[i].DownTime;
-            this.data4 = ([status]);
-            this.data5 = ([downtimeval]);
-            this.chartLabels[i] = (this.data4);
-            this.downtimes[i] = (this.data5);
+            // var downtimeval = this.barvalues[i].DownTime;
+            // this.data4 = ([status]);
+            // this.data5 = ([downtimeval]);
+            this.chartLabels[i] = i + 1;
+            this.downtimes[i] = this.barvalues[i].DownTime;
+            // this.chartDatasets[i] = ;
           }
+          console.log("chartLabels");
           console.log(this.chartLabels);
+          console.log("chartDatasets");
           console.log(this.downtimes);
-          this.chartDatasets = [{ data: this.downtimes }];
           console.log(this.chartDatasets);
+          this.chartDatasets = [{ data: this.downtimes }];
+          // console.log(this.chartDatasets);
           this.chartColors = [
             {
               backgroundColor: this.barChartCol,
@@ -191,52 +203,64 @@ export class BarchartReportComponent implements OnInit {
   //   }
   // }
 
-  public chartType: string = 'bar';
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    scales: {
-      xAxes: [{
-        // barPercentage: 0.5,
-        // barThickness: 10,
-        // categoryPercentage: 1.0,
-        // barPercentage: 0.5,
-        ticks: {
-          beginAtZero: true,
-          fontFamily: "'Open Sans Bold', sans-serif",
-          fontSize: 12,
-          // autoSkip: false,
-          // maxRotation: 90,
-          // minRotation: 90
-        },
-        scaleLabel: {
-          display: true
-        },
-        // gridLines: {
-        //   display: true,
-        //   offsetGridLines: true
-        // },
-        // stacked: true
-      }],
-      yAxes: [{
-        // barThickness: 100,
-        // gridLines: {
-        //     display: true,
-        //     color: "#fff",
-        //     zeroLineColor: "#fff",
-        //     zeroLineWidth: 0
-        // },
-        ticks: {
-          fontFamily: "'Open Sans Bold', sans-serif",
-          fontSize: 12
-        },
-        stacked: true
-      }]
-    },
+  // public chartType: string = 'bar';
+  // public barChartOptions: ChartOptions = {
+  //   responsive: true,
+  //   scales: {
+  //     xAxes: [{
+  //       // barPercentage: 0.5,
+  //       // barThickness: 10,
+  //       // categoryPercentage: 1.0,
+  //       // barPercentage: 0.5,
+  //       ticks: {
+  //         beginAtZero: true,
+  //         fontFamily: "'Open Sans Bold', sans-serif",
+  //         fontSize: 12,
+  //         // autoSkip: false,
+  //         // maxRotation: 90,
+  //         // minRotation: 90
+  //       },
+  //       scaleLabel: {
+  //         display: true
+  //       },
+  //       // gridLines: {
+  //       //   display: true,
+  //       //   offsetGridLines: true
+  //       // },
+  //       // stacked: true
+  //     }],
+  //     yAxes: [{
+  //       // barThickness: 100,
+  //       // gridLines: {
+  //       //     display: true,
+  //       //     color: "#fff",
+  //       //     zeroLineColor: "#fff",
+  //       //     zeroLineWidth: 0
+  //       // },
+  //       ticks: {
+  //         fontFamily: "'Open Sans Bold', sans-serif",
+  //         fontSize: 12
+  //       },
+  //       stacked: true
+  //     }]
+  //   },
+  // };
+  // public chartClicked(e: any): void { }
+  // public chartHovered(e: any): void { }
+  // barChartOptions: ChartOptions = {
+  //   responsive: true,
+  // };
+  // chartType: string = 'bar';
+  // barChartLegend = true;
+  // barChartPlugins = [];
+  // barchart code ends
+
+
+  public chartOptions: any = {
+    responsive: true
   };
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
-
-  // barchart code ends
 
   //code for converting graph to pdf 
 
