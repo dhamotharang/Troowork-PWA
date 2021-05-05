@@ -1,4 +1,5 @@
-<div style="padding-left: 9rem;padding-right: 9rem;">
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading"  style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
     <h4 style="margin-left: 40%;">VIEW SERVICE REQUESTS</h4>
   </div>
@@ -19,7 +20,7 @@
 
     <div class="row col-md-12">
       <div style="margin-left: 45%">
-        <button type="button" class="btn btn-success" (click)="viewserviceRequest(fromdate,todate)"><b>GENERATE</b></button>
+        <button type="button" class="btn btn-success" (click)="viewserviceRequest()"><b>GENERATE</b></button>
       </div>
     </div>
 

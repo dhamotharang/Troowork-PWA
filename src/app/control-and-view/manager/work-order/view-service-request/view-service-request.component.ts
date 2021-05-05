@@ -29,6 +29,9 @@ export class ViewServiceRequestComponent implements OnInit {
   EmployeeOption;
 
   checkFlag;
+
+  loading: boolean;// loading
+
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -75,6 +78,8 @@ export class ViewServiceRequestComponent implements OnInit {
 
   ngOnInit() {
 
+    this.loading = true;
+
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -90,8 +95,8 @@ export class ViewServiceRequestComponent implements OnInit {
     this.todate = new Date(Date.now());
 
 
-    this.fromdate = this.convert_DT(this.fromdate);
-    this.todate = this.convert_DT(this.todate);
+    // this.fromdate = this.convert_DT(this.fromdate);
+    // this.todate = this.convert_DT(this.todate);
 
 
     this.vpto = {
@@ -108,6 +113,7 @@ export class ViewServiceRequestComponent implements OnInit {
 
     this.WorkOrderServiceService.getviewWorkorderservicerequest(this.vpto)
       .subscribe((data) => {
+        this.loading = false;
         this.requestdetails = data;
       });
     this.SchedulingService.getEmployeesForSchedulerReport(this.OrganizationID)
@@ -116,7 +122,7 @@ export class ViewServiceRequestComponent implements OnInit {
       });
   }
 
-  viewserviceRequest(fromdate, todate) {
+  viewserviceRequest() {
 
     if (!this.fromdate) {
       var date1 = this.convert_DT(new Date());
@@ -142,12 +148,13 @@ export class ViewServiceRequestComponent implements OnInit {
     //   return;
     // }
     else {
+      this.loading = true;
       var fdate;
       var tdate;
-      fdate = this.convert_DT(fromdate);
-      tdate = this.convert_DT(todate);
-      this.fromdate = fdate;
-      this.todate = tdate;
+      fdate = this.convert_DT(this.fromdate);
+      tdate = this.convert_DT(this.todate);
+      // this.fromdate = fdate;
+      // this.todate = tdate;
       this.vpto = {
         fromdate: fdate,
         todate: tdate,
@@ -157,12 +164,14 @@ export class ViewServiceRequestComponent implements OnInit {
 
       this.WorkOrderServiceService.getviewWorkorderservicerequest(this.vpto)
         .subscribe((data) => {
+          this.loading = false;
           this.requestdetails = data;
         });
     }
   }
 
   createworkorderbyservicerequest(servicerequestid, empKey) {
+    this.loading = true;
 
     this.checkFlag = true;
     this.curdate = new Date(Date.now());
@@ -192,7 +201,7 @@ export class ViewServiceRequestComponent implements OnInit {
         if (data.length > 0) {
           alert("WorkOrder created successfully");
           this.checkFlag = false;
-          this.viewserviceRequest(this.fromdate, this.todate);
+          this.viewserviceRequest();
         }
       });
 

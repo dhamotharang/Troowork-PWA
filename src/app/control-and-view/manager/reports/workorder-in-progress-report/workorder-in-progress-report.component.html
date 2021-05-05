@@ -8,7 +8,8 @@
       <thead class="tableHead">
         <th> Workorder Type </th>
         <th> Room </th>
-        <th> Date </th>
+        <th> Scheduled Date </th>
+        <th> Work Order Start Date </th>
         <th> Employee </th>
         <th> Building </th>
         <th> Floor </th>
@@ -20,6 +21,7 @@
           <td>{{ x.WorkorderTypeName }}</td>
           <td>{{ x.RoomName }}</td>
           <td>{{ x.WorkorderTime }}</td>
+          <td>{{ x.WorkorderstartTime }}</td>
           <td>{{ x.LastName }},{{ x.FirstName }}</td>
           <td>{{ x.FacilityName }}</td>
           <td>{{ x.FloorName }}</td>
@@ -27,7 +29,7 @@
           <td>{{ x.WorkorderStatus }}</td>
         </tr>
         <tr *ngIf="woList?.length == 0">
-          <td colspan="8" class="no-data-available">No records found</td>
+          <td colspan="9" class="no-data-available">No records found</td>
         </tr>
       </tbody>
     </table>
