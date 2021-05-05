@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
 
-import { ExpiredAssignmentsDetailsModule } from "../../../dashboard/manager-dashboard-pages/expired-assignments-details/expired-assignments-details.module";
+import { LogoutModule } from "../../../dashboard/logout/logout.module";
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -777,6 +777,16 @@ const routes: Routes = [
         path: 'feedbackManage/assignFeedbackTemplateTo/:idreviewtemplate',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/inspection/feedback-template-assign/feedback-template-assign.module#FeedbackTemplateAssignModule',
+      },
+      // {
+      //   path: 'dailyStaffReport',
+      //   outlet: 'ManagerOut',
+      //   loadChildren: '../../../manager/reports/daily-staff-report/daily-staff-report.module#DailyStaffReportModule'
+      // },
+      {
+        path: 'logout',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../dashboard/logout/logout.module#LogoutModule'
       }
     ]
   }

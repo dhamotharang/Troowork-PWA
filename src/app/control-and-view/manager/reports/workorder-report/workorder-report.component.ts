@@ -7,6 +7,7 @@ import { ExcelserviceService } from '../../../../service/excelservice.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 
 import * as FileSaver from 'file-saver';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 @Component({
   selector: 'app-workorder-report',
@@ -97,7 +98,7 @@ export class WorkorderReportComponent implements OnInit {
     WorkorderTypeName: '', DateandTime: '', Status: '', Employee: '', Room: '', Equipment: '', CheckinTime: '', CheckoutTime: '', Duration: '', DelayTime: '', Notes: ''
   }];
 
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService) { }
 
   ngOnInit() {
     this.FacilityKey = "";
@@ -109,14 +110,14 @@ export class WorkorderReportComponent implements OnInit {
     this.WorkorderStatusKey = "";
     this.fromdate = new Date();
     this.WorkorderTypeKey = '';
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.ReportServiceService.getBarcodeReport(this.employeekey, this.OrganizationID).subscribe((data: Reports[]) => {

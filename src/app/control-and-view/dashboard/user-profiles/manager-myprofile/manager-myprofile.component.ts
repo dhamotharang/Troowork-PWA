@@ -3,6 +3,7 @@ import { LoginService } from '../../../../service/login.service';
 import { Login } from '../../../../model-class/login';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 const url = ConectionSettings.Url + '/imgupload';
 @Component({
   selector: 'app-manager-myprofile',
@@ -40,19 +41,19 @@ export class ManagerMyprofileComponent implements OnInit {
     return window.atob(output); 
   }
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private dst: DataServiceTokenStorageService) { }
 
 
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.loginService
       .getUserProfileDetails(this.employeekey, this.OrganizationID)

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { ActivatedRoute, Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-viewinspectionmanager',
   templateUrl: './viewinspectionmanager.component.html',
@@ -17,7 +18,7 @@ export class ViewinspectionmanagerComponent implements OnInit {
   OrgId: Number;
   emp_key: Number;
 
-  constructor(private route: ActivatedRoute, private router: Router, private inspectionService: InspectionService) {
+  constructor(private route: ActivatedRoute, private router: Router, private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.ioKey$ = params.InspectionOrderKey);
   }
   url_base64_decode(str) {
@@ -38,14 +39,14 @@ export class ViewinspectionmanagerComponent implements OnInit {
   }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.emp_key = profile.employeekey;
-    this.OrgId = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.emp_key = this.dst.getEmployeekey();
+    this.OrgId = this.dst.getOrganizationID();
 
     this.inspectionService
       .getViewInspectionManager(this.ioKey$, this.OrgId)

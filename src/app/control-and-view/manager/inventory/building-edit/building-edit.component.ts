@@ -6,6 +6,7 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-building-edit',
@@ -39,7 +40,7 @@ export class BuildingEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
   }
 
@@ -75,15 +76,14 @@ export class BuildingEditComponent implements OnInit {
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-
+        // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
     this.inventoryService.EditFacility(this.facKey$, this.OrganizationID).subscribe((data: Inventory[]) => {
       this.build = data;

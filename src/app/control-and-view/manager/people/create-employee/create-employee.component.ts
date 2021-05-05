@@ -3,6 +3,7 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-employee',
   templateUrl: './create-employee.component.html',
@@ -164,7 +165,7 @@ export class CreateEmployeeComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
 
   numberValid(event: any) {
     const pattern = /[0-9\+\-\ ]/;
@@ -592,12 +593,12 @@ export class CreateEmployeeComponent implements OnInit {
 
     this.minDate = new Date();
     this.maxDate = new Date();
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-    this.role = profile.role;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     // this.IsSupervisor = profile.IsSupervisor;
 
     // this.isemployeecalendar = profile.isemployeecalendar;//Author: Prakash for Checking Whether the organization uses Calendar or not

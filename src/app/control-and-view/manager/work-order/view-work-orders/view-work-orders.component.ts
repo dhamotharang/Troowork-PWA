@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-view-work-orders',
   templateUrl: './view-work-orders.component.html',
@@ -99,7 +100,7 @@ export class ViewWorkOrdersComponent implements OnInit {
   longitude;
   basicModal1;
 
-  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
   //function for token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -268,7 +269,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       SearchWO: SearchWO,
       itemsPerPage: this.items_perpage,
       pageNo: this.pageno,
-      keepactivef:this.KeepActiveFlag
+      keepactivef: this.KeepActiveFlag
     };
     this.WorkOrderServiceService//service for viewing wo when filter is applied
       .getWoFilter_pagination(this.viewWorkOrder)
@@ -420,7 +421,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       SearchWO: SearchWO,
       itemsPerPage: this.items_perpage,
       pageNo: this.pageno,
-      keepactivef:this.KeepActiveFlag
+      keepactivef: this.KeepActiveFlag
     };
     this.WorkOrderServiceService//service for viewing wo when filter is applied
       .getWoFilter_pagination(this.viewWorkOrder)
@@ -445,14 +446,14 @@ export class ViewWorkOrdersComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.checkflag = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.emp_key = profile.employeekey;
-    this.org_id = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.emp_key = this.dst.getEmployeekey();
+    this.org_id = this.dst.getOrganizationID();
     this.domain_name = 'workstatus';
     var on_date = this.convert_DT(new Date());
     this.WorkorderTypeKey = "";
@@ -738,7 +739,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         SearchWO: SearchWO,
         itemsPerPage: this.items_perpage,
         pageNo: this.pageno,
-        keepactivef:this.KeepActiveFlag
+        keepactivef: this.KeepActiveFlag
       };
       this.WorkOrderServiceService//service for viewing wo when filter is applied
         .getWoFilter_pagination(this.viewWorkOrder)

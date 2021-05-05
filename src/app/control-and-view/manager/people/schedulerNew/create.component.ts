@@ -5,6 +5,7 @@ import { DataService, CreateEventParams } from "./data.service";
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ActivatedRoute, Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'create-dialog',
@@ -66,7 +67,7 @@ export class CreateComponent implements OnInit {
   scheduleNameList;
   params;
   Date;
-  constructor(private fb: FormBuilder, private ds: DataService, private SchedulingService: SchedulingService, private router: Router) {
+  constructor(private fb: FormBuilder, private ds: DataService, private SchedulingService: SchedulingService, private router: Router, private dst: DataServiceTokenStorageService) {
     this.form = this.fb.group({
       name: ["", Validators.required],
       start: ["", this.dateTimeValidator(this.dateFormat)],
@@ -256,14 +257,14 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
 
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+      // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.SchedulingService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)

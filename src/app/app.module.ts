@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -19,10 +19,12 @@ import { GooglePieChartService } from './extra-files/piechart-file/Services/goog
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ResponsiveService } from './service/responsive.service';
 
-
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { JwtInterceptor } from './control-and-view/dashboard/login/login.component';
+import { DataServiceTokenStorageService } from './service/DataServiceTokenStorage.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,7 @@ import { environment } from '../environments/environment';
     // NgMultiSelectDropDownModule.forRoot()
 
   ],
-  providers: [GooglePieChartService, ResponsiveService],
+  providers: [GooglePieChartService, ResponsiveService, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }, DataServiceTokenStorageService],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

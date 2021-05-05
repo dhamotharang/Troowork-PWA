@@ -12,6 +12,7 @@ import 'jspdf-autotable';//for pdf
 import { interval, Subscription } from 'rxjs';//for calling function on regular interval
 import { Router } from '@angular/router';
 import { DataService } from './data.service';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-dashboard-report',
@@ -179,7 +180,7 @@ export class DashboardReportComponent implements OnInit {
   todate: Date;
   WorkorderTypeKey = [];
   showElement: boolean;
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private _pieChartService: GooglePieChartService, private ds: DataService, private router: Router) {
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private _pieChartService: GooglePieChartService, private ds: DataService, private router: Router) {
     this.dashboardreport = fb.group({
       EmployeeKey: ['', Validators.required],
       EmployeeText: ['', Validators.required]
@@ -190,14 +191,14 @@ export class DashboardReportComponent implements OnInit {
     this.EmployeeKey = "";
     this.fromdate = new Date();
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     var from = this.ds.getFromDate();
     var to = this.ds.getToDate();

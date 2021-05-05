@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-employee-working-hour-add',
   templateUrl: './employee-working-hour-add.component.html',
@@ -23,7 +24,7 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
   StartTime;
   EndTime;
   checkFlag;
-  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private _location: Location) {
+  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
   url_base64_decode(str) {
@@ -67,14 +68,14 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
   };
 
   ngOnInit() {
-    var token = localStorage.getItem('token');//token set
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.peopleServiceService.getallEmployeesList(this.employeekey, this.OrganizationID)

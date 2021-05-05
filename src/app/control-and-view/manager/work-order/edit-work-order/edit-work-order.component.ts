@@ -4,6 +4,7 @@ import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-edit-work-order',
   templateUrl: './edit-work-order.component.html',
@@ -94,7 +95,7 @@ export class EditWorkOrderComponent implements OnInit {
   workorderCreation;
   timetable = { times: [] };//for daily recurring timepicker
   count = 0;
-  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
+  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
     this.route.params.subscribe(params => this.WO_Key = params.WorkorderKey);
   }
 
@@ -121,11 +122,11 @@ export class EditWorkOrderComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
-   //converting date from GMT to yyyy/mm/dd
+  //converting date from GMT to yyyy/mm/dd
   convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
@@ -133,7 +134,7 @@ export class EditWorkOrderComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
   ngOnInit() {
-    this.loading=true;
+    this.loading = true;
     this.workordertypekey = "";
     this.FacilityKey = "";
     this.FloorKey = "";
@@ -144,31 +145,31 @@ export class EditWorkOrderComponent implements OnInit {
     this.EmployeeKey = "";
     this.EquipmentTypeKey = "";
     this.EquipmentKey = "";
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.WorkOrderServiceService
       .getWO_edit(this.WO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {//service for getting edited work order detail
         this.WOEditList = data[0];
-        this.loading=false;
-        if(this.WOEditList.KeepActive==1){
-          this.keepActive=true;
+        this.loading = false;
+        if (this.WOEditList.KeepActive == 1) {
+          this.keepActive = true;
         }
-        else{
-          this.keepActive=false;
+        else {
+          this.keepActive = false;
         }
-        if(this.WOEditList.IsSnapshot==1){
-          this.GpsSnapShot=true;
+        if (this.WOEditList.IsSnapshot == 1) {
+          this.GpsSnapShot = true;
         }
-        else{
-          this.GpsSnapShot=false;
+        else {
+          this.GpsSnapShot = false;
         }
         this.WorkOrderServiceService
           .getallFloor(this.WOEditList.FacilityKey, this.OrganizationID)
@@ -364,7 +365,7 @@ export class EditWorkOrderComponent implements OnInit {
     else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
-      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
+      this.getZoneRoomTypeRoom(this.FloorKey, this.FacilityKey);
     }
   }
   getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
@@ -422,7 +423,7 @@ export class EditWorkOrderComponent implements OnInit {
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
       });
   }
-   //function for updating workorder
+  //function for updating workorder
   UpdateWO() {
     if (this.showEqTypes === false) {
       this.createWorkorder1();//function for updating workorder without equipment
@@ -608,18 +609,18 @@ export class EditWorkOrderComponent implements OnInit {
     } else {
       this.workTime = new Date().getHours() + ':' + new Date().getMinutes();
     }
-    if( this.keepActive ==true){
-      this.keep_active=1;
+    if (this.keepActive == true) {
+      this.keep_active = 1;
     }
-    else{
-       this.keep_active=0;
-     }
-     if( this.GpsSnapShot ==true){
-      this.Gps_SnapShot=1;
-     }
-      else{
-       this.Gps_SnapShot=0;
-     }
+    else {
+      this.keep_active = 0;
+    }
+    if (this.GpsSnapShot == true) {
+      this.Gps_SnapShot = 1;
+    }
+    else {
+      this.Gps_SnapShot = 0;
+    }
 
 
     this.workorderCreation = {
@@ -644,8 +645,8 @@ export class EditWorkOrderComponent implements OnInit {
       intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
       repeatinterval: 1,
       occursonday: null,
-      keepActive:this.keep_active,
-      IsSnapshot:this.Gps_SnapShot
+      keepActive: this.keep_active,
+      IsSnapshot: this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
       this.deleteWO = {
@@ -660,7 +661,7 @@ export class EditWorkOrderComponent implements OnInit {
         });
     });
   }
-//function for creating workorder with equipment
+  //function for creating workorder with equipment
   createWorkorder2() {
     if (!this.workordertypekey) {
       alert("Please select work-order type!");
@@ -859,19 +860,19 @@ export class EditWorkOrderComponent implements OnInit {
       } else {
         this.workTime = new Date().getHours() + ':' + new Date().getMinutes();
       }
-      if( this.keepActive ==true){
-        this.keep_active=1;
+      if (this.keepActive == true) {
+        this.keep_active = 1;
       }
-      else{
-         this.keep_active=0;
-       }
+      else {
+        this.keep_active = 0;
+      }
 
-       if( this.GpsSnapShot ==true){
-        this.Gps_SnapShot=1;
-       }
-        else{
-         this.Gps_SnapShot=0;
-       }
+      if (this.GpsSnapShot == true) {
+        this.Gps_SnapShot = 1;
+      }
+      else {
+        this.Gps_SnapShot = 0;
+      }
       this.workorderCreation = {
         occursontime: this.workTime,
         workorderkey: - 99,
@@ -894,8 +895,8 @@ export class EditWorkOrderComponent implements OnInit {
         intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
         repeatinterval: 1,
         occursonday: null,
-        keepActive:this.keep_active,
-        IsSnapshot:this.Gps_SnapShot
+        keepActive: this.keep_active,
+        IsSnapshot: this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
         this.deleteWO = {
@@ -925,7 +926,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.EquipmentKey = "";
     }
   }
-  goBack(){
+  goBack() {
     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
   }
 

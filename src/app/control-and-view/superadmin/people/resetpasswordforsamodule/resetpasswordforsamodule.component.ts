@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-resetpasswordforsamodule',
   templateUrl: './resetpasswordforsamodule.component.html',
@@ -42,7 +43,7 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.empKey$ = params.EmpKey);
   }
 
@@ -92,14 +93,14 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.peopleService.getLoginDetailsByEmpKey(this.empKey$, this.OrganizationID).subscribe((data: any[]) => {

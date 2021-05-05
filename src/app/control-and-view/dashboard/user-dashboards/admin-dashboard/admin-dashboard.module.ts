@@ -109,6 +109,11 @@ const routes: Routes = [
       },
 
 
+      {
+        path: 'logout',
+        outlet: 'AdminOut',
+        loadChildren: '../../../dashboard/logout/logout.module#LogoutModule'
+      }
     ]
   }
 ];

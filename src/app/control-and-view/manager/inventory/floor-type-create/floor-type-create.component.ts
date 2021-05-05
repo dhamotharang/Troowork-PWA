@@ -4,6 +4,7 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-floor-type-create',
@@ -37,7 +38,7 @@ export class FloorTypeCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location) {
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
   }
 
   addFloorType(FloorTypeName) {
@@ -70,15 +71,14 @@ export class FloorTypeCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-
+        // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
   }
   goBack() {

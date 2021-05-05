@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { People } from '../../../model-class/People';
 import { PeopleServiceService } from '../../../service/people-service.service';
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-viewmeetingortrainingevent',
   templateUrl: './viewmeetingortrainingevent.component.html',
@@ -46,7 +47,7 @@ export class ViewmeetingortrainingeventComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private formBuilder: FormBuilder, private el: ElementRef, private PeopleServiceService: PeopleServiceService) { }
+  constructor(private formBuilder: FormBuilder, private el: ElementRef, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
 
   convert_DT(str) {
     var date = new Date(str),
@@ -140,14 +141,16 @@ export class ViewmeetingortrainingeventComponent implements OnInit {
   ngOnInit() {
 
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+  
 
     //token ends
     this.loading = true;// loading

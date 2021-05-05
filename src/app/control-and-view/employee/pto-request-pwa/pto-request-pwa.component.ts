@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
 import { DatePipe } from '@angular/common';
 
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-pto-request-pwa',
@@ -84,7 +85,7 @@ export class PtoRequestPWAComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private responsiveService: ResponsiveService) {
+  constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
     this.starttime.setHours(0);
     this.starttime.setMinutes(0);
     this.starttime.setSeconds(0);
@@ -193,14 +194,14 @@ export class PtoRequestPWAComponent implements OnInit {
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
 
 

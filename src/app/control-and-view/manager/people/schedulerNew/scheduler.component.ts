@@ -8,6 +8,7 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { ModalDirective } from 'angular-bootstrap-md';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from "src/app/service/DataServiceTokenStorage.service";
 @Component({
   selector: 'scheduler-component',
   template: `
@@ -224,7 +225,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
   `]
 })
 export class SchedulerComponent implements AfterViewInit {
-  constructor(private ds: DataService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService) {
+  constructor(private ds: DataService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) {
     this.date = new Date();
     this.date1 = new Date();
     this.Range = 'Month';
@@ -597,14 +598,14 @@ export class SchedulerComponent implements AfterViewInit {
 
     //token starts....
     this.popupAppear = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     var from = this.scheduler.control.visibleStart();
     var to = this.scheduler.control.visibleEnd();

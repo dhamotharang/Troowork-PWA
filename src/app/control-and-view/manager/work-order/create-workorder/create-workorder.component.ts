@@ -4,6 +4,7 @@ import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-workorder',
   templateUrl: './create-workorder.component.html',
@@ -141,7 +142,7 @@ export class CreateWorkorderComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
   //token decoding function
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -162,14 +163,14 @@ export class CreateWorkorderComponent implements OnInit {
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeeKey = profile.employeekey;
-    this.org_id = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeeKey = this.dst.getEmployeekey();
+    this.org_id = this.dst.getOrganizationID();
     this.dateValue = new Date(Date.now());
     this.weeklyrecurring = false;
     this.monthlyrecurring = false;

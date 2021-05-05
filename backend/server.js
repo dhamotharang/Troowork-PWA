@@ -19,6 +19,8 @@ var sgTransport = require('nodemailer-sendgrid-transport');
 var scheduler = require('node-schedule');
 // var sendgrid = require('@sendgrid/mail');
 
+var cors = require('cors');
+
 function supportCrossOriginScript(req, res, next) {
     res.status(200);
     res.header("Access-Control-Allow-Origin", "*");
@@ -48,6 +50,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, config.app.views)));
 
+app.use(cors({ exposedHeaders: 'Authorization' }));
 
 
 app.get('/', function (req, res) {
@@ -201,39 +204,40 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
 
 
 //method to verify jwt token. all secured path will pass thru here
-// function jwtCheck(req, res, next) {
-//     var token = '';
-//     var accesstoken = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['x-auth-token'] || req.headers['authorization'];
-//     var refreshtoken = req.cookies['refresh-token'];
-//     //var refreshtoken = req.headers['cookie']; //also an option, but have to extract specific cookie from all cookies. comes in name:value pairs.
-// //    console.log('headers<=>' + accesstoken); //req.headers['cookie']);
-// //    console.log('for token verification -- cookies<=>' + refreshtoken); //req.cookies['access-token']);
-//     //jwttoken = '';
-//     if (refreshtoken) {
-//         token = refreshtoken;
-// //        console.log("got valid refresh token "+token);
-//     } else {
-//         token = accesstoken;
-// //        console.log("got access token as "+token);
-//     }
-//     console.log("Verifying received token " + token);
-//     jwt.verify(token, jwtsecret, function (err, decoded) {
-//         if (err) {
-//             console.log(err);
-//             return res.json({success: false, message: 'Failed to authenticate token.'});
-//         } else {
-//             // if everything is good, save to request for use in other routes
-//             req.decoded = decoded;
-// //            console.log('decoded------->' + JSON.stringify(decoded));
-// //            console.log('iat:' + new Date(1482535287));
-// //            console.log('exat:' + new Date(1482553287));
-//             //return res.json({ success: true, message: 'Authenticated successfully.' });    
-//             next();
-//         }
-//     });
-// }
+function jwtCheck(req, res, next) {
+    var token = '';
+    var accesstoken = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['x-auth-token'] || req.headers['authorization'];
+    console.log("Check list " + JSON.stringify(req.headers));
+    var refreshtoken = req.cookies['refresh-token'];
+    //var refreshtoken = req.headers['cookie']; //also an option, but have to extract specific cookie from all cookies. comes in name:value pairs.
+    //    console.log('headers<=>' + accesstoken); //req.headers['cookie']);
+    //    console.log('for token verification -- cookies<=>' + refreshtoken); //req.cookies['access-token']);
+    //jwttoken = '';
+    if (refreshtoken) {
+        token = refreshtoken;
+        console.log("got valid refresh token " + token);
+    } else {
+        token = accesstoken;
+        console.log("got access token as " + token);
+    }
+    console.log("Verifying received token " + token);
+    jwt.verify(token, jwtsecret, function (err, decoded) {
+        if (err) {
+            console.log(err);
+            return res.json({ success: false, message: 'Failed to authenticate token.' });
+        } else {
+            // if everything is good, save to request for use in other routes
+            req.decoded = decoded;
+            //            console.log('decoded------->' + JSON.stringify(decoded));
+            //            console.log('iat:' + new Date(1482535287));
+            //            console.log('exat:' + new Date(1482553287));
+            //return res.json({ success: true, message: 'Authenticated successfully.' });    
+            next();
+        }
+    });
+}
 
-// app.use(securedpath, jwtCheck);
+app.use(securedpath, jwtCheck);
 
 
 // *********************code for form uploads-web starts **********************
@@ -17602,7 +17606,7 @@ app.get(securedpath + '/getFeedbackTemplateQuestionsEditDetails', function (req,
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @templateID=?;set @OrganizationID=?;call usp_getFeedbackTemplateQuestionsEditDetails(@templateID,@OrganizationID)', [templateID,OrganizationID], function (err, rows) {
+            connection.query('set @templateID=?;set @OrganizationID=?;call usp_getFeedbackTemplateQuestionsEditDetails(@templateID,@OrganizationID)', [templateID, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }

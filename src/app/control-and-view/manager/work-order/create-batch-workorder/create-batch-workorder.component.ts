@@ -4,6 +4,7 @@ import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-batch-workorder',
   templateUrl: './create-batch-workorder.component.html',
@@ -144,7 +145,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
   url_base64_decode(str) {//token decoding function
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -167,14 +168,14 @@ export class CreateBatchWorkorderComponent implements OnInit {
     this.dailyrecurring = false;
     this.monthlyreccradio1 = false;
     this.monthlyreccradio2 = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.emp_key = profile.employeekey;
-    this.org_id = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.emp_key = this.dst.getEmployeekey();
+    this.org_id = this.dst.getOrganizationID();
     this.WorkorderTypeKey = "";
     this.BatchScheduleNameKey = "";
     this.FacilityKey = "";

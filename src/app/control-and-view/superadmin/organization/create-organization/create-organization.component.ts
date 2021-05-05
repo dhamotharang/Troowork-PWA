@@ -3,6 +3,7 @@ import { OrganizationService } from '../../../../service/organization.service';
 import { Organization } from '../../../../model-class/Organization';
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-organization',
   templateUrl: './create-organization.component.html',
@@ -24,7 +25,7 @@ export class CreateOrganizationComponent implements OnInit {
   employeekey;
   OrgID;
   checkFlag;
-  constructor(private organizationService: OrganizationService, private router: Router) { }
+  constructor(private organizationService: OrganizationService, private router: Router, private dst: DataServiceTokenStorageService) { }
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -88,14 +89,14 @@ export class CreateOrganizationComponent implements OnInit {
   }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrgID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrgID = this.dst.getOrganizationID();
     this.checkFlag = false;
   }
 

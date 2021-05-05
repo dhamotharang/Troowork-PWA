@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { InspectionService } from '../../../../service/inspection.service';
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-edit-feedback-template',
   templateUrl: './edit-feedback-template.component.html',
@@ -41,7 +42,7 @@ export class EditFeedbackTemplateComponent implements OnInit {
   temparray = [];
   insertObj;
 
-  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private _location: Location) {
+  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private _location: Location, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.tempID = params.idreviewtemplate);
   }
 
@@ -50,14 +51,14 @@ export class EditFeedbackTemplateComponent implements OnInit {
   }
   ngOnInit() {
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     //token ends
 
     this.inspectionService
@@ -164,7 +165,7 @@ export class EditFeedbackTemplateComponent implements OnInit {
       this.TemplateEditDetails.TemplateName = this.TemplateEditDetails.TemplateName.trim();
     }
     this.inspectionService
-      .updateFeedbackTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey,this.toServeremployeekey).subscribe(() => {
+      .updateFeedbackTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey, this.toServeremployeekey).subscribe(() => {
         alert("Successfully Updated");
         this._location.back();
       });

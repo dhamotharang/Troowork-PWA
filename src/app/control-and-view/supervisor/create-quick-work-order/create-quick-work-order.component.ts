@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { workorder } from '../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../service/work-order-service.service';
 import { Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-create-quick-work-order',
@@ -62,7 +63,7 @@ export class CreateQuickWorkOrderComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
 
   convert_DT(str) {
     var date = new Date(str),
@@ -170,14 +171,14 @@ export class CreateQuickWorkOrderComponent implements OnInit {
 
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.emp_key = profile.employeekey;
-    this.org_id = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.emp_key = this.dst.getEmployeekey();
+    this.org_id = this.dst.getOrganizationID();
     this.FacilityKey = "";
     this.EmployeeKey = "";
     this.PriorityKey = "";

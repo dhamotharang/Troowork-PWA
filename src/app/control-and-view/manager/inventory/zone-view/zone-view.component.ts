@@ -2,6 +2,7 @@ import { Component, OnInit, Directive, HostListener, ElementRef, Input } from '@
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-zone-view',
   templateUrl: './zone-view.component.html',
@@ -46,7 +47,7 @@ export class ZoneViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -168,14 +169,14 @@ export class ZoneViewComponent implements OnInit {
   }
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.loading = true;
     this.checkFlag = false;
     this.inventoryService

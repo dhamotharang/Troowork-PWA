@@ -3,6 +3,7 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { OrganizationService } from '../../../../service/organization.service';
 import { HttpClient } from '@angular/common/http';
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-cron-job-batch-details',
   templateUrl: './cron-job-batch-details.component.html',
@@ -40,7 +41,7 @@ export class CronJobBatchDetailsComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
-  constructor(private PeopleServiceService: PeopleServiceService, private organizationService: OrganizationService) { }
+  constructor(private PeopleServiceService: PeopleServiceService, private organizationService: OrganizationService, private dst: DataServiceTokenStorageService) { }
   
   orgChanged() {
     this.loading = true;
@@ -54,11 +55,11 @@ export class CronJobBatchDetailsComponent implements OnInit {
     });
   }
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.OrgID = profile.OrganizationID;
-
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+   
+    this.OrgID = this.dst.getOrganizationID();
     this.currentDate = this.convert_DT(new Date());
     this.PeopleServiceService
       .getOrganization(this.OrgID)

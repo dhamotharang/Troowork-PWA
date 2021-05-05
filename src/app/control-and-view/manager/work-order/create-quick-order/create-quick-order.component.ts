@@ -4,6 +4,7 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-quick-order',
   templateUrl: './create-quick-order.component.html',
@@ -65,7 +66,7 @@ export class CreateQuickOrderComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private responsiveService: ResponsiveService, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private router: Router, private responsiveService: ResponsiveService, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
   //Function for converting date from GMT to yyyy/mm/dd format
   convert_DT(str) {
     var date = new Date(str),
@@ -174,14 +175,14 @@ export class CreateQuickOrderComponent implements OnInit {
 
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.emp_key = profile.employeekey;
-    this.org_id = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.emp_key = this.dst.getEmployeekey();
+    this.org_id = this.dst.getOrganizationID();
     //setting default dropdown values to select
     this.FacilityKey = "";
     this.EmployeeKey = "";
@@ -202,7 +203,7 @@ export class CreateQuickOrderComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.prioritylist = data;
       });
-      this.onResize();
+    this.onResize();
     this.responsiveService.checkWidth();
   }
   onResize() {

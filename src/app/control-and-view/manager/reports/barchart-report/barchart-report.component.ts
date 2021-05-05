@@ -8,6 +8,7 @@ import { Label } from 'ng2-charts';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-barchart-report',
@@ -58,7 +59,7 @@ export class BarchartReportComponent implements OnInit {
   downtime;
   checkFlag;
 
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService) {
     // this.dashboardreport = fb.group({
     //   EmployeeKey: ['', Validators.required],
     //   EmployeeText: ['', Validators.required]
@@ -286,15 +287,14 @@ export class BarchartReportComponent implements OnInit {
     this.loading = false;
     this.EmployeeKey = "";
     this.fromdate = new Date();
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
     this.ReportServiceService
       .getallemployee(this.employeekey, this.OrganizationID)

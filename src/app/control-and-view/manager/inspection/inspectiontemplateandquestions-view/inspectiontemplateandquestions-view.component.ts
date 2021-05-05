@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-inspectiontemplateandquestions-view',
   templateUrl: './inspectiontemplateandquestions-view.component.html',
@@ -44,7 +45,7 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
   tempkey1;
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -62,19 +63,18 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
     }, 100)
   }
   showInspectionTemplateTable(tempKey) {
-    this.tempkey1=tempKey;
-    if(!(this.TemplateID))
-    {
-        this.searchFlag = false;
-        this.viewinspectionTemplate= false;
+    this.tempkey1 = tempKey;
+    if (!(this.TemplateID)) {
+      this.searchFlag = false;
+      this.viewinspectionTemplate = false;
     }
-    else{
-    this.inspectionService
-      .getInspectionTemplateTable(tempKey, this.OrganizationID)
-      .subscribe((data: Inspection[]) => {
-        this.searchFlag = true;
-        this.viewinspectionTemplate = data;
-      });
+    else {
+      this.inspectionService
+        .getInspectionTemplateTable(tempKey, this.OrganizationID)
+        .subscribe((data: Inspection[]) => {
+          this.searchFlag = true;
+          this.viewinspectionTemplate = data;
+        });
     }
   }
   deleteInspTemplate() {
@@ -97,34 +97,34 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
   }
   searchTNandTQ(SearchValue, TemplateID) {
 
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
 
-    if (value.length >= 3){
-    this.inspectionService
-      .SearchTempNameandQuestion(value, TemplateID, this.OrganizationID).subscribe((data: Inspection[]) => {
-        this.viewinspectionTemplate = data;
+    if (value.length >= 3) {
+      this.inspectionService
+        .SearchTempNameandQuestion(value, TemplateID, this.OrganizationID).subscribe((data: Inspection[]) => {
+          this.viewinspectionTemplate = data;
 
-      });
+        });
     }
     else if (value.length == 0) {
       this.inspectionService
-      .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
-      .subscribe((data: Inspection[]) => {
-        this.searchFlag = true;
-        this.viewinspectionTemplate = data;
-      });
+        .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
+        .subscribe((data: Inspection[]) => {
+          this.searchFlag = true;
+          this.viewinspectionTemplate = data;
+        });
     }
   }
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.searchFlag = false;

@@ -4,6 +4,7 @@ import { Documents } from '../../../../model-class/Documents';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-documentfolder-edit',
   templateUrl: './documentfolder-edit.component.html',
@@ -37,7 +38,7 @@ export class DocumentfolderEditComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private documentService: DocumentserviceService, private router: Router, private _location: Location) {
+  constructor(private route: ActivatedRoute, private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.folder$ = params.FormtypeId);
   }
 
@@ -87,14 +88,14 @@ export class DocumentfolderEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
 
     this.documentService.EditDocFolderName(this.folder$, this.OrganizationID).subscribe((data: any[]) => {

@@ -7,6 +7,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { ConectionSettings } from '../../../service/ConnectionSetting';
 const url = ConectionSettings.Url + '/upload_test';
 
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-view-work-order',
   templateUrl: './view-work-order.component.html',
@@ -122,7 +123,7 @@ export class ViewWorkOrderComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join('-');
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -603,14 +604,14 @@ export class ViewWorkOrderComponent implements OnInit {
     this.showGenerate = false;
     this.checkflag = false;
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag1 = false;
     //token ends

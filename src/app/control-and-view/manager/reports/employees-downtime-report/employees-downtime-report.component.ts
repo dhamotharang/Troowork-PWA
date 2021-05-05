@@ -7,6 +7,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 // import { ChartsModule } from 'ng2-charts';
 // import 'chartjs-plugin-datalabels'
 
@@ -56,7 +57,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   tableflag = false;
   employeeString;
   checkFlag;
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService) { }
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService) { }
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -269,14 +270,14 @@ export class EmployeesDowntimeReportComponent implements OnInit {
     this.loading = false;
     this.fromdate = new Date();
     this.todate = new Date();
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.ReportServiceService

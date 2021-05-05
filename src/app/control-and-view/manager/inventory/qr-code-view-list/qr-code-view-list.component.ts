@@ -5,6 +5,7 @@ import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-qr-code-view-list',
@@ -29,7 +30,7 @@ export class QrCodeViewListComponent implements OnInit {
   checkvaluetag$;
   loading;
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.QRCodeRoomKey$ = params.QRCodeRoomKey);
     this.route.params.subscribe(params => this.checkvaluetag$ = params.checkvaluetag);
   }
@@ -78,14 +79,14 @@ export class QrCodeViewListComponent implements OnInit {
 
   ngOnInit() {
     this.loading=true;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+        // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     var QRCodeRoomList = this.QRCodeRoomKey$.split(",");
     var count = 0;

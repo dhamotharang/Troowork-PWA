@@ -3,6 +3,7 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-room-type-view',
@@ -46,7 +47,7 @@ export class RoomTypeViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private _location: Location) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private _location: Location, private dst: DataServiceTokenStorageService) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -166,14 +167,14 @@ export class RoomTypeViewComponent implements OnInit {
 
   ngOnInit() {
     this.checkFlag = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+        // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.loading = true;
     this.inventoryService
       .getRoomTypeList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)

@@ -5,6 +5,7 @@ import { ReportServiceService } from '../../../../service/report-service.service
 import { ExcelserviceService } from '../../../../service/excelservice.service';
 
 import * as FileSaver from 'file-saver';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 @Component({
   selector: 'app-barcode-report',
@@ -66,7 +67,7 @@ export class BarcodeReportComponent implements OnInit {
   }
   ];
   barcode: FormGroup;
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService) {
     this.barcode = fb.group({
       FacilityKey: ['', Validators.required],
       FacilityText: ['', Validators.required],
@@ -85,14 +86,14 @@ export class BarcodeReportComponent implements OnInit {
     this.EquipmentKey = "";
 
     this.checkFlag = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.ReportServiceService
       .getBarcodeReport(this.employeekey, this.OrganizationID)

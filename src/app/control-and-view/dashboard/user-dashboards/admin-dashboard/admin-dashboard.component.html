@@ -16,8 +16,7 @@
       <div style="margin-left: 45%;">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <img class="imagesize nav-link" src="assets/icons/homepage.png"
-              [routerLink]="[{outlets:{AdminOut:['welcomePage']}}]">
+            <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{AdminOut:['welcomePage']}}]">
           </li>
 
           <li class="nav-item dropdown">
@@ -31,7 +30,7 @@
                   Credentials</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['JobTitleViewAdmin']}}]"><b>Create
                   JobTitle</b></a>
-             
+
             </div>
           </li>
 
@@ -46,7 +45,7 @@
             <img class="imagesize nav-link" src="assets/icons/profile-2.png">
             <div class="dropdown-content" style="margin-left:1rem;">
               <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['adminMyProfile']}}]"><b>My Profile</b></a>
-              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{AdminOut:['logout']}}]"><b>Log Out</b></a>
             </div>
           </li>
         </ul>

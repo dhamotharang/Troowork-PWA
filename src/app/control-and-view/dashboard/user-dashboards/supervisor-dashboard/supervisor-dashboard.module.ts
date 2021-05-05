@@ -456,8 +456,13 @@ const routes: Routes = [
         loadChildren: '../../../employee/view-employee-scheduler-pwa/view-employee-scheduler-pwa.module#ViewEmployeeSchedulerPWAModule',
       },
 
+      {
+        path: 'logout',
+        outlet: 'Superout',
+        loadChildren: '../../../dashboard/logout/logout.module#LogoutModule'
+      }
 
-      
+
     ]
   }
 ];

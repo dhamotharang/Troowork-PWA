@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-supervisor-dashboard',
   templateUrl: './supervisor-dashboard.component.html',
@@ -16,7 +17,7 @@ export class SupervisorDashboardComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   scheduleIcon;
-  popup:boolean = false;
+  popup: boolean = false;
   router: any;
   isMobile: boolean;
   url_base64_decode(str) {
@@ -36,30 +37,30 @@ export class SupervisorDashboardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private responsiveService: ResponsiveService) { }
+  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
   logout() {
     this.popup = true;
 
   }
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-    this.scheduleIcon = profile.isemployeecalendar;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+    this.scheduleIcon = this.dst.getIsemployeecalendar();
 
     this.loginService
       .getEmpNameForWelcomeMessage(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empName = data[0].EmpName;
       });
-      this.onResize();
-      this.responsiveService.checkWidth();
+    this.onResize();
+    this.responsiveService.checkWidth();
   }
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
@@ -70,34 +71,34 @@ export class SupervisorDashboardComponent implements OnInit {
     document.getElementById("mySidenav").style.width = "300px";
     // document.getElementById("main").style.marginLeft = "250px";
     document.body.style.backgroundColor = "#EBFAFF !important";
-    
+
   }
-  
+
   closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     // document.getElementById("main").style.marginLeft= "0";
   }
-  dropdownData(){
+  dropdownData() {
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
     for (i = 0; i < dropdown.length; i++) {
-    dropdown[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var dropdownContent = this.nextElementSibling;
-      if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-      } else {
-      dropdownContent.style.display = "block";
-      }
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
       });
     }
   }
-  leave(){
+  leave() {
     console.log("exit")
   }
-  stayhere(){
+  stayhere() {
     this.popup = false;
   }
- 
+
 
 }

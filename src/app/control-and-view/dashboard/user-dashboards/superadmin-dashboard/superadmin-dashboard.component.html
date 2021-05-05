@@ -50,7 +50,7 @@
             <div class="dropdown-content" style="margin-left:1rem;">
               <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['superAdminMyProfile']}}]"><b>My
                   Profile</b></a>
-              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+                  <a class="dropdown-item" [routerLink]="[{outlets:{SuperAdminOut:['logout']}}]"><b>Log Out</b></a>
             </div>
           </li>
         </ul>

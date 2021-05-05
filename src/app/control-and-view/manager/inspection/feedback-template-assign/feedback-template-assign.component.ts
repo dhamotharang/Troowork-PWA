@@ -4,6 +4,7 @@ import { InspectionService } from '../../../../service/inspection.service';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { InventoryService } from '../../../../service/inventory.service';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-feedback-template-assign',
@@ -56,7 +57,7 @@ export class FeedbackTemplateAssignComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private invServ: InventoryService, private inspectionService: InspectionService, private woServ: WorkOrderServiceService, private scheduleServ: SchedulingService) {
+  constructor(private route: ActivatedRoute, private router: Router, private invServ: InventoryService, private inspectionService: InspectionService, private woServ: WorkOrderServiceService, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.tempID = params.idreviewtemplate);
   }
 
@@ -66,14 +67,14 @@ export class FeedbackTemplateAssignComponent implements OnInit {
 
   ngOnInit() {
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     //token ends
     this.loading = true;
     this.roomtype = false;
@@ -87,7 +88,7 @@ export class FeedbackTemplateAssignComponent implements OnInit {
           this.scorename = data[0].ScoreName;
         }
         this.loading = false;
-        this.RoomType="";
+        this.RoomType = "";
 
       });
   }

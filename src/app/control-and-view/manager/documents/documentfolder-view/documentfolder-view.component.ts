@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DocumentserviceService } from '../../../../service/documentservice.service';
 import { Documents } from '../../../../model-class/Documents';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-documentfolder-view',
   templateUrl: './documentfolder-view.component.html',
@@ -19,7 +20,7 @@ export class DocumentfolderViewComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-  checkFlag ;
+  checkFlag;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -43,7 +44,7 @@ export class DocumentfolderViewComponent implements OnInit {
   //validation starts ..... @Pooja
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -64,23 +65,23 @@ export class DocumentfolderViewComponent implements OnInit {
   //validation ends ..... @Pooja
 
   searchDocumentFolder(SearchValue) {
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
     if (value.length >= 3) {
-    this.documentService
-      .SearchDocFolder(this.OrganizationID, value).subscribe((data: Documents[]) => {
-        this.documents = data;
-      });
+      this.documentService
+        .SearchDocFolder(this.OrganizationID, value).subscribe((data: Documents[]) => {
+          this.documents = data;
+        });
     }
     else if (value.length == 0) {
       if ((value.length == 0) && (SearchValue.length == 0)) {
         this.loading = true;
       }
       this.documentService
-      .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-      .subscribe((data: Documents[]) => {
-        this.documents = data;
-        this.loading=false;
-      });
+        .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+        .subscribe((data: Documents[]) => {
+          this.documents = data;
+          this.loading = false;
+        });
 
     }
   };
@@ -103,14 +104,14 @@ export class DocumentfolderViewComponent implements OnInit {
     this.delete_foldKey = FormtypeId;
   }
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
     this.documentService

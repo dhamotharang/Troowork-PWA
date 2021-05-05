@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
+import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-employee-dashboard',
   templateUrl: './employee-dashboard.component.html',
@@ -39,7 +40,7 @@ export class EmployeeDashboardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private responsiveService: ResponsiveService) { }
+  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
   logout() {
     this.popup = true;
 
@@ -48,15 +49,15 @@ export class EmployeeDashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-    this.isEmployeecalendar = profile.isemployeecalendar;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+    this.isEmployeecalendar = this.dst.getIsemployeecalendar();
 
     this.loginService
       .getEmpNameForWelcomeMessage(this.employeekey, this.OrganizationID)
@@ -65,7 +66,7 @@ export class EmployeeDashboardComponent implements OnInit {
       });
     this.onResize();
     this.responsiveService.checkWidth();
-   
+
   }
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {

@@ -3,6 +3,7 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { ActivatedRoute } from "@angular/router";
 
 import { Location } from '@angular/common';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-edit-master-shifts',
@@ -46,21 +47,21 @@ export class EditMasterShiftsComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private scheduleService: SchedulingService, private route: ActivatedRoute, private _location: Location) {
+  constructor(private scheduleService: SchedulingService, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.shiftKey$ = params.masterShiftID);
   }
 
   ngOnInit() {
 
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     //token ends
 
     this.checkFlag = false;

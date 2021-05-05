@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-create-workorder-type',
@@ -40,7 +41,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
   }
   WorkOrderTypeName; MetricKey;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private dst: DataServiceTokenStorageService, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
 
   numberValid(event: any) {
     const pattern = /[0-9\ .]/;
@@ -71,14 +72,14 @@ export class CreateWorkorderTypeComponent implements OnInit {
     }
   }
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+       // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.WorkOrderServiceService
       .getMetricValues(this.OrganizationID)
       .subscribe((data: any[]) => {

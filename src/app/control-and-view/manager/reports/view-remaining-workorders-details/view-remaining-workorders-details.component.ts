@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { DataService } from '../dashboard-report/data.service';
 import { ActivatedRoute, Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-view-remaining-workorders-details',
   templateUrl: './view-remaining-workorders-details.component.html',
@@ -39,7 +40,7 @@ export class ViewRemainingWorkordersDetailsComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private woServ: WorkOrderServiceService, private dataSer: DataService, private route: ActivatedRoute, private router: Router) {
+  constructor(private woServ: WorkOrderServiceService, private dst: DataServiceTokenStorageService, private dataSer: DataService, private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe(params => this.from = params.fromdt);
     this.route.params.subscribe(params => this.to = params.todt);
     this.route.params.subscribe(params => this.empKey = params.empKey);
@@ -49,14 +50,13 @@ export class ViewRemainingWorkordersDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.name = profile.username;
-    this.employee = profile.employeekey;
-    this.org = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.name = this.dst.getName();
+    this.employee = this.dst.getEmployeekey();
+    this.org = this.dst.getOrganizationID();
 
     this.loading = true;
     this.woServ.getRemainingWODetails(this.from, this.to, this.empKey, this.wotypeKey, this.org)

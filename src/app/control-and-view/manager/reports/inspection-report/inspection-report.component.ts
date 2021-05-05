@@ -6,6 +6,7 @@ import { ExcelserviceService } from '../../../../service/excelservice.service';
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 import { InspectionService } from '../../../../service/inspection.service';
 import * as FileSaver from 'file-saver';//for excel
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 @Component({
   selector: 'app-inspection-report',
@@ -86,7 +87,7 @@ export class InspectionReportComponent implements OnInit {
     // Template: '', Date: '', Location: '', Auditor: '', Employee: '', Status: ''
   }
   ];
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService) {
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService) {
     this.inspectionreport = fb.group({
       SupervisorKey: ['', Validators.required],
       SupervisorText: ['', Validators.required]
@@ -120,14 +121,14 @@ export class InspectionReportComponent implements OnInit {
     this.SupervisorKey = ""
     this.fromdate = new Date();
     this.TemplateName = '';
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
 

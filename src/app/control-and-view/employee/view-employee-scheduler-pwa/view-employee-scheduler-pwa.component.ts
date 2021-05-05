@@ -8,6 +8,7 @@ import { ModalDirective } from 'angular-bootstrap-md';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'scheduler-component',
   template: `
@@ -85,7 +86,7 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
   router: any;
   toServeremployeekey: any;
   PeopleServiceService: any;
-  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService) {
+  constructor(private ds: DataPWAService, private cdr: ChangeDetectorRef, private SchedulingService: SchedulingService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
     this.Range = 'Week';
   }
   @ViewChild("modal") modal: DayPilotModalComponent;
@@ -244,14 +245,16 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
 
     //token starts....
     this.filterpopupAppear = false;
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+    
     this.Range = this.ds.getType();
     var from = this.scheduler.control.visibleStart();
     var to = this.scheduler.control.visibleEnd();

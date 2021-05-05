@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { InspectionService } from '../../../service/inspection.service';
 import { Inspection } from '../../../model-class/Inspection';
 import { ActivatedRoute, Router } from "@angular/router";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-viewinspctnbysprvsr',
   templateUrl: './viewinspctnbysprvsr.component.html',
@@ -55,7 +56,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -153,14 +154,15 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
   ngOnInit() {
 
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+
 
     //token ends
     this.checkflag = false;

@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const url = ConectionSettings.Url + '/inspection_Upload';
 @Component({
   selector: 'app-managerinspectiontemplate',
@@ -147,20 +148,20 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   count = 0;
   saveInspection = {};
 
-  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router, private _location: Location, private http: HttpClient) {
+  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router, private _location: Location, private http: HttpClient, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.inspKey$ = params.InspectionOrderKey);
   }
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { Scheduling } from '../../../../model-class/Schedulng';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-create-batch-schedule',
@@ -230,7 +231,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
   }
 
-  constructor(private scheduleService: SchedulingService) { }
+  constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService) { }
 
 
   getScheduleDetails(scheduleKey) {
@@ -940,14 +941,14 @@ export class CreateBatchScheduleComponent implements OnInit {
   }
   ngOnInit() {
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.CreateDis = false;
     //token ends
     this.BatchScheduleNameKey = "";

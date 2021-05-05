@@ -106,6 +106,13 @@ const routes: Routes = [
         outlet: 'SuperAdminOut',
         loadChildren: '../../../superadmin/organization/cron-job-batch-details/cron-job-batch-details.module#CronJobBatchDetailsModule',
       },
+
+
+      {
+        path: 'logout',
+        outlet: 'SuperAdminOut',
+        loadChildren: '../../../dashboard/logout/logout.module#LogoutModule'
+      }
     ]
   }
 ];

@@ -3,6 +3,7 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-editshift',
   templateUrl: './editshift.component.html',
@@ -62,21 +63,21 @@ export class EditshiftComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private router: Router, private PeopleServiceService: PeopleServiceService) {
+  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private PeopleServiceService: PeopleServiceService) {
     this.route.params.subscribe(params => this.shiftk$ = params.Idemployeeshift);
   }
 
   ngOnInit() {
     //token starts....
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     if (this.OrganizationID == 223 || this.OrganizationID == 134) {
       this.showHide = true;
@@ -84,7 +85,7 @@ export class EditshiftComponent implements OnInit {
       this.showHide = false;
     }
 
-    this.isemployeecalendar = profile.isemployeecalendar;
+    this.isemployeecalendar = this.dst.getIsemployeecalendar();
     //token ends
     this.checkFlag = false;
     this.PeopleServiceService

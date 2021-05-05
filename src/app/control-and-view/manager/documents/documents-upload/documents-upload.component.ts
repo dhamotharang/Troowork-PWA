@@ -3,6 +3,7 @@ import { DocumentserviceService } from '../../../../service/documentservice.serv
 import { Documents } from '../../../../model-class/Documents';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const url = ConectionSettings.Url + '/upload_test';
 
 @Component({
@@ -43,20 +44,19 @@ export class DocumentsUploadComponent implements OnInit {
 
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
 
-  constructor(private documentService: DocumentserviceService) { }
+  constructor(private documentService: DocumentserviceService, private dst: DataServiceTokenStorageService) { }
 
 
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.FormtypeId = "";
 
     this.documentService
@@ -76,8 +76,8 @@ export class DocumentsUploadComponent implements OnInit {
       alert("Please choose Document Folder");
       return;
     }
-    if(this.DescName){
-      this.DescName=this.DescName.trim();
+    if (this.DescName) {
+      this.DescName = this.DescName.trim();
     }
     this.addUrl = '?formtypeId=' + this.FormtypeId + '&formDesc=' + this.DescName + '&empkey=' + this.employeekey + '&OrganizationID=' + this.OrganizationID;
     this.uploader.onBeforeUploadItem = (item) => {

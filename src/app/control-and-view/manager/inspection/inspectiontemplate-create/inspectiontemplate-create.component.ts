@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-inspectiontemplate-create',
   templateUrl: './inspectiontemplate-create.component.html',
@@ -39,9 +40,9 @@ export class InspectiontemplateCreateComponent implements OnInit {
   scores: Inspection[];
   title = 'dynamicrow';
   fieldArray: Array<any> = [];
-  ;newAttribute: any = {};
+  ; newAttribute: any = {};
 
-  constructor(private inspectionService: InspectionService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
 
   addFieldValue() {
     this.fieldArray.push('')
@@ -139,14 +140,14 @@ export class InspectiontemplateCreateComponent implements OnInit {
   }
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.addFieldValue();
     this.ScoreTypeKey = "";
     this.checkFlag = false;

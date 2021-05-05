@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { DocumentserviceService } from '../../../../service/documentservice.service';
 import { Documents } from '../../../../model-class/Documents';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 // import {saveAs as importedSaveAs} from "file-saver";
 // import { Http, ResponseContentType } from '@angular/http';
 // import {  } from '../../../../../../uploads';
@@ -44,7 +45,7 @@ export class ViewDocumentsComponent implements OnInit {
 
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -142,14 +143,14 @@ export class ViewDocumentsComponent implements OnInit {
   // }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.FormtypeId = "";
     this.documentService

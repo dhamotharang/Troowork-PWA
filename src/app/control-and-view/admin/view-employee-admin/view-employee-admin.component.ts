@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { People } from '../../../model-class/People';
 import { PeopleServiceService } from '../../../service/people-service.service';
 
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-view-employee-admin',
   templateUrl: './view-employee-admin.component.html',
@@ -49,7 +50,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
 
-  constructor(private formBuilder: FormBuilder, private PeopleServiceService: PeopleServiceService, private el: ElementRef) { }
+  constructor(private formBuilder: FormBuilder, private PeopleServiceService: PeopleServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -164,14 +165,14 @@ export class ViewEmployeeAdminComponent implements OnInit {
   ngOnInit() {
     this.JobTitleKey = '';
     this.ManagerKey = '';
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.loading = true;
     this.PeopleServiceService
       .getJobTitleforadmindd(this.employeekey, this.OrganizationID)

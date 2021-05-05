@@ -4,6 +4,7 @@ import { InventoryService } from '../../../service/inventory.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from "@angular/router";
 
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-create-department',
   templateUrl: './create-department.component.html',
@@ -36,7 +37,7 @@ export class CreateDepartmentComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router) { }
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private dst: DataServiceTokenStorageService) { }
 
   addDepartment(DepartmentName) {
 
@@ -68,14 +69,15 @@ export class CreateDepartmentComponent implements OnInit {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['ViewDepartment'] } }]);
   }
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));    
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+
     this.checkFlag = false;
   }
 }

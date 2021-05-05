@@ -3,6 +3,7 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from "../../../../service/people-service.service";
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-pto-requestsfrom-employees',
   templateUrl: './pto-requestsfrom-employees.component.html',
@@ -76,18 +77,18 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private ReportServiceService: ReportServiceService, private PeopleServiceService: PeopleServiceService) { }
+  constructor(private ReportServiceService: ReportServiceService, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
 
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+       // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.fromdate = new Date(Date.now());
     this.todate = new Date(Date.now());

@@ -96,6 +96,7 @@
                   Audit Report</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['picklistReport']}}]"><b>Inspection-
                   PickList Report</b></a>
+              <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['dailyStaffReport']}}]"><b>Daily - Staff Report</b></a> -->
             </div>
           </li>
           <li class="nav-item dropdown" style="margin-left: -1rem;">
@@ -184,7 +185,8 @@
             <div class="dropdown-content" style="margin-left:1rem;">
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['managerMyProfile']}}]"><b>My
                   Profile</b></a>
-              <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['logout']}}]"><b>Log Out</b></a>
+              <!-- <button class="dropdown-item" (click)="logoutWeb()"><b>Log Out</b></button> -->
             </div>
           </li>
         </ul>

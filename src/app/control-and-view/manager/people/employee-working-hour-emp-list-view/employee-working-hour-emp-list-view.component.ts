@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-employee-working-hour-emp-list-view',
@@ -9,7 +10,7 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 })
 export class EmployeeWorkingHourEmpListViewComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder,private PeopleServiceService: PeopleServiceService) { }
+  constructor(private formBuilder: FormBuilder,private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
   pageNo: Number = 1;
   itemsPerPage: Number = 25;
   showHide1: boolean;
@@ -42,14 +43,14 @@ export class EmployeeWorkingHourEmpListViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.searchform = this.formBuilder.group({
       SearchEmpDetails: ['', Validators.required]

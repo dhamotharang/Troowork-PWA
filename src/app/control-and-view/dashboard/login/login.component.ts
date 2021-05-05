@@ -5,7 +5,10 @@ import { Login } from '../../../model-class/login';
 import { LoginService } from '../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
-
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -46,7 +49,7 @@ export class LoginComponent implements OnInit {
     return window.atob(output);
   }
 
-  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router, private responsiveService: ResponsiveService) {
+  loginForm: FormGroup; constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
     // loginFn() {
     //   this.popup = true;
 
@@ -89,13 +92,27 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
             window.localStorage['token'] = this.tokenobj.token;
+            console.log("token");
+            console.log(this.tokenobj.token);
+            console.log("token");
+            console.log(this.tokenobj);
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
+            this.dst.setRole(profile.role);
+
             this.IsSupervisor = profile.IsSupervisor;
+            this.dst.setIsSupervisor(profile.IsSupervisor);
+
             this.name = profile.username;
+            this.dst.setName(profile.username);
+
             this.employeekey = profile.employeekey;
+            this.dst.setEmployeekey(profile.employeekey);
+
             this.OrganizationID = profile.OrganizationID;
+            this.dst.setOrganizationID(profile.OrganizationID);
+
             console.log("login successfull");
             if (this.isMobile) {
               if (profile.role === 'Manager') {
@@ -221,16 +238,29 @@ export class LoginComponent implements OnInit {
           else {
 
             this.isAuthenticated = true;
+            console.log("token");
+            console.log(this.tokenobj.token);
+            console.log("token");
+            console.log(this.tokenobj);
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
             window.localStorage['token'] = this.tokenobj.token;
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
+            this.dst.setRole(profile.role);
+
             this.IsSupervisor = profile.IsSupervisor;
+            this.dst.setIsSupervisor(profile.IsSupervisor);
+
             this.name = profile.username;
+            this.dst.setName(profile.username);
+
             this.employeekey = profile.employeekey;
+            this.dst.setEmployeekey(profile.employeekey);
+
             this.OrganizationID = profile.OrganizationID;
+            this.dst.setOrganizationID(profile.OrganizationID);
             console.log("login successfull");
             if (profile.role === 'Manager') {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -253,5 +283,27 @@ export class LoginComponent implements OnInit {
             }
           });
     }
+  }
+}
+
+@Injectable()
+export class JwtInterceptor implements HttpInterceptor {
+  constructor() { }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // add authorization header with jwt token if available
+    // var token = 
+    let currentUser = window.sessionStorage.getItem('token');
+    if (currentUser) {
+      request = request.clone({
+        setHeaders: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+          'Authorization': `${currentUser}`
+        }
+      });
+    }
+
+    return next.handle(request);
   }
 }

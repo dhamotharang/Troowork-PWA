@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { InspectionService } from '../../../../service/inspection.service';
 
 @Component({
@@ -36,7 +37,7 @@ export class FeedbackManageComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private inspectionService: InspectionService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
 
   customTrackBy(index: number, obj: any): any {
     return index;
@@ -44,14 +45,14 @@ export class FeedbackManageComponent implements OnInit {
 
   ngOnInit() {
     //token starts....
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     //token ends
     this.loading = true;
     this.inspectionService

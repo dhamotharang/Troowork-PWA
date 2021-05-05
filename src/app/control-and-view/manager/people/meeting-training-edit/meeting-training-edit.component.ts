@@ -3,6 +3,7 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-meeting-training-edit',
@@ -99,7 +100,7 @@ export class MeetingTrainingEditComponent implements OnInit {
   };
 
 
-  constructor(private peopleServ: PeopleServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private peopleServ: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService) {
     this.route.params.subscribe(params => this.eventKey$ = params.EventKey);
     this.route.params.subscribe(params => this.actionKey$ = params.ActionKey);
   }
@@ -287,15 +288,14 @@ export class MeetingTrainingEditComponent implements OnInit {
   // for selecting employees with jobtitle,Supervisor and department filter ends
   //Pooja's code ends
   ngOnInit() {
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
-
+        // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
     this.DepartmentKey = "";
     this.peopleServ

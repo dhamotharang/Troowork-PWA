@@ -3,6 +3,7 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
+import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 
 
 @Component({
@@ -74,20 +75,20 @@ export class ViewServiceRequestComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private SchedulingService: SchedulingService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) { }
 
   ngOnInit() {
 
     this.loading = true;
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.employeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.employeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
 

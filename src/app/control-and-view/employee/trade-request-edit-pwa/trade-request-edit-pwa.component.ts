@@ -4,6 +4,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
+import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 
 @Component({
   selector: 'app-trade-request-edit-pwa',
@@ -69,7 +70,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
 
   submitEditedRequest() {
 
@@ -134,14 +135,15 @@ export class TradeRequestEditPWAComponent implements OnInit {
   }
   ngOnInit() {
 
-    var token = localStorage.getItem('token');
-    var encodedProfile = token.split('.')[1];
-    var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    this.role = profile.role;
-    this.IsSupervisor = profile.IsSupervisor;
-    this.name = profile.username;
-    this.toServeremployeekey = profile.employeekey;
-    this.OrganizationID = profile.OrganizationID;
+    // var token = sessionStorage.getItem('token');
+    // var encodedProfile = token.split('.')[1];
+    // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+    this.role = this.dst.getRole();
+    this.IsSupervisor = this.dst.getIsSupervisor();
+    this.name = this.dst.getName();
+    this.toServeremployeekey = this.dst.getEmployeekey();
+    this.OrganizationID = this.dst.getOrganizationID();
+    
     // this.curr_date = this.convert_DT(new Date());
     this.editflag = false;
     this.checkFlag = false;
