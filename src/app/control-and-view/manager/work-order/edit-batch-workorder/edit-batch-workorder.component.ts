@@ -360,7 +360,6 @@ export class EditBatchWorkorderComponent implements OnInit {
             for (var i = 0; i < count.length; i++) {
               this.timetable.times.push('');
               var test = count[i].split(":");
-              // // console.log(test[0]+" .... "+test[1]);
               var cur_time = new Date(Date.now());
               var today = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test[0], test[1], 0);
 
@@ -681,7 +680,6 @@ export class EditBatchWorkorderComponent implements OnInit {
     this.checkFlag = true;
     if (this.showEqTypes === false) {
       this.createWorkorder1();//function for updatewo without equipment
-      console.log('Equipment***Not');
 
     } else {
       this.createWorkorder2();//function for updatewo wit equipment

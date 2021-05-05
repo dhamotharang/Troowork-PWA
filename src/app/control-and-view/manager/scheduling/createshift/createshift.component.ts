@@ -234,7 +234,6 @@ export class CreateshiftComponent implements OnInit {
         return;
       }
     } else if (this.showHide == false) {
-      console.log(this.start_format + "  " + this.end_format);
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
         alert('Values Missing in Start and End Time');

@@ -149,7 +149,6 @@ export class EquipmentEditComponent implements OnInit {
         this.equipName = data[0].EquipmentName;
         this.FacKey = data[0].FacilityKey;
         this.equipTypeKey = data[0].EquipmentTypeKey;
-        console.log("...  facKey:" + this.FacKey);
         this.inventoryService
           .getallFloorList(data[0].FacilityKey, this.OrganizationID)
           .subscribe((data: any[]) => {

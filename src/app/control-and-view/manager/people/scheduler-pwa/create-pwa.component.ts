@@ -242,7 +242,6 @@ export class CreatePWAComponent implements OnInit {
   }
 
   closed(args) {
-    console.log(args);
     this.close.emit(args);
   }
 

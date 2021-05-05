@@ -168,13 +168,11 @@ export class TradeRequestEditPWAComponent implements OnInit {
   //   }
   // }
   deletePass(key) {
-    console.log(key);
     this.deleteRequestKey = key;
 
   }
   deleteRequest() {
     this.checkFlag = true;
-    console.log(this.deleteRequestKey);
     this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
       .subscribe((data) => {
 

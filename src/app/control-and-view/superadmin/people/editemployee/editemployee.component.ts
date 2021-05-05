@@ -301,7 +301,6 @@ export class EditemployeeComponent implements OnInit {
         .subscribe((data: any[]) => {
           this.managerList = data;
         });
-      console.log(this.showManager);
     } else if (userType == this.roleTypeKey) {
       this.showManager = true;
       this.supermark = true;
@@ -318,7 +317,6 @@ export class EditemployeeComponent implements OnInit {
     } else {
       this.showManager = false;
       this.supermark = false;
-      console.log(this.showManager);
     }
   }
   ngOnInit() {

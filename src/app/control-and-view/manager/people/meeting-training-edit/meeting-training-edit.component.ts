@@ -136,12 +136,10 @@ export class MeetingTrainingEditComponent implements OnInit {
 
   selectEmpOfJobTitle(jobKey) {
     this.jobTleKey = jobKey;
-    console.log(this.jobTleKey + "jobTleKey");
     this.selectEmpsDropDown();
   }
   selectEmpOfSupervisor(supervisorKey) {
     this.superVsrKey = supervisorKey;
-    console.log(this.superVsrKey + "supervisorKey");
     this.selectEmpsDropDown();
   }
 

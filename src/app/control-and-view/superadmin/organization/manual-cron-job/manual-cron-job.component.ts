@@ -19,7 +19,6 @@ export class ManualCronJobComponent implements OnInit {
     // return this
     //   .http
     //   .get(ConectionSettings.Url + '/cronjobMST').subscribe((data: any[]) => {
-    //     console.log("Success.. MST");
     //   });
 
     this.organizationService.cronJob_MST().subscribe((data: any[]) => {

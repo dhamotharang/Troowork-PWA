@@ -235,21 +235,15 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
       var arrayLength = this.Scoringtype.rating_yn.length;
       var value = this.Scoringtype.rating_yn[arrayLength - 1];
 
-      // console.log(length);
-      // console.log(arrayLength);
-      // console.log(value);
-
       this.Scoringtype.ratingValue.push({ rating: value, questionID: TemplateQuestionID });
 
     }
-    console.log(this.Scoringtype);
   }
   inspectionCompleted() {
     this.checkFlag = true;
     var temp = [];
     var choices1 = [];
     choices1[0] = this.Scoringtype;
-    console.log(choices1);
     var totalQuestions = this.questionsCount;
     var indexObj = [];
     var ratingIndexlist = [];
@@ -342,7 +336,6 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
         // for (var k = 0; k < ratingIndexlist.length; k++) {
         //   if (ratingIndexlist[k] === questionid) {
         //     this.lastIndexValue = this.lastIndex(ratingIndexlist, questionidList[i]);
-        //     console.log("last indexfor " + ratingIndexlist[k] + " is " + this.lastIndexValue);
 
         //     if (this.lastIndexValue !== null) {
         //       questionValues = this.Scoringtype.ratingValue[this.lastIndexValue].rating;

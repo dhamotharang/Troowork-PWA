@@ -428,7 +428,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
     this.checkFlag = true;
     if (this.showEqTypes === false) {
       this.createWorkorder1();//function for creating workorder without equipment
-      console.log('Equipment***Not');
+
 
     } else {
       this.createWorkorder2();//function for creating workorder with equipment

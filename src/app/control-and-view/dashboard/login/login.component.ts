@@ -74,7 +74,6 @@ export class LoginComponent implements OnInit {
         .login(userName, passWord, tenantID)
         .subscribe((data: any[]) => {
           this.tokenobj = data;
-          console.log(data);
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
@@ -92,10 +91,6 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
             window.localStorage['token'] = this.tokenobj.token;
-            console.log("token");
-            console.log(this.tokenobj.token);
-            console.log("token");
-            console.log(this.tokenobj);
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
@@ -113,7 +108,6 @@ export class LoginComponent implements OnInit {
             this.OrganizationID = profile.OrganizationID;
             this.dst.setOrganizationID(profile.OrganizationID);
 
-            console.log("login successfull");
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -193,7 +187,6 @@ export class LoginComponent implements OnInit {
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
       this.isMobile = isMobile;
-      console.log(this.isMobile);
     });
   }
   showPassword() {
@@ -223,7 +216,6 @@ export class LoginComponent implements OnInit {
         .login_mob(userName, passWord, tenantID)
         .subscribe((data: any[]) => {
           this.tokenobj = data;
-          console.log(data);
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
@@ -238,10 +230,6 @@ export class LoginComponent implements OnInit {
           else {
 
             this.isAuthenticated = true;
-            console.log("token");
-            console.log(this.tokenobj.token);
-            console.log("token");
-            console.log(this.tokenobj);
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
             window.localStorage['token'] = this.tokenobj.token;
@@ -261,7 +249,6 @@ export class LoginComponent implements OnInit {
 
             this.OrganizationID = profile.OrganizationID;
             this.dst.setOrganizationID(profile.OrganizationID);
-            console.log("login successfull");
             if (profile.role === 'Manager') {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
             }

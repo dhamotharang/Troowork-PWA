@@ -176,7 +176,7 @@ export class SchedulerComponent implements AfterViewInit {
             alert("Can't delete an employee group... !!!! ");
           } else if (row.IsShift == 0) {
             var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
-            console.log(k);
+
             if (k) {
               this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
                 alert("Employee removed from Employee Group successfully.....");
@@ -268,8 +268,6 @@ export class SchedulerComponent implements AfterViewInit {
             this.copied_event = args.source.data;
             this.clipboard = args.source.data.ScheduleName;
 
-            console.log("this.copied_event");
-            console.log(this.copied_event);
 
           }
         }
@@ -288,8 +286,6 @@ export class SchedulerComponent implements AfterViewInit {
             if (this.clipboard.length === 0) {
               return;
             }
-            console.log("args paste");
-            console.log(args);
             let obj = {
               resourceEmployee: args.source.resource,
               start: this.convert_DT(args.source.start.value),
@@ -297,8 +293,6 @@ export class SchedulerComponent implements AfterViewInit {
               MetaEmp: this.employeekey,
               OrganizationID: this.OrganizationID
             };
-            console.log("obj");
-            console.log(obj);
             this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
               this.empCalendarActivities();
               this.clipboard = "";
@@ -355,7 +349,6 @@ export class SchedulerComponent implements AfterViewInit {
 
       this.MovingToDate = this.convert_DT(args.end.value);
       this.MovingFromDate = this.convert_DT(args.e.data.start);
-      console.log(" date :" + this.MovingToDate);
     },
     onEventResize: args => {
       args.cell.disabled = true;
@@ -538,7 +531,6 @@ export class SchedulerComponent implements AfterViewInit {
 
   changeWithEvents(val) {
     this.filter.eventsOnly = val;
-    console.log(this.filter);
   }
 
   applyFilter() {

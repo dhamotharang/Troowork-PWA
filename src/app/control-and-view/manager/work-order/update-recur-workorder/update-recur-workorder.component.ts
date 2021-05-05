@@ -642,7 +642,6 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     this.checkFlag = true;
     if (this.showEqTypes === false) {
       this.createWorkorder1(); //function called on updatewo without equipment
-      console.log('Equipment***Not');
 
     } else {
       this.createWorkorder2();//function called on updatewo with equipment
@@ -941,7 +940,6 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     }
 
     if (this.isRecurring == false) {
-      console.log(this.timeValue);
       if (this.timeValue) {
         this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
       } else {

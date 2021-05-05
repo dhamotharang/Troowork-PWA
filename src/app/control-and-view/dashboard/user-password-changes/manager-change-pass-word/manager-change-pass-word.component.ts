@@ -82,7 +82,7 @@ export class ManagerChangePassWordComponent implements OnInit {
             alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
           } else {
             var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.newPassword + "                https://troowork.azurewebsites.net";
-            console.log(message);
+
             const obj = {
               from: this.managerMail,
               to: this.userMail,

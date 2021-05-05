@@ -177,13 +177,7 @@ export class BarchartReportComponent implements OnInit {
             this.downtimes[i] = this.barvalues[i].DownTime;
             // this.chartDatasets[i] = ;
           }
-          console.log("chartLabels");
-          console.log(this.chartLabels);
-          console.log("chartDatasets");
-          console.log(this.downtimes);
-          console.log(this.chartDatasets);
           this.chartDatasets = [{ data: this.downtimes }];
-          // console.log(this.chartDatasets);
           this.chartColors = [
             {
               backgroundColor: this.barChartCol,

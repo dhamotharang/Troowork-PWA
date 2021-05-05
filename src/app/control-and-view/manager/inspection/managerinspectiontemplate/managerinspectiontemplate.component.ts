@@ -229,7 +229,6 @@ export class ManagerinspectiontemplateComponent implements OnInit {
       this.Scoringtype.ratingValue.push({ rating: value, questionID: TemplateQuestionID });
 
     }
-    console.log(this.Scoringtype);
 
   }
   inspectionCompleted() {
@@ -323,7 +322,6 @@ export class ManagerinspectiontemplateComponent implements OnInit {
         // for (var k = 0; k < ratingIndexlist.length; k++) {
         //   if (ratingIndexlist[k] === questionid) {
         //     this.lastIndexValue = this.lastIndex(ratingIndexlist, questionidList[i]);
-        // console.log("last indexfor " + ratingIndexlist[k] + " is " + this.lastIndexValue);
 
         if (this.Scoringtype.rating_yn[questionid]) {
           questionValues = this.Scoringtype.rating_yn[questionid];

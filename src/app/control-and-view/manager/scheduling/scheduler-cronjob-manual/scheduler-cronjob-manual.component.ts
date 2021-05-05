@@ -80,11 +80,9 @@ export class SchedulerCronjobManualComponent implements OnInit {
         }
 
         this.scheduleService.getCountForAssignmentManualCronjob(this.OrganizationID).subscribe((data: any) => {
-          console.log("Assignment Cron: " + data[0].count);
-
+        
           if (data[0].count > 0) {
             this.scheduleService.getCountForAssignmentManualCronjobnextdate(this.OrganizationID).subscribe((data: any) => {
-              console.log("Assignment Cron: " + this.convert_DT(data[0].nextdate));
               this.nextschedulerDate = this.convert_DT(data[0].nextdate);
             });
           }
@@ -118,11 +116,9 @@ export class SchedulerCronjobManualComponent implements OnInit {
       }
     });
     this.scheduleService.getCountForAssignmentManualCronjob(this.OrganizationID).subscribe((data: any) => {
-      console.log("Assignment Cron: " + data[0].count);
-
+     
       if (data[0].count > 0) {
         this.scheduleService.getCountForAssignmentManualCronjobnextdate(this.OrganizationID).subscribe((data: any) => {
-          console.log("Assignment Cron: " + this.convert_DT(data[0].nextdate));
           this.nextschedulerDate = this.convert_DT(data[0].nextdate);
         });
       }

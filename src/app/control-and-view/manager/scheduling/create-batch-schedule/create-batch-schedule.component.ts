@@ -275,12 +275,9 @@ export class CreateBatchScheduleComponent implements OnInit {
              
               if (this.woList[i].MetricType == 'Minutes Per') {
                 this.roomList[j].Minutes = this.woList[i].MetricValue;
-                // console.log("Metric value::::" + this.woList[i].MetricValue);
               }
               else {
                 this.roomList[j].Minutes = (this.woList[i].MetricValue * this.roomList[j].Area);
-                // console.log("Metric value::::" + this.woList[i].MetricValue);
-                // console.log("Area::::" + this.roomList[j].Area);
               }
             }
           }
@@ -976,12 +973,9 @@ export class CreateBatchScheduleComponent implements OnInit {
         
           if (this.woList[i].MetricType == 'Minutes Per') {
             this.roomTempList[index].Minutes = this.woList[i].MetricValue;
-            // console.log("Metric value::::" + this.woList[i].MetricValue);
           }
           else {
             this.roomTempList[index].Minutes = (this.woList[i].MetricValue * this.roomTempList[index].Area);
-            // console.log("Metric value::::" + this.woList[i].MetricValue);
-            // console.log("Area::::" + this.woList[i].Area);
           }
         }
       }
@@ -994,12 +988,9 @@ export class CreateBatchScheduleComponent implements OnInit {
           
           if (this.woList[i].MetricType == 'Minutes Per') {
             this.roomList[index].Minutes = this.woList[i].MetricValue;
-            // console.log("Metric value::::" + this.woList[i].MetricValue);
           }
           else {
             this.roomList[index].Minutes = (this.woList[i].MetricValue * this.roomList[index].Area);
-            // console.log("Metric value::::" + this.woList[i].MetricValue);
-            // console.log("Area::::" + this.roomList[index].Area);
           }
         }
       }

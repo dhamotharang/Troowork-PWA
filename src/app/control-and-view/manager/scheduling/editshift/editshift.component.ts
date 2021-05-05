@@ -124,7 +124,6 @@ export class EditshiftComponent implements OnInit {
       else {
         this.Idscheduler_exception = this.edit.Idscheduler_exception;
       }
-      // console.log(this.Idscheduler_exception + "*****")
       if (this.showHide == true) {
         if (!(this.edit.Start_sun_hour)) {
           this.edit.Start_sun_hour = '-1';
@@ -261,7 +260,6 @@ export class EditshiftComponent implements OnInit {
         this.end_min = this.edit.End_sun_min;
         this.end_format = this.edit.End_sun_format;
 
-        console.log(this.start_format + "  " + this.end_format);
       }
       // scheduler code ends...
     });
@@ -269,7 +267,6 @@ export class EditshiftComponent implements OnInit {
   editShift() {
     this.schedularcount = 0;
     this.checkFlag = true;
-    console.log("initial... " + this.schedularcount);
     if (!(this.edit.Description)) {
       alert("Please enter the Employee Group Name");
       this.checkFlag = false;
@@ -290,7 +287,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("sun... " + this.schedularcount);
         alert('Values Missing in Sunday');
         this.checkFlag = false;
         return;
@@ -304,7 +300,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("mon... " + this.schedularcount);
         alert('Values Missing in Monday');
         this.checkFlag = false;
         return;
@@ -318,7 +313,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("tue... " + this.schedularcount);
         alert('Values Missing in Tuesday');
         this.checkFlag = false;
         return;
@@ -332,7 +326,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("wed... " + this.schedularcount);
         alert('Values Missing in Wednesday');
         this.checkFlag = false;
         return;
@@ -346,7 +339,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("thu... " + this.schedularcount);
         alert('Values Missing in Thursday');
         this.checkFlag = false;
         return;
@@ -360,7 +352,6 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        console.log("fri... " + this.schedularcount);
         alert('Values Missing in Friday');
         this.checkFlag = false;
         return;
@@ -373,14 +364,12 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount = this.schedularcount;
       } else {
         this.schedularcount++;
-        console.log("sat... " + this.schedularcount);
         alert('Values Missing in Saturday');
         this.checkFlag = false;
         return;
       }
     }
     else if (this.showHide == false) {
-      console.log(this.start_format + "  " + this.end_format);
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
         alert('Values Missing in Start and End Time');
@@ -450,7 +439,6 @@ export class EditshiftComponent implements OnInit {
     if (!this.Idscheduler_exception) {
       this.Idscheduler_exception = null;
     }
-    console.log("before if... " + this.schedularcount);
     if (this.schedularcount == 0) {
       // this.scheduleServ.checkForEmpGrpDuplicate(this.edit.Description, this.OrganizationID).subscribe((data: any[]) => {
       // if (data.length == 0) {
@@ -532,7 +520,6 @@ export class EditshiftComponent implements OnInit {
       // }
       // });
     } else {
-      console.log("inside else... " + this.schedularcount);
       alert("Value for weekly schedule is missing somewhere. Please check it!!!");
       this.checkFlag = false;
       return;

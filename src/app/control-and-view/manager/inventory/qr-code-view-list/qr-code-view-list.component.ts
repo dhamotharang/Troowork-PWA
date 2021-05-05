@@ -90,7 +90,6 @@ export class QrCodeViewListComponent implements OnInit {
 
     var QRCodeRoomList = this.QRCodeRoomKey$.split(",");
     var count = 0;
-    console.log(this.checkvaluetag$);
     for (var i = 0; i < QRCodeRoomList.length; i++) {
       // 
       this.inventoryService.getRoomDetailsList(QRCodeRoomList[i], this.OrganizationID).subscribe((data) => {

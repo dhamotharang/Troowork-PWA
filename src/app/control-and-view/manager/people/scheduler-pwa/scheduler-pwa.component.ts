@@ -186,7 +186,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
             alert("Can't delete an employee group... !!!! ");
           } else if (row.IsShift == 0) {
             var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
-            console.log(k);
             if (k) {
               this.loading = true;
               this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
@@ -297,10 +296,7 @@ export class SchedulerPWAComponent implements AfterViewInit {
         {
           text: "Edit", onClick: args => {
             this.ds.setData(this.Range, this.date);
-            console.log(args);
-            console.log(this.Range);
-            console.log(this.date);
-            this.edit.show(args.source).then(data1 => {
+             this.edit.show(args.source).then(data1 => {
 
             });
           }
@@ -313,9 +309,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
         //     let selected = this.scheduler.control.multiselect.events();
         //     this.clipboard = selected.sort((e1, e2) => e1.start().getTime() - e2.start().getTime());
         //     // this.clipboard = [args.source];
-        //     console.log(this.clipboard);
-        //     // console.log("this.copied_event");
-        //     // console.log(this.copied_event);
 
         //   }
         // }
@@ -340,8 +333,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
 
     //         this.clipboard.forEach(e => {
 
-    //           console.log("args paste");
-    //           console.log(args);
 
     //           let offset = new DayPilot.Duration(firstStart, e.start());
     //           // let duration = e.duration();
@@ -354,8 +345,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
     //             MetaEmp: this.employeekey,
     //             OrganizationID: this.OrganizationID
     //           };
-    //           console.log("obj");
-    //           console.log(obj);
     //           this.loading = true;
     //           this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
     //             this.loading = false;
@@ -422,7 +411,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
 
       this.MovingToDate = this.convert_DT(args.end.value);
       this.MovingFromDate = this.convert_DT(args.e.data.start);
-      console.log(" date :" + this.MovingToDate);
     },
     onEventResize: args => {
       args.cell.disabled = true;
@@ -482,7 +470,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-    console.log("hi");
     this.loading = true;
 
     this.SchedulingService
@@ -636,7 +623,6 @@ export class SchedulerPWAComponent implements AfterViewInit {
 
   changeWithEvents(val) {
     this.filter.eventsOnly = val;
-    console.log(this.filter);
   }
 
   applyFilter() {

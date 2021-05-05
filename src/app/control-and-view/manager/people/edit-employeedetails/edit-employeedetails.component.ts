@@ -589,6 +589,6 @@ export class EditEmployeedetailsComponent implements OnInit {
     } else {
       this.marked = false;
     }
-    // console.log(this.marked);
+  
   }
 }

@@ -147,7 +147,6 @@ export class FeedbackTemplateAssignComponent implements OnInit {
     if (this.alertCheck == 1) {
       var k = confirm("There are rooms with other templates assigned. Clicking yes will overwrite them to this template. Do you really want to continue?");
       if (k) {
-        console.log(this.roomList);
         for (var i = 0; i < this.roomList.length; i++) {
           if (this.roomList[i].roomCheck == true) {
             addRoomList.push(this.roomList[i].RoomKey);
@@ -167,7 +166,6 @@ export class FeedbackTemplateAssignComponent implements OnInit {
       }
 
     } else {
-      console.log(this.roomList);
       for (var i = 0; i < this.roomList.length; i++) {
         if (this.roomList[i].roomCheck == true) {
           addRoomList.push(this.roomList[i].RoomKey);

@@ -69,7 +69,6 @@ export class LoginPWAComponent implements OnInit {
         .login(userName, passWord, tenantID)
         .subscribe((data: any[]) => {
           this.tokenobj = data;
-          console.log(data);
 
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
@@ -102,7 +101,6 @@ export class LoginPWAComponent implements OnInit {
 
             this.OrganizationID = profile.OrganizationID;
             this.dst.setOrganizationID(profile.OrganizationID);
-            console.log("login successfull");
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -188,7 +186,6 @@ export class LoginPWAComponent implements OnInit {
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
       this.isMobile = isMobile;
-      console.log(this.isMobile);
     });
   }
 

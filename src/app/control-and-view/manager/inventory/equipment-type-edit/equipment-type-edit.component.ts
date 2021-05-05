@@ -60,7 +60,6 @@ export class EquipmentTypeEditComponent implements OnInit {
           alert("Equipment Type already present");
           this.checkFlag = false;
           this.inventoryService.getEquipmentTypeListEdit(this.equipTypeKey$, this.OrganizationID).subscribe((data: Array<any>) => {
-            console.log(this.equipTypeKey$);
 
             this.equipType = data[0];
             return;
@@ -90,10 +89,9 @@ export class EquipmentTypeEditComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
     this.inventoryService.getEquipmentTypeListEdit(this.equipTypeKey$, this.OrganizationID).subscribe((data: any[]) => {
-      console.log(this.equipTypeKey$);
+
 
       this.equipType = data[0];
-      console.log(data.length);
     });
   }
   goBack() {

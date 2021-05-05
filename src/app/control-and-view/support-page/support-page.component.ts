@@ -122,13 +122,11 @@ export class SupportPageComponent implements OnInit {
 
   }
   callalert() {
-    console.log("Mail sent");
     alert("Your request has been submitted. The support team will get back to you soon");
     this.router.navigate(['']);
   }
 
   callalert1() {
-    console.log("Mail sent");
     alert("Your request for registration has been submitted. Login details will be shared with you soon");
     this.router.navigate(['']);
   }

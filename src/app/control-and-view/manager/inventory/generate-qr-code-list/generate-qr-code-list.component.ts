@@ -282,8 +282,7 @@ export class GenerateQrCodeListComponent implements OnInit {
       floortype = this.FloorTypeKey
     }
 
-    // console.log("rooms filter... org" + this.OrganizationID + " ..... bldg" + this.bldgKey + " ..... flr" + this.flrKey + " ..... zone" + this.zoneKey + " ..... rtype" + this.rTypeKey + " ..... room" + this.rKey + " ..... flrtype" + this.flrTypeKey + " ..... emp" + this.employeekey);
-    ;
+     ;
     if (building & floor) {
       this.loading = true;
       this.inventoryService
@@ -317,7 +316,6 @@ export class GenerateQrCodeListComponent implements OnInit {
       facilityName = 0;
     }
     this.bldgKey = facilityName;
-    console.log("bldg..." + this.bldgKey);
     this.WorkOrderServiceService
       .getallFloor(facilityName, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -332,7 +330,6 @@ export class GenerateQrCodeListComponent implements OnInit {
   getZoneRoomTypeRoom(floor, facility) {
     this.bldgKey = facility;
     this.flrKey = floor;
-    console.log("flr..." + floor + " ..... bldg" + facility + " ..... org" + this.OrganizationID);
     if (floor) {
       this.WorkOrderServiceService
         .getzone_facilityfloor(floor, facility, this.OrganizationID)
@@ -374,7 +371,6 @@ export class GenerateQrCodeListComponent implements OnInit {
     this.bldgKey = facility;
     this.flrKey = floor;
     this.zoneKey = zone;
-    console.log("zone..." + zone + "flr ..... " + floor + " bldg..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone) {
       this.WorkOrderServiceService
         .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
@@ -407,7 +403,6 @@ export class GenerateQrCodeListComponent implements OnInit {
     this.flrKey = floor;
     this.zoneKey = zone;
     this.rTypeKey = roomtype;
-    console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone && roomtype) {
       this.WorkOrderServiceService
         .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)

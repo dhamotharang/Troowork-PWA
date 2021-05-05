@@ -134,7 +134,6 @@ export class EditComponent implements OnInit {
   };
 
   show(ev: DayPilot.Event) {
-    console.log(ev.data);
     return new Promise<void>((resolve) => {
       this.event = ev;
       this.form.setValue({
@@ -163,7 +162,6 @@ export class EditComponent implements OnInit {
 
   dateChangeNeeded() {
     this.DateEdit = this.convert_DT(this.DateEdit);
-    console.log("dateChangeNeeded... " + this.DateEdit);
   }
   
   submitEdit() {

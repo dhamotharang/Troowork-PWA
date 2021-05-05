@@ -279,12 +279,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
              if(this.woList[i].MetricType== 'Minutes Per')
              {
              this.roomList[j].Minutes=this.woList[i].MetricValue;
-             console.log("Metric value::::"+this.woList[i].MetricValue);
            }
            else{
              this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
-             console.log("Metric value::::"+this.woList[i].MetricValue);
-             console.log("Area::::"+this.roomList[j].Area);
            }
             }
            }
@@ -639,7 +636,6 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             photoObj1.push(this.roomList[j].photoReq);
           }
           
-// console.log(this.roomList[j].KeepActive+" ... "+j);
           if (this.roomList[j].KeepActive === true || this.roomList[j].KeepActive == 1) {
             this.roomList[j].KeepActive = true;
             keepObj1.push(this.roomList[j].KeepActive);
@@ -666,7 +662,6 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             createwoObj1.push(this.roomList[j].CreateWO);
           }
         }
-        // console.log(keepObj1);
         roomsString1 = roomList1.join(',');
         Frequency1 = FrequencyObj1.join(',');
         MonCheck1 = monObj1.join(',');
@@ -1098,12 +1093,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       if(this.woList[i].MetricType== 'Minutes Per')
       {
       this.roomTempList[index].Minutes=this.woList[i].MetricValue;
-      // console.log("Metric value::::"+this.woList[i].MetricValue);
     }
     else{
       this.roomTempList[index].Minutes=(this.woList[i].MetricValue*this.roomTempList[index].Area);
-      // console.log("Metric value::::"+this.woList[i].MetricValue);
-            //  console.log("Area::::"+this.roomTempList[index].Area);
     }
      }
     }
@@ -1118,12 +1110,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
        if(this.woList[i].MetricType== 'Minutes Per')
        {
        this.roomList[index].Minutes=this.woList[i].MetricValue;
-      //  console.log("Metric value::::"+this.woList[i].MetricValue);
      }
      else{
        this.roomList[index].Minutes=(this.woList[i].MetricValue*this.roomList[index].Area);
-      //  console.log("Metric value::::"+this.woList[i].MetricValue);
-              // console.log("Area::::"+this.roomList[index].Area);
      }
       }
     }

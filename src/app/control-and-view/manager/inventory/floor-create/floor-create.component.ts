@@ -69,8 +69,6 @@ export class FloorCreateComponent implements OnInit {
     FloorName = FloorName.trim();
     FloorDescription = FloorDescription.trim();
 
-    console.log("*" + FloorName + "*");
-    console.log("*" + FloorDescription + "*");
 
     this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data[0].count > 0) {

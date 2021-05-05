@@ -354,7 +354,6 @@ export class CreateemployeeComponent implements OnInit {
         .subscribe((data: any[]) => {
           this.managerList = data;
         });
-      console.log(this.showManager);
     } else if (userType == this.roleTypeKey) {
       this.showManager = true;
       this.supermark = true;
@@ -368,11 +367,9 @@ export class CreateemployeeComponent implements OnInit {
         .subscribe((data: People[]) => {
           this.supervisor = data;
         });
-      console.log(this.showManager); console.log(this.supermark);
     } else {
       this.showManager = false;
       this.supermark = false;
-      console.log(this.showManager);
     }
   }
 

@@ -187,13 +187,11 @@ export class PtoRequestEditPWAComponent implements OnInit {
   //    }
   //  }
   deletePass(key) {
-    console.log(key);
     this.deleteRequestKey = key;
 
 
   }
   deleteRequest() {
-    console.log(this.deleteRequestKey);
     this.checkFlag = true;
     this.PeopleServiceService.setdeletePTORequest(this.deleteRequestKey, this.OrganizationID)
       .subscribe((data) => {

@@ -212,13 +212,11 @@ export class ViewEmployeeSchedulerPWAComponent implements AfterViewInit {
     },
   };
   // exitPass(key) {
-  //   console.log(key);
   //   this.exitRequestKey = key;
 
 
   // }
   // exitRequest() {
-  //   console.log(this.exitRequestKey);
   //   this.PeopleServiceService.setexitRequest(this.exitRequestKey, this.OrganizationID)
   //     .subscribe((data) => {
 

@@ -427,7 +427,6 @@ export class EditWorkOrderComponent implements OnInit {
   UpdateWO() {
     if (this.showEqTypes === false) {
       this.createWorkorder1();//function for updating workorder without equipment
-      console.log('Equipment***Not');
 
     } else {
       this.createWorkorder2();//function for updating workorder with equipment

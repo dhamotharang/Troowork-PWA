@@ -290,7 +290,6 @@ export class SchedulerReportComponent implements OnInit {
     //     // this.schedulerReport = [];
     //     // var workList = "";
     //     // tableflag = 0;
-    //     // console.log("schedulerReport started");
 
     //     // for (var z = 0; z < this.schReport.length; z++) {
     //     //   if ((z + 1) == this.schReport.length) {
@@ -322,26 +321,21 @@ export class SchedulerReportComponent implements OnInit {
     //     // }
 
     //     // tableflag = tableflag + 1;
-    //     // console.log("schedulerReport completed");
     //     // for (var h = 0; h < this.empListForTable.length; h++) {
     //     // this.newList[h].GroupName = this.empListForTable[h].Description;
     //     //   this.newList[h].EmployeeName = this.empListForTable[h].name;
     //     //   this.newList[h].EmployeeKey = this.empListForTable[h].EmployeeKey;
-    //     //   console.log("i did " + h);
     //     //   for (var d = 0; d < this.dateList.length; d++) {
     //     //     for (var a = 0; a < this.schedulerReport.length; a++) {
 
     //     //       if ((this.schedulerReport[a].EmployeeKey === this.newList[h].EmployeeKey) && (this.schedulerReport[a].start === this.dateList[d].rundate)) {
-    //     //         console.log(a + "i won " + d);
+
     //     //         this.newList[h].textdate = this.schedulerReport[a].start;
     //     //         this.newList[h].text = this.schedulerReport[a].text;
     //     //       }
     //     //     }
     //     //   }
     //     // }
-    //     // console.log(this.newList);
-    //     // console.log(this.dateList);
-    //     // console.log(this.schedulerReport);
     //     // this.loading = false;
     //     // if (tableflag > 0) {
     //     // this.downloadexcel();

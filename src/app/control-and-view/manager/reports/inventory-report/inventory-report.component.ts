@@ -106,7 +106,6 @@ export class InventoryReportComponent implements OnInit {
   getZoneRoomTypeRoom(floor, facility) { //on changing the floor
     this.bldgKey = facility;
     this.flrKey = floor;
-    console.log("flr..." + floor + " ..... bldg" + facility + " ..... org" + this.OrganizationID);
     if (floor) {
       this.ReportServiceService
         .getAllZone(facility, floor, this.OrganizationID)
@@ -149,7 +148,6 @@ export class InventoryReportComponent implements OnInit {
     this.bldgKey = facility;
     this.flrKey = floor;
     this.zoneKey = zone;
-    console.log("zone..." + zone + "flr ..... " + floor + " bldg..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone) {
       this.ReportServiceService
         .getAllRoomType(facility, floor, zone, this.OrganizationID)
@@ -183,8 +181,7 @@ export class InventoryReportComponent implements OnInit {
     this.flrKey = floor;
     this.zoneKey = zone;
     this.rTypeKey = roomtype;
-    console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
-    if (facility && floor && zone && roomtype) {
+     if (facility && floor && zone && roomtype) {
       // this.ReportServiceService
       //   .getAllRooms(facility, floor, zone, null, roomtype, this.OrganizationID)
       //   .subscribe((data: any[]) => {
@@ -216,7 +213,6 @@ export class InventoryReportComponent implements OnInit {
     this.flrKey = floor;
     this.zoneKey = zone;
     this.rTypeKey = roomtype;
-    console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone && roomtype) {
       // this.ReportServiceService
       //   .getAllRooms(facility, floor, zone, floortype, roomtype, this.OrganizationID)

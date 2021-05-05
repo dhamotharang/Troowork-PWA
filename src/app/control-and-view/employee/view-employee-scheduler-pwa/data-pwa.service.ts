@@ -89,8 +89,6 @@ export class DataPWAService {
   }
 
   updateEvent(data: DayPilot.Event): Observable<any> {
-    console.log("Updating event: " + data.text());
-    console.log(data);
     return new Observable(observer => {
       setTimeout(() => {
         observer.next({ result: "OK" });

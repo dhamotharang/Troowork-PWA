@@ -193,17 +193,13 @@ export class ReviewsComponent implements OnInit {
 
 
       this.reviewservice.submitReview(this.reviewAdd).subscribe((data: any[]) => {
-        console.log("data...");
-        console.log(data[0]);
         var feedbackmasterID = data[0].feedbackmasterID;
         var count = 0;
-        console.log("questionidList.length  "+questionidList.length);
         for (var i = 0; i < questionidList.length; i++) {
      
           questionValues = "Pass";
           notes = null;
           questionid = questionidList[i];
-          console.log("questionid "+questionid);
           for (k = 0; k < ratingIndexlist.length; k++) {
             if (this.Scoringtype.rating_yn[questionid]) {
               questionValues = this.Scoringtype.rating_yn[questionid];
@@ -215,7 +211,6 @@ export class ReviewsComponent implements OnInit {
             }
           }
           count = count + 1;
-          console.log(questionValues+"   "+count);
           const reviewDetail =
           {
             OrganizationID: this.OrgId$,

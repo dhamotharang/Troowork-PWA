@@ -415,7 +415,6 @@ export class CreateWorkorderComponent implements OnInit {
     this.checkFlag = true;
     if (this.showEqTypes === false) {//function for creating workorder without equipment
       this.createWorkorder1();
-      console.log('Equipment***Not');
 
     } else {
       this.createWorkorder2();//function for creating workorder with equipment
@@ -765,7 +764,6 @@ export class CreateWorkorderComponent implements OnInit {
       }
 
       if (this.isRecurring == false) {
-        console.log(this.timeValue);
         if (this.timeValue) {
           this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
         } else {
@@ -2097,7 +2095,6 @@ export class CreateWorkorderComponent implements OnInit {
     }
 
     if (this.isRecurring == false) {
-      console.log(this.timeValue);
       if (this.timeValue) {
         this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
       } else {

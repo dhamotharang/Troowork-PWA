@@ -972,7 +972,6 @@ export class ViewWorkOrdersComponent implements OnInit {
     var h = t.getHours();
     var mi = t.getMinutes();
     var s = t.getSeconds();
-    console.log(reason);
 
     var today_DT = this.convert_DT(new Date());
     var p = "";
