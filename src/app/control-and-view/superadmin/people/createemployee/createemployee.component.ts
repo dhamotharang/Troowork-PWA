@@ -291,6 +291,8 @@ export class CreateemployeeComponent implements OnInit {
     this.SupervisorKey = '';
     this.checkFlag = false;
 
+    this.HireDate = new Date(Date.now());
+
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));

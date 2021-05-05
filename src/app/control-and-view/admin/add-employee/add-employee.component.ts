@@ -523,6 +523,8 @@ export class AddEmployeeComponent implements OnInit {
 
     //Author: Prakash Code Starts for Employee Calendar Starts Here
 
+    this.HireDate = new Date(Date.now());
+
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));

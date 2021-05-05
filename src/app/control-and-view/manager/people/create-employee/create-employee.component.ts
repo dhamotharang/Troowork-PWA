@@ -589,6 +589,7 @@ export class CreateEmployeeComponent implements OnInit {
 
     //Author: Prakash Code Starts for Employee Calendar Starts Here
 
+    this.HireDate = new Date(Date.now());
 
     this.minDate = new Date();
     this.maxDate = new Date();
