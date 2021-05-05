@@ -532,7 +532,7 @@ export class AddEmployeeComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-
+    this.HireDate = new Date(Date.now());
     // this.isemployeecalendar = profile.isemployeecalendar;//Author: Prakash for Checking Whether the organization uses Calendar or not
 
     this.PeopleServiceService

@@ -300,7 +300,7 @@ export class CreateemployeeComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrgID = this.dst.getOrganizationID();
-
+    this.HireDate = new Date(Date.now());
     this.PeopleServiceService
       .getUserRoleTypesa(this.OrgID)
       .subscribe((data: People[]) => {
