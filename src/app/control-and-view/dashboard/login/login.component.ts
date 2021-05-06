@@ -109,6 +109,8 @@ export class LoginComponent implements OnInit {
             this.dst.setOrganizationID(profile.OrganizationID);
 
             this.dst.setIsemployeecalendar(profile.isemployeecalendar);
+            this.dst.setUser(profile.user);
+            this.dst.setOrganization(profile.Organization);
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -253,6 +255,8 @@ export class LoginComponent implements OnInit {
 
 
             this.dst.setIsemployeecalendar(profile.isemployeecalendar);
+            this.dst.setUser(profile.user);
+            this.dst.setOrganization(profile.Organization);
 
             if (profile.role === 'Manager') {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
