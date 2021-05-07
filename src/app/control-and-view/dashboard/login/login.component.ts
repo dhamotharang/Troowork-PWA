@@ -88,9 +88,9 @@ export class LoginComponent implements OnInit {
           else {
 
             this.isAuthenticated = true;
-            localStorage.setItem('token', this.tokenobj.token);
+            // localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
-            window.localStorage['token'] = this.tokenobj.token;
+            // window.localStorage['token'] = this.tokenobj.token;
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
@@ -234,9 +234,9 @@ export class LoginComponent implements OnInit {
           else {
 
             this.isAuthenticated = true;
-            localStorage.setItem('token', this.tokenobj.token);
+            // localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
-            window.localStorage['token'] = this.tokenobj.token;
+            // window.localStorage['token'] = this.tokenobj.token;
             var token = sessionStorage.getItem('token');
             var encodedProfile = token.split('.')[1];
             // var encodedProfile = this.tokenobj.token.split('.')[1];
