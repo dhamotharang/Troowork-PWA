@@ -94,23 +94,24 @@ export class LoginComponent implements OnInit {
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
-            this.dst.setRole(profile.role);
+            // this.dst.setRole(profile.role);
 
             this.IsSupervisor = profile.IsSupervisor;
-            this.dst.setIsSupervisor(profile.IsSupervisor);
+            // this.dst.setIsSupervisor(profile.IsSupervisor);
 
             this.name = profile.username;
-            this.dst.setName(profile.username);
+            // this.dst.setName(profile.username);
 
             this.employeekey = profile.employeekey;
-            this.dst.setEmployeekey(profile.employeekey);
+            // this.dst.setEmployeekey(profile.employeekey);
 
             this.OrganizationID = profile.OrganizationID;
-            this.dst.setOrganizationID(profile.OrganizationID);
+            // this.dst.setOrganizationID(profile.OrganizationID);
 
-            this.dst.setIsemployeecalendar(profile.isemployeecalendar);
-            this.dst.setUser(profile.user);
-            this.dst.setOrganization(profile.Organization);
+            // this.dst.setIsemployeecalendar(profile.isemployeecalendar);
+            // this.dst.setUser(profile.user);
+            // this.dst.setOrganization(profile.Organization);
+            this.dst.setValues();
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -236,27 +237,30 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
             window.localStorage['token'] = this.tokenobj.token;
-            var encodedProfile = this.tokenobj.token.split('.')[1];
+            var token = sessionStorage.getItem('token');
+            var encodedProfile = token.split('.')[1];
+            // var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
-            this.dst.setRole(profile.role);
+            this.dst.setValues();
+            // this.dst.setRole(profile.role);
 
             this.IsSupervisor = profile.IsSupervisor;
-            this.dst.setIsSupervisor(profile.IsSupervisor);
+            // this.dst.setIsSupervisor(profile.IsSupervisor);
 
             this.name = profile.username;
-            this.dst.setName(profile.username);
+            // this.dst.setName(profile.username);
 
             this.employeekey = profile.employeekey;
-            this.dst.setEmployeekey(profile.employeekey);
+            // this.dst.setEmployeekey(profile.employeekey);
 
             this.OrganizationID = profile.OrganizationID;
-            this.dst.setOrganizationID(profile.OrganizationID);
+            // this.dst.setOrganizationID(profile.OrganizationID);
 
 
-            this.dst.setIsemployeecalendar(profile.isemployeecalendar);
-            this.dst.setUser(profile.user);
-            this.dst.setOrganization(profile.Organization);
+            // this.dst.setIsemployeecalendar(profile.isemployeecalendar);
+            // this.dst.setUser(profile.user);
+            // this.dst.setOrganization(profile.Organization);
 
             if (profile.role === 'Manager') {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager

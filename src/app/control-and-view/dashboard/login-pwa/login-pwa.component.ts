@@ -87,20 +87,21 @@ export class LoginPWAComponent implements OnInit {
             window.localStorage['token'] = this.tokenobj.token;
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
+            this.dst.setValues();
             this.role = profile.role;
-            this.dst.setRole(profile.role);
+            // this.dst.setRole(profile.role);
 
             this.IsSupervisor = profile.IsSupervisor;
-            this.dst.setIsSupervisor(profile.IsSupervisor);
+            // this.dst.setIsSupervisor(profile.IsSupervisor);
 
             this.name = profile.username;
-            this.dst.setName(profile.username);
+            // this.dst.setName(profile.username);
 
             this.employeekey = profile.employeekey;
-            this.dst.setEmployeekey(profile.employeekey);
+            // this.dst.setEmployeekey(profile.employeekey);
 
             this.OrganizationID = profile.OrganizationID;
-            this.dst.setOrganizationID(profile.OrganizationID);
+            // this.dst.setOrganizationID(profile.OrganizationID);
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -175,12 +176,6 @@ export class LoginPWAComponent implements OnInit {
 
     this.onResize();
     this.responsiveService.checkWidth();
-
-    this.dst.setRole(null);
-    this.dst.setIsSupervisor(null);
-    this.dst.setName(null);
-    this.dst.setEmployeekey(null);
-    this.dst.setOrganizationID(null);
   }
 
   onResize() {
