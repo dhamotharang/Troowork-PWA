@@ -43,7 +43,7 @@ export class EmployeeDashboardComponent implements OnInit {
   constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
   logout() {
     this.popup = true;
-
+    window.sessionStorage.clear();
   }
 
 

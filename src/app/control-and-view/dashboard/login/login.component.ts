@@ -77,9 +77,9 @@ export class LoginComponent implements OnInit {
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
-            window.localStorage.clear();
-            window.localStorage.removeItem('employeekey');
-            delete localStorage.employeekey;
+            // window.localStorage.clear();
+            // window.localStorage.removeItem('employeekey');
+            // delete localStorage.employeekey;
             alert("Invalid login credentials. Please enter correct credentials to login...");
 
           } else if (this.tokenobj == "Wrong user or password") {
@@ -223,9 +223,9 @@ export class LoginComponent implements OnInit {
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
-            window.localStorage.clear();
-            window.localStorage.removeItem('employeekey');
-            delete localStorage.employeekey;
+            // window.localStorage.clear();
+            // window.localStorage.removeItem('employeekey');
+            // delete localStorage.employeekey;
             alert("Wrong Username,Password,TenantID combination!.Please try again.");
 
           } else if (this.tokenobj == "Wrong user or password") {
@@ -242,7 +242,6 @@ export class LoginComponent implements OnInit {
             // var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.role = profile.role;
-            this.dst.setValues();
             // this.dst.setRole(profile.role);
 
             this.IsSupervisor = profile.IsSupervisor;

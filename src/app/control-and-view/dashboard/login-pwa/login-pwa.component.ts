@@ -73,18 +73,18 @@ export class LoginPWAComponent implements OnInit {
 
           if (this.tokenobj.token == null || this.tokenobj.token == "" || data.length == 0) {
             this.isAuthenticated = false;
-            window.localStorage.clear();
-            window.localStorage.removeItem('employeekey');
-            delete localStorage.employeekey;
+            // window.localStorage.clear();
+            // window.localStorage.removeItem('employeekey');
+            // delete localStorage.employeekey;
             alert("Invalid login credentials. Please enter correct credentials to login...");
           } else if (this.tokenobj == "Wrong user or password") {
             alert("Invalid login credentials. Please enter correct credentials to login...");
           }
           else {
             this.isAuthenticated = true;
-            localStorage.setItem('token', this.tokenobj.token);
+            // localStorage.setItem('token', this.tokenobj.token);
             window.sessionStorage.token = this.tokenobj.token;
-            window.localStorage['token'] = this.tokenobj.token;
+            // window.localStorage['token'] = this.tokenobj.token;
             var encodedProfile = this.tokenobj.token.split('.')[1];
             var profile = JSON.parse(this.url_base64_decode(encodedProfile));
             this.dst.setValues();

@@ -39,6 +39,7 @@ export class ManagerDashBoardComponent implements OnInit {
 
   constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
   logout() {
+    window.sessionStorage.clear();
     this.popup = true;
 
   }
