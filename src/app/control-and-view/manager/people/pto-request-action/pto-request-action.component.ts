@@ -131,6 +131,9 @@ export class PtoRequestActionComponent implements OnInit {
   saveRequestAction() {
     this.checkFlag = true;
 
+    var newTime = null;
+    var newTime1 = null;
+
     if (!(this.requestdetailsbyID.Status)) {
       alert('Status is not provided !');
       this.checkFlag = false;
@@ -207,16 +210,16 @@ export class PtoRequestActionComponent implements OnInit {
       //   alert("Approved end date must be between requested dates!");
       //   return;
       // }
+
+      var q = this.requestdetailsbyID.ApprovedStartTime.getHours();
+      var q1 = this.requestdetailsbyID.ApprovedStartTime.getMinutes();
+      newTime = q + ":" + q1;
+
+      var q2 = this.requestdetailsbyID.ApprovedEndTime.getHours();
+      var q3 = this.requestdetailsbyID.ApprovedEndTime.getMinutes();
+      newTime1 = q2 + ":" + q3;
+
     }
-
-    var q = this.requestdetailsbyID.ApprovedStartTime.getHours();
-    var q1 = this.requestdetailsbyID.ApprovedStartTime.getMinutes();
-    var newTime = q + ":" + q1;
-
-    var q2 = this.requestdetailsbyID.ApprovedEndTime.getHours();
-    var q3 = this.requestdetailsbyID.ApprovedEndTime.getMinutes();
-    var newTime1 = q2 + ":" + q3;
-
 
     var comments = this.requestdetailsbyID.StatusComment
     this.PeopleServiceService.saveRequestActionWithTime(this.ptorequestDetails$, this.employeekey,
@@ -241,7 +244,7 @@ export class PtoRequestActionComponent implements OnInit {
 
   ngOnInit() {
 
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
