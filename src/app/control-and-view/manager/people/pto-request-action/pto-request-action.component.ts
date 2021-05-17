@@ -241,7 +241,7 @@ export class PtoRequestActionComponent implements OnInit {
 
   ngOnInit() {
 
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -269,16 +269,23 @@ export class PtoRequestActionComponent implements OnInit {
 
         var ApprovedStartTime = this.requestdetailsbyID.ApprovedStartTime;
         var ApprovedEndTime = this.requestdetailsbyID.ApprovedEndTime;
-        var test3 = ApprovedStartTime.split(":");
-        var test4 = ApprovedEndTime.split(":");
-        var start1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test3[0], test3[1], 0);
-        var end1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test4[0], test4[1], 0);
-        this.ApprovedStartTime = start1;
-        this.ApprovedEndTime = end1;
+        if (!ApprovedStartTime) {
+          this.requestdetailsbyID.ApprovedStartTime = start;
+        } else {
+          var test3 = ApprovedStartTime.split(":");
+          var start1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test3[0], test3[1], 0);
+          this.ApprovedStartTime = start1;
+        }
+        if (!ApprovedEndTime) {
+          this.requestdetailsbyID.ApprovedEndTime = end;
+        }
+        else {
+          var test4 = ApprovedEndTime.split(":");
+          var end1 = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test4[0], test4[1], 0);
+          this.ApprovedEndTime = end1;
+        }
 
-
-
-
+        console.log(this.ApprovedStartTime + " " + this.ApprovedEndTime);
       });
     this.PeopleServiceService.getassignmentdetailsbyID(this.ptorequestDetails$)
       .subscribe((data: any) => {

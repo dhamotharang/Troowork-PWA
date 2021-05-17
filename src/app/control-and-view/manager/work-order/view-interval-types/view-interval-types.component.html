@@ -1,13 +1,9 @@
 <div style="padding-left: 9rem;padding-right: 9rem;">
-  <br><br>
   <div class="row col-md-12 ">
     <h4 style="margin-left: 40%;">VIEW INTERVAL TYPES</h4>
   </div>
-  <br><br><br>
-
   <div style="margin-left: 1.5rem;margin-right: 1.5rem; text-align: center;">
-    <table class="table table-responsive table-hover table-bordered table"
-      style="display: inline-table;max-width: 110%;width: 104%">
+    <table class="table table-responsive table-hover table-bordered table" style="display: inline-table;max-width: 110%;width: 104%">
       <thead class="tableHead">
         <th> Interval Type </th>
         <th> Action </th>
@@ -16,8 +12,7 @@
         <tr *ngFor="let x of interval">
           <td>{{ x.IntervalTypeDescription }}</td>
           <td>
-            <a [routerLink]="['EditIntervalTypeColor',x.idmasterintervaltype]" class="btn btn-primary"
-              style="color:white !important;" routerLinkActive="active"><b>EDIT
+            <a [routerLink]="['EditIntervalTypeColor',x.idmasterintervaltype]" class="btn btn-primary" style="color:white !important;" routerLinkActive="active"><b>EDIT
               </b></a>
           </td>
         </tr>

@@ -1,9 +1,9 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
-<div class="py-5" *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="bg-dark" style="width: 100%;height: 100%;">
 
     <h4 style="text-align: center"> WORK-ORDER TYPE </h4>
-    <br>
+
     <div style="text-align:center">
       <a [routerLink]="['CreateWorkorderType']" class="btn btn-success"><b>CREATE WORK-ORDER TYPE</b>
       </a>

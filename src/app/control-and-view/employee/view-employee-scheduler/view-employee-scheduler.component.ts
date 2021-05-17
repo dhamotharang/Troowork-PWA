@@ -9,9 +9,9 @@ import { DataServiceTokenStorageService } from '../../../service/DataServiceToke
 @Component({
   selector: 'scheduler-component',
   template: `
-  <div style="padding-left: 9rem;padding-right: 9rem;margin-top: 6%;margin-bottom: 3%;">
+  <div style="padding-left: 9rem;padding-right: 9rem;margin-bottom: 1%;">
     <div class="row col-md-12 ">
-      <h4 style="margin-left: 42%;margin-bottom:4%">EMPLOYEE SCHEDULER</h4>
+      <h4 style="margin-left: 42%;">EMPLOYEE SCHEDULER</h4>
     </div>
   
     <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem" class="row bg-info col-md-12">
