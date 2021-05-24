@@ -12,7 +12,8 @@
 
       <div class="form-group">
         <label> Start Time </label><br>
-        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="starttime" [timeOnly]="true" hourFormat="12" required>
+        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="starttime" [timeOnly]="true"
+          hourFormat="12" required>
         </p-calendar>
       </div>
 
@@ -23,7 +24,8 @@
 
       <div class="form-group">
         <label> End Time </label><br>
-        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="endtime" [timeOnly]="true" hourFormat="12" required>
+        <p-calendar [inputStyle]="{'width':'200%'}" placeholder="TIME" [(ngModel)]="endtime" [timeOnly]="true"
+          hourFormat="12" required>
         </p-calendar>
       </div>
 
@@ -31,18 +33,21 @@
     <div class="col-md-6">
       <div class="form-group" style="margin-top: 1.6rem">
         <label style="margin-top: 2rem;">Comments</label>
-        <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="comments" rows="9" style="resize: none;"></textarea>
+        <textarea class="form-control rounded-1" maxlength="200" [(ngModel)]="comments" rows="9"
+          style="resize: none;"></textarea>
       </div>
 
       <div class="form-group" style="margin-top: 1.6rem">
         <label> PTO Remaining</label>
-        <input type="text" [(ngModel)]="ptoreason" maxlength="75" style="background-color: #D4F4FF !important;width: 75%;" class="form-control" />
+        <input type="text" [(ngModel)]="ptoreason" maxlength="75"
+          style="background-color: #D4F4FF !important;width: 75%;" class="form-control" />
       </div>
     </div>
     <br>
     <br>
     <div class="row col-md-12" style="margin-left:40%">
-      <button type="button" style="text-align:center" class="btn btn-success" [disabled]="checkFlag" (click)="submitRequest()"><b>SUBMIT</b></button>
+      <button type="button" style="text-align:center" class="btn btn-success" [disabled]="checkFlag"
+        (click)="submitRequest()"><b>SUBMIT</b></button>
     </div>
     <br>
   </div>

@@ -93,6 +93,8 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
     this.fromdate = new Date(Date.now());
     this.todate = new Date(Date.now());
     this.ptoStatus = '';
+    this.Manager=[];
+    this.Shift=[];
 
     this.fromdate = this.convert_DT(this.fromdate);
     this.todate = this.convert_DT(this.todate);
