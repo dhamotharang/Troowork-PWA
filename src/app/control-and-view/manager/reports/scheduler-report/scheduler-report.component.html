@@ -1,9 +1,9 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
-    <h4 style="margin-left: 44%;margin-top: 5.5%;margin-bottom: 3%">SCHEDULER REPORT</h4>
+    <h4 style="margin-left: 44%;">SCHEDULER REPORT</h4>
   </div>
-  <div style="margin-left: 2rem;margin-right: 1.5rem;padding-top: 2rem" class="row bg-info col-md-12">
+  <div style="margin-left: 2rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
       <div class="form-group">
@@ -36,7 +36,7 @@
 
   <div style="margin-left: 2rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="row col-md-12">
-      <div style="margin-left: 44%">
+      <div style="margin-left: 40%">
         <button type="button" class="btn btn-success" [disabled]="checkFlag" (click)=generateSchedulerReport()><b>GENERATE REPORT</b></button>
       </div>
     </div>
