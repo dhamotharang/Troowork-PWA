@@ -484,13 +484,6 @@ export class WorkOrderServiceService {
       .get(ConectionSettings.Url + '/getRemainingWODetails?from=' + from + "&to=" + to + "&empKey=" + empKey + "&wotypeKey=" + wotypeKey + "&org=" + org);
   }
 
-
-  getLastCleanedDetails(roomKey, orgID) {
-    return this.http.
-      get(ConectionSettings.Url + '/getLastCleaningDetails?roomKey=' + roomKey + "&orgID=" + orgID);
-  }
-
-
   // @Rodney ends...
   // Prakash Code Starts here
   delete_batchWO(obj) {

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../../service/review.service';
-import { InventoryService } from '../../service/inventory.service';
-import { InspectionService } from '../../service/inspection.service';
 import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-reviews',
@@ -35,7 +33,7 @@ export class ReviewsComponent implements OnInit {
   lastIndexValue;
   pickValues;
 
-  constructor(private inspectionService: InspectionService, private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute, private inventoryService: InventoryService) {
+  constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute) {
     this.route.params.subscribe(params => this.OrgId$ = params.rev_orgid);
     this.route.params.subscribe(params => this.rKey$ = params.room_key);
   }
@@ -323,7 +321,7 @@ export class ReviewsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.inventoryService.getTemplateDetailsForFeedback(this.rKey$, this.OrgId$).subscribe((data) => {
+    this.reviewservice.getTemplateDetailsForFeedback(this.rKey$, this.OrgId$).subscribe((data) => {
       var tempID = data[0];
       if (!tempID) {
         tempID = [];
@@ -342,7 +340,7 @@ export class ReviewsComponent implements OnInit {
           this.names = ['Fail', 'N/A'];
           this.ScoreName = this.reviewQuestions[0].ScoreName;
         } else if (this.reviewQuestions[0].ScoreName === '0-25') {
-          this.inspectionService.getPickListValues(this.OrgId$).subscribe((data: any[]) => {
+          this.reviewservice.getPickListValuesforfeedback(this.OrgId$).subscribe((data: any[]) => {
             this.pickValues = data;
           });
           this.ScoreName = this.reviewQuestions[0].ScoreName;

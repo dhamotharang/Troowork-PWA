@@ -14180,7 +14180,7 @@ app.post(securedpath + '/getEmployeeForPie', function (req, res) {
 //Pooja's code starts here
 
 app.options('/addReview', supportCrossOriginScript);
-app.post(securedpath + '/addReview', supportCrossOriginScript, function (request, res) {
+app.post('/addReview', supportCrossOriginScript, function (request, res) {
 
     var Orgid = request.body.Orgid;
     var templateid = request.body.templateid;
@@ -16382,7 +16382,7 @@ app.get(securedpath + '/getEmpSchedulerStartDate', function (req, res) {
     });
 });
 app.options('/addUserWorkRequest', supportCrossOriginScript);
-app.post(securedpath + '/addUserWorkRequest', supportCrossOriginScript, function (req, res) {
+app.post('/addUserWorkRequest', supportCrossOriginScript, function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var Facility_Key = req.body.Facility_Key;
     var Floor_Key = req.body.Floor_Key;
@@ -17493,7 +17493,7 @@ app.post(securedpath + '/getIteratedDates', function (req, res) {
     });
 });
 // Review starts....
-app.get(securedpath + '/getReviewQuestionDetails', function (req, res) {
+app.get('/getReviewQuestionDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var templateID = url.parse(req.url, true).query['templateID'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -17518,7 +17518,7 @@ app.get(securedpath + '/getReviewQuestionDetails', function (req, res) {
 });
 
 app.options('/addReviewDetails', supportCrossOriginScript);
-app.post(securedpath + '/addReviewDetails', supportCrossOriginScript, function (request, res) {
+app.post('/addReviewDetails', supportCrossOriginScript, function (request, res) {
 
     var Orgid = request.body.OrganizationID;
     var feedbackmasterkey = request.body.feedbackmasterkey;
@@ -21491,7 +21491,7 @@ app.get(securedpath + '/getVersionDetails', function (req, res) { //
         connection.release();
     });
 });
-app.get(securedpath + '/getLastCleaningDetails', function (req, res) {
+app.get('/getLastCleaningDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var roomKey = url.parse(req.url, true).query['roomKey'];
     var orgID = url.parse(req.url, true).query['orgID'];
@@ -22829,7 +22829,7 @@ app.get(securedpath + '/getTemplateDetailsForRoom', function (req, res) {
 });
 
 
-app.get(securedpath + '/getTemplateDetailsForFeedbackByRoomID_OrgId', function (req, res) {
+app.get('/getTemplateDetailsForFeedbackByRoomID_OrgId', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var roomKey = url.parse(req.url, true).query['roomKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -23500,6 +23500,32 @@ app.post(securedpath + '/updateMasterShift_supervisor', function (req, res) {
 
 
 //Adding supervisor in shift ends
+//Feedback inspection starts here
+app.get('/getPickValuesListForFeedback', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var orgID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @orgID=?; call usp_getPickValuesListForInspection(@orgID)', [orgID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+//Feedback inspection ends here
 //handle generic exceptions
 //catch all other resource routes that are not defined above
 app.get(securedpath + '/*', function (req, res) {

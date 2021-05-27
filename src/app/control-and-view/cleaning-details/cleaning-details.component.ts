@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkOrderServiceService } from '../../service/work-order-service.service';
+import { ReviewService } from '../../service/review.service';
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
@@ -18,7 +18,7 @@ export class CleaningDetailsComponent implements OnInit {
   loading;
   show;
 
-  constructor(private woServ: WorkOrderServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute) {
     this.route.params.subscribe(params => this.Facility_Key = params.Facility_Key);
     this.route.params.subscribe(params => this.Floor_Key = params.Floor_Key);
     this.route.params.subscribe(params => this.Zone_Key = params.Zone_Key);
@@ -35,7 +35,7 @@ export class CleaningDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.woServ.getLastCleanedDetails(this.rKey$, this.OrgId$).subscribe((data: any[]) => {
+    this.reviewservice.getLastCleanedDetails(this.rKey$, this.OrgId$).subscribe((data: any[]) => {
       if (data.length > 0) {
         this.show = true;
       } else {
