@@ -8,6 +8,7 @@ export class DataService {
   newtype = 'Month';
   expand: any[];
   expandFlag;
+  focusEmp: number = 0;
   passDate = DayPilot.Date.today();
   resources: any[] = [
     {
@@ -134,6 +135,14 @@ export class DataService {
     }
 
     return this.expandFlag;
+  }
+
+  getFocusEmp() {
+    return this.focusEmp;
+  }
+
+  setFocusEmp(focusEmp) {
+    this.focusEmp = focusEmp;
   }
 }
 

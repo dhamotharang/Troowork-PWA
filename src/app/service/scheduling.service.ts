@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from './ConnectionSetting';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -296,9 +298,10 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/employeesForScheduler_SuType?groupID=' + groupID + '&empkey=' + empkey + '&OrganizationID=' + orgID);
   }
-  SchedulerEventCreate(obj) {
+  SchedulerEventCreate(obj): Observable<any> {
     const url = ConectionSettings.Url + "/SchedulerEventCreate";
-    return this.http.post(url, obj);
+    // return this.http.post(url, obj);
+    return this.http.post(url, obj).pipe(map(res => res));
   }
   SchedulerEventUpdate(obj) {
     const url = ConectionSettings.Url + "/SchedulerEventUpdate";

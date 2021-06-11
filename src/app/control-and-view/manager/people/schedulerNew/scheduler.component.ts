@@ -1,239 +1,42 @@
 import { Component, ViewChild, AfterViewInit, ChangeDetectorRef, OnInit } from "@angular/core";
 import { DayPilot, DayPilotSchedulerComponent, DayPilotModalComponent } from "daypilot-pro-angular";
 import { } from "daypilot-pro-angular";
-import { DataService } from "./data.service";
-import { CreateComponent } from "./create.component";
-import { EditComponent } from "./edit.component";
+// import { CreateComponent } from "./create.component";
+// import { EditComponent } from "./edit.component";
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { ModalDirective } from 'angular-bootstrap-md';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from "src/app/service/DataServiceTokenStorage.service";
+
+import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
+import { DataService, CreateEventParams, EventData, UpdateEventParams } from "./data.service";
 @Component({
   selector: 'scheduler-component',
-  template: `
-  
-  <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
-<div *ngIf="!loading">
-  <div style="margin-top:-1px;margin-bottom:2%;">
-  <div class="row col-md-12 ">
-  <h4 style="margin-left: 40%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
-  </div>
-        <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
-      <div class="form-group col-md-3">
-        <label>Date*</label>
-        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
-      </div>
-      <div class="form-group col-md-3">
-        <label>View Range*</label>
-        <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color: #d4f4ff;">
-          <option selected value="Week">Week</option>
-          <option value="Month">Month</option>
-        </select>
-        </div>
-
-      <div class="form-group col-md-3">
-        <label>Search Employee:</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
-        </ng-multiselect-dropdown>
-      </div>
-      <div class="form-group col-md-3">
-        <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
-        &nbsp;
-        <button (click)="clearFilter()">Clear</button>
-        &nbsp;
-        <button (click)="applyFilter()">Apply</button>
-      </div>
-    </div>
-  </div>
-  
-  <div style="width:100vw;overflow:auto;height:100vh;">
-    <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
-  </div>
-  <div *ngIf="OrganizationID==223">
-
-  <div class="row col-md-12 ">
-  <div class="form-group col-md-3">
-        <label>Date</label>
-        <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="date1" style="z-index:1" (ngModelChange)="selecteddate1();empCalendarActivities1();"></ng-datepicker>
-      </div>
-  </div>
-
-  <table class="table table-hover table-responsive table-bordered table"
-  style="margin-left: 2%;display: inline-table;margin-top: 2%">
-    <thead class="tableHead">
-      
-      <th> </th>
-      <th *ngFor="let z of dateList">
-        {{z.date1}}
-      </th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let x of amCountList">
-        <td> <b>{{x.AmType}}</b> </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date1count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date1count}} </span>
-	    	</td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date2count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date2count}} </span>
-	    	</td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date3count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date3count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date4count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date4count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date5count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date5count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date6count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date6count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date7count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date7count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date8count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date8count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date9count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date9count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date10count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date10count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date11count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date11count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date12count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date12count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date13count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date13count}} </span>
-        </td>
-        <td style="text-align:center;">
-          <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date14count}} </b></span>
-          <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date14count}} </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-  <div *ngIf="OrganizationID==223">
-  <table class="table table-hover table-responsive table-bordered table"
-  style="margin-left: 2%;display: inline-table;margin-top: 2%">
-    <thead class="tableHead">
-      
-      <th> </th>
-      <th *ngFor="let z of dateList">
-        {{z.date1}}
-      </th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let x of pmCountList">
-      <td> <b>{{x.AmType}}</b> </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date1count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date1count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date2count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date2count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date3count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date3count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date4count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date4count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date5count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date5count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date6count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date6count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date7count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date7count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date8count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date8count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date9count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date9count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date10count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date10count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date11count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date11count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date12count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date12count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date13count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date13count}} </span>
-      </td>
-      <td style="text-align:center;">
-        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date14count}} </b></span>
-        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date14count}} </span>
-      </td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-</div>
-
-<create-dialog #create (close)="createClosed($event)"></create-dialog>
-<edit-dialog #edit (close)="editClosed($event)"></edit-dialog>
-`,
-  styles: [`
-  
-   p, body, td { font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 10pt; }
-            body { padding: 0px; margin: 0px; background-color: #ffffff; }
-            a { color: #1155a3; }
-            .space { margin: 10px 0px 10px 0px; }   
-            .header { background: #003267; background: linear-gradient(to right, #011329 0%,#00639e 44%,#011329 100%); padding:20px 10px; color: white; box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.75); }
-            .header a { color: white; }
-            .header h1 a { text-decoration: none; }
-            .header h1 { padding: 0px; margin: 0px; }
-            .main { padding: 5px; margin-top: 5px; }
-            .bg-info { background-color: #FFFFFF !important; }
-            ::ng-deep.ngx-datepicker-position-bottom-right {z-index:1;}     
-  `]
+  templateUrl: './scheduler.component.html',
+  styleUrls: ['./scheduler.component.scss']
 })
 export class SchedulerComponent implements AfterViewInit {
-  constructor(private ds: DataService, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) {
+  constructor(private ds: DataService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) {
     this.date = new Date();
     this.date1 = new Date();
     this.Range = 'Month';
+
+    this.form = this.fb.group({
+      name: ["", Validators.required],
+      start: ["", this.dateTimeValidator(this.dateFormat)],
+      end: ["", [Validators.required, this.dateTimeValidator(this.dateFormat)]],
+      resource: ["", Validators.required]
+    });
+    // this.ds.getResources().subscribe(result => this.resources = result);
   }
+
+
   @ViewChild("modal") modal: DayPilotModalComponent;
+  @ViewChild("modal1") modal1: DayPilotModalComponent;
   @ViewChild("scheduler") scheduler: DayPilotSchedulerComponent;
-  @ViewChild("create") create: CreateComponent;
-  @ViewChild("edit") edit: EditComponent;
+  // @ViewChild("create") create: CreateComponent;
+  // @ViewChild("edit") edit: EditComponent;
   @ViewChild('basicModal') basicModal: ModalDirective;
   clipboard: DayPilot.Event[] = [];
   autoCopy: boolean;
@@ -248,7 +51,7 @@ export class SchedulerComponent implements AfterViewInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-  name;
+  name1;
   AllEmployeeList;
   MovingFromEmpKey;
   MovingToEmpKey;
@@ -336,14 +139,14 @@ export class SchedulerComponent implements AfterViewInit {
             var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
 
             if (k) {
-              this.loading = true;
+              // this.loading = true;
               this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
                 // alert("Employee removed from Employee Group successfully.....");
                 this.SchedulingService
                   .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
                   .subscribe((data: any[]) => {
                     this.events = data;
-                    this.loading = false;
+                    // this.loading = false;
                     if (this.events.length > 0) {
                       this.SchedulingService.employeesForScheduler('Manager', this.employeekey, this.OrganizationID)
                         .subscribe((data: any[]) => {
@@ -382,14 +185,16 @@ export class SchedulerComponent implements AfterViewInit {
     // new features added.... starts
     crosshairType: "Full",
     allowMultiSelect: true,
+    allowMultiMove: true,
     eventClickHandling: "Select",
+    multiMoveVerticalMode: "All",
     onEventSelect: args => {
       let selected = this.scheduler.control.multiselect.events();
       let onlyThis = !args.selected && !args.ctrl && !args.meta;
-      if (selected.length > 0 && selected[0].resource() !== args.e.resource() && !onlyThis) {
-        this.scheduler.control.message("You can only select events from the same row.");
-        args.preventDefault();
-      }
+      // if (selected.length > 0 && selected[0].resource() !== args.e.resource() && !onlyThis) {
+      //   this.scheduler.control.message("You can only select events from the same row.");
+      //   args.preventDefault();
+      // }
     },
     // onIncludeTimeCell: args => {
     //   if (args.cell.start.getDayOfWeek() === 0 || args.cell.start.getDayOfWeek() === 6) { // hide Saturdays, Sundays
@@ -435,13 +240,16 @@ export class SchedulerComponent implements AfterViewInit {
         {
           text: "Create", onClick: args => {
             this.ds.setData(this.Range, this.date);
-            this.create.show(args.source.data)
+            // this.create.show(args.source.data)
+            this.createshow(args.source.data);
           }
         },
         {
           text: "Edit", onClick: args => {
             this.ds.setData(this.Range, this.date);
-            this.edit.show(args.source).then(data1 => {
+            console.log(args);
+            console.log(args.source);
+            this.editshow(args.source).then(data1 => {
 
             });
           }
@@ -490,12 +298,14 @@ export class SchedulerComponent implements AfterViewInit {
                 MetaEmp: this.employeekey,
                 OrganizationID: this.OrganizationID
               };
-              this.loading = true;
-              this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
-                this.loading = false;
-                this.empCalendarActivities();
-                // this.clipboard = "";
-              });
+              // this.loading = true;
+              // this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+              //   this.loading = false;
+              //   this.empCalendarActivities();
+              //   // this.clipboard = "";
+              // });
+              this.testme(obj);
+              this.scheduler.control.scrollToResource(targetResource);
             });
           }
         }
@@ -516,7 +326,7 @@ export class SchedulerComponent implements AfterViewInit {
       var checkDate = this.convert_DT(args.start.value)
       var empKey = args.resource;
       this.ds.setData(this.Range, this.date);
-      this.create.show(args);
+      this.createshow(args);
     },
     onEventMoved: args => {
     },
@@ -530,24 +340,54 @@ export class SchedulerComponent implements AfterViewInit {
       this.ds.setExpandData(args.resource.data.id, args.resource.data.expanded);
     },
     onEventMove: args => {
+      const copy = args.ctrl || args.meta;
+      console.log(copy);
+      if (copy) {
+        args.preventDefault();
+        args.multimove.forEach(item => {
+          console.log(item);
+          var count = 0;
+          for (var i = 0; i < this.empList.length; i++) {
+            if (this.empList[i].id == item.resource) {
+              count++; break;
+            }
+          }
+          if (count > 0) {
+            let obj = {
+              resourceEmployee: item.resource,
+              start: this.convert_DT(item.start.value),
+              ScheduleNameKey: item.event.data.ScheduleNameKey,
+              MetaEmp: this.employeekey,
+              OrganizationID: this.OrganizationID
+            };
 
-      let obj = {
-        resourceEmployee: this.MovingToEmpKey,
-        start: this.MovingToDate,
-        ScheduleNameKey: args.e.data.ScheduleNameKey,
-        MetaEmp: this.employeekey,
-        OrganizationID: this.OrganizationID
-      };
-
-      this.loading = true;
-      this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
-        this.SchedulingService.SchedulerEventDelete(args.e.data.Assignment_CalenderID, this.employeekey, this.OrganizationID).subscribe(data => {
-          this.loading = false;
-          this.empCalendarActivities();
-
+            // this.loading = true;
+            this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+              // this.loading = false;
+              this.empCalendarActivities();
+            });
+            this.scheduler.control.scrollToResource(item.resource);
+          }
         });
-      });
+      }
+      else {
+        let obj = {
+          resourceEmployee: this.MovingToEmpKey,
+          start: this.MovingToDate,
+          ScheduleNameKey: args.e.data.ScheduleNameKey,
+          MetaEmp: this.employeekey,
+          OrganizationID: this.OrganizationID
+        };
 
+        // this.loading = true;
+        this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+          this.SchedulingService.SchedulerEventDelete(args.e.data.Assignment_CalenderID, this.employeekey, this.OrganizationID).subscribe(data => {
+            // this.loading = false;
+            this.empCalendarActivities();
+
+          });
+        });
+      }
     },
     onEventMoving: args => {
 
@@ -592,7 +432,7 @@ export class SchedulerComponent implements AfterViewInit {
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
     this.IsSupervisor = this.dst.getIsSupervisor();
-    this.name = this.dst.getName();
+    this.name1 = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
 
@@ -673,9 +513,16 @@ export class SchedulerComponent implements AfterViewInit {
         this.empList = data;
       });
 
+    this.SchedulingService
+      .getAllSchedulingNames(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.scheduleNameList = data;
+      });
+
   }
 
   createClosed(args) {
+    console.log(args.result)
     if (args.result) {
       this.events.push(args.result);
       this.scheduler.control.message("Created.");
@@ -712,7 +559,9 @@ export class SchedulerComponent implements AfterViewInit {
       this.config.cellDuration = 120;
       this.config.cellWidth = 250;
       this.config.allowMultiSelect = true;
+      this.config.allowMultiMove = true;
       this.config.eventClickHandling = "Select";
+      this.config.multiMoveVerticalMode = "All";
       this.config.days = DayPilot.Date.today().daysInMonth();
       if (this.date) {
         this.config.startDate = this.convert_DT(this.date);
@@ -743,7 +592,9 @@ export class SchedulerComponent implements AfterViewInit {
       this.config.days = 7;
       this.config.startDate = this.convert_DT(this.date);
       this.config.allowMultiSelect = true;
+      this.config.allowMultiMove = true;
       this.config.eventClickHandling = "Select";
+      this.config.multiMoveVerticalMode = "All";
     }
   }
 
@@ -784,13 +635,13 @@ export class SchedulerComponent implements AfterViewInit {
   }
 
   empCalendarActivities() {
-    this.loading = true;
+    // this.loading = true;
     this.date1 = this.date;
     this.SchedulingService
       .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
       .subscribe((data: any[]) => {
         this.events = data;
-        this.loading = false;
+        // this.loading = false;
       });
 
     if (this.OrganizationID == 223) {
@@ -813,12 +664,12 @@ export class SchedulerComponent implements AfterViewInit {
   }
 
   empCalendarActivities1() {
-    this.loading = true;
+    // this.loading = true;
     this.SchedulingService
       .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
       .subscribe((data: any[]) => {
         this.events = data;
-        this.loading = false;
+        // this.loading = false;
       });
     if (this.OrganizationID == 223) {
       this.SchedulingService
@@ -864,12 +715,12 @@ export class SchedulerComponent implements AfterViewInit {
         EmployeeKeyString = employeeKeList.join(',');
       }
     }
-    this.loading = true;
+    // this.loading = true;
     this.SchedulingService
       .rowFiltering(EmployeeKeyString, this.filter.eventsOnly, this.Range, this.convert_DT(this.date), this.OrganizationID)
       .subscribe((data: any[]) => {
         this.config.resources = data;
-        this.loading = false;
+        // this.loading = false;
       });
 
     this.date1 = this.date;
@@ -902,5 +753,262 @@ export class SchedulerComponent implements AfterViewInit {
   }
   //new change for row filtering. ends....
 
+  testme(obj) {
 
+    this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+      return Promise.resolve(this.empCalendarActivities());
+    });
+  }
+
+  // CREATE starts
+  form: FormGroup;
+  dateFormat = "MM/dd/yyyy h:mm tt";
+  name: any = "new Event";
+  resources: any[];
+  start;
+  end;
+  resource;
+
+  BatchScheduleNameKey;
+  ScheduleName;
+  scheduleNameList;
+  params;
+  Date;
+
+  options2: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: { 'font-size': '18px', 'width': '102%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
+
+
+
+  createshow(args: any) {
+
+    this.resource = args.resource;
+    this.BatchScheduleNameKey = '';
+    this.Date = args.start;
+    this.modal.show();
+  }
+
+  createSubmit() {
+    if (!(this.BatchScheduleNameKey)) {
+      alert("Please provide Assignment Name !");
+      return;
+    }
+
+    let params: CreateEventParams = {
+
+      resource: this.resource,
+      start: this.convert_DT(this.Date),
+      end: this.convert_DT(this.Date),
+      text: this.ScheduleName,
+      ScheduleNameKey: this.BatchScheduleNameKey,
+      ScheduleName: this.ScheduleName,
+      backColor: "White",
+      moveDisabled: false,
+      bubbleHtml: this.ScheduleName
+    };
+
+    let obj = {
+      resourceEmployee: this.resource,
+      start: this.convert_DT(this.Date),
+      ScheduleNameKey: this.BatchScheduleNameKey,
+      MetaEmp: this.employeekey,
+      OrganizationID: this.OrganizationID
+    };
+    this.testme(obj);
+    this.modal.hide();
+    // this.ds.setFocusEmp(this.resource);
+    // this.ds.setExpandFlagNewComp(2);
+    this.scheduler.control.scrollToResource(this.resource);
+    // this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+    //   this.ds.setExpandFlagNewComp(2);
+    //   if (this.role == 'Manager') {
+    //     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //   } else if (this.role == 'Supervisor') {
+    //     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+    //   }
+    // });
+  }
+
+  createCancel() {
+    this.modal.hide();
+  }
+
+  dateTimeValidator(format: string) {
+    return function (c: FormControl) {
+      let valid = !!DayPilot.Date.parse(c.value, format);
+      return valid ? null : { badDateTimeFormat: true };
+    };
+  }
+  setScheduleName() {
+    for (var i = 0; i < this.scheduleNameList.length; i++) {
+
+      if (parseInt(this.BatchScheduleNameKey) === this.scheduleNameList[i].BatchScheduleNameKey) {
+
+        this.ScheduleName = this.scheduleNameList[i].ScheduleName;
+      }
+    }
+
+  }
+  closed(args) {
+
+    console.log("Closed");
+  }
+  // CREATE ends
+
+  // EDIT starts
+
+  event1: DayPilot.Event;
+
+  //local variable
+  ScheduleNameEdit;
+  BatchScheduleNameKeyEdit;
+  DateEdit;
+  AssignIDForDelete;
+  scheduleOldKey;
+
+  options3: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: { 'font-size': '18px', 'width': '102%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
+
+
+  editshow(ev: DayPilot.Event) {
+    return new Promise<void>((resolve) => {
+      this.event1 = ev;
+      this.form.setValue({
+        start: ev.start(),
+        end: ev.end(),
+        name: ev.text(),
+        resource: ev.resource(),
+
+      });
+      this.AssignIDForDelete = ev.data.Assignment_CalenderID;
+      this.BatchScheduleNameKeyEdit = ev.data.ScheduleNameKey;
+      this.ScheduleNameEdit = ev.data.ScheduleName;
+      this.DateEdit = ev.data.start;
+      this.scheduleOldKey = ev.data.ScheduleNameKey;
+      if (ev.data.moveDisabled != 1) {
+        this.modal1.show();
+      }
+      resolve();
+    });
+
+  }
+
+  dateChangeNeeded() {
+    this.DateEdit = this.convert_DT(this.DateEdit);
+  }
+
+  submitEdit() {
+    console.log(this.event1);
+    var date = this.DateEdit;
+    if (!(this.BatchScheduleNameKeyEdit)) {
+      alert("Please provide Assignment Name !");
+      return;
+    }
+    let obj = {
+      resourceEmployee: this.event1.data.resource,
+      start: date,
+      ScheduleNameKey: this.BatchScheduleNameKeyEdit,
+      MetaEmp: this.employeekey,
+      OrganizationID: this.OrganizationID,
+      Assignment_CalenderID: this.event1.data.Assignment_CalenderID
+    };
+    this.updateCall(obj);
+    this.modal1.hide();
+    // this.ds.setExpandFlagNewComp(3);
+    // this.ds.setFocusEmp(this.event1.data.resource);
+    // console.log(this.ds.getFocusEmp());
+    this.scheduler.control.scrollToResource(11913);
+    // this.SchedulingService.SchedulerEventUpdate(obj).subscribe(data => {
+    //   this.ds.setExpandFlagNewComp(3);
+    //   if (this.role == 'Manager') {
+    //     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //     // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+    //   } else if (this.role == 'Supervisor') {
+    //     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+    //   }
+    // });
+
+    this.event1.data.start = date;
+    this.event1.data.end = date;
+    this.event1.data.resource;
+    this.event1.data.text = this.ScheduleNameEdit;
+    this.event1.data.ScheduleName = this.ScheduleNameEdit;
+    this.event1.data.ScheduleNameKey = this.BatchScheduleNameKeyEdit;
+  }
+
+  cancel() {
+    this.modal1.hide();
+  }
+
+
+  delete() {
+    var confirmBox = confirm("Do you want to Delete ?");
+    if (confirmBox == true) {
+      this.deleteCall(this.AssignIDForDelete, this.employeekey, this.OrganizationID);
+      this.modal1.hide();
+      // this.ds.setFocusEmp(this.event1.data.resource);
+      this.scheduler.control.scrollToResource(this.event1.data.resource);
+      // this.SchedulingService.SchedulerEventDelete(this.AssignIDForDelete, this.employeekey, this.OrganizationID).subscribe(data => {
+      //   this.ds.setExpandFlagNewComp(3);
+      //   if (this.role == 'Manager') {
+      //     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+      //     // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+      //   } else if (this.role == 'Supervisor') {
+      //     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+      //   }
+      // });
+    }
+  }
+
+
+  setScheduleNameEdit() {
+    for (var i = 0; i < this.scheduleNameList.length; i++) {
+
+      if (parseInt(this.BatchScheduleNameKeyEdit) === this.scheduleNameList[i].BatchScheduleNameKey) {
+
+        this.ScheduleNameEdit = this.scheduleNameList[i].ScheduleName;
+      }
+    }
+
+  }
+
+  updateCall(obj) {
+
+    this.SchedulingService.SchedulerEventUpdate(obj).subscribe(data => {
+      return Promise.resolve(this.empCalendarActivities());
+    });
+  }
+
+
+  deleteCall(AssignIDForDelete, employeekey, OrganizationID) {
+
+    this.SchedulingService.SchedulerEventDelete(AssignIDForDelete, employeekey, OrganizationID).subscribe(data => {
+      return Promise.resolve(this.empCalendarActivities());
+    });
+  }
+  // EDIT ends
 }
