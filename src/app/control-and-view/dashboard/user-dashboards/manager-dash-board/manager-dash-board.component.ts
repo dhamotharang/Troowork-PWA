@@ -105,7 +105,7 @@ export class ManagerDashBoardComponent implements OnInit {
     }
   }
   leave() {
-    console.log("exit")
+    console.log("exit");
   }
   stayhere() {
     this.popup = false;

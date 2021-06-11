@@ -288,7 +288,6 @@ export class PtoRequestActionComponent implements OnInit {
           this.ApprovedEndTime = end1;
         }
 
-        console.log(this.ApprovedStartTime + " " + this.ApprovedEndTime);
       });
     this.PeopleServiceService.getassignmentdetailsbyID(this.ptorequestDetails$)
       .subscribe((data: any) => {

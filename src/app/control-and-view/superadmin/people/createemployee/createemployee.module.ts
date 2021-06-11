@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BrowserModule } from '@angular/platform-browser'
-import { NgDatepickerModule} from 'ng2-datepicker';
+import { NgDatepickerModule } from 'ng2-datepicker';
 import { CreateemployeeComponent } from './createemployee.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
@@ -17,7 +17,7 @@ const routes: Routes = [
     path: '',
     component: CreateemployeeComponent
   }
-  
+
 ];
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ const routes: Routes = [
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
     IgxDatePickerModule,
-    
+
     RouterModule.forChild(routes)
   ],
   declarations: [CreateemployeeComponent]
