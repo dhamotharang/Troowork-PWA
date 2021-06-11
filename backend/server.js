@@ -22931,7 +22931,7 @@ app.get(securedpath + '/getManagerForEmployee_pto', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @employeekey=?; set@OrganizationID=?; call usp_getManagerForEmployee_SuType(@employeekey,@OrganizationID)', [employeekey, OrganizationID], function (err, rows) {
+            connection.query('set @employeekey=?; set@OrganizationID=?; call usp_getManagerForEmployee_pto(@employeekey,@OrganizationID)', [employeekey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -23526,6 +23526,54 @@ app.get('/getPickValuesListForFeedback', function (req, res) {
     });
 });
 //Feedback inspection ends here
+
+app.options('/uploadImageFromSmallDevices_ios', supportCrossOriginScript);
+app.post('/uploadImageFromSmallDevices_ios', supportCrossOriginScript, function (req, res) {
+
+    uploadImageFromSmallDevices(req, res, function (err) {
+        if (err) {
+
+            return res.end("Error uploading file.");
+        } else {
+
+            res.end("File is uploaded");
+        }
+
+    });
+});
+
+var uploadImageFromSmallDevices_ios = multer({ storage: PhotostorageDevice }).single('file');
+
+app.options('/uploadImageFromSmallDevices_Inspectionios', supportCrossOriginScript);
+app.post('/uploadImageFromSmallDevices_Inspectionios', supportCrossOriginScript, function (req, res) {
+
+    uploadImageFromSmallDevices_Inspectionios(req, res, function (err) {
+        if (err) {
+
+            return res.end("Error uploading file.");
+        } else {
+
+            res.end("File is uploaded");
+        }
+
+    });
+});
+
+var PhotostorageDevice_Inspectionios = multer.diskStorage({
+    destination: function (req, file, callback) {
+
+        callback(null, '../dist/mdb-angular-free/Inspection-Upload');
+
+    },
+    filename: function (req, file, callback) {
+        var fname = file.originalname;
+        callback(null, fname);
+
+    }
+});
+var uploadImageFromSmallDevices_Inspectionios = multer({ storage: PhotostorageDevice_Inspectionios }).single('file');
+
+
 //handle generic exceptions
 //catch all other resource routes that are not defined above
 app.get(securedpath + '/*', function (req, res) {

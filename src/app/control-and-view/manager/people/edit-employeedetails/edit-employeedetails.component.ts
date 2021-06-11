@@ -399,7 +399,7 @@ export class EditEmployeedetailsComponent implements OnInit {
   }
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -589,6 +589,6 @@ export class EditEmployeedetailsComponent implements OnInit {
     } else {
       this.marked = false;
     }
-  
+
   }
 }

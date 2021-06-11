@@ -648,7 +648,6 @@ export class InventoryService {
   }
 
   getAllRoomFilterList(OrgID, bldgKey, flrKey, zKey, rTypeKey, rKey, flrTypeKey, empKey) {
-    console.log("service... org" + OrgID + " ..... bldg " + bldgKey + " .....flr " + flrKey + " .....zone " + zKey + " .....rtype " + rTypeKey + " .....room " + rKey + " .....flrtype " + flrTypeKey + " .....emp " + empKey);
     const url = ConectionSettings.Url + "/viewRoomsByallFilters";
     const obj = {
       manager: empKey,
