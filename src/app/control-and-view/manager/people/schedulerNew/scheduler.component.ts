@@ -346,28 +346,22 @@ export class SchedulerComponent implements AfterViewInit {
         args.preventDefault();
         args.multimove.forEach(item => {
           console.log(item);
-          var count = 0;
-          for (var i = 0; i < this.empList.length; i++) {
-            if (this.empList[i].id == item.resource) {
-              count++; break;
-            }
-          }
-          if (count > 0) {
-            let obj = {
-              resourceEmployee: item.resource,
-              start: this.convert_DT(item.start.value),
-              ScheduleNameKey: item.event.data.ScheduleNameKey,
-              MetaEmp: this.employeekey,
-              OrganizationID: this.OrganizationID
-            };
 
-            // this.loading = true;
-            this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
-              // this.loading = false;
-              this.empCalendarActivities();
-            });
-            this.scheduler.control.scrollToResource(item.resource);
-          }
+          let obj = {
+            resourceEmployee: item.resource,
+            start: this.convert_DT(item.start.value),
+            ScheduleNameKey: item.event.data.ScheduleNameKey,
+            MetaEmp: this.employeekey,
+            OrganizationID: this.OrganizationID
+          };
+
+          // this.loading = true;
+          this.SchedulingService.SchedulerEventCreate(obj).subscribe(data => {
+            // this.loading = false;
+            this.empCalendarActivities();
+          });
+          this.scheduler.control.scrollToResource(item.resource);
+
         });
       }
       else {
