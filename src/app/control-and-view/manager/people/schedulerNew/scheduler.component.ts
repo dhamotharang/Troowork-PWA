@@ -17,6 +17,8 @@ import { DataService, CreateEventParams, EventData, UpdateEventParams } from "./
   styleUrls: ['./scheduler.component.scss']
 })
 export class SchedulerComponent implements AfterViewInit {
+  highlightcellcolor: any;
+  highlightcellid: any;
   constructor(private ds: DataService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) {
     this.date = new Date();
     this.date1 = new Date();
@@ -361,7 +363,7 @@ export class SchedulerComponent implements AfterViewInit {
             this.empCalendarActivities();
           });
           this.scheduler.control.scrollToResource(item.resource);
-
+          this.scheduler.control.multiselect.clear();
         });
       }
       else {
@@ -378,11 +380,28 @@ export class SchedulerComponent implements AfterViewInit {
           this.SchedulingService.SchedulerEventDelete(args.e.data.Assignment_CalenderID, this.employeekey, this.OrganizationID).subscribe(data => {
             // this.loading = false;
             this.empCalendarActivities();
-
+            this.scheduler.control.multiselect.clear();
           });
         });
       }
     },
+    onEventRightClick: args => {
+      this.scheduler.control.multiselect.clear();
+      console.log(this.scheduler.events);
+      if (this.highlightcellid && (this.highlightcellid !== args.e.data.id)) {
+        for (var i = 0; i < this.scheduler.events.length; i++) {
+          if (this.scheduler.events[i].id == this.highlightcellid) {
+            this.scheduler.events[i].backColor = this.highlightcellcolor;
+          }
+        }
+      }
+      // this.scheduler.control.multiselect.add(args.e);
+      console.log(args);
+      this.highlightcellid = args.e.data.id;
+      this.highlightcellcolor = args.e.data.backColor;
+      args.e.data.backColor = "grey";
+    },
+
     onEventMoving: args => {
 
       this.MovingFromEmpKey = args.e.data.resource;
@@ -935,7 +954,7 @@ export class SchedulerComponent implements AfterViewInit {
     // this.ds.setExpandFlagNewComp(3);
     // this.ds.setFocusEmp(this.event1.data.resource);
     // console.log(this.ds.getFocusEmp());
-    this.scheduler.control.scrollToResource(11913);
+    this.scheduler.control.scrollToResource(this.event1.data.resource);
     // this.SchedulingService.SchedulerEventUpdate(obj).subscribe(data => {
     //   this.ds.setExpandFlagNewComp(3);
     //   if (this.role == 'Manager') {
