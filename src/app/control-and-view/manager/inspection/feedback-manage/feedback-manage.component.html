@@ -14,8 +14,7 @@
           <td>{{ x.TemplateName }}</td>
 
           <td>
-            <a [routerLink]="['editFeedbackTemplate',x.idreviewtemplate]"
-              class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
+            <a [routerLink]="['editFeedbackTemplate',x.idreviewtemplate]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
             <!-- <a class="btn btn-danger"
               (click)="basicModal.show();deleteFeedbackTemp(x.idreviewtemplate); "><b>Delete</b></a>&nbsp;&nbsp; -->
             <a [routerLink]="['assignFeedbackTemplateTo',x.idreviewtemplate]" class="btn btn-primary"><b>Assign
@@ -25,7 +24,7 @@
         <tr *ngIf="temlates?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -46,7 +45,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>

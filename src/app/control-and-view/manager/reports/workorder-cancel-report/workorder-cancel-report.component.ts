@@ -8,6 +8,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as FileSaver from 'file-saver';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-workorder-cancel-report',
@@ -83,7 +85,7 @@ export class WorkorderCancelReportComponent implements OnInit {
     Employee: '', Room: '', Equipment: '', CancelledDateTime: '', CancelledReason: ''
   }];
 
-  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.FacilityKey = "";
@@ -164,9 +166,19 @@ export class WorkorderCancelReportComponent implements OnInit {
     this.checkFlag = true;
     if ((to_date) && (this.convert_DT(from_date) > this.convert_DT(to_date))) {
       todate = null;
-      alert("Please check your Start Date!");
-      this.checkFlag = false;
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
       var fromdate;

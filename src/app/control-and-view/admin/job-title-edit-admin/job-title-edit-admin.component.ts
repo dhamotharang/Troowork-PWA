@@ -5,6 +5,8 @@ import { PeopleServiceService } from '../../../service/people-service.service';
 import { Router } from '@angular/router';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-job-title-edit-admin',
   templateUrl: './job-title-edit-admin.component.html',
@@ -38,18 +40,34 @@ export class JobTitleEditAdminComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.JobTitle_Key$ = params.JobTitle_Key);
   }
   updateJobTitle(JobTitle, JobTitleDescription) {
     this.checkFlag = true;
     if (!(JobTitle) || !(JobTitle.trim())) {
-      alert('Job title is not provided !');
+      // alert('Job title is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Job title is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(JobTitleDescription) || !(JobTitleDescription.trim())) {
-      alert('Job Title Description is not provided !');
+      // alert('Job Title Description is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Job Title Description is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -60,23 +78,51 @@ export class JobTitleEditAdminComponent implements OnInit {
     if (JobTitle !== this.JT) {
       this.peopleServiceService.CheckNewJobtitle(JobTitle, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data[0].count > 0) {
-          alert("Job title already present !");
+          // alert("Job title already present !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Job title already present !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }
         else {
           this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-            alert('Job title  successfully updated !');
-            this.checkFlag = false;
-            this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+            // alert('Job title  successfully updated !');
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Job title  successfully updated !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+            });
           });
         }
       });
     } else {
       this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-        alert('Job title  successfully updated !');
-        this.checkFlag = false;
-        this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+        // alert('Job title  successfully updated !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Job title  successfully updated !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+        });
       });
     }
     // }

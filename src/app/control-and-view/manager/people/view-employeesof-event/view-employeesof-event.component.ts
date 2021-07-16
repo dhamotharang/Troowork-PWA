@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { People } from '../../../../model-class/People';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-view-employeesof-event',
@@ -40,7 +43,7 @@ export class ViewEmployeesofEventComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private peopleServ: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleServ: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.eventKey$ = params.EventKey);
   }
 
@@ -66,26 +69,54 @@ export class ViewEmployeesofEventComponent implements OnInit {
 
   deleteMeetingPass(EventKey) {
     this.eventKey = EventKey;
-  }
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-  deleteMeeting() {
-    this.checkFlag = true;
-    this.peopleServ
-      .DeleteMeetingTraining(this.eventKey, this.OrganizationID)
-      .subscribe(res => {
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.peopleServ
+          .DeleteMeetingTraining(this.eventKey, this.OrganizationID)
+          .subscribe(res => {
+            this.checkFlag = false;
+
+            if (this.role == 'Manager') {
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+            }
+            // else  if(this.role=='Employee' && this.IsSupervisor==1){
+            else if (this.role == 'Supervisor') {
+              this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+            }
+          }
+          );
+      } else {
         this.checkFlag = false;
-
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-        }
-        // else  if(this.role=='Employee' && this.IsSupervisor==1){
-        else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-        }
       }
-      );
-
+    });
   }
+
+  // deleteMeeting() {
+  //   this.checkFlag = true;
+  //   this.peopleServ
+  //     .DeleteMeetingTraining(this.eventKey, this.OrganizationID)
+  //     .subscribe(res => {
+  //       this.checkFlag = false;
+
+  //       if (this.role == 'Manager') {
+  //         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+  //       }
+  //       // else  if(this.role=='Employee' && this.IsSupervisor==1){
+  //       else if (this.role == 'Supervisor') {
+  //         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+  //       }
+  //     }
+  //     );
+
+  // }
 
   ngOnInit() {
     // var token = sessionStorage.getItem('token');

@@ -5,6 +5,8 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-create-quick-order',
   templateUrl: './create-quick-order.component.html',
@@ -66,7 +68,7 @@ export class CreateQuickOrderComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private responsiveService: ResponsiveService, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private responsiveService: ResponsiveService, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   //Function for converting date from GMT to yyyy/mm/dd format
   convert_DT(str) {
     var date = new Date(str),
@@ -86,15 +88,45 @@ export class CreateQuickOrderComponent implements OnInit {
   saveQuickWorkOrder() {
     this.checkFlag = true;
     if (!(this.EmployeeKey)) {
-      alert("Please select employee!");
-      this.checkFlag = false;
+      // alert("Please select employee!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select employee!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (!(this.FacilityKey)) {
-      alert("Please select building!");
-      this.checkFlag = false;
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderNotes)) {
-      alert("Please enter work-order notes!");
-      this.checkFlag = false;
+      // alert("Please enter work-order notes!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order notes!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else {
 
       this.wot = - 1;
@@ -165,9 +197,19 @@ export class CreateQuickOrderComponent implements OnInit {
       this.WorkOrderServiceService
         .addQuickWorkOrder(this.createworkorder)
         .subscribe(res => {
-          alert("Work-order created successfully");
-          this.checkFlag = false;
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          // alert("Work-order created successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order created successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          });
         });
     }
 

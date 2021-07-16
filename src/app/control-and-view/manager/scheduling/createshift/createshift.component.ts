@@ -4,6 +4,9 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-createshift',
   templateUrl: './createshift.component.html',
@@ -115,7 +118,7 @@ export class CreateshiftComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private scheduleServ: SchedulingService, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private scheduleServ: SchedulingService, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   createShift() {
 
@@ -128,14 +131,34 @@ export class CreateshiftComponent implements OnInit {
     // var t1 = this.time2.getMinutes();
     // var newTime2 = t + ":" + t1;
     if (!(this.Description)) {
-      alert("Please provide a Group Name !!!");
-      this.checkFlag = false;
-      return;
+      // alert("Please provide a Group Name !!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Group Name !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.color)) {
-      alert("Please select a color");
-      this.checkFlag = false;
-      return;
+      // alert("Please select a color");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a color!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     //Code for scheduler starts....
     this.schedularcount = 0;
@@ -152,9 +175,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Sunday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Sunday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Sunday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_mon_hour == '-1' && this.start_mon_min == '-1' && this.end_mon_hour == '-1' && this.end_mon_min == '-1') {
@@ -165,9 +198,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Monday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Monday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Monday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_tue_hour == '-1' && this.start_tue_min == '-1' && this.end_tue_hour == '-1' && this.end_tue_min == '-1') {
@@ -178,9 +221,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Tuesday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Tuesday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Tuesday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_wed_hour == '-1' && this.start_wed_min == '-1' && this.end_wed_hour == '-1' && this.end_wed_min == '-1') {
@@ -191,9 +244,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Wednesday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Wednesday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Wednesday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_thu_hour == '-1' && this.start_thu_min == '-1' && this.end_thu_hour == '-1' && this.end_thu_min == '-1') {
@@ -204,9 +267,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Thursday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Thursday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Thursday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_fri_hour == '-1' && this.start_fri_min == '-1' && this.end_fri_hour == '-1' && this.end_fri_min == '-1') {
@@ -217,9 +290,19 @@ export class CreateshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Friday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Friday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Friday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.start_sat_hour == '-1' && this.start_sat_min == '-1' && this.end_sat_hour == '-1' && this.end_sat_min == '-1') {
@@ -229,16 +312,36 @@ export class CreateshiftComponent implements OnInit {
         this.schedularcount = this.schedularcount;
       } else {
         this.schedularcount++;
-        alert('Values Missing in Saturday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Saturday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Saturday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     } else if (this.showHide == false) {
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
-        alert('Values Missing in Start and End Time');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Start and End Time');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Start and End Time!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.start_sun_hour = this.start_hour;
         this.start_sun_min = this.start_min;
@@ -354,9 +457,20 @@ export class CreateshiftComponent implements OnInit {
           };
 
           this.scheduleServ.createEmpShiftwithColourCode(empschobj).subscribe((data: any[]) => {
-            alert("Employee Group Name created successfully");
-            this.checkFlag = false;
-            this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+            // alert("Employee Group Name created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Employee Group Name created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+            });
+
             // code for if staying in the same page....starts
             // this.Description = "";
 
@@ -419,17 +533,37 @@ export class CreateshiftComponent implements OnInit {
             // code for if staying in the same page....ends
           });
         } else {
-          alert("Group Name already exists");
-          this.checkFlag = false;
-          return;
+          // alert("Group Name already exists");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Group Name already exists!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
       });
       // this.scheduleServ.createEmpShiftwithColourCode(this.Description, this.Abbrevation, this.publishas, newTime1,
       //   this.paidhours, newTime2, this.color, this.OrganizationID, this.employeekey).subscribe((data: any[]) => { });
     } else {
-      alert("Value for weekly schedule is missing somewhere. Please check it!!!");
-      this.checkFlag = false;
-      return;
+      // alert("Value for weekly schedule is missing somewhere. Please check it!!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Value for weekly schedule is missing somewhere. Please check it!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
   }
   ngOnInit() {

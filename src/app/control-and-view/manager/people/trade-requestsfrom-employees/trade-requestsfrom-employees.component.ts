@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../../service/people-service.service";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-trade-requestsfrom-employees',
@@ -67,11 +70,11 @@ export class TradeRequestsfromEmployeesComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -108,8 +111,16 @@ export class TradeRequestsfromEmployeesComponent implements OnInit {
 
     if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {
       todate = null;
-      alert("Please check your Start Date!");
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => { return; });
     }
     else {
       var fdate;

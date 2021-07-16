@@ -24,14 +24,14 @@
           <td>
             <a *ngIf='!(k===editQuestions)' class="btn btn-primary" (click)='editTemplateDetails(k, i.TemplateID)'><b>Edit</b></a>&nbsp;&nbsp;
             <button *ngIf='(k===editQuestions)' class="btn btn-success" [disabled]="checkFlag" (click)='submiteditInspectionTemplate(i.TemplateName,i.TemplateID,i.ScoreTypeKey)'><b>Update</b></button>&nbsp;&nbsp;
-            <button *ngIf='!(k===editQuestions)' class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deleteTemplatePass(i.TemplateID); "><b>Delete</b></button>
+            <button *ngIf='!(k===editQuestions)' class="btn btn-danger" [disabled]="checkFlag" (click)="deleteTemplatePass(i.TemplateID); "><b>Delete</b></button>
             <a *ngIf='(k===editQuestions)' class="btn btn-warning" (click)='cancelTemplateDetails()'><b>Cancel</b></a>
           </td>
         </tr>
         <tr *ngIf="inspectiontemplate?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>

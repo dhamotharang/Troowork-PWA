@@ -29,13 +29,13 @@
 
           <td>
             <a [routerLink]="['JobTitleEditAdmin', x.JobTitleKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deleteJobPass(x.JobTitleKey); "><b>Delete</b></button>
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="deleteJobPass(x.JobTitleKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="jobView?.length == 0">
           <td colspan="3" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -53,7 +53,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
     <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>

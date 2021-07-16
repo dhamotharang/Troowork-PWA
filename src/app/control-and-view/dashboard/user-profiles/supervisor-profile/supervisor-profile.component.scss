@@ -1,0 +1,28 @@
+table,
+tr,
+th,
+td {
+  border: none !important;
+  padding: 0.5rem !important;
+
+}
+
+.newHead {
+  color: black !important;
+  background: white !important;
+  text-align: center;
+  font-weight: bolder;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  width: 68%;
+  background-color: white;
+}

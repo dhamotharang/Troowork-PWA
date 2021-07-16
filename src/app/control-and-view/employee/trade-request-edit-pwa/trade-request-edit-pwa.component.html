@@ -78,7 +78,7 @@
             <tr>
               <td>
                 <div>
-                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deletePass(traderequestdetails.trade_requestID); "><b>Delete</b></button>
+                  <button type="button" style="text-align:center; width:98%" [disabled]="checkFlag" class="btn btn-danger" (click)="deletePass(traderequestdetails.trade_requestID); "><b>Delete</b></button>
 
                 </div>
               </td>
@@ -87,7 +87,7 @@
               <td colspan="7" class="no-data-available">No records found</td>
             </tr>
 
-            <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+            <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -105,7 +105,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </tbody>
         </table>
       </div>

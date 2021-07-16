@@ -21,17 +21,17 @@
           <td *ngIf="x.RequestStatus=='Approved'||x.RequestStatus=='Rejected'||x.RequestStatus=='Cancelled by employee'">
             <a [routerLink]="['PTORequestDetails', x.request_id]" class="btn btn-primary"><b>Details</b></a>&nbsp;&nbsp;
           </td>
-          <td *ngIf="x.RequestStatus=='Pending'">  
+          <td *ngIf="x.RequestStatus=='Pending'">
             <div class="btn-group">
-            <button [routerLink]="['PTORequestEdit', x.request_id]" [disabled]="checkFlag" class="btn btn-primary"><b>Edit</b></button>&nbsp;&nbsp;       
-            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deletePass(x.request_id); "><b>Delete</b></button>
+              <button [routerLink]="['PTORequestEdit', x.request_id]" [disabled]="checkFlag" class="btn btn-primary"><b>Edit</b></button>&nbsp;&nbsp;
+              <button class="btn btn-danger" [disabled]="checkFlag" (click)="deletePass(x.request_id); "><b>Delete</b></button>
             </div>
           </td>
         </tr>
         <tr *ngIf="requestdetails?.length == 0">
           <td colspan="5" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>

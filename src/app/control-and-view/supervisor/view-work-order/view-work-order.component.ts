@@ -8,6 +8,10 @@ import { ConectionSettings } from '../../../service/ConnectionSetting';
 const url = ConectionSettings.Url + '/upload_test';
 
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
+import { PromptdialogComponent, PromptDialogModel } from '../../dialog/promptdialog/promptdialog.component';
 @Component({
   selector: 'app-view-work-order',
   templateUrl: './view-work-order.component.html',
@@ -123,7 +127,7 @@ export class ViewWorkOrderComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join('-');
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -507,9 +511,19 @@ export class ViewWorkOrderComponent implements OnInit {
     this.countCancel1 = this.countCancel;
     if (!this.BarcodeValue && barcodeRequired === 1) {
       this.BarcodeValue = null;
-      alert("Barcode is not provided !");
-      this.checkFlag1 = false;
-      return;
+      // alert("Barcode is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Barcode is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag1 = false;
+        return;
+      });
     }
     else if (this.BarcodeValue && barcodeRequired === 1) {
       this.WorkOrderServiceService
@@ -528,9 +542,19 @@ export class ViewWorkOrderComponent implements OnInit {
     }
     if (!(this.fileName) && photoRequired === 1) {
       this.fileName = null;
-      alert("Photo is not provided !");
-      this.checkFlag1 = false;
-      return;
+      // alert("Photo is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Photo is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag1 = false;
+        return;
+      });
     }
     else if (this.fileName && photoRequired === 1) {
       this.WorkOrderServiceService
@@ -670,7 +694,15 @@ export class ViewWorkOrderComponent implements OnInit {
       console.log('ImageUpload:uploaded:', item, status, response);
       this.fileName = item.file.name;
 
-      alert('File uploaded successfully');
+      // alert('File uploaded successfully');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'File uploaded successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     };
   }
   // new filter pagination
@@ -750,8 +782,18 @@ export class ViewWorkOrderComponent implements OnInit {
     startDate = this.convert_DT(fromDate);
     endDate = this.convert_DT(toDate);
     if (endDate < startDate) {
-      alert("Please Check Dates !");
-      return;
+      // alert("Please Check Dates !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Check Dates !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
 
     this.pageNo = 1;
@@ -799,31 +841,43 @@ export class ViewWorkOrderComponent implements OnInit {
   // @Rodney starts
   canceltheWorkorder(woKey) {
 
+
     this.checkFlag1 = true;
-    var reason = prompt("Enter the reason for cancelling the workorder...");
+    const message = `Enter the reason for cancelling the workorder`;
+    const dialogData = new PromptDialogModel("CANCEL", message);
+    const dialogRef = this.dialog.open(PromptdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-    var t = new Date();
-    var t = new Date();
-    var y = t.getFullYear();
-    var m = t.getMonth();
-    var d = t.getDate();
-    var h = t.getHours();
-    var mi = t.getMinutes();
-    var s = t.getSeconds();
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      var reason = dialogResult;
 
-    var today_DT = this.convert_DT(new Date());
-    var p = "";
-    p = today_DT + " " + h + ":" + mi + ":" + s;
+      var t = new Date();
+      var t = new Date();
+      var y = t.getFullYear();
+      var m = t.getMonth();
+      var d = t.getDate();
+      var h = t.getHours();
+      var mi = t.getMinutes();
+      var s = t.getSeconds();
 
-    if ((reason.trim())) {
-      this.WorkOrderServiceService
-        .setCancelWorkorder(woKey, reason, today_DT, p, this.toServeremployeekey, this.OrganizationID)
-        .subscribe((data: any[]) => {
+      var today_DT = this.convert_DT(new Date());
+      var p = "";
+      p = today_DT + " " + h + ":" + mi + ":" + s;
 
-          this.checkFlag1 = false;
-          this.workorderViewsEmpByAll();
-        });
-    }
+      if ((reason.trim())) {
+        this.WorkOrderServiceService
+          .setCancelWorkorder(woKey, reason, today_DT, p, this.toServeremployeekey, this.OrganizationID)
+          .subscribe((data: any[]) => {
+
+            this.checkFlag1 = false;
+            this.workorderViewsEmpByAll();
+          });
+      }
+    });
+
+    // var reason = prompt("Enter the reason for cancelling the workorder...");
   }
 
   toggleVisibility(e) {
@@ -855,33 +909,62 @@ export class ViewWorkOrderComponent implements OnInit {
 
   deleteWorkOrdersPage() {
 
-    this.checkFlag1 = true;
-    var deleteWorkOrderList = [];
-    var deleteWorkOrderString;
 
-    if (this.checkValue.length > 0) {
-      for (var j = 0; j < this.checkValue.length; j++) {
-        if (this.checkValue[j] === true)
-          deleteWorkOrderList.push(this.workorderKey[j]);
-      }
-      deleteWorkOrderString = deleteWorkOrderList.join(',');
-    }
-    this.deleteWO = {
-      deleteWorkOrderString: deleteWorkOrderString,
-      employeekey: this.toServeremployeekey,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService//service for deleting workorders
-      .delete_WO(this.deleteWO)
-      .subscribe((data: any[]) => {
-        this.WorkorderDetTable.workorderCheckValue = false;
-        this.checkValue = [];
-        this.checkflag = false;
-        this.workorderKey = [];
-        alert("Work order deleted successfully");
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag1 = true;
+        var deleteWorkOrderList = [];
+        var deleteWorkOrderString;
+
+        if (this.checkValue.length > 0) {
+          for (var j = 0; j < this.checkValue.length; j++) {
+            if (this.checkValue[j] === true)
+              deleteWorkOrderList.push(this.workorderKey[j]);
+          }
+          deleteWorkOrderString = deleteWorkOrderList.join(',');
+        }
+        this.deleteWO = {
+          deleteWorkOrderString: deleteWorkOrderString,
+          employeekey: this.toServeremployeekey,
+          OrganizationID: this.OrganizationID
+        };
+        this.WorkOrderServiceService//service for deleting workorders
+          .delete_WO(this.deleteWO)
+          .subscribe((data: any[]) => {
+            this.WorkorderDetTable.workorderCheckValue = false;
+            this.checkValue = [];
+            this.checkflag = false;
+            this.workorderKey = [];
+            // alert("Work order deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work order deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag1 = false;
+              this.workorderViewsEmpByAll();
+            });
+          });
+      } else {
+        // this.checkflag = false;
         this.checkFlag1 = false;
-        this.workorderViewsEmpByAll();
-      });
+      }
+    });
+
+
+
+
   }
   //@Rodney ends
 }

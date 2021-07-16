@@ -4,6 +4,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-edit-employeedetails',
   templateUrl: './edit-employeedetails.component.html',
@@ -113,7 +117,7 @@ export class EditEmployeedetailsComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
-  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
 
@@ -141,59 +145,159 @@ export class EditEmployeedetailsComponent implements OnInit {
     var superKey;
 
     if (!(this.editempdtails.EmployeeNumber) || !EmployeeNumber.trim()) {
-      alert("Employee Number is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Employee Number is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.editempdtails.UserRoleTypeKey)) {
-      alert("User Role Type is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("User Role Type is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(FirstName) || !(FirstName.trim())) {
-      alert("First Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("First Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(LastName) || !(LastName.trim())) {
-      alert("Last Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Last Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.editempdtails.Gender)) {
       Gender = null;
     }
     if (!(this.editempdtails.EmployeeStatusKey)) {
-      alert("Employee Status is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Employee Status is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(PrimaryPhone) || !(PrimaryPhone.trim())) {
-      alert("Primary Phone is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Primary Phone is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if ((EmployeeStatusKey != 1) && !(this.remark)) {
-      alert("Remarks are not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Remarks are not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.HireDate)) {
-      alert("Hire Date is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Hire Date is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.editempdtails.JobTitleKey)) {
-      alert("Job Title is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Job Title is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.editempdtails.DepartmentKey)) {
-      alert("Department is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Department is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     var birthdt;
     var currentDate = this.convert_DT(new Date());
@@ -206,24 +310,54 @@ export class EditEmployeedetailsComponent implements OnInit {
     }
     var hiredt = this.convert_DT(this.HireDate);
     if (birthdt > currentDate) {
-      alert("Wrong Birth Date !");
-      this.checkFlag = false;
-      return;
+      // alert("Wrong Birth Date !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     // if (hiredt > currentDate) {
     //   alert("Wrong Hire Date !");
     //   return;
     // }
     if (hiredt < birthdt) {
-      alert("Hire Date must be greater than birth date !");
-      this.checkFlag = false;
-      return;
+      // alert("Hire Date must be greater than birth date !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(managerKey)) {
-      alert("Manager is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Manager is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization deleted successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!SupervisorKey && this.editempdtails.UserRoleTypeKey == 3) {
       SupervisorKey = this.employeekey;
@@ -332,7 +466,19 @@ export class EditEmployeedetailsComponent implements OnInit {
     if (this.empNum == this.editempdtails.EmployeeNumber) {
       this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, manKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, SupervisorKey, JobTitleKey, DepartmentKey, this.remark).subscribe((data: People[]) => {
         // start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idmaster_exception_weekend, idemployeegrouping
-        alert("Updated Successfully!");
+        // alert("Updated Successfully!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Organization deleted successfully... !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
         this.checkFlag = false;
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
         if (this.role == 'Manager') {
@@ -351,7 +497,19 @@ export class EditEmployeedetailsComponent implements OnInit {
           this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, manKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, SupervisorKey, JobTitleKey, DepartmentKey, this.remark)
             //  start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idmaster_exception_weekend, idemployeegrouping
             .subscribe((data: People[]) => {
-              alert("Updated Successfully!");
+              // alert("Updated Successfully!");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Organization deleted successfully... !',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                return;
+              });
               this.checkFlag = false;
               // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
               if (this.role == 'Manager') {
@@ -364,7 +522,19 @@ export class EditEmployeedetailsComponent implements OnInit {
             });
         }
         else {
-          alert("Employee Number already exist !");
+          // alert("Employee Number already exist !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Organization deleted successfully... !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
           this.checkFlag = false;
         }
       });
@@ -379,23 +549,49 @@ export class EditEmployeedetailsComponent implements OnInit {
 
   }
 
-  deleteEmployee() {
-    this.checkFlag = true;
-    this.PeopleServiceService
-      .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
-        this.checkFlag = false;
-        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-        }
-        // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-        }
-      });
-  }
+  // deleteEmployee() {
+  //   this.checkFlag = true;
+  //   this.PeopleServiceService
+  //     .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
+  //       this.checkFlag = false;
+  //       // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
+  //       if (this.role == 'Manager') {
+  //         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+  //       }
+  //       // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+  //       else if (this.role == 'Supervisor') {
+  //         this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+  //       }
+  //     });
+  // }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.PeopleServiceService
+          .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
+            this.checkFlag = false;
+            // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
+            if (this.role == 'Manager') {
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+            }
+            // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            else if (this.role == 'Supervisor') {
+              this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+            }
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
   ngOnInit() {
 

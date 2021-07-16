@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'privacypolicy',
     loadChildren: './control-and-view/privacy-policy-page/privacy-policy-page.module#PrivacyPolicyPageModule'
   },
+  {
+    path: 'loginscheduler',
+    loadChildren: './control-and-view/dashboard/login-scheduler/login-scheduler.module#LoginSchedulerModule' // varun- first page to load for lazy loading.... 
+  },
 ];
 
 

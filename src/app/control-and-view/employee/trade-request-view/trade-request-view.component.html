@@ -25,7 +25,7 @@
 
           <td *ngIf="x.StatusKey==1 && x.EmployeeKey==checkEmp">
             <a [routerLink]="['TradeRequestEdit', x.trade_requestID]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deletePass(x.trade_requestID); "><b>Delete</b></button>
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="deletePass(x.trade_requestID); "><b>Delete</b></button>
           </td>
           <td *ngIf="x.StatusKey==1 && x.EmployeeKey!=checkEmp">
             <a [routerLink]="['TradeRequestApprove', x.trade_requestID]" class="btn btn-primary"><b>Request Details</b></a>&nbsp;&nbsp;
@@ -39,7 +39,7 @@
           <td colspan="7" class="no-data-available">No records found</td>
         </tr>
 
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -57,7 +57,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>

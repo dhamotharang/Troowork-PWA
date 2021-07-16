@@ -13,6 +13,8 @@ import { interval, Subscription } from 'rxjs';//for calling function on regular 
 import { Router } from '@angular/router';
 import { DataService } from './data.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-dashboard-report',
@@ -180,7 +182,7 @@ export class DashboardReportComponent implements OnInit {
   todate: Date;
   WorkorderTypeKey = [];
   showElement: boolean;
-  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private _pieChartService: GooglePieChartService, private ds: DataService, private router: Router) {
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private _pieChartService: GooglePieChartService, private ds: DataService, private router: Router, private dialog: MatDialog) {
     this.dashboardreport = fb.group({
       EmployeeKey: ['', Validators.required],
       EmployeeText: ['', Validators.required]
@@ -355,7 +357,7 @@ export class DashboardReportComponent implements OnInit {
   dashboardreportbyfilter() {
     this.pievalues = [];
     this.reporttable = [];
-    if (this.ShiftType=='Shift') {
+    if (this.ShiftType == 'Shift') {
       this.todate = this.fromdate;
     }
     if (!this.EmployeeKey) {
@@ -378,8 +380,18 @@ export class DashboardReportComponent implements OnInit {
     }
 
     if (date2 && date1 > date2) {
-      alert("Please check your Start Date!");
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
 
     this.manager = this.employeekey;

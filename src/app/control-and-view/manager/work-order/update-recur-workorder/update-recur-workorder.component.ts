@@ -5,6 +5,9 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-update-recur-workorder',
   templateUrl: './update-recur-workorder.component.html',
@@ -127,7 +130,7 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
+  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.WO_Key = params.WorkorderKey);
   }
   // adding properties and methods that will be used by the igxDatePicker
@@ -594,18 +597,48 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   }
   //function for deleting workorder
   DeleteWO() {
-    this.checkFlag = true;
-    this.deleteWO = {
-      workorderkey: this.WO_Key,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService
-      .deleteCurrent_WO(this.deleteWO)
-      .subscribe((data: any[]) => {
-        alert("Work-order deleted successfully");
+
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        this.deleteWO = {
+          workorderkey: this.WO_Key,
+          OrganizationID: this.OrganizationID
+        };
+        this.WorkOrderServiceService
+          .deleteCurrent_WO(this.deleteWO)
+          .subscribe((data: any[]) => {
+            // alert("Work-order deleted successfully");
+
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work-order deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+            });
+          });
+
+      } else {
         this.checkFlag = false;
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
-      });
+      }
+    });
+
+
   }
   //function callen on radiobutton value change
   dailyrecurringChange() {
@@ -650,40 +683,120 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   }
   createWorkorder1() {//function called on updatewo without equipment
     if (!this.workordertypekey) {
-      alert("Please select work-order type!");
-      this.checkFlag = false;
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
-      this.checkFlag = false;
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
-      this.checkFlag = false;
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your start date!");
-      this.checkFlag = false;
+      // alert("Please check your start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
 
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
-        alert("Recurring Period is not provided !");
-        this.checkFlag = false;
+        // alert("Recurring Period is not provided !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Recurring Period is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       if (this.dailyrecurring == true) {
         if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!(this.dailyFrequency)) {
-          alert("Please select frequency !");
-          this.checkFlag = false;
+          // alert("Please select frequency !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please select frequency !!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
-              alert("Please enter time values !");
-              this.checkFlag = false;
+              // alert("Please enter time values !");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Please enter time values !!!',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+              });
             }
           }
           this.withoutequip_wo();
@@ -693,16 +806,46 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
-          alert("Please select atleast one day!");
-          this.checkFlag = false;
+          // alert("Please select atleast one day!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please select atleast one day!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.Time_weekly) {
-          alert("Please provide time!");
-          this.checkFlag = false;
+          // alert("Please provide time!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide time!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else {
           this.withoutequip_wo();
@@ -710,32 +853,82 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
-          alert("Select a radio option from monthly reccuring !");
-          this.checkFlag = false;
+          // alert("Select a radio option from monthly reccuring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Select a radio option from monthly reccuring !!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
           return;
         }
         if (this.monthlyreccradio1 == true) {
           if (!(this.day1) || !(this.month1)) {
-            alert("Provide entries for monthly recurring !");
-            return;
+            // alert("Provide entries for monthly recurring !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Provide entries for monthly recurring !!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
           }
 
         }
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
-            alert("Provide entries for monthly recurring !");
-            this.checkFlag = false;
-            return;
+            // alert("Provide entries for monthly recurring !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Provide entries for monthly recurring !!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return;
+            });
           }
 
         }
         if (!this.Time_monthly) {
-          alert("Please provide time!");
-          this.checkFlag = false;
+          // alert("Please provide time!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide time!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else {
           this.withoutequip_wo();
@@ -929,14 +1122,34 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     if (this.intervaltype == 'w' && diffDays < 7) {
-      alert("Please Select One week Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One week Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One week Date Range!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
-      alert("Please Select One month Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One month Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One month Date Range!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (this.isRecurring == false) {
@@ -966,16 +1179,36 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         this.workTime = this.Time_weekly.getHours() + ':' + this.Time_weekly.getMinutes();
       }
       else {
-        alert("Please Enter Time!");
-        this.checkFlag = false;
+        // alert("Please Enter Time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please Enter Time!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
     } else if (this.isRecurring == true && this.monthlyrecurring == true) {
       if (this.Time_monthly) {
         this.workTime = this.Time_monthly.getHours() + ':' + this.Time_monthly.getMinutes();
       }
       else {
-        alert("Please Enter Time!");
-        this.checkFlag = false;
+        // alert("Please Enter Time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please Enter Time!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
@@ -1057,53 +1290,153 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       this.WorkOrderServiceService//service for updating existing workorder
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
-          alert("Work-order updated successfully");
-          this.checkFlag = false;
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          // alert("Work-order updated successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order updated successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          });
         });
     });
   }
   //function called on updatewo with equipment
   createWorkorder2() {
     if (!this.workordertypekey) {
-      alert("Please select work-order type!");
-      this.checkFlag = false;
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
-      this.checkFlag = false;
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
-      this.checkFlag = false;
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
-      alert("Please select equipment type!");
-      this.checkFlag = false;
+      // alert("Please select equipment type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select equipment type!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your start date!");
-      this.checkFlag = false;
+      // alert("Please check your start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
 
     }
     else if (this.isRecurring == true) {
       if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
-        alert("Recurring Period is not provided !");
-        this.checkFlag = false;
+        // alert("Recurring Period is not provided !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Recurring Period is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       if (this.dailyrecurring == true) {
         if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!(this.dailyFrequency)) {
-          alert("Please select frequency !");
-          this.checkFlag = false;
+          // alert("Please select frequency !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please select frequency !!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         } else if (this.dailyFrequency) {
           for (var i = 0; i < this.dailyFrequency; i++) {
             if (!(this.timetable.times[i])) {
-              alert("Please enter time values !");
-              this.checkFlag = false;
+              // alert("Please enter time values !");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Please enter time values !!!',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+              });
             }
           }
           this.withequip_wo();
@@ -1113,16 +1446,46 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
-          alert("Please select atleast one day!");
-          this.checkFlag = false;
+          // alert("Please select atleast one day!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please select atleast one day!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.Time_weekly) {
-          alert("Please provide time!");
-          this.checkFlag = false;
+          // alert("Please provide time!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide time!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else {
           this.withequip_wo();
@@ -1130,33 +1493,83 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       }
       else if (this.monthlyrecurring == true) {
         if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
-          alert("Select a radio option from monthly reccuring !");
-          this.checkFlag = false;
-          return;
+          // alert("Select a radio option from monthly reccuring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Select a radio option from monthly reccuring !!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
         if (this.monthlyreccradio1 == true) {
           if (!(this.day1) || !(this.month1)) {
-            alert("Provide entries for monthly recurring !");
-            this.checkFlag = false;
-            return;
+            // alert("Provide entries for monthly recurring !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Provide entries for monthly recurring !!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return;
+            });
           }
 
         }
         if (this.monthlyreccradio2 == true) {
           if (!(this.day2) || !(this.pos2) || !(this.month2)) {
-            alert("Provide entries for monthly recurring !");
-            this.checkFlag = false;
-            return;
+            // alert("Provide entries for monthly recurring !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Provide entries for monthly recurring !!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return;
+            });
           }
 
         }
         if (!this.Time_monthly) {
-          alert("Please provide time!");
-          this.checkFlag = false;
+          // alert("Please provide time!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide time!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (!this.WorkorderEndDate) {
-          alert("Please provide end date!");
-          this.checkFlag = false;
+          // alert("Please provide end date!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Please provide end date!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else {
           this.withequip_wo();
@@ -1351,14 +1764,34 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     if (this.intervaltype == 'w' && diffDays < 7) {
-      alert("Please Select One week Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One week Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One week Date Range!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
-      alert("Please Select One month Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One month Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One month Date Range!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.isRecurring == false) {
       if (this.timeValue) {
@@ -1466,9 +1899,19 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       this.WorkOrderServiceService//service for deleting existing workorder
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
-          alert("Work-order updated successfully");
-          this.checkFlag = false;
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          // alert("Work-order updated successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order updated successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+          });
         });
     });
   }

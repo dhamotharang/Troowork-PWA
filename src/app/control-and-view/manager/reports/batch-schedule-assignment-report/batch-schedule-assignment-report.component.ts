@@ -6,6 +6,8 @@ import { ExcelserviceService } from '../../../../service/excelservice.service';
 import * as FileSaver from 'file-saver';//for excel
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-batch-schedule-assignment-report',
   templateUrl: './batch-schedule-assignment-report.component.html',
@@ -54,14 +56,14 @@ export class BatchScheduleAssignmentReportComponent implements OnInit {
     // Building:'',	Floor:'',	Zone:'',	Room:'',	FloorType:'',	RoomType:'',	Minutes:'',	Frequency:'',	Monday:'',	Tuesday:'',	Wednesday:'',	Thursday:'',	Friday:'',	Saturday:'',	Sunday:''
   }
   ];
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.batchschedule = fb.group({
       BatchScheduleNameKey: ['', Validators.required],
       ScheduleName: ['', Validators.required]
     });
   }
   ngOnInit() {
-    this.BatchScheduleNameKey="";
+    this.BatchScheduleNameKey = "";
     // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -77,89 +79,96 @@ export class BatchScheduleAssignmentReportComponent implements OnInit {
       });
   }
   getBatchSchedule(Workorder_ScheduleKey) {
-    if(!Workorder_ScheduleKey)
-    {
-      alert("Please select schedule name");
-    }
- else
- {
-    this.loading = true;
-    this.ReportServiceService
-      .getScheduleAssignReport(Workorder_ScheduleKey, this.employeekey, this.OrganizationID)
-      .subscribe((data: Reports[]) => {
-        this.reportarray = data;
-        this.loading = false;
-        this.totalMonTime = 0;
-        this.totalTuesTime = 0;
-        this.totalWedTime = 0;
-        this.totalThuTime = 0;
-        this.totalFriTime = 0;
-        this.totalSatTime = 0;
-        this.totalSunTime = 0;
-        if (this.reportarray) {
-          this.workorderNotes = this.reportarray[0].WorkorderNotes;
-        }
-
-        for (var i = 0; i < this.reportarray.length; i++) {
-          var count = [];
-          if (this.reportarray[i].Mon == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
+    if (!Workorder_ScheduleKey) {
+      // alert("Please select schedule name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select schedule name!',
+          buttonText: {
+            cancel: 'Done'
           }
-          if (this.reportarray[i].Tue == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-          if (this.reportarray[i].Wed == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-          if (this.reportarray[i].Thu == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-          if (this.reportarray[i].Fri == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-          if (this.reportarray[i].Sat == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-          if (this.reportarray[i].Sun == 'true') {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
-            }
-            else {
-              this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
-            }
-          }
-        }
+        },
       });
+
+    }
+    else {
+      this.loading = true;
+      this.ReportServiceService
+        .getScheduleAssignReport(Workorder_ScheduleKey, this.employeekey, this.OrganizationID)
+        .subscribe((data: Reports[]) => {
+          this.reportarray = data;
+          this.loading = false;
+          this.totalMonTime = 0;
+          this.totalTuesTime = 0;
+          this.totalWedTime = 0;
+          this.totalThuTime = 0;
+          this.totalFriTime = 0;
+          this.totalSatTime = 0;
+          this.totalSunTime = 0;
+          if (this.reportarray) {
+            this.workorderNotes = this.reportarray[0].WorkorderNotes;
+          }
+
+          for (var i = 0; i < this.reportarray.length; i++) {
+            var count = [];
+            if (this.reportarray[i].Mon == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Tue == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Wed == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Thu == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Fri == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Sat == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+            if (this.reportarray[i].Sun == 'true') {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Frequency);
+              }
+              else {
+                this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].Frequency;
+              }
+            }
+          }
+        });
     }
   }
   exportToExcel(): void {//service for exporting to excel
@@ -240,8 +249,8 @@ export class BatchScheduleAssignmentReportComponent implements OnInit {
     // this.excelService.exportAsExcelFile(this.excelarray,'BatchscheduleAssignment_Report');
     var blob = new Blob([document.getElementById('exportable').innerHTML], {//converting html div content to excel
       type: EXCEL_TYPE
-  });
-  FileSaver.saveAs(blob, "BatchscheduleAssignment_Report.xls");
+    });
+    FileSaver.saveAs(blob, "BatchscheduleAssignment_Report.xls");
   }
 
 }

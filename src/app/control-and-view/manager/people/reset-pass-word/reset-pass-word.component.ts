@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-reset-pass-word',
@@ -42,16 +45,26 @@ export class ResetPassWordComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmpKey);
   }
 
   resetUserPassword(username, password, userLoginId) {
     this.checkFlag = true;
     if (!(username) || !username.trim()) {
-      alert("Please Enter User Name!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Enter User Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Please Enter User Name!!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
       if (username) {
@@ -79,7 +92,15 @@ export class ResetPassWordComponent implements OnInit {
           this.userMail = data[0].newmail;
 
           if (this.userMail == null) {
-            alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            // alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: "Password Changed Successfully! Mail not send , Mail-Id not found !!!",
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
           } else {
             var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
 
@@ -101,7 +122,7 @@ export class ResetPassWordComponent implements OnInit {
   }
   ngOnInit() {
 
-      // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

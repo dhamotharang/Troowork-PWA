@@ -16,16 +16,16 @@ const routes: Routes = [
     path: '',
     component: SupeadminChangePasswordComponent
   }
-  
+
 ];
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,    
+    HttpClientModule,
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
-    IgxDatePickerModule, 
+    IgxDatePickerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [SupeadminChangePasswordComponent]

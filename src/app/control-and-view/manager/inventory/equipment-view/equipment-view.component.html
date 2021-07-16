@@ -4,7 +4,7 @@
   <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
 
   <h4 class="refer">EQUIPMENTS </h4>
- 
+
   <div style="text-align:center">
     <a [routerLink]="['EquipmentCreate']" class="btn btn-success">Create New Equipment
     </a>
@@ -33,13 +33,13 @@
           <td>{{ x.EquipmentDescription }}</td>
           <td>
             <a [routerLink]="['EquipmentEdit',x.EquipmentKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deleteEquipPass(x.EquipmentKey); "><b>Delete</b></button>
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="deleteEquipPass(x.EquipmentKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="equipments?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -57,7 +57,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
     <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;

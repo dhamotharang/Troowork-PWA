@@ -3,6 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 import { InspectionService } from '../../../../service/inspection.service';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-edit-feedback-template',
   templateUrl: './edit-feedback-template.component.html',
@@ -42,7 +44,7 @@ export class EditFeedbackTemplateComponent implements OnInit {
   temparray = [];
   insertObj;
 
-  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.tempID = params.idreviewtemplate);
   }
 
@@ -92,7 +94,15 @@ export class EditFeedbackTemplateComponent implements OnInit {
             });
         });
     } else {
-      alert("Atleast one question is needed in the template.");
+      // alert("Atleast one question is needed in the template.");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Atleast one question is needed in the template. !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return false;
     }
   }
@@ -117,7 +127,15 @@ export class EditFeedbackTemplateComponent implements OnInit {
             temp_Question = temp_Question.trim();
           }
           else {
-            alert("Question  is not provided !");
+            // alert("Question  is not provided !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Question  is not provided !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             return;
           }
         }
@@ -141,7 +159,15 @@ export class EditFeedbackTemplateComponent implements OnInit {
       }
       else {
 
-        alert("Question  is not provided !");
+        // alert("Question  is not provided !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Question  is not provided !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         return;
       }
 
@@ -158,7 +184,15 @@ export class EditFeedbackTemplateComponent implements OnInit {
         });
     }
     if (!this.TemplateEditDetails.TemplateName && !this.TemplateEditDetails.TemplateName.trim()) {
-      alert("Template Name Not provided !");
+      // alert("Template Name Not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Template Name Not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (this.TemplateEditDetails.TemplateName) {
@@ -166,8 +200,18 @@ export class EditFeedbackTemplateComponent implements OnInit {
     }
     this.inspectionService
       .updateFeedbackTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey, this.toServeremployeekey).subscribe(() => {
-        alert("Successfully Updated");
-        this._location.back();
+        // alert("Successfully Updated");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Successfully Updated',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this._location.back();
+        });
       });
   }
   goBack() {

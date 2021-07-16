@@ -3,6 +3,10 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-floor-view',
@@ -46,7 +50,7 @@ export class FloorViewComponent implements OnInit {
   //validation starts ..... @pooja
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -104,32 +108,77 @@ export class FloorViewComponent implements OnInit {
   }
 
 
-  deleteFloor() {
-    this.checkFlag = true;
-    this.inventoryService
-      .DeleteFloor(this.delete_faciKey, this.delete_floorKey, this.employeekey, this.OrganizationID).subscribe(res => {
-        alert("Floor deleted successfully");
-        this.checkFlag = false;
-        this.loading = true;
-        this.inventoryService
-          .getFloors(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inventory[]) => {
-            this.floor = data;
-            this.loading = false;
-            if (this.floor[0].totalItems > this.itemsPerPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.floor[0].totalItems <= this.itemsPerPage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
-      });
-  }
+  // deleteFloor() {
+  //   this.checkFlag = true;
+  //   this.inventoryService
+  //     .DeleteFloor(this.delete_faciKey, this.delete_floorKey, this.employeekey, this.OrganizationID).subscribe(res => {
+  //       alert("Floor deleted successfully");
+  //       this.checkFlag = false;
+  //       this.loading = true;
+  //       this.inventoryService
+  //         .getFloors(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inventory[]) => {
+  //           this.floor = data;
+  //           this.loading = false;
+  //           if (this.floor[0].totalItems > this.itemsPerPage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.floor[0].totalItems <= this.itemsPerPage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+  //     });
+  // }
   deleteFloorPass(FacilityKey, FloorKey) {
     this.delete_faciKey = FacilityKey;
     this.delete_floorKey = FloorKey;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        this.inventoryService
+          .DeleteFloor(this.delete_faciKey, this.delete_floorKey, this.employeekey, this.OrganizationID).subscribe(res => {
+            // alert("Floor deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Floor deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.loading = true;
+              this.inventoryService
+                .getFloors(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+                .subscribe((data: Inventory[]) => {
+                  this.floor = data;
+                  this.loading = false;
+                  if (this.floor[0].totalItems > this.itemsPerPage) {
+                    this.showHide2 = true;
+                    this.showHide1 = false;
+                  }
+                  else if (this.floor[0].totalItems <= this.itemsPerPage) {
+                    this.showHide2 = false;
+                    this.showHide1 = false;
+                  }
+                });
+            });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
 
   searchFloor(SearchValue) {
@@ -167,7 +216,7 @@ export class FloorViewComponent implements OnInit {
 
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

@@ -5,6 +5,9 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-trade-request-approve-pwa',
@@ -93,7 +96,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.traderequestDetails$ = params.requestID);
   }
 
@@ -106,7 +109,7 @@ export class TradeRequestApprovePWAComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-        this.statuscurrentdate = this.convert_DT(new Date());
+    this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
     this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestdetailsbyID(this.traderequestDetails$)
@@ -143,46 +146,106 @@ export class TradeRequestApprovePWAComponent implements OnInit {
 
     this.checkFlag = true;
     if (!(this.traderequestdetailsbyID.Status)) {
-      alert('Status is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Status is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Status is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if ((this.traderequestdetailsbyID.Status) == "Approved") {
 
       if (!(this.traderequestdetailsbyID.ApprovedStartDate)) {
-        alert('Approved Start Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved Start Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved Start Date is not provided !!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (!(this.traderequestdetailsbyID.ApprovedEndDate)) {
-        alert('Approved End Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved End Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved End Date is not provided !!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
-        alert("Approved start date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved start date must be between requested dates!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved start date must be between requested dates!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.traderequestdetailsbyID.ApprovedStartDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedStartDate);
       }
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
-        alert("Approved end date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved end date must be between requested dates!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved end date must be between requested dates!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.traderequestdetailsbyID.ApprovedEndDate = this.convert_DT(this.traderequestdetailsbyID.ApprovedEndDate);
       }
     } else if ((this.traderequestdetailsbyID.Status) == "Rejected") {
       if (!(this.traderequestdetailsbyID.OtherEmployeeComments)) {
-        alert('Comments should be provided!');
-        this.checkFlag = false;
-        return;
+        // alert('Comments should be provided!');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Comments should be provided!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
       this.traderequestdetailsbyID.ApprovedStartDate = null;
       this.traderequestdetailsbyID.ApprovedEndDate = null;
@@ -198,8 +261,18 @@ export class TradeRequestApprovePWAComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.details = data[0];
         this.checkFlag = false;
-        alert("Request updated Successfully");
-        this.goBack();
+        // alert("Request updated Successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Request updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.goBack();
+        });
 
         // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequestPWA'] } }]);
       });

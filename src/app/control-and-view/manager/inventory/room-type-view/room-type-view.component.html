@@ -2,7 +2,7 @@
 
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
- 
+
   <h4 class="refer"> ROOM TYPE </h4>
 
   <div style="text-align:center">
@@ -26,13 +26,13 @@
           <td>{{ x.RoomType }}</td>
           <td>
             <a [routerLink]="['roomTypeEdit', x.RoomTypeKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deleteRoomTypePass(x.RoomTypeKey); "><b>Delete</b></button>
+            <button [disabled]="checkFlag" class="btn btn-danger" (click)="deleteRoomTypePass(x.RoomTypeKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="roomTypes?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -50,7 +50,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
     <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;

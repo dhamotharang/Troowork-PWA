@@ -4,6 +4,9 @@ import { DatepickerOptions } from "ng2-datepicker";
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: "app-trade-request-details",
   templateUrl: "./trade-request-details.component.html",
@@ -73,7 +76,7 @@ export class TradeRequestDetailsComponent implements OnInit {
   constructor(
     public PeopleServiceService: PeopleServiceService,
     private router: Router,
-    private route: ActivatedRoute, private dst: DataServiceTokenStorageService
+    private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog
   ) {
     this.route.params.subscribe(
       (params) => (this.traderequestID$ = params.requestID)
@@ -97,7 +100,7 @@ export class TradeRequestDetailsComponent implements OnInit {
     this.name = this.dst.getName();
     this.toServeremployeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-    
+
     this.editflag = false;
     this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestInfoforEmployee(
@@ -123,12 +126,22 @@ export class TradeRequestDetailsComponent implements OnInit {
     this.checkFlag = true;
     this.PeopleServiceService.requestForTradeCancel(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
       this.checkFlag = false;
-      alert("Cancelling the trade requested successfully");
-      if (this.role == 'Employee') {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
-      } else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
-      }
+      // alert("Cancelling the trade requested successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Cancelling the trade requested successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (this.role == 'Employee') {
+          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
+        } else if (this.role == 'Supervisor') {
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
+        }
+      });
     });
   }
 
@@ -136,12 +149,22 @@ export class TradeRequestDetailsComponent implements OnInit {
     this.checkFlag = true;
     this.PeopleServiceService.tradeCancelApprove(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
       this.checkFlag = false;
-      alert("Trade request cancelled successfully");
-      if (this.role == 'Employee') {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
-      } else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
-      }
+      // alert("Trade request cancelled successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Trade request cancelled successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (this.role == 'Employee') {
+          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
+        } else if (this.role == 'Supervisor') {
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
+        }
+      });
     });
   }
 

@@ -4,6 +4,9 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { Router, ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 
 @Component({
   selector: 'app-room-edit',
@@ -52,7 +55,7 @@ export class RoomEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.roomKey$ = params.RoomKey);
   }
 
@@ -110,28 +113,92 @@ export class RoomEditComponent implements OnInit {
   updateRoom(RoomName, SquareFoot, Barcode) {
     this.checkFlag = true;
     if (!this.facKey) {
-      alert("Building name is not provided !");
+      // alert("Building name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Building name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!this.floorKey) {
-      alert("Floor name is not provided!");
+      // alert("Floor name is not provided!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Floor name is not provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!this.floorTypeKey) {
-      alert("FloorType is not provided !");
+      // alert("FloorType is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'FloorType is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!this.zoneKey) {
-      alert("Zone name is not provided !");
+      // alert("Zone name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Zone name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!this.roomTypeKey) {
-      alert("RoomType is not provided !");
+      // alert("RoomType is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'RoomType is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!RoomName || !RoomName.trim()) {
-      alert("Room name is not provided !");
+      // alert("Room name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Room name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!SquareFoot || !String(SquareFoot).trim()) {
-      alert("Square foot is not provided !");
+      // alert("Square foot is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Square foot is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!Barcode || !Barcode.trim()) {
-      alert("Barcode is not provided !");
+      // alert("Barcode is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Barcode is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else {
@@ -157,7 +224,15 @@ export class RoomEditComponent implements OnInit {
         .subscribe((data: any[]) => {
           this.unqBar = data;
           if (this.unqBar.Barcode != 0) {
-            alert("Barcode already exists !");
+            // alert("Barcode already exists !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Barcode already exists !!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             this.checkFlag = false;
           }
           else if (this.temp_room != RoomName) {
@@ -165,15 +240,33 @@ export class RoomEditComponent implements OnInit {
               .checkRoomName(this.facKey, this.floorKey, RoomName, this.OrganizationID)
               .subscribe((data: Inventory[]) => {
                 if (data[0].count > 0) {
-                  alert("Room Name already exists !");
+                  // alert("Room Name already exists !");
+                  const dialogRef = this.dialog.open(AlertdialogComponent, {
+                    data: {
+                      message: 'Room Name already exists !!',
+                      buttonText: {
+                        cancel: 'Done'
+                      }
+                    },
+                  });
                   this.checkFlag = false;
                 }
                 else {
                   this.inventoryService.updateRoom(this.update_Room)
                     .subscribe(res => {
-                      alert("Room updated successfully");
-                      this.checkFlag = false;
-                      this._location.back();
+                      // alert("Room updated successfully");
+                      const dialogRef = this.dialog.open(AlertdialogComponent, {
+                        data: {
+                          message: 'Room updated successfully',
+                          buttonText: {
+                            cancel: 'Done'
+                          }
+                        },
+                      });
+                      dialogRef.afterClosed().subscribe(dialogResult => {
+                        this.checkFlag = false;
+                        this._location.back();
+                      });
                     });
                 }
               });
@@ -181,9 +274,19 @@ export class RoomEditComponent implements OnInit {
           else {
             this.inventoryService.updateRoom(this.update_Room)
               .subscribe(res => {
-                alert("Room updated successfully");
-                this.checkFlag = false;
-                this._location.back();
+                // alert("Room updated successfully");
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Room updated successfully',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
+                dialogRef.afterClosed().subscribe(dialogResult => {
+                  this.checkFlag = false;
+                  this._location.back();
+                });
               });
           }
         });
@@ -193,7 +296,7 @@ export class RoomEditComponent implements OnInit {
 
   ngOnInit() {
 
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

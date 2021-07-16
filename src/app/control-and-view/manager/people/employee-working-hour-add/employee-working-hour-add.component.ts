@@ -5,6 +5,10 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-employee-working-hour-add',
   templateUrl: './employee-working-hour-add.component.html',
@@ -24,7 +28,7 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
   StartTime;
   EndTime;
   checkFlag;
-  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
   url_base64_decode(str) {
@@ -88,24 +92,64 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
     this.checkFlag = true;
     var cuDate = new Date();
     if (!this.date) {
-      alert("Date not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Date not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Date not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.convert_DT(this.date) < this.convert_DT(cuDate)) {
-      alert("please select current date or higher !");
-      this.checkFlag = false;
-      return;
+      // alert("Please select current date or higher !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select current date or higher !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.StartTime) {
-      alert("Start Time not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Start Time not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.EndTime) {
-      alert("End Time not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("End Time not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     var q = this.EndTime.getHours();
@@ -126,9 +170,19 @@ export class EmployeeWorkingHourAddComponent implements OnInit {
     this.peopleServiceService.createEmpWorkingHour(obj)
       .subscribe((data: any[]) => {
         this.empList = data;
-        alert("Working Hour has been created !");
-        this.checkFlag = false;
-        this._location.back();
+        // alert("Working Hour has been created !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Working Hour has been created',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this._location.back();
+        });
       });
   }
   goBack() {

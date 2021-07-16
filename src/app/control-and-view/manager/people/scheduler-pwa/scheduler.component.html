@@ -1,0 +1,252 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 30rem;width: 20%" />
+<div *ngIf="!loading">
+    <div style="margin-top:-1px;margin-bottom:2%;">
+        <div class="row col-md-12 ">
+            <h4 style="margin-left: 40%;padding-bottom: 1rem">VIEW EMPLOYEE DETAILS</h4>
+        </div>
+        <div class="row bg-info col-md-12" style="padding-top:0%;padding-bottom:0%;margin-left: 0%;">
+            <div class="form-group col-md-3">
+                <label>Date*</label>
+                <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="date" style="z-index:1" (ngModelChange)="selecteddate();empCalendarActivities();"></ng-datepicker>
+            </div>
+            <div class="form-group col-md-3">
+                <label>View Range*</label>
+                <select [(ngModel)]="Range" (change)='ViewType();empCalendarActivities();' class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value" style="background-color: #d4f4ff;">
+                    <option selected value="Week">Week</option>
+                    <option value="Month">Month</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label>Search Employee:</label>
+                <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList" [(ngModel)]="filter.text" [settings]="dropdownSettings1">
+                </ng-multiselect-dropdown>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
+                &nbsp;
+                <button (click)="clearFilter()">Clear</button>
+                &nbsp;
+                <button (click)="applyFilter()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="width:100vw;overflow:auto;height:100vh;">
+        <daypilot-scheduler [config]="config" [events]="events" #scheduler></daypilot-scheduler>
+    </div>
+    <div *ngIf="OrganizationID==223">
+
+        <div class="row col-md-12 ">
+            <div class="form-group col-md-3">
+                <label>Date</label>
+                <ng-datepicker [options]="options1" position="bottom-right" [(ngModel)]="date1" style="z-index:1" (ngModelChange)="selecteddate1();empCalendarActivities1();"></ng-datepicker>
+            </div>
+        </div>
+
+        <table class="table table-hover table-responsive table-bordered table" style="margin-left: 2%;display: inline-table;margin-top: 2%">
+            <thead class="tableHead">
+
+                <th> </th>
+                <th *ngFor="let z of dateList">
+                    {{z.date1}}
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of amCountList">
+                    <td> <b>{{x.AmType}}</b> </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date1count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date1count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date2count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date2count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date3count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date3count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date4count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date4count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date5count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date5count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date6count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date6count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date7count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date7count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date8count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date8count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date9count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date9count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date10count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date10count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date11count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date11count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date12count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date12count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date13count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date13count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total AM Staff' "> <b> {{x.date14count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total AM Staff' "> {{x.date14count}} </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="OrganizationID==223">
+        <table class="table table-hover table-responsive table-bordered table" style="margin-left: 2%;display: inline-table;margin-top: 2%">
+            <thead class="tableHead">
+
+                <th> </th>
+                <th *ngFor="let z of dateList">
+                    {{z.date1}}
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let x of pmCountList">
+                    <td> <b>{{x.AmType}}</b> </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date1count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date1count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date2count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date2count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date3count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date3count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date4count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date4count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date5count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date5count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date6count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date6count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date7count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date7count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date8count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date8count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date9count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date9count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date10count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date10count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date11count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date11count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date12count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date12count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date13count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date13count}} </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span *ngIf="x.AmType === 'Total PM Staff' "> <b> {{x.date14count}} </b></span>
+                        <span *ngIf="x.AmType !== 'Total PM Staff' "> {{x.date14count}} </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- <create-dialog #create (close)="createClosed($event)"></create-dialog> -->
+<daypilot-modal #modal (close)="closed($event)">
+    <div class="center" style="text-align: center;">
+        <h1 style="margin-bottom: 8%;margin-top: 5%;">Create Event</h1>
+        <div class="row col-md-12">
+            <div class="col-md-6">
+                <span><label for="scheduling">Assignment Name: </label></span>
+            </div>
+            <div class="col-md-6">
+                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKey" (change)="setScheduleName()">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let f of scheduleNameList" [value]="f.BatchScheduleNameKey">
+                        {{f.ScheduleName}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6" style="margin-top: 3%;">
+                <label>Date*</label>
+            </div>
+            <div class="col-md-6" style="margin-top: 3%;margin-bottom: 3%;">
+                <ng-datepicker [options]="options2" position="bottom-right" [(ngModel)]="Date"></ng-datepicker>
+            </div>
+        </div>
+        <!-- </div> -->
+        <button class="btn btn-success" (click)='createSubmit()'>submit</button> 
+        <button class="btn btn-warning" (click)='createCancel()'>close</button>
+    </div>
+</daypilot-modal>
+<!-- <create-dialog #create (close)="createClosed($event)"></create-dialog> -->
+
+<!-- <edit-dialog #edit (close)="editClosed($event)"></edit-dialog> -->
+<daypilot-modal #modal1 (close)="closed($event)">
+    <div class="center" style="text-align: center;">
+        <h1 style="margin-bottom: 8%;margin-top: 5%;">Edit Event</h1>
+        <div class="row col-md-12">
+            <div class="col-md-6">
+                <span><label for="scheduling">Assignment Name: </label></span>
+            </div>
+            <div class="col-md-6">
+                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKeyEdit" (change)="setScheduleNameEdit()">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let f of scheduleNameList" [value]="f.BatchScheduleNameKey">
+                        {{f.ScheduleName}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6" style="margin-top: 3%;">
+
+                <label>Date*</label>
+            </div>
+            <div class="col-md-6" style="margin-top: 3%;margin-bottom: 3%;">
+                <ng-datepicker [options]="options2" position="bottom-right" [(ngModel)]="DateEdit" (ngModelChange)="dateChangeNeeded()"></ng-datepicker><br><br>
+            </div>
+        </div>
+        <button class="btn btn-success" (click)='submitEdit()'>Submit</button>
+        <button class="btn btn-warning" (click)='cancel()'>close</button>
+        <button class="btn btn-danger" (click)='delete()'>Delete</button>
+    </div>
+</daypilot-modal>
+<!-- <edit-dialog #edit (close)="editClosed($event)"></edit-dialog> -->

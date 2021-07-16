@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { InspectionService } from '../../../../service/inspection.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-create-feedback-template',
@@ -40,7 +42,7 @@ export class CreateFeedbackTemplateComponent implements OnInit {
   fieldArray: Array<any> = [];
   newAttribute: any = {};
 
-  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addFieldValue() {
     this.fieldArray.push('')
@@ -54,7 +56,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
 
     var ScoringTypeKey;
     if (TempName && !TempName.trim()) {
-      alert("Please Enter Feedback Template Name!");
+      // alert("Please Enter Feedback Template Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Feedback Template Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (ScoreTypeKey) {
@@ -62,7 +72,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
     }
     else {
       ScoringTypeKey = null;
-      alert("Scoring Type is not provided !");
+      // alert("Scoring Type is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Scoring Type is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (TempName) {
@@ -70,7 +88,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
     }
     else {
       TempName = null;
-      alert("Feedback Template Name is not provided !");
+      // alert("Feedback Template Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Feedback Template Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     var arr = [];
@@ -78,7 +104,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
     for (var i = 0; i < this.fieldArray.length; i++) {
       if (!(this.fieldArray[i])) {
         var index = i + 1;
-        alert("Question " + index + " is not provided !");
+        // alert("Question " + index + " is not provided !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Question " + index + " is not provided !",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         return;
       }
       if (this.fieldArray[i]) {
@@ -95,11 +129,27 @@ export class CreateFeedbackTemplateComponent implements OnInit {
     QustArry = TempQustArry.join(',');
     if (QustArry === '') {
       QustArry = null;
-      alert(" Questions are not provided !");
+      // alert(" Questions are not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Questions are not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (QustArry && !QustArry.trim()) {
-      alert("Please Enter Question!");
+      // alert("Please Enter Question!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Question!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     this.inspectionService.checkforFeedbackTemplate(TempName, this.OrganizationID).subscribe(res => {
@@ -108,7 +158,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
           this.ScoreTypeKey = "";
           this.TempName = null;
           this.fieldArray = [];
-          alert("Feedback Template Added !");
+          // alert("Feedback Template Added !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Feedback Template Added !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.addFieldValue();
         });
       }
@@ -117,7 +175,15 @@ export class CreateFeedbackTemplateComponent implements OnInit {
         this.ScoreTypeKey = "";
         this.TempName = null;
         this.fieldArray = [];
-        alert("Template Name already exists !");
+        // alert("Template Name already exists !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Template Name already exists !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.addFieldValue();
       }
     });

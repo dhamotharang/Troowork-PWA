@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../service/ConnectionSetting';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-reset-passwords',
   templateUrl: './reset-passwords.component.html',
@@ -41,14 +43,22 @@ export class ResetPasswordsComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmpKey);
   }
 
   resetUserPassword(username, password, userLoginId) {
     this.checkFlag = true;
     if (!(username)) {
-      alert("Please Enter User Name!");
+      // alert("Please Enter User Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter User Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -69,7 +79,15 @@ export class ResetPasswordsComponent implements OnInit {
           this.userMail = data[0].newmail;
 
           if (this.userMail == null) {
-            alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            // alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Password Changed Successfully! Mail not send , Mail-Id not found !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
           } else {
             var message = 'Your Username is ' + username + ' and ' + 'Your Password is ' + password + "                https://troowork.azurewebsites.net";
             const obj = {

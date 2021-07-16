@@ -3,6 +3,9 @@ import { workorder } from '../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../service/work-order-service.service';
 import { Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-create-quick-work-order',
@@ -63,7 +66,7 @@ export class CreateQuickWorkOrderComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   convert_DT(str) {
     var date = new Date(str),
@@ -82,15 +85,45 @@ export class CreateQuickWorkOrderComponent implements OnInit {
   saveQuickWorkOrder() {
     this.checkFlag = true;
     if (!(this.EmployeeKey)) {
-      alert("please select employee!");
-      this.checkFlag = false;
+      // alert("please select employee!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select employee!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (!(this.FacilityKey)) {
-      alert("please select building!");
-      this.checkFlag = false;
+      // alert("please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderNotes) || !(this.WorkorderNotes.trim())) {
-      alert("please enter work-order notes!");
-      this.checkFlag = false;
+      // alert("please enter work-order notes!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order notes!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else {
 
       this.wot = - 1;
@@ -162,8 +195,18 @@ export class CreateQuickWorkOrderComponent implements OnInit {
         .addQuickWorkOrder(this.createworkorder)
         .subscribe(res => {
           this.checkFlag = false;
-          alert("work-order created successfully");
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
+          // alert("work-order created successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order created successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['viewWorkOrderSupervisor'] } }]);
+          });
         });
     }
 

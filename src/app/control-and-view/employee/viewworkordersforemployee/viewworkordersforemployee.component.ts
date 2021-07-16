@@ -8,6 +8,9 @@ import { ConectionSettings } from '../../../service/ConnectionSetting';
 const url = ConectionSettings.Url + '/upload_test';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { PromptdialogComponent, PromptDialogModel } from '../../dialog/promptdialog/promptdialog.component';
 @Component({
   selector: 'app-viewworkordersforemployee',
   templateUrl: './viewworkordersforemployee.component.html',
@@ -111,7 +114,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join('-');
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -455,9 +458,19 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     this.countCancel1 = this.countCancel;
     if (!this.BarcodeValue && barcodeRequired === 1) {
       this.BarcodeValue = null;
-      alert("Barcode is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Barcode is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Barcode is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (this.BarcodeValue && barcodeRequired === 1) {
       this.WorkOrderServiceService
@@ -476,9 +489,19 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     }
     if (!(this.fileName) && photoRequired === 1) {
       this.fileName = null;
-      alert("Photo is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Photo is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Photo is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (this.fileName && photoRequired === 1) {
       this.WorkOrderServiceService
@@ -591,7 +614,15 @@ export class ViewworkordersforemployeeComponent implements OnInit {
       console.log('ImageUpload:uploaded:', item, status, response);
       this.fileName = item.file.name;
 
-      alert('File uploaded successfully');
+      // alert('File uploaded successfully');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'File uploaded successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     };
   }
   filterApplied() {
@@ -654,8 +685,18 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     startDate = this.convert_DT(fromDate);
     endDate = this.convert_DT(toDate);
     if (endDate < startDate) {
-      alert("Please Check Dates !");
-      return;
+      // alert("Please Check Dates !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Check Dates !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
     let Wo = {
       startDate: startDate,
@@ -697,28 +738,41 @@ export class ViewworkordersforemployeeComponent implements OnInit {
   // @Rodney starts
   canceltheWorkorder(woKey) {
 
-    var reason = prompt("Enter the reason for cancelling the workorder...");
+    const message = `Enter the reason for cancelling the workorder`;
+    const dialogData = new PromptDialogModel("CANCEL", message);
+    const dialogRef = this.dialog.open(PromptdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-    var t = new Date();
-    var t = new Date();
-    var y = t.getFullYear();
-    var m = t.getMonth();
-    var d = t.getDate();
-    var h = t.getHours();
-    var mi = t.getMinutes();
-    var s = t.getSeconds();
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      var reason = dialogResult;
 
-    var today_DT = this.convert_DT(new Date());
-    var p = "";
-    p = today_DT + " " + h + ":" + mi + ":" + s;
+      var t = new Date();
+      var t = new Date();
+      var y = t.getFullYear();
+      var m = t.getMonth();
+      var d = t.getDate();
+      var h = t.getHours();
+      var mi = t.getMinutes();
+      var s = t.getSeconds();
 
-    if ((reason.trim())) {
-      this.WorkOrderServiceService
-        .setCancelWorkorder(woKey, reason, today_DT, p, this.toServeremployeekey, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.workorderViewsEmpByAll();
-        });
-    }
+      var today_DT = this.convert_DT(new Date());
+      var p = "";
+      p = today_DT + " " + h + ":" + mi + ":" + s;
+
+      if ((reason.trim())) {
+        this.WorkOrderServiceService
+          .setCancelWorkorder(woKey, reason, today_DT, p, this.toServeremployeekey, this.OrganizationID)
+          .subscribe((data: any[]) => {
+            this.workorderViewsEmpByAll();
+          });
+      }
+    });
+
+
+    // var reason = prompt("Enter the reason for cancelling the workorder...");
+
   }
   //@Rodney ends
 }

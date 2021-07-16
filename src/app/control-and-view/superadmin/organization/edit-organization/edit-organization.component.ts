@@ -3,6 +3,10 @@ import { OrganizationService } from '../../../../service/organization.service';
 import { Organization } from '../../../../model-class/Organization';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-edit-organization',
   templateUrl: './edit-organization.component.html',
@@ -16,7 +20,7 @@ export class EditOrganizationComponent implements OnInit {
   temp_TenantID;
   employeekey;
   OrgID;
-  constructor(private route: ActivatedRoute, private organizationService: OrganizationService, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private organizationService: OrganizationService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.OrgId$ = params.OrganizationID);
   }
   url_base64_decode(str) {
@@ -39,12 +43,28 @@ export class EditOrganizationComponent implements OnInit {
   updateOrg(OName, ODesc, state, tid, loc, country, tename, email) {
     this.checkFlag = true;
     if (!(OName) || !(OName.trim())) {
-      alert('Organization Name is not provided !');
+      // alert('Organization Name is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Organization Name is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(tid) || !(tid.trim())) {
-      alert('Tenant ID is not provided !');
+      // alert('Tenant ID is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Tenant ID is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -67,23 +87,51 @@ export class EditOrganizationComponent implements OnInit {
     this.updatedby = this.employeekey;
     if (tid == this.temp_TenantID) {
       this.organizationService.UpdateOrganizationDetails(OName, ODesc, state, tid, loc, country, tename, email, this.updatedby, this.OrgId$).subscribe((data: any[]) => {
-        alert("Organization Updated !");
-        this.checkFlag = false;
-        this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
+        // alert("Organization Updated !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Organization Updated !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
+        });
+
       });
     }
     else {
       this.organizationService.checkForTenantId(tid).subscribe((data: any[]) => {
         if (data[0].count == 0) {
           this.organizationService.UpdateOrganizationDetails(OName, ODesc, state, tid, loc, country, tename, email, this.updatedby, this.OrgId$).subscribe((data: any[]) => {
-            alert("Organization Updated !");
-            this.checkFlag = false;
-            this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
-
+            // alert("Organization Updated !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Organization Updated !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['ViewOrganization'] } }]);
+            });
           });
         }
         else {
-          alert("Tenant ID is already present !");
+          // alert("Tenant ID is already present !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Tenant ID is already present !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { InspectionService } from '../../../../service/inspection.service';
+// import { MatDialog } from '@angular/material/dialog';
+// import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-feedback-manage',
@@ -36,7 +38,7 @@ export class FeedbackManageComponent implements OnInit {
     }
     return window.atob(output);
   }
-
+  // , private dialog: MatDialog
   constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
 
   customTrackBy(index: number, obj: any): any {
@@ -64,22 +66,32 @@ export class FeedbackManageComponent implements OnInit {
   }
 
 
-  deleteFeedbackTemp(TemplateID) {
-    this.TemplateID = TemplateID;
-  }
+  // deleteFeedbackTemp(TemplateID) {
+  //   this.TemplateID = TemplateID;
+  // }
 
-  deleteFeedbackTemplate() {
-    this.loading = true;
-    this.inspectionService
-      .deleteFeedbackTemplate(this.TemplateID, this.toServeremployeekey, this.OrganizationID).subscribe(() => {
-        alert("Template deleted successfully");
-        this.inspectionService
-          .getFeedbackTemplateList(this.OrganizationID).subscribe((data: any[]) => {
-            this.temlates = data;
-            this.loading = false;
-          });
-      });
-  }
+  // deleteFeedbackTemplate() {
+  //   this.loading = true;
+  //   this.inspectionService
+  //     .deleteFeedbackTemplate(this.TemplateID, this.toServeremployeekey, this.OrganizationID).subscribe(() => {
+  //       // alert("Template deleted successfully");
+  //       const dialogRef = this.dialog.open(AlertdialogComponent, {
+  //         data: {
+  //           message: 'Template deleted successfully',
+  //           buttonText: {
+  //             cancel: 'Done'
+  //           }
+  //         },
+  //       });
+  //       dialogRef.afterClosed().subscribe(dialogResult => {
+  //         this.inspectionService
+  //           .getFeedbackTemplateList(this.OrganizationID).subscribe((data: any[]) => {
+  //             this.temlates = data;
+  //             this.loading = false;
+  //           });
+  //       });
+  //     });
+  // }
 
 }
 

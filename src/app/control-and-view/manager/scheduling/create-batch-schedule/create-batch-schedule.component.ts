@@ -3,6 +3,10 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { Scheduling } from '../../../../model-class/Schedulng';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-create-batch-schedule',
@@ -231,11 +235,11 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
   }
 
-  constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
 
   getScheduleDetails(scheduleKey) {
-  
+
     this.BatchScheduleNameKey = scheduleKey;
     this.empName = null;
     this.WorkorderNotes = null;
@@ -269,10 +273,10 @@ export class CreateBatchScheduleComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
-        
+
           for (var i = 0; i < this.woList.length; i++) {
             if (this.roomList[j].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
-             
+
               if (this.woList[i].MetricType == 'Minutes Per') {
                 this.roomList[j].Minutes = this.woList[i].MetricValue;
               }
@@ -336,7 +340,8 @@ export class CreateBatchScheduleComponent implements OnInit {
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
           this.roomTempList[j].KeepActive = 0;
-          this.roomTempList[j].CreateWO=1;
+          this.roomTempList[j].CreateWO = 1;
+          this.roomTempList[j].IsAvgAlert=0;
           // this.roomTempList[j].snapshot = 0;
         }
         this.metricCal();
@@ -455,6 +460,14 @@ export class CreateBatchScheduleComponent implements OnInit {
       this.roomTempList[j].CreateWO = 1;
     }
   }
+  selectAllAvgAlert() {
+    for (var j = 0; j < this.roomList.length; j++) {
+      this.roomList[j].IsAvgAlert = 1;
+    }
+    for (var j = 0; j < this.roomTempList.length; j++) {
+      this.roomTempList[j].IsAvgAlert = 1;
+    }
+  }
 
   createBatchReport() {
 
@@ -479,9 +492,19 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
 
     if (this.endDT < this.startDT) {
-      alert("End Date can't be less than Start Date");
-      this.CreateDis = false;
-      return;
+      // alert("End Date can't be less than Start Date");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "End Date can't be less than Start Date!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.CreateDis = false;
+        return;
+      });
     }
     for (var i = 0; i < this.roomList.length; i++) {
       if (!this.roomList[i].WorkorderTypeKey) {
@@ -495,8 +518,18 @@ export class CreateBatchScheduleComponent implements OnInit {
       }
     }
     if (this.wotypeFlag > 0) {
-      alert(" Select required workorder type for all rooms before submitting");
-      this.CreateDis = false;
+      // alert(" Select required workorder type for all rooms before submitting");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select required workorder type for all rooms before submitting!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.CreateDis = false;
+      });
     }
     else if (this.wotypeFlag == 0) {
       //Updating the list of existing rooms in schedule.
@@ -517,6 +550,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var keepObj1 = [];
         var snapObj1 = [];
         var createwoObj1 = [];
+        var isavgalertObj1 = [];
         var roomsString1;
         var roomList1 = [];
         var Frequency1;
@@ -534,6 +568,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var workordertkey1;
         var workorderroomstring1;
         var CreateWO1;
+        var isavgalert1;
         var q = this.time1.getHours();
         var q1 = this.time1.getMinutes();
         var newTime = q + ":" + q1;
@@ -650,6 +685,14 @@ export class CreateBatchScheduleComponent implements OnInit {
             this.roomList[j].CreateWO = false;
             createwoObj1.push(this.roomList[j].CreateWO);
           }
+          if (this.roomList[j].IsAvgAlert === true || this.roomList[j].IsAvgAlert == 1) {
+            this.roomList[j].IsAvgAlert = true;
+            isavgalertObj1.push(this.roomList[j].IsAvgAlert);
+          }
+          else {
+            this.roomList[j].IsAvgAlert = false;
+            isavgalertObj1.push(this.roomList[j].IsAvgAlert);
+          }
 
         }
         roomsString1 = roomList1.join(',');
@@ -668,8 +711,9 @@ export class CreateBatchScheduleComponent implements OnInit {
         workordertkey1 = workorderkeyobj1.join(',');
         workorderroomstring1 = workorderroomobj1.join(',');
         CreateWO1 = createwoObj1.join(',');
-        if(this.WorkorderNotes){
-          this.WorkorderNotes=this.WorkorderNotes.trim();
+        isavgalert1 = isavgalertObj1.join(',');
+        if (this.WorkorderNotes) {
+          this.WorkorderNotes = this.WorkorderNotes.trim();
         }
         this.scheduleUpdate = {
           workorderroomidlist: workorderroomstring1,
@@ -694,7 +738,8 @@ export class CreateBatchScheduleComponent implements OnInit {
           fromdate: this.startDT,
           todate: this.endDT,
           scheduleTime: newTime,
-          CreateWO:CreateWO1
+          CreateWO: CreateWO1,
+          isavgalert:isavgalert1
         }
         this.scheduleService
           .setUpdateScheduleReport(this.scheduleUpdate).subscribe(res => {
@@ -738,6 +783,8 @@ export class CreateBatchScheduleComponent implements OnInit {
         var TEmproomidobj2;
         var createwoObj2 = [];
         var CreateWO2;
+        var isavgalertObj2 = [];
+        var isavgalert2;
         var q = this.time1.getHours();
         var q1 = this.time1.getMinutes();
         var newTime = q + ":" + q1;
@@ -746,7 +793,7 @@ export class CreateBatchScheduleComponent implements OnInit {
 
           // for(var i=0;i<this.woList.length;i++){
           //   if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-        
+
           //    if(this.woList[i].MetricType== 'Minutes Per')
           //    {
           //    this.roomList[j].Minutes=this.woList[i].MetricValue;
@@ -859,6 +906,16 @@ export class CreateBatchScheduleComponent implements OnInit {
             this.roomTempList[j].CreateWO = false;
             createwoObj2.push(this.roomTempList[j].CreateWO);
           }
+
+          if (this.roomTempList[j].IsAvgAlert === true || this.roomTempList[j].IsAvgAlert == 1) {
+            this.roomTempList[j].IsAvgAlert = true;
+            isavgalertObj2.push(this.roomTempList[j].IsAvgAlert);
+          }
+          else {
+            this.roomTempList[j].IsAvgAlert = false;
+            isavgalertObj2.push(this.roomTempList[j].IsAvgAlert);
+          }
+
         }
         roomsString2 = roomList2.join(',');
         FRequency2 = FrequencyObj2.join(',');
@@ -875,9 +932,10 @@ export class CreateBatchScheduleComponent implements OnInit {
         Snapshot2 = snapObj2.join(',');
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
-        CreateWO2=createwoObj2.join(',');
-        if(this.WorkorderNotes){
-          this.WorkorderNotes=this.WorkorderNotes.trim();
+        CreateWO2 = createwoObj2.join(',');
+        isavgalert2=isavgalertObj2.join(',');
+        if (this.WorkorderNotes) {
+          this.WorkorderNotes = this.WorkorderNotes.trim();
         }
         this.scheduleInsert = {
           temproomidlist: TEmproomidobj2,
@@ -902,7 +960,8 @@ export class CreateBatchScheduleComponent implements OnInit {
           fromdate: this.startDT,
           todate: this.endDT,
           scheduleTime: newTime,
-          CreateWO:CreateWO2
+          CreateWO: CreateWO2,
+          isavgalert:isavgalert2
         }
 
 
@@ -932,8 +991,18 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Assignment Created Successfully");
-      this.CreateDis = false;
+      // alert("Assignment Created Successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Created Successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.CreateDis = false;
+      });
     }
   }
   ngOnInit() {
@@ -970,7 +1039,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     if (list == 'roomTempList') {
       for (var i = 0; i < this.woList.length; i++) {
         if (this.roomTempList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
-        
+
           if (this.woList[i].MetricType == 'Minutes Per') {
             this.roomTempList[index].Minutes = this.woList[i].MetricValue;
           }
@@ -985,7 +1054,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     if (list == 'roomList') {
       for (var i = 0; i < this.woList.length; i++) {
         if (this.roomList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
-          
+
           if (this.woList[i].MetricType == 'Minutes Per') {
             this.roomList[index].Minutes = this.woList[i].MetricValue;
           }

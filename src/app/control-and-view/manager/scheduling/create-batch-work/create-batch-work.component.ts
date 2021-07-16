@@ -5,6 +5,9 @@ import { ReportServiceService } from '../../../../service/report-service.service
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-create-batch-work',
   templateUrl: './create-batch-work.component.html',
@@ -50,7 +53,7 @@ export class CreateBatchWorkComponent implements OnInit {
       day = ("0" + date.getDate()).slice(- 2);
     return [date.getFullYear(), mnth, day].join("-");
   }
-  constructor(private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private scheduleService: SchedulingService, private router: Router, private _location: Location) { }
+  constructor(private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private scheduleService: SchedulingService, private router: Router, private _location: Location, private dialog: MatDialog) { }
 
   setEmployeeForbatchSchedule(key) {
     this.empKey = key;
@@ -60,38 +63,108 @@ export class CreateBatchWorkComponent implements OnInit {
 
     this.checkFlag = true;
     if (!this.scheduleName && !this.scheduleName.trim()) {
-      alert("Please provide a Assignment Name");
-      this.checkFlag = false;
-      return;
+      // alert("Please provide a Assignment Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Assignment Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.scheduleDescription && !this.scheduleDescription.trim()) {
-      alert("Assignment Description is not provided!");
-      this.checkFlag = false;
-      return;
+      // alert("Assignment Description is not provided!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Description is not provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.scheduleName) {
-      alert("Assignment Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Assignment Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } if (!this.scheduleDescription) {
-      alert("Assignment Description is not provided!");
-      this.checkFlag = false;
-      return;
+      // alert("Assignment Description is not provided!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Description is not provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.empKey) {
-      alert("Employee Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Employee Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee Name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.StartTime) {
-      alert("Start Time is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Start Time is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.EndTime) {
-      alert("End Time is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("End Time is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.scheduleName) {
       this.scheduleName = this.scheduleName.trim();
@@ -111,15 +184,35 @@ export class CreateBatchWorkComponent implements OnInit {
       .checkScheduleName(this.scheduleName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count > 0) {
-          alert("Assignment Name already present");
-          this.checkFlag = false;
+          // alert("Assignment Name already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Assignment Name already present!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (data[0].count == 0) {
-          this.scheduleService.addScheduleName(this.scheduleName,this.MasterShiftID, this.empKey, this.scheduleDescription, startTime, endTime, today_DT, this.employeekey, this.OrganizationID)
+          this.scheduleService.addScheduleName(this.scheduleName, this.MasterShiftID, this.empKey, this.scheduleDescription, startTime, endTime, today_DT, this.employeekey, this.OrganizationID)
             .subscribe(res => {
-              alert("Assignment Name created successfully.");
-              this.checkFlag = false;
-              this._location.back()
+              // alert("Assignment Name created successfully.");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Assignment Name created successfully.',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this._location.back();
+              });
             });
         }
       });
@@ -140,7 +233,7 @@ export class CreateBatchWorkComponent implements OnInit {
     //token ends
     this.checkFlag = false;
     this.employee_Key = "";
-    this.MasterShiftID="0";
+    this.MasterShiftID = "0";
     this.scheduleService
       .getAllEmpList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {

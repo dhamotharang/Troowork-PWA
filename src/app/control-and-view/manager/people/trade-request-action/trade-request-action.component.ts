@@ -3,6 +3,9 @@ import { PeopleServiceService } from "../../../../service/people-service.service
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-trade-request-action',
@@ -107,7 +110,7 @@ export class TradeRequestActionComponent implements OnInit {
       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestsFromEmployees'] } }]);
     }
   }
-  constructor(private PeopleServiceService: PeopleServiceService, private route: ActivatedRoute, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private PeopleServiceService: PeopleServiceService, private route: ActivatedRoute, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.traderequestDetails$ = params.requestID);
   }
 
@@ -115,37 +118,88 @@ export class TradeRequestActionComponent implements OnInit {
 
     this.checkFlag = true;
     if (!(this.traderequestdetailsbyID.Status)) {
-      alert('Status is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Status is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Status is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if ((this.traderequestdetailsbyID.Status) == "Approved") {
 
       if (!(this.traderequestdetailsbyID.ApproverApprovedStartDate)) {
-        alert('Approved Start Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved Start Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved Start Date is not provided !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (!(this.traderequestdetailsbyID.ApproverApprovedEndDate)) {
-        alert('Approved End Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved End Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved End Date is not provided !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
 
       if ((this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
-        alert("Approved start date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved start date must be between requested dates!");
+
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved start date must be between requested dates!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.traderequestdetailsbyID.ApproverApprovedStartDate = this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedStartDate);
       }
       if ((this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate) < this.convert_DT(this.traderequestdetailsbyID.StartDate)) || (this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate) > this.convert_DT(this.traderequestdetailsbyID.EndDate))) {
-        alert("Approved end date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved end date must be between requested dates!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved end date must be between requested dates!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.traderequestdetailsbyID.ApproverApprovedEndDate = this.convert_DT(this.traderequestdetailsbyID.ApproverApprovedEndDate);
       }
@@ -155,8 +209,19 @@ export class TradeRequestActionComponent implements OnInit {
       }
     } else if ((this.traderequestdetailsbyID.Status) == "Rejected") {
       if (!(this.traderequestdetailsbyID.ApproverComments)) {
-        alert("Status comments can't be empty");
-        this.checkFlag = false; return;
+        // alert("Status comments can't be empty");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Status comments can't be empty",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
       else {
         var comments = this.traderequestdetailsbyID.ApproverComments.trim();
@@ -170,19 +235,29 @@ export class TradeRequestActionComponent implements OnInit {
       this.traderequestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
-        alert("Request updated Successfully");
-        this.checkFlag = false;
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['TradeRequestsFromEmployees'] } }]);
-        } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestsFromEmployees'] } }]);
-        }
+        // alert("Request updated Successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Status comments can't be empty",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['TradeRequestsFromEmployees'] } }]);
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestsFromEmployees'] } }]);
+          }
+        });
       });
   }
 
   ngOnInit() {
 
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

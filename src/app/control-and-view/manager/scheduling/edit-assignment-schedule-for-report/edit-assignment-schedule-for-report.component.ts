@@ -4,6 +4,9 @@ import { Scheduling } from '../../../../model-class/Schedulng';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-edit-assignment-schedule-for-report',
   templateUrl: './edit-assignment-schedule-for-report.component.html',
@@ -113,7 +116,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes)* this.roomList[i].dailyFrequency);
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_tue == '1') {
@@ -153,7 +156,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes)  * this.roomList[i].dailyFrequency);
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_sun == '1') {
@@ -233,7 +236,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
   }
 
-  constructor(private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService) {
+  constructor(private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleKey);
   }
 
@@ -273,18 +276,17 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
 
-          for(var i=0;i<this.woList.length;i++){
-            if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-              
-             if(this.woList[i].MetricType== 'Minutes Per')
-             {
-             this.roomList[j].Minutes=this.woList[i].MetricValue;
-           }
-           else{
-             this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
-           }
+          for (var i = 0; i < this.woList.length; i++) {
+            if (this.roomList[j].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+
+              if (this.woList[i].MetricType == 'Minutes Per') {
+                this.roomList[j].Minutes = this.woList[i].MetricValue;
+              }
+              else {
+                this.roomList[j].Minutes = (this.woList[i].MetricValue * this.roomList[j].Area);
+              }
             }
-           }
+          }
 
 
           if (this.roomList[j].check_mon == 'true') {
@@ -341,6 +343,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
           this.roomTempList[j].KeepActive = 0;
+          this.roomTempList[j].CreateWO=1;
+          this.roomTempList[j].IsAvgAlert=0;
         }
         this.metricCal();
       });
@@ -351,10 +355,10 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     //   });
 
     this.scheduleService
-    .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
-    .subscribe((data: any[]) => {
-      this.woList = data;
-    });
+      .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.woList = data;
+      });
 
   }
 
@@ -449,8 +453,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
   }
 
-  selectAllSnapshot()
-  {
+  selectAllSnapshot() {
     for (var j = 0; j < this.roomList.length; j++) {
       this.roomList[j].snapshot = 1;
     }
@@ -468,6 +471,15 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
   }
 
+  selectAllAvgAlert() {
+    for (var j = 0; j < this.roomList.length; j++) {
+      this.roomList[j].IsAvgAlert = 1;
+    }
+    for (var j = 0; j < this.roomTempList.length; j++) {
+      this.roomTempList[j].IsAvgAlert = 1;
+    }
+  }
+
   createBatchReport() {
     this.CreateDis = true;
     this.wotypeFlag = 0;
@@ -477,7 +489,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       //   this.CreateDis = false;
       //   return;
       // } else {
-        this.startDT = this.convert_DT(this.workScheduleStartDate);
+      this.startDT = this.convert_DT(this.workScheduleStartDate);
       // }
     } else {
       this.startDT = this.convert_DT(new Date());
@@ -490,7 +502,15 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
 
     if (this.endDT < this.startDT) {
-      alert("End Date can't be less than Start Date");
+      // alert("End Date can't be less than Start Date");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "End Date can't be less than Start Date",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.CreateDis = false;
       return;
     }
@@ -507,7 +527,15 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       }
     }
     if (this.wotypeFlag > 0) {
-      alert(" Select required workorder type for all rooms before submitting");
+      // alert(" Select required workorder type for all rooms before submitting");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select required workorder type for all rooms before submitting!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.CreateDis = false;
     }
     else if (this.wotypeFlag == 0) {
@@ -527,7 +555,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var barObj1 = [];
         var photoObj1 = [];
         var keepObj1 = [];
-        var snapObj1=[];
+        var snapObj1 = [];
         var roomsString1;
         var roomList1 = [];
         var Frequency1;
@@ -545,7 +573,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var workordertkey1;
         var workorderroomstring1;
         var createwoObj1 = [];
+        var isavgalertObj1 = [];
         var CreateWO1;
+        var isavgalert1;
         var q = this.time1.getHours();
         var q1 = this.time1.getMinutes();
         var newTime = q + ":" + q1;
@@ -635,7 +665,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomList[j].photoReq = false;
             photoObj1.push(this.roomList[j].photoReq);
           }
-          
+
           if (this.roomList[j].KeepActive === true || this.roomList[j].KeepActive == 1) {
             this.roomList[j].KeepActive = true;
             keepObj1.push(this.roomList[j].KeepActive);
@@ -661,6 +691,15 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomList[j].CreateWO = false;
             createwoObj1.push(this.roomList[j].CreateWO);
           }
+          if (this.roomList[j].IsAvgAlert === true || this.roomList[j].IsAvgAlert == 1) {
+            this.roomList[j].IsAvgAlert = true;
+            isavgalertObj1.push(this.roomList[j].IsAvgAlert);
+          }
+          else {
+            this.roomList[j].IsAvgAlert = false;
+            isavgalertObj1.push(this.roomList[j].IsAvgAlert);
+          }
+
         }
         roomsString1 = roomList1.join(',');
         Frequency1 = FrequencyObj1.join(',');
@@ -673,13 +712,14 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         SunCheck1 = sunObj1.join(',');
         BarCheck1 = barObj1.join(',');
         PhotCheck1 = photoObj1.join(',');
-        KeepActive1 = keepObj1.join(','); 
+        KeepActive1 = keepObj1.join(',');
         Snapshot1 = snapObj1.join(',');
         workordertkey1 = workorderkeyobj1.join(',');
         workorderroomstring1 = workorderroomobj1.join(',');
         CreateWO1 = createwoObj1.join(',');
-        if(this.WorkorderNotes){
-          this.WorkorderNotes=this.WorkorderNotes.trim();
+        isavgalert1 = isavgalertObj1.join(',');
+        if (this.WorkorderNotes) {
+          this.WorkorderNotes = this.WorkorderNotes.trim();
         }
         this.scheduleUpdate = {
           workorderroomidlist: workorderroomstring1,
@@ -694,7 +734,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           sunCheck: SunCheck1,
           barCheck: BarCheck1,
           photCheck: PhotCheck1,
-          snapshot:Snapshot1,
+          snapshot: Snapshot1,
           keepActiveCheck: KeepActive1,
           workordertype: workordertkey1,
           empKey: this.employeekey,
@@ -704,7 +744,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           fromdate: this.startDT,
           todate: this.endDT,
           scheduleTime: newTime,
-          CreateWO:CreateWO1
+          CreateWO: CreateWO1,
+          isavgalert:isavgalert1
         }
         this.scheduleService
           .setUpdateScheduleReport(this.scheduleUpdate).subscribe(res => {
@@ -729,7 +770,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var barObj2 = [];
         var photoObj2 = [];
         var keepObj2 = [];
-        var snapObj2=[];
+        var snapObj2 = [];
         var roomsString2;
         var roomList2 = [];
         var FRequency2;
@@ -748,6 +789,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var TEmproomidobj2;
         var createwoObj2 = [];
         var CreateWO2;
+        var isavgalertObj2 = [];
+        var isavgalert2;
         var q = this.time1.getHours();
         var q1 = this.time1.getMinutes();
         var newTime = q + ":" + q1;
@@ -863,6 +906,14 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomTempList[j].CreateWO = false;
             createwoObj2.push(this.roomTempList[j].CreateWO);
           }
+          if (this.roomTempList[j].IsAvgAlert === true || this.roomTempList[j].IsAvgAlert == 1) {
+            this.roomTempList[j].IsAvgAlert = true;
+            isavgalertObj2.push(this.roomTempList[j].IsAvgAlert);
+          }
+          else {
+            this.roomTempList[j].IsAvgAlert = false;
+            isavgalertObj2.push(this.roomTempList[j].IsAvgAlert);
+          }
         }
         roomsString2 = roomList2.join(',');
         FRequency2 = FrequencyObj2.join(',');
@@ -879,9 +930,10 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         KeepActive2 = keepObj2.join(',');
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
-        CreateWO2=createwoObj2.join(',');
-        if(this.WorkorderNotes){
-          this.WorkorderNotes=this.WorkorderNotes.trim();
+        CreateWO2 = createwoObj2.join(',');
+        isavgalert2=isavgalertObj2.join(',');
+        if (this.WorkorderNotes) {
+          this.WorkorderNotes = this.WorkorderNotes.trim();
         }
         this.scheduleInsert = {
           temproomidlist: TEmproomidobj2,
@@ -896,7 +948,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           sunCheck: SUnCheck2,
           barCheck: BArCheck2,
           photCheck: PHotCheck2,
-          snapshot:Snapshot2,
+          snapshot: Snapshot2,
           keepActiveCheck: KeepActive2,
           workordertype: WOrkordertkey2,
           empKey: this.employeekey,
@@ -906,7 +958,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           fromdate: this.startDT,
           todate: this.endDT,
           scheduleTime: newTime,
-          CreateWO:CreateWO2
+          CreateWO: CreateWO2,
+          isavgalert:isavgalert2
         }
 
 
@@ -936,8 +989,18 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Assignment Created Sucessfully");
-      this.CreateDis = false;
+      // alert("Assignment Created Sucessfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Created Sucessfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.CreateDis = false;
+      });
     }
   }
   ngOnInit() {
@@ -960,7 +1023,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.scheduleNameList = data;
       });
 
-      this.scheduleService
+    this.scheduleService
       .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.woList = data;
@@ -1002,18 +1065,17 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
 
-          for(var i=0;i<this.woList.length;i++){
-            if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-             
-             if(this.woList[i].MetricType== 'Minutes Per')
-             {
-             this.roomList[j].Minutes=this.woList[i].MetricValue;
-           }
-           else{
-             this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
-           }
+          for (var i = 0; i < this.woList.length; i++) {
+            if (this.roomList[j].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+
+              if (this.woList[i].MetricType == 'Minutes Per') {
+                this.roomList[j].Minutes = this.woList[i].MetricValue;
+              }
+              else {
+                this.roomList[j].Minutes = (this.woList[i].MetricValue * this.roomList[j].Area);
+              }
             }
-           }
+          }
 
           if (this.roomList[j].check_mon == 'true') {
             this.roomList[j].check_mon = 1;
@@ -1068,7 +1130,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.roomTempList = data;
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
-          this.roomTempList[j].CreateWO=1;
+          this.roomTempList[j].CreateWO = 1;
         }
         this.metricCal();
       });
@@ -1078,44 +1140,40 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     //     this.woList = data;
     //   });
 
-     
+
 
   }
-  CalMetric(index,list){
-    
-   
-      if(list=='roomTempList')
-      {
-        for(var i=0;i<this.woList.length;i++){
-     if (this.roomTempList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-     
-      //  this.roomTempList[index].Minutes=0;
-      if(this.woList[i].MetricType== 'Minutes Per')
-      {
-      this.roomTempList[index].Minutes=this.woList[i].MetricValue;
-    }
-    else{
-      this.roomTempList[index].Minutes=(this.woList[i].MetricValue*this.roomTempList[index].Area);
-    }
-     }
-    }
-  }
- 
+  CalMetric(index, list) {
 
-   if(list=='roomList')
-    {
-      for(var i=0;i<this.woList.length;i++){
-      if (this.roomList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-       
-       if(this.woList[i].MetricType== 'Minutes Per')
-       {
-       this.roomList[index].Minutes=this.woList[i].MetricValue;
-     }
-     else{
-       this.roomList[index].Minutes=(this.woList[i].MetricValue*this.roomList[index].Area);
-     }
+
+    if (list == 'roomTempList') {
+      for (var i = 0; i < this.woList.length; i++) {
+        if (this.roomTempList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+
+          //  this.roomTempList[index].Minutes=0;
+          if (this.woList[i].MetricType == 'Minutes Per') {
+            this.roomTempList[index].Minutes = this.woList[i].MetricValue;
+          }
+          else {
+            this.roomTempList[index].Minutes = (this.woList[i].MetricValue * this.roomTempList[index].Area);
+          }
+        }
       }
     }
+
+
+    if (list == 'roomList') {
+      for (var i = 0; i < this.woList.length; i++) {
+        if (this.roomList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+
+          if (this.woList[i].MetricType == 'Minutes Per') {
+            this.roomList[index].Minutes = this.woList[i].MetricValue;
+          }
+          else {
+            this.roomList[index].Minutes = (this.woList[i].MetricValue * this.roomList[index].Area);
+          }
+        }
+      }
     }
   }
 }

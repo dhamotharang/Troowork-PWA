@@ -3,6 +3,9 @@ import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-inspectiontemplateandquestions-view',
   templateUrl: './inspectiontemplateandquestions-view.component.html',
@@ -45,7 +48,7 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
   tempkey1;
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -77,23 +80,47 @@ export class InspectiontemplateandquestionsViewComponent implements OnInit {
         });
     }
   }
-  deleteInspTemplate() {
+  // deleteInspTemplate() {
 
-    this.checkFlag = true;
-    this.inspectionService
-      .DeleteInspectionTemplate(this.delete_tempId, this.templateQuestionID, this.employeekey, this.OrganizationID).subscribe(() => {
-        this.checkFlag = false;
-        this.inspectionService
-          .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
-          .subscribe((data: Inspection[]) => {
-            this.viewinspectionTemplate = data;
-          });
+  //   this.checkFlag = true;
+  //   this.inspectionService
+  //     .DeleteInspectionTemplate(this.delete_tempId, this.templateQuestionID, this.employeekey, this.OrganizationID).subscribe(() => {
+  //       this.checkFlag = false;
+  //       this.inspectionService
+  //         .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
+  //         .subscribe((data: Inspection[]) => {
+  //           this.viewinspectionTemplate = data;
+  //         });
 
-      });
-  }
+  //     });
+  // }
   deleteInspTemplatePass(templateID, templateQuestionID) {
     this.delete_tempId = templateID;
     this.templateQuestionID = templateQuestionID;
+    this.checkFlag = true;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.inspectionService
+          .DeleteInspectionTemplate(this.delete_tempId, this.templateQuestionID, this.employeekey, this.OrganizationID).subscribe(() => {
+            this.checkFlag = false;
+            this.inspectionService
+              .getInspectionTemplateTable(this.tempkey1, this.OrganizationID)
+              .subscribe((data: Inspection[]) => {
+                this.viewinspectionTemplate = data;
+              });
+
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
   searchTNandTQ(SearchValue, TemplateID) {
 

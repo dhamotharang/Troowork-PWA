@@ -5,6 +5,10 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 
 @Component({
@@ -42,7 +46,7 @@ export class CreatebuildingComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private fb: FormBuilder, private CreatebuildingService: CreatebuildingService, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private router: Router, private fb: FormBuilder, private CreatebuildingService: CreatebuildingService, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
 
     this.createbuilding = fb.group({
       newbuildingName: ['', Validators.required]
@@ -51,7 +55,15 @@ export class CreatebuildingComponent implements OnInit {
   addBuilding(newbuildingName) {
     this.checkFlag = true;
     if (!(newbuildingName) || !(newbuildingName.trim())) {
-      alert("Please Enter Building Name!");
+      // alert("Please Enter Building Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Building Name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -59,16 +71,34 @@ export class CreatebuildingComponent implements OnInit {
     newbuildingName = newbuildingName.trim();
     this.CreatebuildingService.checkNewBuilding(this.BuildingName, 'facility', this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data.length > 0) {
-        alert("Building name already present !");
+        // alert("Building name already present !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Building name already present !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       }
       else {
         this.CreatebuildingService.createBuildings(newbuildingName, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
-            alert("Building created successfully");
-            this.checkFlag = false;
-            this._location.back();
+            // alert("Building created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Building created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this._location.back();
+            });
           });
       }
     });
@@ -77,7 +107,7 @@ export class CreatebuildingComponent implements OnInit {
 
 
   ngOnInit() {
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

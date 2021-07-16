@@ -3,6 +3,8 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DocumentserviceService } from '../../../../service/documentservice.service';
 import { Documents } from '../../../../model-class/Documents';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-documentfolder-view',
   templateUrl: './documentfolder-view.component.html',
@@ -44,7 +46,7 @@ export class DocumentfolderViewComponent implements OnInit {
   //validation starts ..... @Pooja
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private documentService: DocumentserviceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -85,23 +87,46 @@ export class DocumentfolderViewComponent implements OnInit {
 
     }
   };
-  deleteFolder() {
+  // deleteFolder() {
 
-    this.checkFlag = true;
-    this.documentService
-      .DeleteDocFolder(this.delete_foldKey, this.OrganizationID).subscribe(() => {
+  //   this.checkFlag = true;
+  //   this.documentService
+  //     .DeleteDocFolder(this.delete_foldKey, this.OrganizationID).subscribe(() => {
 
-        this.checkFlag = false;
-        this.documentService
-          .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Documents[]) => {
-            this.documents = data;
-          });
+  //       this.checkFlag = false;
+  //       this.documentService
+  //         .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Documents[]) => {
+  //           this.documents = data;
+  //         });
 
-      });
-  }
+  //     });
+  // }
   deleteFolderPass(FormtypeId) {
     this.delete_foldKey = FormtypeId;
+    this.checkFlag = true;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.documentService
+          .DeleteDocFolder(this.delete_foldKey, this.OrganizationID).subscribe(() => {
+            this.checkFlag = false;
+            this.documentService
+              .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+              .subscribe((data: Documents[]) => {
+                this.documents = data;
+              });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
   ngOnInit() {
     // var token = sessionStorage.getItem('token');

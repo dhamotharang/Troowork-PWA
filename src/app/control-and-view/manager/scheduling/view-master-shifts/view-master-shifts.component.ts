@@ -3,6 +3,10 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-view-master-shifts',
@@ -37,7 +41,7 @@ export class ViewMasterShiftsComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private ReportServiceService: ReportServiceService, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private ReportServiceService: ReportServiceService, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   ngOnInit() {
     //token starts....
@@ -59,14 +63,43 @@ export class ViewMasterShiftsComponent implements OnInit {
   }
   deleteShiftPass(Idemployeeshift) {
     this.delete_shiftKey = Idemployeeshift;
-  }
-  deleteShift() {
-    this.scheduleServ.removeMasterShifts(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-      alert("Shift Name deleted successfully");
-      this.ReportServiceService.getShiftNameList(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-        this.shiftdetails = data;
-      });
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
     });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.scheduleServ.removeMasterShifts(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+          // alert("Shift Name deleted successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Shift Name deleted successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.ReportServiceService.getShiftNameList(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+              this.shiftdetails = data;
+            });
+          });
+        });
+      }
+    });
+
   }
+  // deleteShift() {
+  //   this.scheduleServ.removeMasterShifts(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+  //     alert("Shift Name deleted successfully");
+  //     this.ReportServiceService.getShiftNameList(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+  //       this.shiftdetails = data;
+  //     });
+  //   });
+  // }
 
 }

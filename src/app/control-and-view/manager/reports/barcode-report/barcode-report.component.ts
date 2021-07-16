@@ -7,6 +7,8 @@ import { ExcelserviceService } from '../../../../service/excelservice.service';
 import * as FileSaver from 'file-saver';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-barcode-report',
   templateUrl: './barcode-report.component.html',
@@ -67,7 +69,7 @@ export class BarcodeReportComponent implements OnInit {
   }
   ];
   barcode: FormGroup;
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.barcode = fb.group({
       FacilityKey: ['', Validators.required],
       FacilityText: ['', Validators.required],
@@ -142,8 +144,18 @@ export class BarcodeReportComponent implements OnInit {
   generateBarcodeReport(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, EquipmentTypeKey, EquipmentKey) {
     this.checkFlag = true;
     if (!this.FacilityKey && !this.EquipmentTypeKey && !this.EquipmentKey) {
-      alert("Please choose any filter");
-      this.checkFlag = false;
+      // alert("Please choose any filter");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please choose any filter!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else {
       this.loading = true;

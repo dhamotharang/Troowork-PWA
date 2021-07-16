@@ -7,6 +7,9 @@ import { Login } from '../../../../model-class/login';
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-manager-change-pass-word',
   templateUrl: './manager-change-pass-word.component.html',
@@ -49,7 +52,7 @@ export class ManagerChangePassWordComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private route: ActivatedRoute, private router: Router, private peopleService: PeopleServiceService, private http: HttpClient, private dst: DataServiceTokenStorageService) {
+  constructor(private loginService: LoginService, private route: ActivatedRoute, private router: Router, private peopleService: PeopleServiceService, private http: HttpClient, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.employeeKey$ = params.EmployeeKey);
     this.route.params.subscribe(params => this.userRoleName$ = params.UserRoleName);
     this.route.params.subscribe(params => this.isSupervisor$ = params.IsSupervisor);
@@ -58,14 +61,58 @@ export class ManagerChangePassWordComponent implements OnInit {
   paswordchange() {
     this.checkFlag = true;
     if (!this.Password) {
-      alert(" Enter new password"); this.checkFlag = false;
+      // alert(" Enter new password");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Enter new password',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (!this.repeatPassword) {
-      alert(" Enter retype password"); this.checkFlag = false;
+      // alert(" Enter retype password");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Enter retype password',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (this.Password === this.newPassword) {
-      alert("Current and new passwords are same."); this.checkFlag = false;
+      // alert("Current and new passwords are same.");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Current and new passwords are same.',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.newPassword != this.repeatPassword) {
-      alert("New and retype password are not same."); this.checkFlag = false;
+      // alert("New and retype password are not same.");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'New and retype password are not same.',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else {
       this.loginService
         .setPassword(this.username, this.newPassword, this.employeekey, this.UserLoginId, this.OrganizationID)
@@ -79,7 +126,15 @@ export class ManagerChangePassWordComponent implements OnInit {
           this.userMail = data[0].newmail;
           this.checkFlag = false;
           if (this.userMail == null) {
-            alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            // alert("Password Changed Successfully! Mail not send , Mail-Id not found !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Password Changed Successfully! Mail not send , Mail-Id not found !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
           } else {
             var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.newPassword + "                https://troowork.azurewebsites.net";
 

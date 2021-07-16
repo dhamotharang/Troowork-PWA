@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-view-batch-workorder',
@@ -93,7 +96,7 @@ export class ViewBatchWorkorderComponent implements OnInit {
   searchform: FormGroup;
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -331,8 +334,16 @@ export class ViewBatchWorkorderComponent implements OnInit {
   //function called to view wo while applying filter
   viewWO_Filter() {
     if ((this.todate) && (this.convert_DT(this.ondate) > this.convert_DT(this.todate))) {
-      alert("Please check your start date!");
+      // alert("Please check your start date!");
 
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else {
       var fac_key;
@@ -590,32 +601,60 @@ export class ViewBatchWorkorderComponent implements OnInit {
   //function for deleting multiple batchworkorders checked
   deletebatchWorkOrdersPage() {
 
-    this.checkFlag = true;
-    var deletebatchWorkOrderList = [];
-    var deletebatchWorkOrderString;
 
-    if (this.checkValue.length > 0) {
-      for (var j = 0; j < this.checkValue.length; j++) {
-        if (this.checkValue[j] === true)
-          deletebatchWorkOrderList.push(this.workorderKey[j]);
-      }
-      deletebatchWorkOrderString = deletebatchWorkOrderList.join(',');
-    }
-    this.deleteWO = {
-      deletebatchWorkOrderString: deletebatchWorkOrderString,
-      employeekey: this.employeekey,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService//service for deleting workorders
-      .delete_batchWO(this.deleteWO)
-      .subscribe((data: any[]) => {
-        this.workorderList.workorderCheckValue = false;
-        this.checkValue = [];
-        this.checkflag = false;
-        this.workorderKey = [];
-        alert("Batch Work order deleted successfully");
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        var deletebatchWorkOrderList = [];
+        var deletebatchWorkOrderString;
+
+        if (this.checkValue.length > 0) {
+          for (var j = 0; j < this.checkValue.length; j++) {
+            if (this.checkValue[j] === true)
+              deletebatchWorkOrderList.push(this.workorderKey[j]);
+          }
+          deletebatchWorkOrderString = deletebatchWorkOrderList.join(',');
+        }
+        this.deleteWO = {
+          deletebatchWorkOrderString: deletebatchWorkOrderString,
+          employeekey: this.employeekey,
+          OrganizationID: this.OrganizationID
+        };
+        this.WorkOrderServiceService//service for deleting workorders
+          .delete_batchWO(this.deleteWO)
+          .subscribe((data: any[]) => {
+            this.workorderList.workorderCheckValue = false;
+            this.checkValue = [];
+            this.checkflag = false;
+            this.workorderKey = [];
+            // alert("Batch Work order deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Batch Work order deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.viewWO_Filter();
+            });
+          });
+      } else {
+        this.loading = false;
         this.checkFlag = false;
-        this.viewWO_Filter();
-      });
+      }
+    });
+
+
+
   }
 }

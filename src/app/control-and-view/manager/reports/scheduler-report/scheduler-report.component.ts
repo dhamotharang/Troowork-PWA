@@ -9,6 +9,8 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { debug } from 'util';
 import { Scheduling } from 'src/app/model-class/Schedulng';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-scheduler-report',
@@ -83,7 +85,7 @@ export class SchedulerReportComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService, private ReportService: ReportServiceService, private Excelservice: ExcelserviceService) { }
+  constructor(private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService, private ReportService: ReportServiceService, private Excelservice: ExcelserviceService, private dialog: MatDialog) { }
 
   ngOnInit() {
     // var token = sessionStorage.getItem('token');
@@ -134,9 +136,19 @@ export class SchedulerReportComponent implements OnInit {
   generateSchedulerReport() {
     this.checkFlag = true;
     if (!(this.fromdate)) {
-      alert("Please select the fromdate...");
-      this.checkFlag = false;
-      return;
+      // alert("Please select the fromdate...");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select the fromdate !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     this.loading = true;
     // if (!(this.todate)) {

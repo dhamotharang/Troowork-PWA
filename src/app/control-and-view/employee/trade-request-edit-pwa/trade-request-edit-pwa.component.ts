@@ -5,6 +5,9 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-trade-request-edit-pwa',
@@ -70,52 +73,122 @@ export class TradeRequestEditPWAComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
 
   submitEditedRequest() {
 
     this.checkFlag = true;
     if (!(this.traderequestdetails.StartDate)) {
-      alert('Start Date is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Start Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Date is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.traderequestdetails.EndDate)) {
-      alert('End Date is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('End Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Date is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(this.traderequestdetails.Comments)) {
-      alert('Comments are not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Comments are not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Comments are not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } else {
       var comments = this.traderequestdetails.Comments.trim();
       if (!(comments)) {
-        alert('Comments are not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Comments are not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Comments are not provided !!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     }
 
     if (!(this.traderequestdetails.OtherEmployeeKey)) {
-      alert('Employee is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Employee is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     var curr_date = this.convert_DT(new Date());
 
     if (this.convert_DT(curr_date) > this.convert_DT(this.traderequestdetails.StartDate)) {
-      alert("Start Date can't be less than Today...!");
-      this.checkFlag = false;
-      return;
+      // alert("Start Date can't be less than Today...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Start Date can't be less than Today...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.convert_DT(this.traderequestdetails.EndDate) < this.convert_DT(this.traderequestdetails.StartDate)) {
-      alert("End Date can't be less than start date...!");
-      this.checkFlag = false;
-      return;
+      // alert("End Date can't be less than start date...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "End Date can't be less than start date...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
 
@@ -125,12 +198,22 @@ export class TradeRequestEditPWAComponent implements OnInit {
       this.convert_DT(this.traderequestdetails.StartDate), this.convert_DT(this.traderequestdetails.EndDate), comments).subscribe((data) => {
         this.traderequestdetails = data;
         this.checkFlag = false;
-        alert('Trade Request Updated Successfully');
-        if (this.role == 'Employee') {
-          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
-        } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
-        }
+        // alert('Trade Request Updated Successfully');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Trade Request Updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          if (this.role == 'Employee') {
+            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
+          }
+        });
       });
   }
   ngOnInit() {
@@ -143,7 +226,7 @@ export class TradeRequestEditPWAComponent implements OnInit {
     this.name = this.dst.getName();
     this.toServeremployeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-    
+
     // this.curr_date = this.convert_DT(new Date());
     this.editflag = false;
     this.checkFlag = false;
@@ -170,27 +253,80 @@ export class TradeRequestEditPWAComponent implements OnInit {
   deletePass(key) {
     this.deleteRequestKey = key;
 
-  }
-  deleteRequest() {
-    this.checkFlag = true;
-    this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
-      .subscribe((data) => {
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-        this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
-          this.traderequestdetails = data;
-          this.checkFlag = false;
-          alert('Trade Request Deleted Successfully');
-          // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
-          // if (this.role == 'Employee' && this.IsSupervisor == 0) {
-          if (this.role == 'Employee') {
-            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
-            // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-          } else if (this.role == 'Supervisor') {
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
-          }
-        });
-      });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
+          .subscribe((data) => {
+
+            this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+              this.traderequestdetails = data;
+              this.checkFlag = false;
+              // alert('Trade Request Deleted Successfully');
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Trade Request Deleted Successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+                // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+                if (this.role == 'Employee') {
+                  this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
+                  // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                } else if (this.role == 'Supervisor') {
+                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
+                }
+              });
+
+            });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
+  // deleteRequest() {
+  //   this.checkFlag = true;
+  //   this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.OrganizationID)
+  //     .subscribe((data) => {
+
+  //       this.PeopleServiceService.setgetRequestdetails(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+  //         this.traderequestdetails = data;
+  //         this.checkFlag = false;
+  //         // alert('Trade Request Deleted Successfully');
+  //         const dialogRef = this.dialog.open(AlertdialogComponent, {
+  //           data: {
+  //             message: 'Trade Request Deleted Successfully',
+  //             buttonText: {
+  //               cancel: 'Done'
+  //             }
+  //           },
+  //         });
+  //         dialogRef.afterClosed().subscribe(dialogResult => {   // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+  //           // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+  //           if (this.role == 'Employee') {
+  //             this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['TradeRequestViewPWA'] } }]);
+  //             // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+  //           } else if (this.role == 'Supervisor') {
+  //             this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['TradeRequestViewPWA'] } }]);
+  //           }
+  //         });
+
+  //       });
+  //     });
+  // }
   onResize() {
     this.responsiveService.getMobileStatus().subscribe(isMobile => {
       this.isMobile = isMobile;

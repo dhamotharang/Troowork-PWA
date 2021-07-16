@@ -25,17 +25,26 @@ import { environment } from '../environments/environment';
 import { JwtInterceptor } from './control-and-view/dashboard/login/login.component';
 import { DataServiceTokenStorageService } from './service/DataServiceTokenStorage.service';
 
+
+import { AlertdialogComponent } from './control-and-view/dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent } from './control-and-view/dialog/confirmationdialog/confirmationdialog.component';
+import { PromptdialogComponent } from './control-and-view/dialog/promptdialog/promptdialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
-
+    AlertdialogComponent,
+    ConfirmationdialogComponent,
+    PromptdialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
-    // FormsModule,
-    // ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     NgMarqueeModule,
@@ -44,9 +53,12 @@ import { DataServiceTokenStorageService } from './service/DataServiceTokenStorag
     // IgxDatePickerModule,NgDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot()
 
+    MatDialogModule, MatButtonModule
   ],
   providers: [GooglePieChartService, ResponsiveService, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }, DataServiceTokenStorageService],
   bootstrap: [AppComponent],
+  entryComponents: [AlertdialogComponent,
+    ConfirmationdialogComponent, PromptdialogComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModule {

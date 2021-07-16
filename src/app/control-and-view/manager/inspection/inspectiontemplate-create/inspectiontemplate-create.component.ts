@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-inspectiontemplate-create',
   templateUrl: './inspectiontemplate-create.component.html',
@@ -42,7 +44,7 @@ export class InspectiontemplateCreateComponent implements OnInit {
   fieldArray: Array<any> = [];
   ; newAttribute: any = {};
 
-  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addFieldValue() {
     this.fieldArray.push('')
@@ -59,7 +61,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
     var TemplateID;
     var templatename;
     if (InspTempName && !InspTempName.trim()) {
-      alert("Please Enter Inspection Template Name!");
+      // alert("Please Enter Inspection Template Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Inspection Template Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -68,7 +78,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
     }
     else {
       ScoringTypeKey = null;
-      alert("Scoring Type is not provided !");
+      // alert("Scoring Type is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Scoring Type is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -77,7 +95,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
     }
     else {
       InspTempName = null;
-      alert("Inspection Template Name is not provided !");
+      // alert("Inspection Template Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Inspection Template Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -86,7 +112,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
     for (var i = 0; i < this.fieldArray.length; i++) {
       if (!(this.fieldArray[i])) {
         var index = i + 1;
-        alert("Question " + index + " is not provided !");
+        // alert("Question " + index + " is not provided !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Question " + index + " is not provided !",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       }
@@ -104,12 +138,28 @@ export class InspectiontemplateCreateComponent implements OnInit {
     QustArry = TempQustArry.join(',');
     if (QustArry === '') {
       QustArry = null;
-      alert(" Questions are not provided !");
+      // alert(" Questions are not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Questions are not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (QustArry && !QustArry.trim()) {
-      alert("Please Enter Question!");
+      // alert("Please Enter Question!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Question!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -119,7 +169,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
           this.ScoreTypeKey = "";
           this.InspTempName = null;
           this.fieldArray = [];
-          alert("Inspection Template Added !");
+          // alert("Inspection Template Added !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Inspection Template Added !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           this.addFieldValue();
         });
@@ -129,7 +187,15 @@ export class InspectiontemplateCreateComponent implements OnInit {
         this.ScoreTypeKey = "";
         this.InspTempName = null;
         this.fieldArray = [];
-        alert("Template Name already exists !");
+        // alert("Template Name already exists !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Template Name already exists !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         this.addFieldValue();
       }

@@ -4,19 +4,16 @@
     <h4 style="margin-left: 40%">EDIT THIS WORK ORDER INSTANCE</h4>
   </div>
 
-  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem"
-    class="row bg-info col-md-12">
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem" class="row bg-info col-md-12">
     <div class="col-md-6">
       <div class="form-group">
-        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck
-          (change)="toggleVisibility($event);change_values();" />&nbsp;
+        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility($event);change_values();" />&nbsp;
         <label style="margin-top: 2rem;">Equipment Order</label>&nbsp;
       </div>
 
       <div class="form-group">
         <label>Workorder Type*</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="workordertypekey"
-          required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="workordertypekey" required>
           <option value="">--Select--</option>
           <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
             {{e.WorkorderTypeText}}
@@ -26,8 +23,7 @@
 
       <div class="form-group">
         <label>Building*</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey"
-          (change)="getFloorDisp($event.target.value);" required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value);" required>
           <option value="">--Select--</option>
           <option *ngFor="let b of facilitylist" [value]="b.FacilityKey">
             {{b.FacilityText}}
@@ -36,9 +32,7 @@
       </div>
       <div class="form-group">
         <label>Zone</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey"
-          [disabled]="!FloorKey||(showEqTypes==true)"
-          (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);" required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="ZoneKey" [disabled]="!FloorKey||(showEqTypes==true)" (change)="getRoomTypeRoom($event.target.value,FacilityKey,FloorKey);" required>
           <option value="">--Select--</option>
           <option *ngFor="let b of zonelist" [value]="b.ZoneKey">
             {{b.ZoneName}}
@@ -47,9 +41,7 @@
       </div>
       <div class="form-group">
         <label>Room Type</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey"
-          [disabled]="!FloorKey||(showEqTypes==true)"
-          (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);" required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomTypeKey" [disabled]="!FloorKey||(showEqTypes==true)" (change)="getRoom($event.target.value,ZoneKey,FacilityKey,FloorKey);" required>
           <option value="">--Select--</option>
           <option *ngFor="let b of RoomTypeList" [value]="b.RoomTypeKey">
             {{b.RoomTypeName}}
@@ -58,8 +50,7 @@
       </div>
       <div class="form-group">
         <label>Room</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey"
-          [disabled]="!FloorKey||(showEqTypes==true)" required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey||(showEqTypes==true)" required>
           <option value="">--Select--</option>
           <option *ngFor="let b of RoomList" [value]="b.RoomKey">
             {{b.RoomName}}
@@ -74,13 +65,11 @@
       </div>
       <div class="form-group">
         <label>Workorder Notes</label>
-        <textarea class="form-control rounded-1" [(ngModel)]="WorkorderNotes" rows="6"
-          style="resize: none;width: 100% !important"></textarea>
+        <textarea class="form-control rounded-1" [(ngModel)]="WorkorderNotes" rows="6" style="resize: none;width: 100% !important"></textarea>
       </div>
       <div class="form-group" *ngIf="WOEditList.WorkorderStatus ==='Cancelled'">
         <label>Reason for cancellation</label>
-        <textarea class="form-control rounded-1" [(ngModel)]="WOEditList.CancelReason" rows="3"
-          style="resize: none;width: 100% !important"></textarea>
+        <textarea class="form-control rounded-1" [(ngModel)]="WOEditList.CancelReason" rows="3" style="resize: none;width: 100% !important"></textarea>
       </div>
     </div>
 
@@ -96,10 +85,7 @@
       </div>
       <div class="form-group">
         <label>Floor*</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey"
-          [disabled]="!FacilityKey"
-          (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);getEquiment($event.target.value,FacilityKey);"
-          required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey" (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);getEquiment($event.target.value,FacilityKey);" required>
           <option value="">--Select--</option>
           <option *ngFor="let b of FloorList" [value]="b.FloorKey">
             {{b.FloorName}}
@@ -108,9 +94,7 @@
       </div>
       <div class="form-group">
         <label>Equipment Type</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentTypeKey"
-          [disabled]="!(showEqTypes&&FloorKey)"
-          (change)="showEquipment_typechange($event.target.value,FacilityKey,FloorKey)" required>
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentTypeKey" [disabled]="!(showEqTypes&&FloorKey)" (change)="showEquipment_typechange($event.target.value,FacilityKey,FloorKey)" required>
           <option value="">--Select--</option>
           <option *ngFor="let e of EquipmentTypeList" [value]="e.EquipmentTypeKey">
             {{e.EquipmentTypeText}}
@@ -119,8 +103,7 @@
       </div>
       <div class="form-group">
         <label>Equipment Name</label><br>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentKey"
-          [disabled]="(!(showEqTypes&&EquipmentTypeKey))" required>{{EquipmentKey}}
+        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="EquipmentKey" [disabled]="(!(showEqTypes&&EquipmentTypeKey))" required>{{EquipmentKey}}
           <option value="">--Select--</option>
           <option *ngFor="let e of EquipmentList" [value]="e.EquipmentKey">
             {{e.EquipmentName}}
@@ -150,8 +133,7 @@
       </div>
 
       <div class="form-group">
-        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck
-          (change)="toggleVisibility_Barcode($event)" />&nbsp;
+        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck (change)="toggleVisibility_Barcode($event)" />&nbsp;
         <label>Barcode Required</label>&nbsp;
       </div>
       <div class="form-group">
@@ -168,15 +150,13 @@
     </div>
 
     <div style="margin-left:35%">
-      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-success"
-        (click)=UpdateWO()><b>UPDATE</b></button>
+      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-success" (click)=UpdateWO()><b>UPDATE</b></button>
       <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back </b>
       </a>
-      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-danger button_style"
-        (click)="basicModal.show();" mdbWavesEffect><b>DELETE</b></button>
+      <button type="button" [disabled]="WOEditList.WorkorderStatus!=='Scheduled'" class="btn btn-danger button_style" (click)="DeleteWO();" mdbWavesEffect><b>DELETE</b></button>
 
-      <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+      <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -197,7 +177,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

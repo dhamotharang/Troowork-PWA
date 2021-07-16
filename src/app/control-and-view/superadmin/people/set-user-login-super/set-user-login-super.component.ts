@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-set-user-login-super',
   templateUrl: './set-user-login-super.component.html',
@@ -16,7 +18,7 @@ export class SetUserLoginSuperComponent implements OnInit {
   empKey$: Object;
   userRoleTypeKey$: Object;
   Organization$
-checkFlag;
+  checkFlag;
   sasemail: People[];
   password: String = 'troowork';
   reEnterPassword: String = 'troowork';
@@ -44,7 +46,7 @@ checkFlag;
     }
     return window.atob(output);
   }
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmployeeKey);
     this.route.params.subscribe(params => this.str$ = params.str);
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
@@ -60,26 +62,42 @@ checkFlag;
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
 
-    this.checkFlag=false;
+    this.checkFlag = false;
     this.username = this.str$;
   }
   setUsernamePassword() {
-    this.checkFlag=true;
+    this.checkFlag = true;
     if (!this.username) {
-      alert("User Name can't be empty");
-      this.checkFlag=false;
+      // alert("User Name can't be empty");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "User Name can't be empty",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      this.checkFlag = false;
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].result == 'Exists') {
-            alert("User Name already exists");
-            this.checkFlag=false;
+            // alert("User Name already exists");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'User Name already exists',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            this.checkFlag = false;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.Organization$)
               .subscribe((data: any[]) => {
-                this.checkFlag=false;
+                this.checkFlag = false;
                 // this.router.navigateByUrl('/Viewemployee');
-                this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
+                this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Viewemployee'] } }]);
 
 
                 this.peopleService.getUserEmail(this.username, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
@@ -87,7 +105,15 @@ checkFlag;
                   this.userMail = data[0].newmail;
 
                   if (this.userMail == null) {
-                    alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                    // alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Login Credentials created for user Successfully! Mail not send , Mail-Id not found !',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
                   } else {
                     var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.password + "                https://troowork.azurewebsites.net";
 
@@ -97,7 +123,7 @@ checkFlag;
                       subject: 'Login Credentials',
                       text: message
                     };
-                    const url = ConectionSettings.Url+"/sendmail";
+                    const url = ConectionSettings.Url + "/sendmail";
                     return this.http.post(url, obj)
                       .subscribe(res => console.log('Mail Sent Successfully...'));
                   }

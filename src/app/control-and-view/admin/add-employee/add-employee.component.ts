@@ -4,6 +4,9 @@ import { PeopleServiceService } from '../../../service/people-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
@@ -194,24 +197,48 @@ export class AddEmployeeComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
-  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   createEmployee() {
     this.checkFlag = true;
     var manKey; var superKey;
     var IsSupervisor;
     if (!(this.EmployeeNumber) || !(this.EmployeeNumber.trim())) {
-      alert("Employee Number is not provided !");
+      // alert("Employee Number is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee Number is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(this.UserRoleTypeKey)) {
-      alert("User Role Type is not provided !");
+      // alert("User Role Type is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'User Role Type is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (this.showManager === true && !(this.ManagerKey)) {
-      alert("Manager is not provided !");
+      // alert("Manager is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Manager is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -240,12 +267,28 @@ export class AddEmployeeComponent implements OnInit {
       IsSupervisor = 0;
     }
     if (!(this.FirstName) || !(this.FirstName.trim())) {
-      alert("First Name is not provided !");
+      // alert("First Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'First Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(this.LastName) || !(this.LastName.trim())) {
-      alert("Last Name is not provided !");
+      // alert("Last Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Last Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -253,22 +296,54 @@ export class AddEmployeeComponent implements OnInit {
       this.Gender = null;
     }
     if (!(this.PrimaryPhone) || !(this.PrimaryPhone.trim())) {
-      alert("Primary Phone is not provided !");
+      // alert("Primary Phone is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Primary Phone is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(this.HireDate)) {
-      alert("Hire Date is not provided !");
+      // alert("Hire Date is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Hire Date is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(this.JobTitleKey)) {
-      alert("Job Title is not provided !");
+      // alert("Job Title is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Job Title is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(this.DepartmentKey)) {
-      alert("Department is not provided !");
+      // alert("Department is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Department is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -284,7 +359,15 @@ export class AddEmployeeComponent implements OnInit {
     }
     var HD = this.convert_DT(this.HireDate);
     if (BD > currentDate) {
-      alert("Wrong BirthDate !");
+      // alert("Wrong BirthDate !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Wrong BirthDate !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -293,7 +376,15 @@ export class AddEmployeeComponent implements OnInit {
     //   return;
     // }
     if (HD < BD) {
-      alert("Hire Date must be greater than birth date !");
+      // alert("Hire Date must be greater than birth date !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Hire Date must be greater than birth date !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -422,7 +513,15 @@ export class AddEmployeeComponent implements OnInit {
     this.PeopleServiceService.checkEmpNumber(this.EmployeeNumber, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count > 0) {
-          alert("Employee Number already exists");
+          // alert("Employee Number already exists");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Employee Number already exists !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else {
@@ -433,11 +532,21 @@ export class AddEmployeeComponent implements OnInit {
             // this.start_sun_hour, this.start_sun_min, this.start_sun_format, this.start_mon_hour, this.start_mon_min, this.start_mon_format, this.start_tue_hour, this.start_tue_min, this.start_tue_format, this.start_wed_hour, this.start_wed_min, this.start_wed_format, this.start_thu_hour, this.start_thu_min, this.start_thu_format, this.start_fri_hour, this.start_fri_min, this.start_fri_format, this.start_sat_hour, this.start_sat_min, this.start_sat_format, this.end_sun_hour, this.end_sun_min, this.end_sun_format, this.end_mon_hour, this.end_mon_min, this.end_mon_format, this.end_tue_hour, this.end_tue_min, this.end_tue_format, this.end_wed_hour, this.end_wed_min, this.end_wed_format, this.end_thu_hour, this.end_thu_min, this.end_thu_format, this.end_fri_hour, this.end_fri_min, this.end_fri_format, this.end_sat_hour, this.end_sat_min, this.end_sat_format, this.idscheduler_exception, this.idmaster_exception_weekend, this.idemployeegrouping)
             .subscribe((data22: any[]) => {
               this.temp_res = data22;
-              alert("Employee Created !");
-              this.checkFlag = false;
-              var empKey = this.temp_res.EmployeeKey;
+              // alert("Employee Created !");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Employee Created !',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
 
-              this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                var empKey = this.temp_res.EmployeeKey;
+                this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
+              });
             });
         }
       });

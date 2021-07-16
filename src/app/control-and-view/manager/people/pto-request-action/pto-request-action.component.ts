@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DatePipe } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 
 @Component({
@@ -117,7 +120,7 @@ export class PtoRequestActionComponent implements OnInit {
     }
   }
 
-  constructor(private PeopleServiceService: PeopleServiceService, private route: ActivatedRoute, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private PeopleServiceService: PeopleServiceService, private route: ActivatedRoute, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.ptorequestDetails$ = params.requestID);
   }
 
@@ -135,36 +138,86 @@ export class PtoRequestActionComponent implements OnInit {
     var newTime1 = null;
 
     if (!(this.requestdetailsbyID.Status)) {
-      alert('Status is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Status is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Status is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (this.requestdetailsbyID.Status === "Approved") {
 
 
       if (!(this.requestdetailsbyID.ApprovedStartDate)) {
-        alert('Approved Start Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved Start Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved Start Date is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (!(this.requestdetailsbyID.ApprovedEndDate)) {
-        alert('Approved End Date is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved End Date is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved End Date is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (!(this.requestdetailsbyID.ApprovedStartTime)) {
-        alert('Approved Start Time is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved Start Time is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved Start Time is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (!(this.requestdetailsbyID.ApprovedEndTime)) {
-        alert('Approved End Time is not provided !');
-        this.checkFlag = false;
-        return;
+        // alert('Approved End Time is not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved End Time is not provided !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       else {
@@ -174,9 +227,19 @@ export class PtoRequestActionComponent implements OnInit {
         var timediff = +time2 - +time1;
 
         if (timediff < 0) {
-          alert("Start Time can't be after End Time");
-          this.checkFlag = false;
-          return;
+          // alert("Start Time can't be after End Time");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: "Start Time can't be after End Time",
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       }
@@ -188,16 +251,36 @@ export class PtoRequestActionComponent implements OnInit {
 
       if (((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate)) >= (this.requestdetailsbyID.StartDate)) && ((this.convert_DT(this.requestdetailsbyID.ApprovedStartDate)) <= (this.requestdetailsbyID.EndDate))) { }
       else {
-        alert("Approved start date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved start date must be between requested dates!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved start date must be between requested dates!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (((this.convert_DT(this.requestdetailsbyID.ApprovedEndDate)) >= (this.requestdetailsbyID.StartDate)) && ((this.convert_DT(this.requestdetailsbyID.ApprovedEndDate)) <= (this.requestdetailsbyID.EndDate))) { }
       else {
-        alert("Approved end date must be between requested dates!");
-        this.checkFlag = false;
-        return;
+        // alert("Approved end date must be between requested dates!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Approved end date must be between requested dates!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
 
@@ -227,17 +310,27 @@ export class PtoRequestActionComponent implements OnInit {
       this.requestdetailsbyID.Status, comments)
       .subscribe((data: any[]) => {
         this.details = data[0];
-        alert("Request updated Successfully");
-        this.checkFlag = false;
+        // alert("Request updated Successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Request updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
 
-        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['RequestsFromEmployees'] } }]);
+          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['RequestsFromEmployees'] } }]);
 
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['RequestsFromEmployees'] } }]);
-          // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['RequestsFromEmployees'] } }]);
-        }
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['RequestsFromEmployees'] } }]);
+            // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['RequestsFromEmployees'] } }]);
+          }
+        });
 
       });
   }

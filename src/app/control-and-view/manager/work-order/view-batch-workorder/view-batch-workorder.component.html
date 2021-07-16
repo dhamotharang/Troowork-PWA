@@ -107,7 +107,7 @@
         <th>Action</th>
         <th>
           <span *ngIf="checkflag==false">Delete</span>
-          <span *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button" [disabled]="checkFlag" (click)="basicModal.show();">
+          <span *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button" [disabled]="checkFlag" (click)="deletebatchWorkOrdersPage();">
               Delete</button>
           </span>
         </th>
@@ -142,7 +142,7 @@
       </tbody>
     </table>
   </div>
-  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+  <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -160,7 +160,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <button class="btn btn-success" style="float:left" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
     Previous</button>
   <button class="btn btn-success" (click)="nextPage()" style="float:right" *ngIf="showHide2">Next >></button>

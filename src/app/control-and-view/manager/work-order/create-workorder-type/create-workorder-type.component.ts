@@ -4,7 +4,8 @@ import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-create-workorder-type',
   templateUrl: './create-workorder-type.component.html',
@@ -41,7 +42,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
   }
   WorkOrderTypeName; MetricKey;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private dst: DataServiceTokenStorageService, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private dst: DataServiceTokenStorageService, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dialog: MatDialog) { }
 
   numberValid(event: any) {
     const pattern = /[0-9\ .]/;
@@ -72,7 +73,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
     }
   }
   ngOnInit() {
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -92,19 +93,49 @@ export class CreateWorkorderTypeComponent implements OnInit {
 
     this.checkFlag = true;
     if (!WorkOrderTypeName || !WorkOrderTypeName.trim()) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
-      return;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!MetricType || !MetricType.trim()) {
-      alert("Enter MetricType!");
-      this.checkFlag = false;
-      return;
+      // alert("Enter MetricType!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Enter MetricType!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (MetricType != 'Default' && (!MetricTypeValue || !MetricTypeValue.trim())) {
-      alert("Enter MetricTypeValue!");
-      this.checkFlag = false;
-      return;
+      // alert("Enter MetricTypeValue!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Enter MetricTypeValue!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (MetricType) {
       MetricType = MetricType.trim();
@@ -133,23 +164,43 @@ export class CreateWorkorderTypeComponent implements OnInit {
       .checkforWOT(WorkOrderTypeName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count != 0) {
-          alert("Work-order type already exists!");
-          this.checkFlag = false;
+          // alert("Work-order type already exists!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order type already exists!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
         else if (data[0].count == 0) {//if not add new wot
           this.WorkOrderServiceService.createWOT(this.add_WOT)
             .subscribe((data: any[]) => {
 
-              alert("Work-order type created successfully");
-              this.checkFlag = false;
-              // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-              if (this.role == 'Manager') {
-                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-              }
-              // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-              else if (this.role == 'Supervisor') {
-                this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
-              }
+              // alert("Work-order type created successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Work-order type created successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                if (this.role == 'Manager') {
+                  this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                }
+                // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                else if (this.role == 'Supervisor') {
+                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+                }
+              });
             });
         }
       });

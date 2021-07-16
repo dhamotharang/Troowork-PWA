@@ -4,6 +4,9 @@ import { InspectionService } from '../../../service/inspection.service';
 import { Inspection } from '../../../model-class/Inspection';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-viewinspctnbysprvsr',
   templateUrl: './viewinspctnbysprvsr.component.html',
@@ -56,7 +59,7 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -214,40 +217,66 @@ export class ViewinspctnbysprvsrComponent implements OnInit {
   }
   deleteInspectionOrder() {
 
-    this.checkFlag1 = true;
-    var deleteInspectionOrderList = [];
-    var deleteInspectionOrderString;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-    if (this.checkValue.length > 0) {
-      for (var j = 0; j < this.checkValue.length; j++) {
-        if (this.checkValue[j] === true)
-          deleteInspectionOrderList.push(this.inspectionorderKey[j]);
-      }
-      deleteInspectionOrderString = deleteInspectionOrderList.join(',');
-    }
-    this.deleteInspection = {
-      deleteInspectionOrderList: deleteInspectionOrderString,
-      employeekey: this.toServeremployeekey,
-      OrganizationID: this.OrganizationID
-    };
-    this.inspectionService//service for deleting inspection
-      .delete_InspectionOrder(this.deleteInspection)
-      .subscribe((data: any[]) => {
-        this.inspectionordertable.deletechkbox = false;
-        this.checkValue = [];
-        this.checkflag = false;
-        this.inspectionorderKey = [];
-        alert("Inspection deleted successfully");
-        this.checkFlag1 = false;
-        var curr_date = this.convert_DT(new Date());
-        this.inspectionService
-          .getInspectionOrderTablewithCurrentDatefrsprvsr(curr_date, this.toServeremployeekey, this.OrganizationID)
-          .subscribe((data: Inspection[]) => {
-            this.inspectionordertable = data;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag1 = true;
+        var deleteInspectionOrderList = [];
+        var deleteInspectionOrderString;
+
+        if (this.checkValue.length > 0) {
+          for (var j = 0; j < this.checkValue.length; j++) {
+            if (this.checkValue[j] === true)
+              deleteInspectionOrderList.push(this.inspectionorderKey[j]);
+          }
+          deleteInspectionOrderString = deleteInspectionOrderList.join(',');
+        }
+        this.deleteInspection = {
+          deleteInspectionOrderList: deleteInspectionOrderString,
+          employeekey: this.toServeremployeekey,
+          OrganizationID: this.OrganizationID
+        };
+        this.inspectionService//service for deleting inspection
+          .delete_InspectionOrder(this.deleteInspection)
+          .subscribe((data: any[]) => {
+            this.inspectionordertable.deletechkbox = false;
+            this.checkValue = [];
+            this.checkflag = false;
+            this.inspectionorderKey = [];
+            // alert("Inspection deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Organization deleted successfully... !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag1 = false;
+              var curr_date = this.convert_DT(new Date());
+              this.inspectionService
+                .getInspectionOrderTablewithCurrentDatefrsprvsr(curr_date, this.toServeremployeekey, this.OrganizationID)
+                .subscribe((data: Inspection[]) => {
+                  this.inspectionordertable = data;
+                });
+              // this.filteringInspectionManagerByDate();
+            });
+
           });
-        // this.filteringInspectionManagerByDate();
+      } else {
+        this.checkflag = false;
+        this.checkFlag1 = false;
+      }
+    });
 
-      });
+
   }
   // delete inspection ... ends.....
 

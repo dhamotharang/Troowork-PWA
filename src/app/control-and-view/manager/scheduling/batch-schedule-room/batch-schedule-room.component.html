@@ -102,7 +102,7 @@
           <td>{{item.RoomTypeText}}-{{item.WorkorderTypeName}}</td>
           <td>{{item.RoomName}}</td>
           <td>
-            <button type="button" style="color:white !important" class="btn btn-danger" (click)="basicModal.show();deletekeypass(item.WorkOrderScheduleRoomID); " mdbWavesEffect>
+            <button type="button" style="color:white !important" class="btn btn-danger" (click)="deletekeypass(item.WorkOrderScheduleRoomID); " mdbWavesEffect>
               <b>Remove</b>
             </button>
           </td>
@@ -122,7 +122,7 @@
         <tr *ngIf="((allroomList?.length == 0)&&(scheduledroomList?.length == 0))">
           <td colspan="7" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -140,7 +140,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>

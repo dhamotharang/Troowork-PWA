@@ -9,6 +9,8 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-barchart-report',
@@ -59,7 +61,7 @@ export class BarchartReportComponent implements OnInit {
   downtime;
   checkFlag;
 
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     // this.dashboardreport = fb.group({
     //   EmployeeKey: ['', Validators.required],
     //   EmployeeText: ['', Validators.required]
@@ -132,14 +134,34 @@ export class BarchartReportComponent implements OnInit {
 
 
     if (!(this.EmployeeKey)) {
-      alert("Please choose Employee!");
-      this.checkFlag = false;
-      return;
+      // alert("Please choose Employee!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please choose Employee!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!fromdate) {
-      alert("Please choose Date!");
-      this.checkFlag = false;
-      return;
+      // alert("Please choose Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please choose Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     this.loading = true;
     this.ReportServiceService

@@ -6,6 +6,9 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { Router } from "@angular/router";
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-batch-schedule-room',
   templateUrl: './batch-schedule-room.component.html',
@@ -70,7 +73,7 @@ export class BatchScheduleRoomComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private inventoryService: InventoryService, private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private inventoryService: InventoryService, private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) { }
 
   getScheduleRoomDetails(key) {
 
@@ -232,7 +235,15 @@ export class BatchScheduleRoomComponent implements OnInit {
 
     var i = this.index;
     if (this.BatchScheduleNameKey == 0) {
-      alert("Select an Assignment Name");
+      // alert("Select an Assignment Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select an Assignment Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     } else {
       this.checkValue[i] = checkValue;
       this.roomsKey[i] = roomKey;
@@ -256,15 +267,33 @@ export class BatchScheduleRoomComponent implements OnInit {
         this.scheduleServ
           .addRoomToSchedule(this.BatchScheduleNameKey, addRoomString, this.employeekey, this.OrganizationID)
           .subscribe(res => {
-            alert("Rooms successfully added to assignment");
-            this.checkFlag = false;
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport', this.BatchScheduleNameKey] } }]);
+            // alert("Rooms successfully added to assignment");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Rooms successfully added to assignment',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport', this.BatchScheduleNameKey] } }]);
+            });
             // this.router.navigate(['/editScheduleForReport', this.BatchScheduleNameKey]);
           });
       }
     }
     else {
-      alert("Please select Rooms  !");
+      // alert("Please select Rooms  !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select Rooms  !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     this.checkValue = [];
     this.roomsKey = [];
@@ -361,73 +390,152 @@ export class BatchScheduleRoomComponent implements OnInit {
   }
   deletekeypass(key) {
     this.deletekey = key;
-  }
-  delete_room() {
-    this.checkFlag = true;
-    var building;
-    var floor;
-    var floortype;
-    var room;
-    var roomtype;
-    var zone;
 
-    if (!(this.FacilityKey)) {
-      building = null;
-    }
-    else {
-      building = this.FacilityKey;
-    }
-    if (!(this.FloorKey)) {
-      floor = null;
-    }
-    else {
-      floor = this.FloorKey;
-    }
-    if (!(this.FloorTypeKey)) {
-      floortype = null;
-    }
-    else {
-      floortype = this.FloorTypeKey;
-    }
-    if (!(this.RoomTypeKey)) {
-      roomtype = null;
-    }
-    else {
-      roomtype = this.RoomTypeKey;
-    }
-    if (!(this.RoomKey)) {
-      room = null;
-    }
-    else {
-      room = this.RoomKey;
-    }
-    if (!(this.zoneKey)) {
-      zone = null;
-    }
-    else {
-      zone = this.zoneKey;
-    }
-    this.delete_scheduledroom = {
-      workorderscheduleroomid: this.deletekey,
-      OrganizationID: this.OrganizationID,
-      employeekey: this.employeekey
-    };
-    this.scheduleServ
-      .deleteScheduledRoomslist(this.delete_scheduledroom)
-      .subscribe((data: Scheduling[]) => {
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        var building;
+        var floor;
+        var floortype;
+        var room;
+        var roomtype;
+        var zone;
+
+        if (!(this.FacilityKey)) {
+          building = null;
+        }
+        else {
+          building = this.FacilityKey;
+        }
+        if (!(this.FloorKey)) {
+          floor = null;
+        }
+        else {
+          floor = this.FloorKey;
+        }
+        if (!(this.FloorTypeKey)) {
+          floortype = null;
+        }
+        else {
+          floortype = this.FloorTypeKey;
+        }
+        if (!(this.RoomTypeKey)) {
+          roomtype = null;
+        }
+        else {
+          roomtype = this.RoomTypeKey;
+        }
+        if (!(this.RoomKey)) {
+          room = null;
+        }
+        else {
+          room = this.RoomKey;
+        }
+        if (!(this.zoneKey)) {
+          zone = null;
+        }
+        else {
+          zone = this.zoneKey;
+        }
+        this.delete_scheduledroom = {
+          workorderscheduleroomid: this.deletekey,
+          OrganizationID: this.OrganizationID,
+          employeekey: this.employeekey
+        };
+        this.scheduleServ
+          .deleteScheduledRoomslist(this.delete_scheduledroom)
+          .subscribe((data: Scheduling[]) => {
+            this.checkFlag = false;
+            this.scheduleServ
+              .getSchedulingRoomList(this.BatchScheduleNameKey, this.OrganizationID, building, floor, zone, roomtype, room, floortype)
+              .subscribe((data: any[]) => {
+                this.scheduledroomList = data;
+              });
+            this.scheduleServ
+              .getAllOtherRoomList(this.BatchScheduleNameKey, this.OrganizationID, this.pageno, this.itemsPerPage)
+              .subscribe((data: any[]) => {
+                this.allroomList = data;
+              });
+          });
+      } else {
         this.checkFlag = false;
-        this.scheduleServ
-          .getSchedulingRoomList(this.BatchScheduleNameKey, this.OrganizationID, building, floor, zone, roomtype, room, floortype)
-          .subscribe((data: any[]) => {
-            this.scheduledroomList = data;
-          });
-        this.scheduleServ
-          .getAllOtherRoomList(this.BatchScheduleNameKey, this.OrganizationID, this.pageno, this.itemsPerPage)
-          .subscribe((data: any[]) => {
-            this.allroomList = data;
-          });
-      });
+      }
+    });
   }
+  // delete_room() {
+  //   this.checkFlag = true;
+  //   var building;
+  //   var floor;
+  //   var floortype;
+  //   var room;
+  //   var roomtype;
+  //   var zone;
+
+  //   if (!(this.FacilityKey)) {
+  //     building = null;
+  //   }
+  //   else {
+  //     building = this.FacilityKey;
+  //   }
+  //   if (!(this.FloorKey)) {
+  //     floor = null;
+  //   }
+  //   else {
+  //     floor = this.FloorKey;
+  //   }
+  //   if (!(this.FloorTypeKey)) {
+  //     floortype = null;
+  //   }
+  //   else {
+  //     floortype = this.FloorTypeKey;
+  //   }
+  //   if (!(this.RoomTypeKey)) {
+  //     roomtype = null;
+  //   }
+  //   else {
+  //     roomtype = this.RoomTypeKey;
+  //   }
+  //   if (!(this.RoomKey)) {
+  //     room = null;
+  //   }
+  //   else {
+  //     room = this.RoomKey;
+  //   }
+  //   if (!(this.zoneKey)) {
+  //     zone = null;
+  //   }
+  //   else {
+  //     zone = this.zoneKey;
+  //   }
+  //   this.delete_scheduledroom = {
+  //     workorderscheduleroomid: this.deletekey,
+  //     OrganizationID: this.OrganizationID,
+  //     employeekey: this.employeekey
+  //   };
+  //   this.scheduleServ
+  //     .deleteScheduledRoomslist(this.delete_scheduledroom)
+  //     .subscribe((data: Scheduling[]) => {
+  //       this.checkFlag = false;
+  //       this.scheduleServ
+  //         .getSchedulingRoomList(this.BatchScheduleNameKey, this.OrganizationID, building, floor, zone, roomtype, room, floortype)
+  //         .subscribe((data: any[]) => {
+  //           this.scheduledroomList = data;
+  //         });
+  //       this.scheduleServ
+  //         .getAllOtherRoomList(this.BatchScheduleNameKey, this.OrganizationID, this.pageno, this.itemsPerPage)
+  //         .subscribe((data: any[]) => {
+  //           this.allroomList = data;
+  //         });
+  //     });
+  // }
   ngOnInit() {
     //token starts....
     // var token = sessionStorage.getItem('token');

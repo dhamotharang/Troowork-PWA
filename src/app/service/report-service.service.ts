@@ -416,4 +416,19 @@ export class ReportServiceService {
       .http
       .get(ConectionSettings.Url + '/getInspectionPickListReportDetails?from=' + from + '&to=' + to + '&template=' + template + '&employeeKey=' + Employee + '&orgID=' + orgID);
   }
+
+  generateWorkOrderAvgReportService(fromdate, todate, orgID) {
+    const url = ConectionSettings.Url + '/workorderAvgReport';
+    const obj = {
+      OrganizationID: orgID,
+      FromDate: fromdate,
+      ToDate: todate,
+
+    };
+    return this
+      .http
+      .post(url, obj);
+
+  }
+
 }

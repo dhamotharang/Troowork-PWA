@@ -3,6 +3,8 @@ import { PeopleServiceService } from '../../../service/people-service.service';
 import { Router } from '@angular/router';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-job-title-add-admin',
   templateUrl: './job-title-add-admin.component.html',
@@ -35,17 +37,33 @@ export class JobTitleAddAdminComponent implements OnInit {
   }
 
 
-  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addNewJobtitle(JobtitleName, JobTitleDescription) {
     this.checkFlag = true;
     if (!(JobtitleName) || !(JobtitleName.trim())) {
-      alert('Job title Name is not provided !');
+      // alert('Job title Name is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Job title Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!(JobTitleDescription) || !(JobTitleDescription.trim())) {
-      alert('Job Title Description is not provided !');
+      // alert('Job Title Description is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Job Title Description is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -55,16 +73,34 @@ export class JobTitleAddAdminComponent implements OnInit {
     this.peopleServiceService.checkfor_jobtitle(JobtitleName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count != 0) {
-          alert('Job title already exists !');
+          // alert('Job title already exists !');
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Job title already exists !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else {
           this.peopleServiceService.addJobtitle(JobtitleName, JobTitleDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: any[]) => {
-              alert('Job title successfully created !');
-              this.checkFlag = false;
-              this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+              // alert('Job title successfully created !');
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Job title successfully created !',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
 
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+              });
             });
         }
       });

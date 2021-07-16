@@ -4,6 +4,10 @@ import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+import { PromptdialogComponent, PromptDialogModel } from '../../../dialog/promptdialog/promptdialog.component';
 @Component({
   selector: 'app-view-work-orders',
   templateUrl: './view-work-orders.component.html',
@@ -100,7 +104,7 @@ export class ViewWorkOrdersComponent implements OnInit {
   longitude;
   basicModal1;
 
-  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   //function for token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -611,8 +615,16 @@ export class ViewWorkOrdersComponent implements OnInit {
   //function called when filter is applied
   viewWO_Filter() {
     if ((this.todate) && (this.convert_DT(this.ondate) > this.convert_DT(this.todate))) {
-      alert("Please check your start date!");
+      // alert("Please check your start date!");
 
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else {
       this.loading = true;
@@ -923,34 +935,62 @@ export class ViewWorkOrdersComponent implements OnInit {
   //function for deleting multiple workorders checked
   deleteWorkOrdersPage() {
 
-    this.checkFlag = true;
-    var deleteWorkOrderList = [];
-    var deleteWorkOrderString;
 
-    if (this.checkValue.length > 0) {
-      for (var j = 0; j < this.checkValue.length; j++) {
-        if (this.checkValue[j] === true)
-          deleteWorkOrderList.push(this.workorderKey[j]);
-      }
-      deleteWorkOrderString = deleteWorkOrderList.join(',');
-    }
-    this.deleteWO = {
-      deleteWorkOrderString: deleteWorkOrderString,
-      employeekey: this.emp_key,
-      OrganizationID: this.org_id
-    };
-    this.WorkOrderServiceService//service for deleting workorders
-      .delete_WO(this.deleteWO)
-      .subscribe((data: any[]) => {
-        this.workorderList.workorderCheckValue = false;
-        this.checkValue = [];
-        this.checkflag = false;
-        this.workorderKey = [];
-        alert("Work order deleted successfully");
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        var deleteWorkOrderList = [];
+        var deleteWorkOrderString;
+
+        if (this.checkValue.length > 0) {
+          for (var j = 0; j < this.checkValue.length; j++) {
+            if (this.checkValue[j] === true)
+              deleteWorkOrderList.push(this.workorderKey[j]);
+          }
+          deleteWorkOrderString = deleteWorkOrderList.join(',');
+        }
+        this.deleteWO = {
+          deleteWorkOrderString: deleteWorkOrderString,
+          employeekey: this.emp_key,
+          OrganizationID: this.org_id
+        };
+        this.WorkOrderServiceService//service for deleting workorders
+          .delete_WO(this.deleteWO)
+          .subscribe((data: any[]) => {
+            this.workorderList.workorderCheckValue = false;
+            this.checkValue = [];
+            this.checkflag = false;
+            this.workorderKey = [];
+            // alert("Work order deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work order deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.viewWO_Filter();
+            });
+
+          });
+      } else {
+        this.loading = false;
         this.checkFlag = false;
-        this.viewWO_Filter();
+      }
+    });
 
-      });
   }
 
   passGpsValue(Latitude, Longitude) {
@@ -962,28 +1002,50 @@ export class ViewWorkOrdersComponent implements OnInit {
 
   canceltheWorkorder(woKey) {
 
-    var reason = prompt("Enter the reason for cancelling the workorder...");
+    const message = `Enter the reason for cancelling the workorder`;
+    const dialogData = new PromptDialogModel("CANCEL", message);
+    const dialogRef = this.dialog.open(PromptdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-    var t = new Date();
-    var t = new Date();
-    var y = t.getFullYear();
-    var m = t.getMonth();
-    var d = t.getDate();
-    var h = t.getHours();
-    var mi = t.getMinutes();
-    var s = t.getSeconds();
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      var reason = dialogResult;
+      // console.log(reason);
+      console.log(dialogResult);
+      var t = new Date();
+      var t = new Date();
+      var y = t.getFullYear();
+      var m = t.getMonth();
+      var d = t.getDate();
+      var h = t.getHours();
+      var mi = t.getMinutes();
+      var s = t.getSeconds();
 
-    var today_DT = this.convert_DT(new Date());
-    var p = "";
-    p = today_DT + " " + h + ":" + mi + ":" + s;
+      var today_DT = this.convert_DT(new Date());
+      var p = "";
+      p = today_DT + " " + h + ":" + mi + ":" + s;
 
-    if ((reason.trim())) {
-      this.WorkOrderServiceService
-        .setCancelWorkorder(woKey, reason, today_DT, p, this.emp_key, this.org_id)
-        .subscribe((data: any[]) => {
-          alert("Selected workorder has been cancelled");
-          this.viewWO_Filter();
-        });
-    }
+      if ((reason.trim())) {
+        this.WorkOrderServiceService
+          .setCancelWorkorder(woKey, reason, today_DT, p, this.emp_key, this.org_id)
+          .subscribe((data: any[]) => {
+            // alert("Selected workorder has been cancelled");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Selected workorder has been cancelled!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.viewWO_Filter();
+            });
+          });
+      }
+    });
+    // var reason = prompt("Enter the reason for cancelling the workorder...");
+
   }
 }

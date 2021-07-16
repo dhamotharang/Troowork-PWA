@@ -5,6 +5,10 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-room-view',
   templateUrl: './room-view.component.html',
@@ -67,7 +71,7 @@ export class RoomViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -213,31 +217,75 @@ export class RoomViewComponent implements OnInit {
 
   deleteRoomPass(RoomKey) {
     this.delete_roomKey = RoomKey;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.inventoryService
+          .DeleteRoom(this.delete_roomKey, this.employeekey, this.OrganizationID).subscribe(() => {
+            // alert(" Room deleted succesfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Organization deleted successfully... !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.loading = true;
+              this.inventoryService
+                .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+                .subscribe((data: Inventory[]) => {
+                  this.rooms = data;
+                  this.loading = false;
+                  if (this.rooms[0].totalItems > this.itemsPerPage) {
+                    this.showHide2 = true;
+                    this.showHide1 = false;
+                  }
+                  else if (this.rooms[0].totalItems <= this.itemsPerPage) {
+                    this.showHide2 = false;
+                    this.showHide1 = false;
+                  }
+                });
+            });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
 
-  deleteRoom() {
-    this.checkFlag = true;
-    this.inventoryService
-      .DeleteRoom(this.delete_roomKey, this.employeekey, this.OrganizationID).subscribe(() => {
-        alert(" Room deleted succesfully");
-        this.checkFlag = false;
-        this.loading = true;
-        this.inventoryService
-          .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inventory[]) => {
-            this.rooms = data;
-            this.loading = false;
-            if (this.rooms[0].totalItems > this.itemsPerPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.rooms[0].totalItems <= this.itemsPerPage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
-      });
-  }
+  // deleteRoom() {
+  //   this.checkFlag = true;
+  //   this.inventoryService
+  //     .DeleteRoom(this.delete_roomKey, this.employeekey, this.OrganizationID).subscribe(() => {
+  //       alert(" Room deleted succesfully");
+  //       this.checkFlag = false;
+  //       this.loading = true;
+  //       this.inventoryService
+  //         .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inventory[]) => {
+  //           this.rooms = data;
+  //           this.loading = false;
+  //           if (this.rooms[0].totalItems > this.itemsPerPage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.rooms[0].totalItems <= this.itemsPerPage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+  //     });
+  // }
 
   rooms_Filter() {
     var building;
@@ -405,7 +453,7 @@ export class RoomViewComponent implements OnInit {
     this.flrKey = floor;
     this.zoneKey = zone;
     this.rTypeKey = roomtype;
-     if (facility && floor && zone && roomtype) {
+    if (facility && floor && zone && roomtype) {
       this.WorkOrderServiceService
         .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
         .subscribe((data: any[]) => {
@@ -457,7 +505,7 @@ export class RoomViewComponent implements OnInit {
     this.RoomKey = "";
     this.RoomTypeKey = "";
     this.loading = true;
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

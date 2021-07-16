@@ -5,6 +5,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-equipment-create',
@@ -46,7 +48,7 @@ export class EquipmentCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
 
   }
 
@@ -70,30 +72,86 @@ export class EquipmentCreateComponent implements OnInit {
 
     this.checkFlag = true;
     if (!(EquipmentName) || !(EquipmentName.trim())) {
-      alert("Please Enter Equipment Name!");
+      // alert("Please Enter Equipment Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Equipment Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (EquipmentTypeKey == '--Select--') {
-      alert("Equipment Type Name is not provided");
+      // alert("Equipment Type Name is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Equipment Type Name is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!EquipmentTypeKey) {
-      alert("Equipment Type Name is not provided");
+      // alert("Equipment Type Name is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Equipment Type Name is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!EquipmentName) {
-      alert("Equipment Name is not provided");
+      // alert("Equipment Name is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Equipment Name is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!Barcode) {
-      alert("Equipment Barcode is not provided");
+      // alert("Equipment Barcode is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Equipment Barcode is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
 
     } else if (!this.FacKey) {
-      alert("Building is not provided");
+      // alert("Building is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Building is not provided!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!this.FloorKey) {
-      alert("Floor is not provided");
+      // alert("Floor is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Floor is not provided!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else {
       EquipmentName = EquipmentName.trim();
@@ -106,21 +164,47 @@ export class EquipmentCreateComponent implements OnInit {
       this.inventoryService.checkForNewEquipment(EquipmentTypeKey, EquipmentName, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         this.dept = data;
         if (this.dept[0].count > 0) {
-          alert("Equipment already present");
+          // alert("Equipment already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Equipment already present!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else if (this.dept[0].count == 0) {
           this.inventoryService.checkForNewEquipmentbarcode(Barcode, this.OrganizationID).subscribe((data: any[]) => {
             this.dept = data;
             if (this.dept[0].count > 0) {
-              alert("Equipment Barcode already present");
+              // alert("Equipment Barcode already present");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Equipment Barcode already present!',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
               this.checkFlag = false;
             } else if (this.dept[0].count == 0) {
               this.inventoryService.addEquipment(EquipmentName, EquipmentDescription, Barcode, EquipmentTypeKey, this.FacKey, this.FloorKey, this.employeekey, this.OrganizationID)
                 .subscribe(res => {
-                  alert("Equipment created successfully");
-                  this.checkFlag = false;
-                  this._location.back();
+                  // alert("Equipment created successfully");
+                  const dialogRef = this.dialog.open(AlertdialogComponent, {
+                    data: {
+                      message: 'Equipment created successfully',
+                      buttonText: {
+                        cancel: 'Done'
+                      }
+                    },
+                  });
+                  dialogRef.afterClosed().subscribe(dialogResult => {
+                    this.checkFlag = false;
+                    this._location.back();
+                  });
                 });
             }
           });
@@ -133,7 +217,7 @@ export class EquipmentCreateComponent implements OnInit {
     this.EquipmentTypeKey = "";
     this.FacilityKey = "";
     this.FloorKey = "";
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

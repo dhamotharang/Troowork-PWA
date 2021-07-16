@@ -4,6 +4,8 @@ import { Login } from '../../../../model-class/login';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 const url = ConectionSettings.Url + '/imgupload';
 @Component({
   selector: 'app-manager-myprofile',
@@ -22,7 +24,7 @@ export class ManagerMyprofileComponent implements OnInit {
   addUrl;
   idimageupload;
   image;
-  
+
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -38,10 +40,10 @@ export class ManagerMyprofileComponent implements OnInit {
       default:
         throw 'Illegal base64url string!';
     }
-    return window.atob(output); 
+    return window.atob(output);
   }
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
-  constructor(private loginService: LoginService, private dst: DataServiceTokenStorageService) { }
+  constructor(private loginService: LoginService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
 
 
@@ -60,32 +62,42 @@ export class ManagerMyprofileComponent implements OnInit {
       .subscribe((data: Login[]) => {
         this.profile = data;
       });
-      this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
-      alert('File uploaded successfully');
-      this.loginService.getimage(this.employeekey, this.OrganizationID,this.idimageupload)
-    .subscribe((data: any[]) => {
-      if(data.length>0){
-        this.image = data[0].FileName;
-      }
-      else{
-        this.image =null;
-      }
-      
-    });
-      
+      // alert('File uploaded successfully');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'File uploaded successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.loginService.getimage(this.employeekey, this.OrganizationID, this.idimageupload)
+          .subscribe((data: any[]) => {
+            if (data.length > 0) {
+              this.image = data[0].FileName;
+            }
+            else {
+              this.image = null;
+            }
+
+          });
+      });
+
     };
-    this.loginService.getimage(this.employeekey, this.OrganizationID,this.idimageupload)
-    .subscribe((data: any[]) => {
-      if(data.length>0){
-        this.image = data[0].FileName;
-      }
-      else{
-        this.image =null;
-      }
-      
-    });
+    this.loginService.getimage(this.employeekey, this.OrganizationID, this.idimageupload)
+      .subscribe((data: any[]) => {
+        if (data.length > 0) {
+          this.image = data[0].FileName;
+        }
+        else {
+          this.image = null;
+        }
+
+      });
   }
   ImgUpload() {
     // if (!(this.profile)) {
@@ -96,13 +108,13 @@ export class ManagerMyprofileComponent implements OnInit {
     this.uploader.onBeforeUploadItem = (item) => {
 
       item.withCredentials = false;
-      item.url =url + this.addUrl;
-      
-     
+      item.url = url + this.addUrl;
+
+
     }
-    
+
     this.uploader.uploadAll();
-    
-  
+
+
   }
 }

@@ -4,6 +4,9 @@ import { PeopleServiceService } from '../../../../service/people-service.service
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-meeting-training-edit',
@@ -100,7 +103,7 @@ export class MeetingTrainingEditComponent implements OnInit {
   };
 
 
-  constructor(private peopleServ: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService) {
+  constructor(private peopleServ: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.eventKey$ = params.EventKey);
     this.route.params.subscribe(params => this.actionKey$ = params.ActionKey);
   }
@@ -146,14 +149,34 @@ export class MeetingTrainingEditComponent implements OnInit {
   updateMeetingTrainingEvent(ActionKey, Eventhost, Venue, MeetingNotes) {
     this.checkFlag = true;
     if (!this.timeValue1) {
-      alert("Start Time is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("Start Time is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time is not provided!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.timeValue2) {
-      alert("End Time is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("End Time is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time is not provided!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
       var time1 = new Date(this.timeValue1);
@@ -162,22 +185,52 @@ export class MeetingTrainingEditComponent implements OnInit {
       var timediff = +time2 - +time1;
 
       if (timediff < 0) {
-        alert("Start Time can't be after End Time");
-        this.checkFlag = false;
-        return;
+        // alert("Start Time can't be after End Time");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Start Time can't be after End Time",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
     }
 
     if (!ActionKey) {
-      alert("Select  meeting/training/event to continue");
-      this.checkFlag = false;
-      return;
+      // alert("Select  meeting/training/event to continue");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select meeting/training/event to continue',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!Eventhost || !Eventhost.trim()) {
-      alert("Event host is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("Event host is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Event host is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     // if (!Venue || !Venue.trim()) {
     //   alert("Venue is not provided");
@@ -185,9 +238,19 @@ export class MeetingTrainingEditComponent implements OnInit {
     // }
 
     if (this.Employee.length == 0) {
-      alert("Employee is not selected");
-      this.checkFlag = false;
-      return;
+      // alert("Employee is not selected");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee is not selected!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (Eventhost) {
       Eventhost = Eventhost.trim();
@@ -236,15 +299,25 @@ export class MeetingTrainingEditComponent implements OnInit {
     this.peopleServ
       .updateMeetingTraining(ActionKey, Eventhost, Venue, newTime, newTime1, MeetingNotes, EmployeeKeyString, newDate, this.eventKey$, this.employeekey, this.OrganizationID)
       .subscribe(res => {
-        alert("Meeting/Training is successfully updated !");
-        this.checkFlag = false;
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-        }
-        // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-        }
+        // alert("Meeting/Training is successfully updated !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Meeting/Training is successfully updated',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+          }
+          // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+          }
+        });
       }
       );
 
@@ -286,7 +359,7 @@ export class MeetingTrainingEditComponent implements OnInit {
   // for selecting employees with jobtitle,Supervisor and department filter ends
   //Pooja's code ends
   ngOnInit() {
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

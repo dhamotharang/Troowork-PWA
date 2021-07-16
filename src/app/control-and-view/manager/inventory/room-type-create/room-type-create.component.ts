@@ -5,6 +5,9 @@ import { Router } from "@angular/router";
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 
 @Component({
   selector: 'app-room-type-create',
@@ -52,7 +55,7 @@ export class RoomTypeCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) { }
+  constructor(private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   showFields(metricType) {
     {
@@ -82,12 +85,28 @@ export class RoomTypeCreateComponent implements OnInit {
     this.inventoryService
       .checkRoomType(RoomTypeName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         if (data.length > 0) {
-          alert("Room Type already present");
+          // alert("Room Type already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Room Type already present!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else if (data.length == 0) {
           if (!RoomTypeName || !RoomTypeName.trim()) {
-            alert("Enter RoomType Name!");
+            // alert("Enter RoomType Name!");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Enter RoomType Name!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             this.checkFlag = false;
           }
           // } else if (!MetricType) {
@@ -97,9 +116,19 @@ export class RoomTypeCreateComponent implements OnInit {
           // } 
           else {
             this.inventoryService.addRoomType(RoomTypeName, MetricTypeValue, MetricType, this.employeekey, this.OrganizationID).subscribe(res => {
-              alert("RoomType created successfully");
-              this.checkFlag = false;
-              this._location.back();
+              // alert("RoomType created successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'RoomType created successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this._location.back();
+              });
             });
           }
         }
@@ -107,7 +136,7 @@ export class RoomTypeCreateComponent implements OnInit {
   }
   ngOnInit() {
     this.MetricKey = "";
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

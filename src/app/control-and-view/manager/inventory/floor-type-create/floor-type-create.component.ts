@@ -5,6 +5,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 
 @Component({
   selector: 'app-floor-type-create',
@@ -38,32 +41,66 @@ export class FloorTypeCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
   }
 
   addFloorType(FloorTypeName) {
     this.checkFlag = true;
     if (FloorTypeName && !FloorTypeName.trim()) {
-      alert("Please Enter Floor Type Name!");
+      // alert("Please Enter Floor Type Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Floor Type Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!FloorTypeName) {
-      alert("Please provide a Floor Type Name");
+      // alert("Please provide a Floor Type Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Floor Type Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else {
       FloorTypeName = FloorTypeName.trim();
       this.inventoryServ.checkForNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         this.flrType = data;
         if (data.length > 0) {
-          alert("Floor Type already present");
+          // alert("Floor Type already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Floor Type already present!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else if (data.length == 0) {
           this.inventoryServ.addNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe(res => {
-            alert("FloorType created successfully");
-            this.checkFlag = false;
-            this._location.back();
+            // alert("FloorType created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'FloorType created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this._location.back();
+            });
           });
         }
       });
@@ -71,7 +108,7 @@ export class FloorTypeCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

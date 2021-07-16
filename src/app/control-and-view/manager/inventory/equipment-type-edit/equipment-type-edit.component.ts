@@ -4,6 +4,8 @@ import { InventoryService } from '../../../../service/inventory.service';
 // import { Inventory } from '../../../../model-class/Inventory';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-equipment-type-edit',
@@ -38,7 +40,7 @@ export class EquipmentTypeEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.equipTypeKey$ = params.EquipTypeKey);
   }
 
@@ -46,10 +48,26 @@ export class EquipmentTypeEditComponent implements OnInit {
 
     this.checkFlag = true;
     if (!equipType || !equipType.trim()) {
-      alert("Please provide a Equipment Type");
+      // alert("Please provide a Equipment Type");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Equipment Type!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else if (!equipTypeDesc || !equipTypeDesc.trim()) {
-      alert("Please provide a Equipment Type Description");
+      // alert("Please provide a Equipment Type Description");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Equipment Type Description !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else {
       equipType = equipType.trim();
@@ -57,7 +75,15 @@ export class EquipmentTypeEditComponent implements OnInit {
       this.inventoryService.checkForNewEquipmentType(equipType, this.employeekey, this.OrganizationID).subscribe((data: Array<any>) => {
         this.equipType = data;
         if (this.equipType[0].count == 1) {
-          alert("Equipment Type already present");
+          // alert("Equipment Type already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Equipment Type already present!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           this.inventoryService.getEquipmentTypeListEdit(this.equipTypeKey$, this.OrganizationID).subscribe((data: Array<any>) => {
 
@@ -68,9 +94,19 @@ export class EquipmentTypeEditComponent implements OnInit {
         }
         else {
           this.inventoryService.UpdateEquipmentType(equipType, equipTypeDesc, equipTypeKey, this.employeekey, this.OrganizationID).subscribe(res => {
-            alert("Equipment Type  updated successfully");
-            this.checkFlag = false;
-            this._location.back();
+            // alert("Equipment Type  updated successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Equipment Type  updated successfully!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this._location.back();
+            });
           });
         }
       });
@@ -79,7 +115,7 @@ export class EquipmentTypeEditComponent implements OnInit {
 
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

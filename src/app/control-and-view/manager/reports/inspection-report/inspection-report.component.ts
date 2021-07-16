@@ -8,6 +8,8 @@ import { InspectionService } from '../../../../service/inspection.service';
 import * as FileSaver from 'file-saver';//for excel
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-inspection-report',
   templateUrl: './inspection-report.component.html',
@@ -87,7 +89,7 @@ export class InspectionReportComponent implements OnInit {
     // Template: '', Date: '', Location: '', Auditor: '', Employee: '', Status: ''
   }
   ];
-  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService) {
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService, private dialog: MatDialog) {
     this.inspectionreport = fb.group({
       SupervisorKey: ['', Validators.required],
       SupervisorText: ['', Validators.required]
@@ -165,9 +167,19 @@ export class InspectionReportComponent implements OnInit {
 
     if (todate && fromdate > todate) {
       todate = null;
-      alert("Please check your Dates !");
-      this.checkFlag = false;
-      return;
+      // alert("Please check your Dates !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Dates !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.TemplateName) {
       Template_Name = this.TemplateName;

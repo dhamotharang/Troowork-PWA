@@ -5,6 +5,9 @@ import { PeopleServiceService } from '../../../../service/people-service.service
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-manual-employee-leave',
   templateUrl: './manual-employee-leave.component.html',
@@ -63,13 +66,13 @@ export class ManualEmployeeLeaveComponent implements OnInit {
   }
   public date: Date = new Date(Date.now());
 
-  constructor(private peopleService: PeopleServiceService, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private peopleService: PeopleServiceService, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmployeeKey);
   }
 
   ngOnInit() {
     // token starts....
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -91,24 +94,63 @@ export class ManualEmployeeLeaveComponent implements OnInit {
   saveLeave() {
     this.checkFlag = true;
     if (!this.reasonID) {
-      alert("Please select a reason!!!");
-      this.checkFlag = false;
-      return;
+      // alert("Please select a reason!!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a reason!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.fromdate) {
-      alert("Please provide a from date!!!");
-      this.checkFlag = false;
-      return;
+      // alert("Please provide a from date!!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a from date!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } if (!this.todate) {
-      alert("Please provide a to date!!!");
-      this.checkFlag = false;
-      return;
+      // alert("Please provide a to date!!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a to date!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     this.peopleService.saveManualLeaveForEmployee(this.reasonID, this.convert_DT(this.fromdate), this.convert_DT(this.todate), this.empKey$, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-      alert("Manual leave for employee inserted successfully...");
-      this.checkFlag = false;
-
-      this._location.back();
+      // alert("Manual leave for employee inserted successfully...");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Manual leave for employee inserted successfully...',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        this._location.back();
+      });
     });
   }
   goBack() {

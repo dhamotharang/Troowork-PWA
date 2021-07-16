@@ -787,6 +787,12 @@ const routes: Routes = [
         path: 'logout',
         outlet: 'ManagerOut',
         loadChildren: '../../../dashboard/logout/logout.module#LogoutModule'
+      },
+      {
+        path: 'WorkorderAvgReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/workorder-average-report/workorder-average-report.module#WorkorderAverageReportModule',
+
       }
     ]
   }

@@ -27,13 +27,13 @@
           <td>{{ x.FloorName }}</td>
           <td>{{ x.FloorDescription }}</td>
           <td><a [routerLink]="['Flooredit',x.FloorKey,x.FacilityKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button class="btn btn-danger" [disabled]="checkFlag" (click)="basicModal.show();deleteFloorPass(x.FacilityKey,x.FloorKey); "><b>Delete</b></button>
+            <button class="btn btn-danger" [disabled]="checkFlag" (click)="deleteFloorPass(x.FacilityKey,x.FloorKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="floor?.length == 0">
           <td colspan="4" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -51,7 +51,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </tbody>
     </table>

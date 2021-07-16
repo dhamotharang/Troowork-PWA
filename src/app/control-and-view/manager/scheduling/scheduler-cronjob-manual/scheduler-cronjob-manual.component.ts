@@ -1,6 +1,10 @@
 import { Component, OnInit, HostListener, Input, ElementRef } from '@angular/core';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-scheduler-cronjob-manual',
@@ -43,7 +47,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   createCJ() {
     this.checkFlag = true;
@@ -56,40 +60,83 @@ export class SchedulerCronjobManualComponent implements OnInit {
             .subscribe(res => {
               this.loading = false;
               this.disableFlag = false;
-              alert("Cronjobs created successfully");
-              this.checkFlag = false;
+              // alert("Cronjobs created successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Cronjobs created successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+              });
             });
         }
         else {
-          alert("Need 8 Weeks of Data to create");
-          this.checkFlag = false;
+          // alert("Need 8 Weeks of Data to create");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Need 8 Weeks of Data to create!!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+          });
         }
       });
   }
 
   deleteCJ() {
-    this.loading = true;
-    this.checkFlag = true;
-    this.scheduleService.deleteSchedulerCronjob(this.OrganizationID, this.curDate, this.employeekey)
-      .subscribe((data: any) => {
-        this.loading = false;
-        if (data[0].assignmentmastercount > 0) {
-          this.disableFlag = false;
-        } else if (data[0].assignmentmastercount == 0) {
-          this.disableFlag = true;
-        }
 
-        this.scheduleService.getCountForAssignmentManualCronjob(this.OrganizationID).subscribe((data: any) => {
-        
-          if (data[0].count > 0) {
-            this.scheduleService.getCountForAssignmentManualCronjobnextdate(this.OrganizationID).subscribe((data: any) => {
-              this.nextschedulerDate = this.convert_DT(data[0].nextdate);
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.loading = true;
+        this.checkFlag = true;
+        this.scheduleService.deleteSchedulerCronjob(this.OrganizationID, this.curDate, this.employeekey)
+          .subscribe((data: any) => {
+            this.loading = false;
+            if (data[0].assignmentmastercount > 0) {
+              this.disableFlag = false;
+            } else if (data[0].assignmentmastercount == 0) {
+              this.disableFlag = true;
+            }
+
+            this.scheduleService.getCountForAssignmentManualCronjob(this.OrganizationID).subscribe((data: any) => {
+
+              if (data[0].count > 0) {
+                this.scheduleService.getCountForAssignmentManualCronjobnextdate(this.OrganizationID).subscribe((data: any) => {
+                  this.nextschedulerDate = this.convert_DT(data[0].nextdate);
+                });
+              }
             });
-          }
-        });
-        alert("Cronjobs deleted successfully");
-        this.checkFlag = false;
-      });
+            // alert("Cronjobs deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Cronjobs deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
+          });
+      }
+    });
+
   }
 
   ngOnInit() {
@@ -116,7 +163,7 @@ export class SchedulerCronjobManualComponent implements OnInit {
       }
     });
     this.scheduleService.getCountForAssignmentManualCronjob(this.OrganizationID).subscribe((data: any) => {
-     
+
       if (data[0].count > 0) {
         this.scheduleService.getCountForAssignmentManualCronjobnextdate(this.OrganizationID).subscribe((data: any) => {
           this.nextschedulerDate = this.convert_DT(data[0].nextdate);

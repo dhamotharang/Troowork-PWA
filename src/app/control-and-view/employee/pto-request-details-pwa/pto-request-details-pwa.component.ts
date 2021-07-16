@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-pto-request-details-pwa',
@@ -74,7 +76,7 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
 
@@ -94,12 +96,22 @@ export class PtoRequestDetailsPWAComponent implements OnInit {
     this.checkFlag = true;
     this.PeopleServiceService.setcancelPTObyEmployee(this.ptorequestID$, this.toServeremployeekey, this.OrganizationID, this.convert_DT(new Date())).subscribe((data) => {
       this.checkFlag = false;
-      alert("Request successfully cancelled by employee");
-      if (this.role == 'Employee') {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
-      } else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
-      }
+      // alert("Request successfully cancelled by employee");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Request successfully cancelled by employee',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (this.role == 'Employee') {
+          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
+        } else if (this.role == 'Supervisor') {
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
+        }
+      });
     });
   }
 

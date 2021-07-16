@@ -5,6 +5,8 @@ import { Inspection } from '../../../../model-class/Inspection';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-inspection-view',
   templateUrl: './inspection-view.component.html',
@@ -69,7 +71,7 @@ export class InspectionViewComponent implements OnInit {
     return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
   }
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -158,7 +160,15 @@ export class InspectionViewComponent implements OnInit {
     this.showHide1 = false;
     if (this.todate && this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
       this.todate = null;
-      alert("Please check your Start Date!");
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     this.loading = true;// loading
@@ -319,10 +329,19 @@ export class InspectionViewComponent implements OnInit {
         this.checkValue = [];
         this.checkflag = false;
         this.inspectionorderKey = [];
-        alert("Inspection deleted successfully");
-        this.checkFlag = false;
-        this.filteringInspectionManagerByDate();
-
+        // alert("Inspection deleted successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Inspection deleted successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this.filteringInspectionManagerByDate();
+        });
       });
   }
 }

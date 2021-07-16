@@ -6,6 +6,9 @@ import { ResponsiveService } from 'src/app/service/responsive.service';
 import { DatePipe } from '@angular/common';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-pto-request-edit-pwa',
@@ -72,7 +75,7 @@ export class PtoRequestEditPWAComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
 
@@ -87,25 +90,65 @@ export class PtoRequestEditPWAComponent implements OnInit {
 
     this.checkFlag = true;
     if (!(this.requestdetails.StartDate)) {
-      alert('Start Date is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Start Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Date is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.requestdetails.EndDate)) {
-      alert('End Date is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('End Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Date is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(this.startTime)) {
-      alert('Start Time is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('Start Time is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.EndTime)) {
-      alert('End Time is not provided !');
-      this.checkFlag = false;
-      return;
+      // alert('End Time is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
       var time1 = new Date(this.startTime);
@@ -114,9 +157,19 @@ export class PtoRequestEditPWAComponent implements OnInit {
       var timediff = +time2 - +time1;
 
       if (timediff < 0) {
-        alert("Start Time can't be after End Time");
-        this.checkFlag = false;
-        return;
+        // alert("Start Time can't be after End Time");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Start Time can't be after End Time",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     }
 
@@ -134,14 +187,34 @@ export class PtoRequestEditPWAComponent implements OnInit {
 
     var curr_date = this.convert_DT(new Date());
     if (this.convert_DT(curr_date) > this.convert_DT(this.requestdetails.StartDate)) {
-      alert("Start Date can't be less than Today...!");
-      this.checkFlag = false;
-      return;
+      // alert("Start Date can't be less than Today...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Start Date can't be less than Today...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.convert_DT(this.requestdetails.EndDate) < this.convert_DT(this.requestdetails.StartDate)) {
-      alert("End Date can't be less than start date...!");
-      this.checkFlag = false;
-      return;
+      // alert("End Date can't be less than start date...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "End Date can't be less than start date...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     var comments;
@@ -164,15 +237,25 @@ export class PtoRequestEditPWAComponent implements OnInit {
       newTime, newTime1, comments, this.requestdetails.Reason, this.toServeremployeekey).subscribe((data) => {
         this.requestdetails = data;
         this.checkFlag = false;
-        alert('PTO Request Updated Successfully');
-        // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
-        // if (this.role == 'Employee' && this.IsSupervisor == 0) {
-        if (this.role == 'Employee') {
-          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
-          // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
-        }
+        // alert('PTO Request Updated Successfully');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'PTO Request Updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+          // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+          if (this.role == 'Employee') {
+            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
+            // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
+          }
+        });
       });
   }
 
@@ -190,27 +273,81 @@ export class PtoRequestEditPWAComponent implements OnInit {
     this.deleteRequestKey = key;
 
 
-  }
-  deleteRequest() {
-    this.checkFlag = true;
-    this.PeopleServiceService.setdeletePTORequest(this.deleteRequestKey, this.OrganizationID)
-      .subscribe((data) => {
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-        this.PeopleServiceService.setgetRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
-          this.requestdetails = data;
-          this.checkFlag = false;
-          alert('PTO Request Deleted Successfully');
-          // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
-          // if (this.role == 'Employee' && this.IsSupervisor == 0) {
-          if (this.role == 'Employee') {
-            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
-            // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-          } else if (this.role == 'Supervisor') {
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
-          }
-        });
-      });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        this.PeopleServiceService.setdeletePTORequest(this.deleteRequestKey, this.OrganizationID)
+          .subscribe((data) => {
+
+            this.PeopleServiceService.setgetRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+              this.requestdetails = data;
+              this.checkFlag = false;
+              // alert('PTO Request Deleted Successfully');
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'PTO Request Deleted Successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+                // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+                if (this.role == 'Employee') {
+                  this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
+                  // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                } else if (this.role == 'Supervisor') {
+                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
+                }
+              });
+            });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
+  // deleteRequest() {
+  //   this.checkFlag = true;
+  //   this.PeopleServiceService.setdeletePTORequest(this.deleteRequestKey, this.OrganizationID)
+  //     .subscribe((data) => {
+
+  //       this.PeopleServiceService.setgetRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+  //         this.requestdetails = data;
+  //         this.checkFlag = false;
+  //         // alert('PTO Request Deleted Successfully');
+  //         const dialogRef = this.dialog.open(AlertdialogComponent, {
+  //           data: {
+  //             message: 'Start Date is not provided !!',
+  //             buttonText: {
+  //               cancel: 'Done'
+  //             }
+  //           },
+  //         });
+  //         dialogRef.afterClosed().subscribe(dialogResult => {
+  //           this.checkFlag = false;
+  //           return;
+  //         });
+  //         // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+  //         // if (this.role == 'Employee' && this.IsSupervisor == 0) {
+  //         if (this.role == 'Employee') {
+  //           this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['PtoRequestViewPWA'] } }]);
+  //           // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+  //         } else if (this.role == 'Supervisor') {
+  //           this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['PtoRequestViewPWA'] } }]);
+  //         }
+  //       });
+  //     });
+  // }
 
   ngOnInit() {
 

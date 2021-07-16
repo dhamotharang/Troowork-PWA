@@ -2,6 +2,10 @@ import { Component, OnInit, HostListener, Input, ElementRef } from '@angular/cor
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
+// import { MatDialog } from '@angular/material/dialog';
+// import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+// import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-viewshift',
   templateUrl: './viewshift.component.html',
@@ -34,7 +38,7 @@ export class ViewshiftComponent implements OnInit {
     }
     return window.atob(output);
   }
-
+  // , private dialog: MatDialog
   constructor(private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService) { }
 
   ngOnInit() {
@@ -52,22 +56,22 @@ export class ViewshiftComponent implements OnInit {
     //token ends
 
     this.scheduleServ.getShifts(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-      
+
       this.shiftdetails = data;
 
     });
   }
-  deleteShiftPass(Idemployeeshift) {
-    this.delete_shiftKey = Idemployeeshift;
-  }
-  deleteShift() {
-    this.scheduleServ.removeEmployeeShift(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-      alert("Group Name deleted successfully");
-      this.scheduleServ.getShifts(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-        this.shiftdetails = data;
-      });
-    });
-  }
+  // deleteShiftPass(Idemployeeshift) {
+  //   this.delete_shiftKey = Idemployeeshift;
+  // }
+  // deleteShift() {
+  //   this.scheduleServ.removeEmployeeShift(this.delete_shiftKey, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+  //     alert("Group Name deleted successfully");
+  //     this.scheduleServ.getShifts(this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+  //       this.shiftdetails = data;
+  //     });
+  //   });
+  // }
 
   // changeDisable(indexVal) {
   //   this.grpID = indexVal;

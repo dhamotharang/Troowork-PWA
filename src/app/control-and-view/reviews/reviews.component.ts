@@ -194,7 +194,7 @@ export class ReviewsComponent implements OnInit {
         var feedbackmasterID = data[0].feedbackmasterID;
         var count = 0;
         for (var i = 0; i < questionidList.length; i++) {
-     
+
           questionValues = "Pass";
           notes = null;
           questionid = questionidList[i];

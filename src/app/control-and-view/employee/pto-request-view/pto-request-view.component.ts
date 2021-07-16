@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleServiceService } from "../../../service/people-service.service";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-pto-request-view',
   templateUrl: './pto-request-view.component.html',
@@ -9,8 +12,8 @@ import { DataServiceTokenStorageService } from '../../../service/DataServiceToke
 })
 export class PtoRequestViewComponent implements OnInit {
 
-    ////////Author :  Aswathy//////
-    
+  ////////Author :  Aswathy//////
+
   role: String;
   name: String;
   toServeremployeekey: Number;
@@ -38,22 +41,55 @@ export class PtoRequestViewComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   deletePass(key) {
     this.deleteRequestKey = key;
 
-  }
-  deleteRequest() {
-    this.checkFlag = true;
-    this.PeopleServiceService.deletePTORequest(this.deleteRequestKey, this.OrganizationID)
-      .subscribe((data) => {
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.checkFlag = true;
+        this.PeopleServiceService.deletePTORequest(this.deleteRequestKey, this.OrganizationID)
+          .subscribe((data) => {
+            this.checkFlag = false;
+            // alert('PTO Request Deleted Successfully');
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'PTO Request Deleted Successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+                this.requestdetails = data;
+              });
+            });
+          });
+      } else {
         this.checkFlag = false;
-        alert('PTO Request Deleted Successfully');
-        this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
-          this.requestdetails = data;
-        });
-      });
+      }
+    });
   }
+  // deleteRequest() {
+  //   this.checkFlag = true;
+  //   this.PeopleServiceService.deletePTORequest(this.deleteRequestKey, this.OrganizationID)
+  //     .subscribe((data) => {
+  //       this.checkFlag = false;
+  //       alert('PTO Request Deleted Successfully');
+  //       this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
+  //         this.requestdetails = data;
+  //       });
+  //     });
+  // }
   ngOnInit() {
 
     // var token = sessionStorage.getItem('token');

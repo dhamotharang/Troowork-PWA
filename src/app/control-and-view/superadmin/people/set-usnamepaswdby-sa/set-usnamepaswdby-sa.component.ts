@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-set-usnamepaswdby-sa',
   templateUrl: './set-usnamepaswdby-sa.component.html',
@@ -47,7 +49,7 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmployeeKey);
     this.route.params.subscribe(params => this.str$ = params.str);
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
@@ -55,13 +57,29 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
   setUsernamePassword() {
     this.checkFlag = true;
     if (!this.username) {
-      alert("User Name can't be empty");
+      // alert("User Name can't be empty");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "User Name can't be empty!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].result == 'Exists') {
-            alert("User Name already exists");
+            // alert("User Name already exists");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'User Name already exists',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             this.checkFlag = false;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.OrganizationID)
@@ -75,7 +93,15 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
                     this.userMail = data[0].newmail;
 
                     if (this.userMail == null) {
-                      alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                      // alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                      const dialogRef = this.dialog.open(AlertdialogComponent, {
+                        data: {
+                          message: 'Login Credentials created for user Successfully! Mail not send , Mail-Id not found !',
+                          buttonText: {
+                            cancel: 'Done'
+                          }
+                        },
+                      });
                     } else {
                       var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.password + "                https://troowork.azurewebsites.net";
 

@@ -5,6 +5,9 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 
 @Component({
   selector: 'app-room-type-update',
@@ -55,7 +58,7 @@ export class RoomTypeUpdateComponent implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.rTypeKey$ = params.RoomTypeKey);
   }
 
@@ -84,17 +87,41 @@ export class RoomTypeUpdateComponent implements OnInit {
     this.checkFlag = true;
     if (!this.metricType || this.metricType == "--Select--") {
       this.metricType = null;
-      alert("Select a metric type !");
+      // alert("Select a metric type !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select a metric type !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (!RoomTypeName || !RoomTypeName.trim()) {
       RoomTypeName = null;
-      alert("RoomTypeName is not provided !");
+      // alert("RoomTypeName is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'RoomTypeName is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (this.metricType != 'Default' && !MetricTypeValue1.trim()) {
       MetricTypeValue1 = null;
-      alert("MetricTypeValue is not provided !");
+      // alert("MetricTypeValue is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'MetricTypeValue is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     // else if (MetricTypeValue1 && !MetricTypeValue1.trim()) {
@@ -116,16 +143,34 @@ export class RoomTypeUpdateComponent implements OnInit {
       // if (this.roomtypeval != RoomTypeName) {
       this.inventoryService.CheckRoomType(RoomTypeName, 'roomtype', this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data.length > 0) {
-          alert("Room Type already present !");
+          // alert("Room Type already present !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Room Type already present !!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }
         else {
           this.inventoryService.updateRoomType(this.rTypeKey$, this.metricTypeKey, this.metricType, RoomTypeName, MetricTypeValue1, this.employeekey, this.OrganizationID)
             .subscribe(res => {
-              alert("RoomType updated successfully");
-              this.checkFlag = false;
-              this._location.back();
+              // alert("RoomType updated successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'RoomType updated successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this._location.back();
+              });
             });
         }
       });
@@ -145,7 +190,7 @@ export class RoomTypeUpdateComponent implements OnInit {
   }
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

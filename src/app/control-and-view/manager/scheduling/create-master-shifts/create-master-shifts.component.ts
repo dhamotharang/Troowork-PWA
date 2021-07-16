@@ -4,6 +4,10 @@ import { SchedulingService } from '../../../../service/scheduling.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-create-master-shifts',
@@ -40,29 +44,59 @@ export class CreateMasterShiftsComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private router: Router, private scheduleServ: SchedulingService, private _location: Location, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private scheduleServ: SchedulingService, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addShift(newshiftName) {
     this.checkFlag = true;
     if (!(newshiftName) || !(newshiftName.trim())) {
-      alert("Please Enter Shift Name!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Enter Shift Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Shift Name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     newshiftName = newshiftName.trim();
     this.scheduleServ.checkNewShift(newshiftName, this.OrganizationID).subscribe((data: any[]) => {
       if (data[0].count > 0) {
-        alert("Shift name already present !");
-        this.checkFlag = false;
-        return;
+        // alert("Shift name already present !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Shift name already present !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
       else {
-        this.scheduleServ.createMasterShifts_supervisor(newshiftName, this.employeekey, this.OrganizationID,this.supervisoremployeekey)
+        this.scheduleServ.createMasterShifts_supervisor(newshiftName, this.employeekey, this.OrganizationID, this.supervisoremployeekey)
           .subscribe((data: any[]) => {
-            alert("Shift created successfully");
-            this.checkFlag = false;
-            this._location.back();
+            // alert("Shift created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Shift created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this._location.back();
+            });
           });
       }
     });

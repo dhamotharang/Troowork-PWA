@@ -4,6 +4,9 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-trade-request-edit',
   templateUrl: './trade-request-edit.component.html',
@@ -22,7 +25,7 @@ export class TradeRequestEditComponent implements OnInit {
   // curr_date;
   OtherEmployeedetails;
   EmployeeDetails;
-checkFlag;
+  checkFlag;
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -63,52 +66,122 @@ checkFlag;
     }
     return window.atob(output);
   }
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
 
   submitEditedRequest() {
 
-    this.checkFlag=true;
+    this.checkFlag = true;
     if (!(this.traderequestdetails.StartDate)) {
-      alert('Start Date is not provided !');
-      this.checkFlag=false;
-      return;
+      // alert('Start Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Date is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.traderequestdetails.EndDate)) {
-      alert('End Date is not provided !');
-      this.checkFlag=false;
-      return;
+      // alert('End Date is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Date is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(this.traderequestdetails.Comments)) {
-      alert('Comments are not provided !');
-      this.checkFlag=false;
-      return;
+      // alert('Comments are not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Comments are not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } else {
       var comments = this.traderequestdetails.Comments.trim();
       if (!(comments)) {
-        alert('Comments are not provided !');
-        this.checkFlag=false;
-        return;
+        // alert('Comments are not provided !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Comments are not provided !!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     }
 
     if (!(this.traderequestdetails.OtherEmployeeKey)) {
-      alert('Employee is not provided !');
-      this.checkFlag=false;
-      return;
+      // alert('Employee is not provided !');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee is not provided !!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     var curr_date = this.convert_DT(new Date());
 
     if (this.convert_DT(curr_date) > this.convert_DT(this.traderequestdetails.StartDate)) {
-      alert("Start Date can't be less than Today...!");
-      this.checkFlag=false;
-      return;
+      // alert("Start Date can't be less than Today...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Start Date can't be less than Today...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.convert_DT(this.traderequestdetails.EndDate) < this.convert_DT(this.traderequestdetails.StartDate)) {
-      alert("End Date can't be less than start date...!");
-      this.checkFlag=false;
-      return;
+      // alert("End Date can't be less than start date...!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "End Date can't be less than start date...!",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
 
@@ -117,13 +190,23 @@ checkFlag;
     this.PeopleServiceService.setEditedTradeRequest(curr_date, this.traderequestID$, this.traderequestdetails.OtherEmployeeKey,
       this.convert_DT(this.traderequestdetails.StartDate), this.convert_DT(this.traderequestdetails.EndDate), comments).subscribe((data) => {
         this.traderequestdetails = data;
-        this.checkFlag=false;
-        alert('Trade Request Updated Successfully');
-        if (this.role == 'Employee') {
-          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
-        } else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
-        }
+        this.checkFlag = false;
+        // alert('Trade Request Updated Successfully');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Trade Request Updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          if (this.role == 'Employee') {
+            this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
+          } else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
+          }
+        });
       });
   }
   ngOnInit() {
@@ -136,11 +219,11 @@ checkFlag;
     this.name = this.dst.getName();
     this.toServeremployeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-    
+
     // this.curr_date = this.convert_DT(new Date());
     this.editflag = false;
 
-    this.checkFlag=false;
+    this.checkFlag = false;
     this.PeopleServiceService.getAllEmployeeNames(this.OrganizationID, this.toServeremployeekey)
       .subscribe((data) => {
         this.EmployeeDetails = data;

@@ -2,6 +2,10 @@ import { Component, OnInit, HostListener, Input, ElementRef } from '@angular/cor
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-scheduling-view',
   templateUrl: './scheduling-view.component.html',
@@ -56,7 +60,7 @@ export class SchedulingViewComponent implements OnInit {
 
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private el: ElementRef, private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private el: ElementRef, private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -134,32 +138,42 @@ export class SchedulingViewComponent implements OnInit {
     this.scheduleService.saveEmployeeChange(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc, scheduleDT)
       // this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc)
       .subscribe(res => {
-        alert("Assignment Name updated Successfully");
-        this.checkFlag = false;
-        this.loading = false;
-        if (this.SearchSchedule.trim().length >= 3) {
-          this.scheduleService
-            .searchBatchScheduleName(this.SearchSchedule.trim(), this.OrganizationID)
-            .subscribe((data: any[]) => {
-              this.scheduleList = data;
-              this.showHide2 = false;
-              this.showHide1 = false;
-            });
-        } else {
-          this.scheduleService
-            .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
-            .subscribe((data: any[]) => {
-              this.scheduleList = data;
-              if (this.scheduleList[0].totalItems > this.itemsPerPage) {
-                this.showHide2 = true;
-                this.showHide1 = false;
-              }
-              else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+        // alert("Assignment Name updated Successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Assignment Name updated Successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this.loading = false;
+          if (this.SearchSchedule.trim().length >= 3) {
+            this.scheduleService
+              .searchBatchScheduleName(this.SearchSchedule.trim(), this.OrganizationID)
+              .subscribe((data: any[]) => {
+                this.scheduleList = data;
                 this.showHide2 = false;
                 this.showHide1 = false;
-              }
-            });
-        }
+              });
+          } else {
+            this.scheduleService
+              .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
+              .subscribe((data: any[]) => {
+                this.scheduleList = data;
+                if (this.scheduleList[0].totalItems > this.itemsPerPage) {
+                  this.showHide2 = true;
+                  this.showHide1 = false;
+                }
+                else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+                  this.showHide2 = false;
+                  this.showHide1 = false;
+                }
+              });
+          }
+        });
       });
   }
 
@@ -231,34 +245,34 @@ export class SchedulingViewComponent implements OnInit {
       });
   }
 
-  deleteAssignName(BatchScheduleNameKey) {
-    this.BatchScheduleNameKey = BatchScheduleNameKey;
+  // deleteAssignName(BatchScheduleNameKey) {
+  //   this.BatchScheduleNameKey = BatchScheduleNameKey;
 
-  }
+  // }
 
-  deleteAssignmentName() {
-    this.checkFlag = true;
-    this.loading = true;
-    this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        alert("Assignment Name deleted successfully");
-        this.checkFlag = false;
-        this.scheduleService
-          .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: any[]) => {
-            this.scheduleList = data;
-            this.loading = false;
-            if (this.scheduleList[0].totalItems > this.itemsPerPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
-      })
-  }
+  // deleteAssignmentName() {
+  //   this.checkFlag = true;
+  //   this.loading = true;
+  //   this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
+  //     .subscribe((data: any[]) => {
+  //       alert("Assignment Name deleted successfully");
+  //       this.checkFlag = false;
+  //       this.scheduleService
+  //         .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: any[]) => {
+  //           this.scheduleList = data;
+  //           this.loading = false;
+  //           if (this.scheduleList[0].totalItems > this.itemsPerPage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+  //     })
+  // }
 
   ngOnInit() {
 

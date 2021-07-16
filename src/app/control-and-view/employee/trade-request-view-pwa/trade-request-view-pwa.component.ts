@@ -43,21 +43,21 @@ export class TradeRequestViewPWAComponent implements OnInit {
 
   constructor(private PeopleServiceService: PeopleServiceService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
 
-  deletePass(key) {
-    this.deleteRequestKey = key;
-  }
+  // deletePass(key) {
+  //   this.deleteRequestKey = key;
+  // }
 
-  deleteRequest() {
-    this.checkFlag = true;
-    this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.toServeremployeekey)
-      .subscribe((data) => {
-        this.checkFlag = false;
-        alert('Trade Request Deleted Successfully');
-        this.PeopleServiceService.setgetTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
-          this.requestdetails = data;
-        });
-      });
-  }
+  // deleteRequest() {
+  //   this.checkFlag = true;
+  //   this.PeopleServiceService.setdeleteTradeRequest(this.deleteRequestKey, this.toServeremployeekey)
+  //     .subscribe((data) => {
+  //       this.checkFlag = false;
+  //       alert('Trade Request Deleted Successfully');
+  //       this.PeopleServiceService.setgetTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
+  //         this.requestdetails = data;
+  //       });
+  //     });
+  // }
   ngOnInit() {
 
     // var token = sessionStorage.getItem('token');

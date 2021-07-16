@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-job-title-view-admin',
   templateUrl: './job-title-view-admin.component.html',
@@ -45,7 +47,7 @@ export class JobTitleViewAdminComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   searchJobTitle(SearchJobTitle) {
     var value = SearchJobTitle.trim();
@@ -76,19 +78,40 @@ export class JobTitleViewAdminComponent implements OnInit {
   }
   deleteJobPass(key) {
     this.deleteJobtitleKey = key;
-
-  }
-  deleteJobTitle() {
     this.checkFlag = true;
-    this.peopleServiceService.deleteJobTitle(this.deleteJobtitleKey, this.OrganizationID)
-      .subscribe(res =>
-        this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-          this.jobView = data;
-          this.checkFlag = false;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-        })
-      );
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.peopleServiceService.deleteJobTitle(this.deleteJobtitleKey, this.OrganizationID)
+          .subscribe(res =>
+            this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+              this.jobView = data;
+              this.checkFlag = false;
+            })
+          );
+      } else {
+        this.checkFlag = false;
+      }
+    });
+
   }
+  // deleteJobTitle() {
+  //   this.checkFlag = true;
+  //   this.peopleServiceService.deleteJobTitle(this.deleteJobtitleKey, this.OrganizationID)
+  //     .subscribe(res =>
+  //       this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+  //         this.jobView = data;
+  //         this.checkFlag = false;
+
+  //       })
+  //     );
+  // }
   previousPage() {
     this.pageNo = +this.pageNo - 1;
     this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {

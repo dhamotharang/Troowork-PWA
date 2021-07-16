@@ -3,6 +3,9 @@ import { InspectionService } from '../../../service/inspection.service';
 import { Inspection } from '../../../model-class/Inspection';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-createinspection',
   templateUrl: './createinspection.component.html',
@@ -90,7 +93,7 @@ export class CreateinspectionComponent implements OnInit {
   };
 
 
-  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   selectFloorfromBuildings(facKey) {
     this.facikey = facKey;
@@ -218,9 +221,19 @@ export class CreateinspectionComponent implements OnInit {
     }
     else {
       if (this.convert_DT(this.fromdate) < this.convert_DT(new Date())) {
-        alert("Date can't be less than current date");
-        this.checkFlag = false;
-        return;
+        // alert("Date can't be less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Date can't be less than current date!!!",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         dateFrom = this.convert_DT(this.fromdate);
       }
@@ -230,41 +243,127 @@ export class CreateinspectionComponent implements OnInit {
     }
     else {
       if (this.convert_DT(this.todate) < dateFrom) {
-        alert("To date can't be less than start date");
-        this.checkFlag = false;
-        return;
+        // alert("To date can't be less than start date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "To date can't be less than start date!!!",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         date2 = this.convert_DT(this.todate);
       }
     }
     if (!this.TemplateID) {
-      alert("Template Name is not provided");
-      this.checkFlag = false;
+      // alert("Template Name is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Template Name is not provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (!this.Building) {
-      alert("Building should be selected");
-      this.checkFlag = false;
+      // alert("Building should be selected");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Building should be selected!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (!this.Floor) {
-      alert("Floor should be provided");
-      this.checkFlag = false;
+      // alert("Floor should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Floor should be provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (!this.RoomKey && !this.RoomType) {
-      alert("Room or Room Type should be provided");
-      this.checkFlag = false;
-      return;
+      // alert("Room or Room Type should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Room or Room Type should be provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (!this.time1) {
-      alert("Time should be provided");
-      this.checkFlag = false;
+      // alert("Time should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Time should be provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (!(this.SupervisorKey)) {
-      alert("Auditor should be provided");
-      this.checkFlag = false;
+      // alert("Auditor should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Auditor should be provided!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else if (this.convert_DT(date2) < this.convert_DT(dateFrom)) {
-      alert("Please check your start date!");
-      this.checkFlag = false;
+      // alert("Please check your start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
 
@@ -289,21 +388,49 @@ export class CreateinspectionComponent implements OnInit {
           roomString = roomlist.join(',');
         }
         else {
-          alert('Room has no value');
-          this.checkFlag = false;
-          return;
+          // alert('Room has no value');
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Room has no value!!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
       }
       this.RoomKey = roomString;
       if (roomlistObj.length === 0) {
-        alert('Room is not provided');
-        this.checkFlag = false;
-        return;
+        // alert('Room is not provided');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Room is not provided!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
 
       this.inspectionService.createInspections(this.TemplateID, this.SupervisorKey, dateFrom, date2, this.theCheckbox, newTime, this.RoomKey, this.Employee, this.employeekey, this.OrganizationID, p).subscribe(res => {
-        alert("Successfully Added");
+        // alert("Successfully Added");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Successfully Added!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         this.TemplateID = "";
         this.fromdate = null;

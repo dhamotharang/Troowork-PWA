@@ -3,6 +3,10 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-event-view',
@@ -47,7 +51,7 @@ export class EventViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private peopleServ: PeopleServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private peopleServ: PeopleServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -70,23 +74,57 @@ export class EventViewComponent implements OnInit {
   deleteEventValuePass(actionKey, actiontypeKey) {
     this.ActionKey = actionKey;
     this.ActionTypeKey = actiontypeKey;
-  }
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-
-  deleteEventType() {
-    this.checkFlag = true;
-    this.peopleServ
-      .DeleteEventType(this.ActionKey, this.ActionTypeKey, this.OrganizationID).subscribe(res => {
-        alert('Successfully Deleted !');
-        this.checkFlag = false;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
         this.peopleServ
-          .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
-          .subscribe((data: People[]) => {
-            this.eventType = data;
+          .DeleteEventType(this.ActionKey, this.ActionTypeKey, this.OrganizationID).subscribe(res => {
+            // alert('Successfully Deleted !');
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Successfully Deleted ',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.peopleServ
+                .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
+                .subscribe((data: People[]) => {
+                  this.eventType = data;
+                });
+            });
           });
-      });
-
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
+
+
+  // deleteEventType() {
+  //   this.checkFlag = true;
+  //   this.peopleServ
+  //     .DeleteEventType(this.ActionKey, this.ActionTypeKey, this.OrganizationID).subscribe(res => {
+  //       alert('Successfully Deleted !');
+  //       this.checkFlag = false;
+  //       this.peopleServ
+  //         .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: People[]) => {
+  //           this.eventType = data;
+  //         });
+  //     });
+
+  // }
 
   ngOnInit() {
     this.checkFlag = false;
@@ -122,11 +160,35 @@ export class EventViewComponent implements OnInit {
   UpdateEventDetais(index1, ActionType, Action, Description, ActionKey, ActionTypeKey) {
 
     if (!ActionType || !ActionType.trim()) {
-      alert("Please enter an event type");
+      // alert("Please enter an event type");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter an event type!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
       return;
     }
     if (!Action || !Action.trim()) {
-      alert("Please enter an event name");
+      // alert("Please enter an event name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter an event name !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
       return;
     }
     if (ActionType) {
@@ -142,18 +204,40 @@ export class EventViewComponent implements OnInit {
       if (data[0].count == 0) {
         this.peopleServ.UpdateEventType(ActionType, Action, Description, ActionKey, ActionTypeKey, this.employeekey, this.OrganizationID).
           subscribe(() => {
-            alert('Successfully Updated !');
-            this.peopleServ
-              .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
-              .subscribe((data: People[]) => {
-                this.eventType = data;
-                this.editQuestions = -1;
-              });
+            // alert('Successfully Updated !');
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Successfully Updated',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+
+              this.peopleServ
+                .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
+                .subscribe((data: People[]) => {
+                  this.eventType = data;
+                  this.editQuestions = -1;
+                });
+            });
           });
       }
       else {
-        alert("Entered event already exists...!!!");
-        return false;
+        // alert("Entered event already exists...!!!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Entered event already exists...!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          return false;
+        });
+
       }
     });
     // }

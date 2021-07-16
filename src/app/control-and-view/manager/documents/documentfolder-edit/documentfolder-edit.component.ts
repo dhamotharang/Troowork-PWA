@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-documentfolder-edit',
   templateUrl: './documentfolder-edit.component.html',
@@ -38,19 +40,35 @@ export class DocumentfolderEditComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.folder$ = params.FormtypeId);
   }
 
   updateFolderName() {
     this.checkFlag = true;
     if (this.folder.FormType && !this.folder.FormType.trim()) {
-      alert("Please Enter Document Folder Name!");
+      // alert("Please Enter Document Folder Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Document Folder Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!this.folder.FormType) {
-      alert("Document Folder Name not provided");
+      // alert("Document Folder Name not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Document Folder Name not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -62,9 +80,19 @@ export class DocumentfolderEditComponent implements OnInit {
     if (this.initialFolder === this.folder.FormType) {
       this.documentService.UpdateDocumentFolderName(this.folder$, this.folder.FormType, this.employeekey, this.OrganizationID)
         .subscribe((data: Documents[]) => {
-          alert("Successfully Updated");
-          this.checkFlag = false;
-          this._location.back();
+          // alert("Successfully Updated");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Successfully Updated',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this._location.back();
+          });
         });
     }
     else {
@@ -73,13 +101,31 @@ export class DocumentfolderEditComponent implements OnInit {
           if (data[0].count == 0) {
             this.documentService.UpdateDocumentFolderName(this.folder$, this.folder.FormType, this.employeekey, this.OrganizationID)
               .subscribe((data: Documents[]) => {
-                alert("Successfully Updated");
-                this.checkFlag = false;
-                this._location.back();
+                // alert("Successfully Updated");
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Successfully Updated',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
+                dialogRef.afterClosed().subscribe(dialogResult => {
+                  this.checkFlag = false;
+                  this._location.back();
+                });
               });
           }
           else {
-            alert("Document Folder Name already exists");
+            // alert("Document Folder Name already exists");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Document Folder Name already exists!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             this.checkFlag = false;
             return;
           }

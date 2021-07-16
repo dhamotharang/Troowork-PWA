@@ -7,6 +7,8 @@ import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 import * as FileSaver from 'file-saver';//for excel
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-review-report',
@@ -77,7 +79,7 @@ export class ReviewReportComponent implements OnInit {
     Date: '', Room: '', Question: '', StarRating: ''
   }
   ];
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.inspectionreport = fb.group({
       SupervisorKey: ['', Validators.required],
       SupervisorText: ['', Validators.required]
@@ -134,8 +136,18 @@ export class ReviewReportComponent implements OnInit {
 
     if (todate && fromdate > todate) {
       todate = null;
-      alert("Please check your Start Date!");
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
     this.loading = true;
     this.ReportServiceService

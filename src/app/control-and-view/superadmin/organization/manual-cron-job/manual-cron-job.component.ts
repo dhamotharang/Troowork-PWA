@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../../../../service/organization.service';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-manual-cron-job',
   templateUrl: './manual-cron-job.component.html',
@@ -8,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ManualCronJobComponent implements OnInit {
 
-  constructor(private organizationService: OrganizationService) { }
+  constructor(private organizationService: OrganizationService, private dialog: MatDialog) { }
 
   checkFlag;
   cronJobMST() {
@@ -22,7 +25,15 @@ export class ManualCronJobComponent implements OnInit {
     //   });
 
     this.organizationService.cronJob_MST().subscribe((data: any[]) => {
-      alert("CronJob-MST executed successfully");
+      // alert("CronJob-MST executed successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'CronJob-MST executed successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     });
   }
@@ -31,7 +42,15 @@ export class ManualCronJobComponent implements OnInit {
 
     this.checkFlag = true;
     this.organizationService.cronJob_CST().subscribe((data: any[]) => {
-      alert("CronJob-CST executed successfully");
+      // alert("CronJob-CST executed successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'CronJob-CST executed successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     });
   }

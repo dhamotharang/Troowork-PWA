@@ -7,6 +7,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-floor-edit',
   templateUrl: './floor-edit.component.html',
@@ -42,7 +45,7 @@ export class FloorEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
     this.route.params.subscribe(params => this.floorKey$ = params.Floor_Key);
   }
@@ -50,17 +53,41 @@ export class FloorEditComponent implements OnInit {
   updateFloor(FacilityKey, FloorKey, FloorName, FloorDescription) {
     this.checkFlag = true;
     if (FacilityKey == "--Select--") {
-      alert("Please Choose Building!");
+      // alert("Please Choose Building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Choose Building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     else if (!FloorName || !FloorName.trim()) {
-      alert("Please Enter Floor Name!");
+      // alert("Please Enter Floor Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Floor Name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     else if (!FloorDescription || !FloorDescription.trim()) {
-      alert("Please Enter Floor Description!");
+      // alert("Please Enter Floor Description!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Floor Description!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -70,7 +97,15 @@ export class FloorEditComponent implements OnInit {
 
       this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         if (data[0].count > 0) {
-          alert("Floor already present !");
+          // alert("Floor already present !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Floor already present !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }
@@ -78,16 +113,26 @@ export class FloorEditComponent implements OnInit {
           this.inventoryService
             .UpdateFloor(FacilityKey, FloorKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: Inventory[]) => {
-              alert("Floor updated successfully");
-              this.checkFlag = false;
-              this._location.back();
+              // alert("Floor updated successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Floor updated successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this._location.back();
+              });
             });
         }
       });
     }
   }
   ngOnInit() {
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

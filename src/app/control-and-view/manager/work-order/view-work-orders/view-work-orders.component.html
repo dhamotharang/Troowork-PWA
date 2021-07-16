@@ -147,7 +147,7 @@
         <th>Delay Time (Minutes)</th>
         <th>Action</th>
         <th *ngIf="checkflag==false">Delete</th>
-        <th *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button" [disabled]="checkFlag" (click)="basicModal.show();">
+        <th *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button" [disabled]="checkFlag" (click)="deleteWorkOrdersPage()">
             Delete</button></th>
         <th>Notes</th>
         <th>View</th>
@@ -260,7 +260,7 @@
       </div>
     </div>
   </div>
-  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+  <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -278,7 +278,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <button class="btn btn-success" style="float:left" (click)="previousPage()" *ngIf="showHide1">&#60;&#60;
     Previous</button>
   <button class="btn btn-success" (click)="nextPage()" style="float:right" *ngIf="showHide2">Next >></button>

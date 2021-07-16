@@ -11,6 +11,8 @@ import { DataServiceTokenStorageService } from 'src/app/service/DataServiceToken
 // import { ChartsModule } from 'ng2-charts';
 // import 'chartjs-plugin-datalabels'
 
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-employees-downtime-report',
   templateUrl: './employees-downtime-report.component.html',
@@ -57,7 +59,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   tableflag = false;
   employeeString;
   checkFlag;
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -116,37 +118,97 @@ export class EmployeesDowntimeReportComponent implements OnInit {
     this.checkFlag = true;
     var employeeString;
     if (!(this.fromdate)) {
-      alert(" Please select from date");
-      this.checkFlag = false;
-      return;
+      // alert(" Please select from date");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select from date!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!(this.todate)) {
-      alert(" Please select to date");
-      this.checkFlag = false;
-      return;
+      // alert(" Please select to date");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select to date!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     var timeDiff = Math.abs(this.fromdate.getTime() - this.todate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 7) {
-      alert("Select date between 7 days");
-      this.checkFlag = false;
-      return;
+      // alert("Select date between 7 days");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select date between 7 days!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
-      alert("Please check from Date & to date!");
-      this.checkFlag = false;
-      return;
+      // alert("Please check from Date & to date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check from Date & to date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if ((this.convert_DT(this.fromdate) >= this.convert_DT(new Date())) || (this.convert_DT(this.todate) >= this.convert_DT(new Date()))) {
-      alert("Please provide date less than current date!");
-      this.checkFlag = false;
-      return;
+      // alert("Please provide date less than current date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide date less than current date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.EmployeeKey.length == 0) {
       employeeString = null;
-      alert(" Please select atleast one employee");
-      this.checkFlag = false;
-      return;
+      // alert(" Please select atleast one employee");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select atleast one employee!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } else {
       var employeeList = [];
       var employeeListObj = this.EmployeeKey;

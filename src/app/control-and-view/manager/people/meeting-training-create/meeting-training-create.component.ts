@@ -6,6 +6,9 @@ import { Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { debug } from 'util';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-meeting-training-create',
@@ -105,7 +108,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private peopleServ: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private peopleServ: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   selectEmpsDropDown() {
     if ((this.jobTleKey > 0) && (this.superVsrKey > 0)) {
@@ -179,14 +182,34 @@ export class MeetingTrainingCreateComponent implements OnInit {
     this.checkFlag = true;
     ;
     if (!this.time1) {
-      alert("Start Time is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("Start Time is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.time2) {
-      alert("End Time is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("End Time is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     else {
@@ -196,22 +219,52 @@ export class MeetingTrainingCreateComponent implements OnInit {
       var timediff = +time2 - +time1;
 
       if (timediff < 0) {
-        alert("Start Time can't be after End Time");
-        this.checkFlag = false;
-        return;
+        // alert("Start Time can't be after End Time");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Start Time can't be after End Time",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
     }
 
     if (!this.EventType || !this.EventType.trim()) {
-      alert("Select  meeting/training/event to continue");
-      this.checkFlag = false;
-      return;
+      // alert("Select  meeting/training/event to continue");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select meeting/training/event to continue',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.eventHost || !this.eventHost.trim()) {
-      alert("Eventhost is not provided");
-      this.checkFlag = false;
-      return;
+      // alert("Eventhost is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Eventhost is not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     // if (!this.Venue || !this.Venue.trim()) {
     //   alert("Venue is not provided");
@@ -225,9 +278,19 @@ export class MeetingTrainingCreateComponent implements OnInit {
       this.Venue = this.Venue.trim();
     }
     if (this.Employee.length == 0) {
-      alert("Employee is not selected");
-      this.checkFlag = false;
-      return;
+      // alert("Employee is not selected");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee is not selected',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     var curDate = this.convert_DT(new Date());
@@ -269,58 +332,68 @@ export class MeetingTrainingCreateComponent implements OnInit {
     this.peopleServ
       .addMeetingTraining(this.EventType, this.eventHost, this.Venue, newTime, newTime1, this.Notes, EmployeeKeyString, newDate, this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
-        alert('Meeting/Training is successfully created !');
-        this.checkFlag = false;
-        this.EventType = null;
-        this.eventHost = null;
-        this.Venue = null;
-        this.mtngDate = null;
-        this.time1 = null;
-        this.time2 = null;
-        this.Notes = null;
-        this.JobTitle = null;
-        this.Supervisor = [];
-        this.Employee = [];
-        this.Manager = [];
+        // alert('Meeting/Training is successfully created !');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Meeting/Training is successfully created !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          this.EventType = null;
+          this.eventHost = null;
+          this.Venue = null;
+          this.mtngDate = null;
+          this.time1 = null;
+          this.time2 = null;
+          this.Notes = null;
+          this.JobTitle = null;
+          this.Supervisor = [];
+          this.Employee = [];
+          this.Manager = [];
 
-        this.superVsrKey = 0;
-        this.jobTleKey = 0;
-        this.DepartmentKey = null;
+          this.superVsrKey = 0;
+          this.jobTleKey = 0;
+          this.DepartmentKey = null;
 
-        this.peopleServ
-          .getJobTitleList(this.employeekey, this.OrganizationID)
-          .subscribe((data: People[]) => {
-            this.jobTitle = data;
-          });
+          this.peopleServ
+            .getJobTitleList(this.employeekey, this.OrganizationID)
+            .subscribe((data: People[]) => {
+              this.jobTitle = data;
+            });
 
-        this.peopleServ
-          .getallEmployeesList(this.employeekey, this.OrganizationID)
-          .subscribe((data: People[]) => {
-            this.empList = data;
-          });
+          this.peopleServ
+            .getallEmployeesList(this.employeekey, this.OrganizationID)
+            .subscribe((data: People[]) => {
+              this.empList = data;
+            });
 
-        // this.peopleServ
-        //   .getSupervisorList(this.employeekey, this.OrganizationID)
-        //   .subscribe((data: People[]) => {
-        //     this.supervisor = data;
-        //   });
-        this.peopleServ
-          .getmanagersForEmp(this.employeekey, this.OrganizationID)
-          .subscribe((data: any[]) => {
-            this.managerList = data;
-          });
-        this.peopleServ
-          .getallEventList(this.employeekey, this.OrganizationID)
-          .subscribe((data: People[]) => {
-            this.event = data;
-          });
+          // this.peopleServ
+          //   .getSupervisorList(this.employeekey, this.OrganizationID)
+          //   .subscribe((data: People[]) => {
+          //     this.supervisor = data;
+          //   });
+          this.peopleServ
+            .getmanagersForEmp(this.employeekey, this.OrganizationID)
+            .subscribe((data: any[]) => {
+              this.managerList = data;
+            });
+          this.peopleServ
+            .getallEventList(this.employeekey, this.OrganizationID)
+            .subscribe((data: People[]) => {
+              this.event = data;
+            });
+        });
       });
 
 
   }
 
   ngOnInit() {
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -406,9 +479,19 @@ export class MeetingTrainingCreateComponent implements OnInit {
     }
     else {
       eventType = null;
-      alert("Event Type is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Event Type is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Event Type is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     var eventName;
     if (this.Event_Name || this.Event_Name.trim()) {
@@ -416,9 +499,19 @@ export class MeetingTrainingCreateComponent implements OnInit {
     }
     else {
       eventName = null;
-      alert("Event Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Event Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Event Name is not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     var eventDescription;
     if (this.Description || this.Description.trim()) {
@@ -445,16 +538,38 @@ export class MeetingTrainingCreateComponent implements OnInit {
           .addMeetinTraingByNewEvent(this.addnewEvent)
           .subscribe((data: People[]) => {
             this.event = data;
-            alert("New Event is Successfully created");
+            // alert("New Event is Successfully created");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'New Event is Successfully created',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return;
+            });
             this.checkFlag = false;
             this.Event_Name = null;
             this.Event_Type = null;
             this.Description = null;
           });
       } else {
-        alert("Entered event already exists...!!!");
-        this.checkFlag = false;
-        return false;
+        // alert("Entered event already exists...!!!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Entered event already exists...!!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     });
 

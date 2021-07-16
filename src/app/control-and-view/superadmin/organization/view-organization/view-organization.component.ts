@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { OrganizationService } from '../../../../service/organization.service';
 import { Organization } from '../../../../model-class/Organization';
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-view-organization',
   templateUrl: './view-organization.component.html',
@@ -37,26 +41,62 @@ export class ViewOrganizationComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private organizationService: OrganizationService, private dst: DataServiceTokenStorageService) { }
+  constructor(private organizationService: OrganizationService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
-  deleteOrganization() {
-    this.loading = true;
-    this.checkFlag = true;
-    this.organizationService
-      .DeleteOrganization(this.delete_orgKey, this.employeekey).subscribe(() => {
-        alert("Organization deleted successfully... !");
-        this.checkFlag = false;
-        this.organizationService
-          .getOrganization(this.pageNo, this.itemsPerPage)
-          .subscribe((data: Organization[]) => {
-            this.organization = data;
-            this.loading = false;
-          });
+  // deleteOrganization() {
+  //   this.loading = true;
+  //   this.checkFlag = true;
+  //   this.organizationService
+  //     .DeleteOrganization(this.delete_orgKey, this.employeekey).subscribe(() => {
+  //       alert("Organization deleted successfully... !");
+  //       this.checkFlag = false;
+  //       this.organizationService
+  //         .getOrganization(this.pageNo, this.itemsPerPage)
+  //         .subscribe((data: Organization[]) => {
+  //           this.organization = data;
+  //           this.loading = false;
+  //         });
 
-      });
-  }
+  //     });
+  // }
   deleteOrgPass(OrganizationID) {
     this.delete_orgKey = OrganizationID;
+    this.checkFlag = true;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.loading = true;
+        this.organizationService
+          .DeleteOrganization(this.delete_orgKey, this.employeekey).subscribe(() => {
+            // alert("Organization deleted successfully... !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Organization deleted successfully... !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            this.checkFlag = false;
+            this.organizationService
+              .getOrganization(this.pageNo, this.itemsPerPage)
+              .subscribe((data: Organization[]) => {
+                this.organization = data;
+                this.loading = false;
+              });
+
+          });
+      } else {
+        this.loading = false;
+        this.checkFlag = false;
+      }
+    });
   }
 
   ngOnInit() {

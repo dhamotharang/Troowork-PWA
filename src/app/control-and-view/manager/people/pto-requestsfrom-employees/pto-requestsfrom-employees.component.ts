@@ -4,6 +4,9 @@ import { PeopleServiceService } from "../../../../service/people-service.service
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-pto-requestsfrom-employees',
   templateUrl: './pto-requestsfrom-employees.component.html',
@@ -77,11 +80,11 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private ReportServiceService: ReportServiceService, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private ReportServiceService: ReportServiceService, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   ngOnInit() {
 
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();
@@ -93,8 +96,8 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
     this.fromdate = new Date(Date.now());
     this.todate = new Date(Date.now());
     this.ptoStatus = '';
-    this.Manager=[];
-    this.Shift=[];
+    this.Manager = [];
+    this.Shift = [];
 
     this.fromdate = this.convert_DT(this.fromdate);
     this.todate = this.convert_DT(this.todate);
@@ -228,8 +231,18 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
 
     if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {
       todate = null;
-      alert("Please check your Start Date!");
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
     else {
       var fdate;

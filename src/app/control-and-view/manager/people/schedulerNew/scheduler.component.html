@@ -25,9 +25,8 @@
             <div class="form-group col-md-3">
                 <label for="eventsonly"><input type="checkbox" id="eventsonly" [ngModel]="filter.eventsOnly" (ngModelChange)="changeWithEvents($event)"> Don't show employees without assignments</label>
                 &nbsp;
-                <button (click)="clearFilter()">Clear</button>
-                &nbsp;
-                <button (click)="applyFilter()">Apply</button>
+                <button class="btn btn-primary" (click)="clearFilter()">Clear</button>
+                <button class="btn btn-success" (click)="applyFilter()">Apply</button>
             </div>
         </div>
     </div>
@@ -214,7 +213,7 @@
             </div>
         </div>
         <!-- </div> -->
-        <button class="btn btn-success" (click)='createSubmit()'>submit</button> 
+        <button class="btn btn-success" (click)='createSubmit()'>submit</button>
         <button class="btn btn-warning" (click)='createCancel()'>close</button>
     </div>
 </daypilot-modal>

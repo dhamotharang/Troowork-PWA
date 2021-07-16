@@ -5,6 +5,9 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-edit-work-order',
   templateUrl: './edit-work-order.component.html',
@@ -95,7 +98,7 @@ export class EditWorkOrderComponent implements OnInit {
   workorderCreation;
   timetable = { times: [] };//for daily recurring timepicker
   count = 0;
-  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
+  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.WO_Key = params.WorkorderKey);
   }
 
@@ -412,16 +415,44 @@ export class EditWorkOrderComponent implements OnInit {
   }
   //function for deleting workorder
   DeleteWO() {
-    this.deleteWO = {
-      workorderkey: this.WO_Key,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService
-      .deleteCurrent_WO(this.deleteWO)
-      .subscribe((data: any[]) => {
-        alert("Work-order deleted successfully");
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
-      });
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.deleteWO = {
+          workorderkey: this.WO_Key,
+          OrganizationID: this.OrganizationID
+        };
+        this.WorkOrderServiceService
+          .deleteCurrent_WO(this.deleteWO)
+          .subscribe((data: any[]) => {
+            // alert("Work-order deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work-order deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
+            });
+          });
+      } else {
+        this.loading = false;
+      }
+    });
+
+
+
+
   }
   //function for updating workorder
   UpdateWO() {
@@ -434,16 +465,48 @@ export class EditWorkOrderComponent implements OnInit {
   }
   createWorkorder1() {
     if (!this.workordertypekey) {
-      alert("Please select work-order type!");
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!(this.timeValue)) {
-      alert("Please provide time!");
+      // alert("Please provide time!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide time!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else {
       var roomlistObj = [];
@@ -655,7 +718,15 @@ export class EditWorkOrderComponent implements OnInit {
       this.WorkOrderServiceService//service for deleting current workorder after updating
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
-          alert("Work-order updated successfully");
+          // alert("Work-order updated successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Work-order updated successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
         });
     });
@@ -663,18 +734,58 @@ export class EditWorkOrderComponent implements OnInit {
   //function for creating workorder with equipment
   createWorkorder2() {
     if (!this.workordertypekey) {
-      alert("Please select work-order type!");
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else if (!(this.timeValue)) {
-      alert("Please provide time!");
+      // alert("Please provide time!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide time!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     } else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
-      alert("Please select equipment type!");
+      // alert("Please select equipment type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select equipment type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     }
     else {
       var roomlistObj = [];
@@ -905,7 +1016,15 @@ export class EditWorkOrderComponent implements OnInit {
         this.WorkOrderServiceService//service for deleting existing workorder after updating
           .deleteCurrent_WO(this.deleteWO)
           .subscribe((data: any[]) => {
-            alert("Work-order updated successfully");
+            // alert("Work-order updated successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work-order updated successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
             this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
           });
       });

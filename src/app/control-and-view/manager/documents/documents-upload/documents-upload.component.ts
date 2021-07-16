@@ -4,6 +4,8 @@ import { Documents } from '../../../../model-class/Documents';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 const url = ConectionSettings.Url + '/upload_test';
 
 @Component({
@@ -44,7 +46,7 @@ export class DocumentsUploadComponent implements OnInit {
 
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
 
-  constructor(private documentService: DocumentserviceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private documentService: DocumentserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
 
 
@@ -68,12 +70,28 @@ export class DocumentsUploadComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
-      alert('File uploaded successfully');
+      // alert('File uploaded successfully');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'File uploaded successfully... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     };
   }
   FileSelected() {
     if (!(this.FormtypeId)) {
-      alert("Please choose Document Folder");
+      // alert("Please choose Document Folder");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please choose Document Folder... !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (this.DescName) {

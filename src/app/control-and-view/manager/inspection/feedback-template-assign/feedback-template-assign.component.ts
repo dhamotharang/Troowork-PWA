@@ -5,6 +5,9 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { InventoryService } from '../../../../service/inventory.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-feedback-template-assign',
@@ -57,7 +60,7 @@ export class FeedbackTemplateAssignComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private invServ: InventoryService, private inspectionService: InspectionService, private woServ: WorkOrderServiceService, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private router: Router, private invServ: InventoryService, private inspectionService: InspectionService, private woServ: WorkOrderServiceService, private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.tempID = params.idreviewtemplate);
   }
 
@@ -118,7 +121,15 @@ export class FeedbackTemplateAssignComponent implements OnInit {
 
   selectroomfromRoomtype(roomtypeKey) {
     if (!(roomtypeKey)) {
-      alert("Please select a room type");
+      // alert("Please select a room type");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a room type !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     this.roomtypeKEY = roomtypeKey;
@@ -145,25 +156,62 @@ export class FeedbackTemplateAssignComponent implements OnInit {
     var addRoomString;
 
     if (this.alertCheck == 1) {
-      var k = confirm("There are rooms with other templates assigned. Clicking yes will overwrite them to this template. Do you really want to continue?");
-      if (k) {
-        for (var i = 0; i < this.roomList.length; i++) {
-          if (this.roomList[i].roomCheck == true) {
-            addRoomList.push(this.roomList[i].RoomKey);
+      const message = `There are rooms with other templates assigned. Clicking yes will overwrite them to this template. Do you really want to continue?`;
+      const dialogData = new ConfirmDialogModel("CONFIRM", message);
+      const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+        maxWidth: "400px",
+        data: dialogData
+      });
+
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (dialogResult) {
+          for (var i = 0; i < this.roomList.length; i++) {
+            if (this.roomList[i].roomCheck == true) {
+              addRoomList.push(this.roomList[i].RoomKey);
+            }
           }
+          addRoomString = addRoomList.join(',');
+          if (addRoomList.length > 0) {
+            this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, addRoomString, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
+              .subscribe((data: any[]) => {
+                // alert("Rooms added to template successfully");
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Rooms added to template successfully',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
+                dialogRef.afterClosed().subscribe(dialogResult => {
+                  this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+                });
+              });
+          }
+        } else {
+          return false;
         }
-        addRoomString = addRoomList.join(',');
-        if (addRoomList.length > 0) {
-          this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, addRoomString, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
-            .subscribe((data: any[]) => {
-              alert("Rooms added to template successfully");
-              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
-            });
-        }
-      }
-      else {
-        return false;
-      }
+      });
+      // var k = confirm("There are rooms with other templates assigned. Clicking yes will overwrite them to this template. Do you really want to continue?");
+      // if (k) {
+      //   for (var i = 0; i < this.roomList.length; i++) {
+      //     if (this.roomList[i].roomCheck == true) {
+      //       addRoomList.push(this.roomList[i].RoomKey);
+      //     }
+      //   }
+      //   addRoomString = addRoomList.join(',');
+      //   if (addRoomList.length > 0) {
+      //     this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, addRoomString, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
+      //       .subscribe((data: any[]) => {
+      //         alert("Rooms added to template successfully");
+      //         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+      //       });
+      //       });
+      //   }
+      // }
+      // else {
+      //   return false;
+      // }
 
     } else {
       for (var i = 0; i < this.roomList.length; i++) {
@@ -175,8 +223,18 @@ export class FeedbackTemplateAssignComponent implements OnInit {
       if (addRoomList.length > 0) {
         this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, addRoomString, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
           .subscribe((data: any[]) => {
-            alert("Rooms added to template successfully");
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+            // alert("Rooms added to template successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Rooms added to template successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+            });
           });
       }
     }
@@ -255,24 +313,63 @@ export class FeedbackTemplateAssignComponent implements OnInit {
   valuesSave_Room() {
 
     if (this.alertCheck == 1) {
-      var k = confirm("The selected rooms has another template assigned. Clicking yes will overwrite it to this template. Do you really want to continue?");
-      if (k) {
-        this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, this.RoomKey, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
-          .subscribe((data: any[]) => {
-            alert("Rooms added to template successfully");
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
-          });
+      const message = `he selected rooms has another template assigned. Clicking yes will overwrite it to this template. Do you really want to continue?`;
+      const dialogData = new ConfirmDialogModel("CONFIRM", message);
+      const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+        maxWidth: "400px",
+        data: dialogData
+      });
 
-      }
-      else {
-        return false;
-      }
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (dialogResult) {
+          this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, this.RoomKey, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
+            .subscribe((data: any[]) => {
+              // alert("Rooms added to template successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Rooms added to template successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+              });
+            });
+        } else {
+          return false;
+        }
+      });
+      // var k = confirm("The selected rooms has another template assigned. Clicking yes will overwrite it to this template. Do you really want to continue?");
+      // if (k) {
+      //   this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, this.RoomKey, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
+      //     .subscribe((data: any[]) => {
+      //       alert("Rooms added to template successfully");
+      //       this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+      //     });
+      //     });
+
+      // }
+      // else {
+      //   return false;
+      // }
 
     } else {
       this.inspectionService.addRooms_RoomtypeToTemplate(this.tempID, this.RoomKey, this.roomtypeKEY, this.toServeremployeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
-          alert("Rooms added to template successfully");
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+          // alert("Rooms added to template successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Rooms added to template successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['feedbackManage'] } }]);
+          });
         });
     }
   }

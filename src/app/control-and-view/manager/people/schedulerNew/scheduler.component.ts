@@ -11,6 +11,9 @@ import { DataServiceTokenStorageService } from "src/app/service/DataServiceToken
 
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { DataService, CreateEventParams, EventData, UpdateEventParams } from "./data.service";
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'scheduler-component',
   templateUrl: './scheduler.component.html',
@@ -19,7 +22,7 @@ import { DataService, CreateEventParams, EventData, UpdateEventParams } from "./
 export class SchedulerComponent implements AfterViewInit {
   highlightcellcolor: any;
   highlightcellid: any;
-  constructor(private ds: DataService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) {
+  constructor(private ds: DataService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private peopleServ: PeopleServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.date = new Date();
     this.date1 = new Date();
     this.Range = 'Month';
@@ -136,32 +139,84 @@ export class SchedulerComponent implements AfterViewInit {
         text: "Delete", onClick: args => {
           let row = args.source.data;
           if (row.IsShift == 1) {
-            alert("Can't delete an employee group... !!!! ");
+            // alert("Can't delete an employee group... !!!! ");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: "Can't delete an employee group... !!!! ",
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
           } else if (row.IsShift == 0) {
-            var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
 
-            if (k) {
-              // this.loading = true;
-              this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
-                // alert("Employee removed from Employee Group successfully.....");
-                this.SchedulingService
-                  .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
-                  .subscribe((data: any[]) => {
-                    this.events = data;
-                    // this.loading = false;
-                    if (this.events.length > 0) {
-                      this.SchedulingService.employeesForScheduler('Manager', this.employeekey, this.OrganizationID)
-                        .subscribe((data: any[]) => {
+            const message = "Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?";
+            const dialogData = new ConfirmDialogModel("DELETE", message);
+            const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+              maxWidth: "400px",
+              data: dialogData
+            });
 
-                          this.config.resources = data;
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              if (dialogResult) {
+                this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
+                  this.SchedulingService
+                    .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
+                    .subscribe((data: any[]) => {
+                      this.events = data;
+                      if (this.events.length > 0) {
+                        this.SchedulingService.employeesForScheduler('Manager', this.employeekey, this.OrganizationID)
+                          .subscribe((data: any[]) => {
+                            this.config.resources = data;
+                          });
+                      }
+                      else {
+                        const dialogRef = this.dialog.open(AlertdialogComponent, {
+                          data: {
+                            message: "Please add employees in schedule Group !!!!! ",
+                            buttonText: {
+                              cancel: 'Done'
+                            }
+                          },
                         });
-                    }
-                    else {
-                      alert("Please add employees in schedule Group !")
-                    }
-                  });
-              });
-            }
+                      }
+                    });
+                });
+              }
+            });
+
+            // var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
+
+            // if (k) {
+            //   // this.loading = true;
+            //   this.SchedulingService.deleteEmpFromEmpGroup(row.id, this.OrganizationID).subscribe((data: any[]) => {
+            //     // alert("Employee removed from Employee Group successfully.....");
+            //     this.SchedulingService
+            //       .empCalendarDetails(this.Range, this.convert_DT(this.date), this.OrganizationID)
+            //       .subscribe((data: any[]) => {
+            //         this.events = data;
+            //         // this.loading = false;
+            //         if (this.events.length > 0) {
+            //           this.SchedulingService.employeesForScheduler('Manager', this.employeekey, this.OrganizationID)
+            //             .subscribe((data: any[]) => {
+
+            //               this.config.resources = data;
+            //             });
+            //         }
+            //         else {
+            //           // alert("Please add employees in schedule Group !")
+            //           const dialogRef = this.dialog.open(AlertdialogComponent, {
+            //             data: {
+            //               message: "Please add employees in schedule Group !!!!! ",
+            //               buttonText: {
+            //                 cancel: 'Done'
+            //               }
+            //             },
+            //           });
+            //         }
+            //       });
+            //   });
+            // }
           }
         }
       },
@@ -497,7 +552,15 @@ export class SchedulerComponent implements AfterViewInit {
             });
         }
         else {
-          alert("Please add employees in schedule Group !")
+          // alert("Please add employees in schedule Group !")
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: "Please add employees in schedule Group ! !!!!! ",
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
         }
       });
 
@@ -815,8 +878,17 @@ export class SchedulerComponent implements AfterViewInit {
 
   createSubmit() {
     if (!(this.BatchScheduleNameKey)) {
-      alert("Please provide Assignment Name !");
-      return;
+      // alert("Please provide Assignment Name !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Please provide Assignment Name !",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => { return; });
+
     }
 
     let params: CreateEventParams = {
@@ -938,8 +1010,16 @@ export class SchedulerComponent implements AfterViewInit {
     console.log(this.event1);
     var date = this.DateEdit;
     if (!(this.BatchScheduleNameKeyEdit)) {
-      alert("Please provide Assignment Name !");
-      return;
+      // alert("Please provide Assignment Name !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Please provide Assignment Name !",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => { return; });
     }
     let obj = {
       resourceEmployee: this.event1.data.resource,
@@ -979,22 +1059,39 @@ export class SchedulerComponent implements AfterViewInit {
 
 
   delete() {
-    var confirmBox = confirm("Do you want to Delete ?");
-    if (confirmBox == true) {
-      this.deleteCall(this.AssignIDForDelete, this.employeekey, this.OrganizationID);
-      this.modal1.hide();
-      // this.ds.setFocusEmp(this.event1.data.resource);
-      this.scheduler.control.scrollToResource(this.event1.data.resource);
-      // this.SchedulingService.SchedulerEventDelete(this.AssignIDForDelete, this.employeekey, this.OrganizationID).subscribe(data => {
-      //   this.ds.setExpandFlagNewComp(3);
-      //   if (this.role == 'Manager') {
-      //     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
-      //     // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-      //   } else if (this.role == 'Supervisor') {
-      //     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
-      //   }
-      // });
-    }
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.deleteCall(this.AssignIDForDelete, this.employeekey, this.OrganizationID);
+        this.modal1.hide();
+        this.scheduler.control.scrollToResource(this.event1.data.resource);
+      }
+    });
+
+
+    // var confirmBox = confirm("Do you want to Delete ?");
+    // if (confirmBox == true) {
+    //   this.deleteCall(this.AssignIDForDelete, this.employeekey, this.OrganizationID);
+    //   this.modal1.hide();
+    //   // this.ds.setFocusEmp(this.event1.data.resource);
+    //   this.scheduler.control.scrollToResource(this.event1.data.resource);
+    //   // this.SchedulingService.SchedulerEventDelete(this.AssignIDForDelete, this.employeekey, this.OrganizationID).subscribe(data => {
+    //   //   this.ds.setExpandFlagNewComp(3);
+    //   //   if (this.role == 'Manager') {
+    //   //     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Scheduler'] } }]);
+    //   //     // } else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+    //   //   } else if (this.role == 'Supervisor') {
+    //   //     this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Scheduler'] } }]);
+    //   //   }
+    //   // });
+    // }
   }
 
 

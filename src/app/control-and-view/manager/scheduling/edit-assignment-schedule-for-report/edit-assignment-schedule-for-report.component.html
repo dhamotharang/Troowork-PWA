@@ -78,6 +78,7 @@
         <td (click)="selectAllSnapshot()" style="width: 4.55%">Snapshot Required</td>
         <td (click)="selectAllKeepActive()" style="width: 4.55%">Keep Active</td>
         <td (click)="selectAllcreateworkorder()" style="width: 4.55%">Create Work Order</td>
+        <td (click)="selectAllAvgAlert()" style="width: 4.55%">Is Alert</td>
         <td style="width: 5.95%">Room Type</td>
         <td style="width: 13.65%">Work Order Type *</td>
       </thead>
@@ -137,6 +138,9 @@
           </td>
           <td style="text-align: center;width: 5.3%">
             <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.CreateWO">
+          </td>
+          <td style="text-align: center;width: 5.3%">
+            <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.IsAvgAlert">
           </td>
           <td style="width: 7%">
             {{x.RoomType}}
@@ -209,6 +213,9 @@
           <td style="text-align: center;width: 5.3%">
             <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.CreateWO">
           </td>
+          <td style="text-align: center;width: 5.3%">
+            <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.IsAvgAlert">
+          </td>
           <td style="width: 7%">
             {{z.RoomType}}
           </td>
@@ -231,7 +238,7 @@
         <td style="width: 4.55%;">{{totalFriTime| number:'1.2-2'}}</td>
         <td style="width: 4.55%;">{{totalSatTime| number:'1.2-2'}}</td>
         <td style="width: 4.55%;">{{totalSunTime| number:'1.2-2'}}</td>
-        <td colspan="7"></td>
+        <td colspan="8"></td>
       </tr>
     </table>
     <button (click)="createBatchReport()" [disabled]='CreateDis' class="btn btn-success" style="margin-left: 45%;">Save</button>
@@ -256,11 +263,12 @@
         <td (click)="selectAllSnapshot()" style="width: 6%;">Snapshot Required</td>
         <td (click)="selectAllKeepActive()">Keep Active</td>
         <td (click)="selectAllcreateworkorder()">Create Work Order</td>
+        <td (click)="selectAllAvgAlert()">Is Alert</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>
       </thead>
       <tr>
-        <td colspan="18">No Records Found</td>
+        <td colspan="19">No Records Found</td>
       </tr>
       <tr>
         <td colspan="4" style="width: 22.51%;">Total Assigned daily minutes</td>
@@ -271,7 +279,7 @@
         <td style="width: 5.5%;">{{totalFriTime| number:'1.2-2'}}</td>
         <td style="width: 5.5%;">{{totalSatTime| number:'1.2-2'}}</td>
         <td style="width: 5.55%;">{{totalSunTime| number:'1.2-2'}}</td>
-        <td colspan="7"></td>
+        <td colspan="8"></td>
       </tr>
     </table>
   </div>

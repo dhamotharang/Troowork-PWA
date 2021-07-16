@@ -3,6 +3,8 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-edit-interval-type-color',
   templateUrl: './edit-interval-type-color.component.html',
@@ -45,7 +47,7 @@ export class EditIntervalTypeColorComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private WorkOrderServiceService: WorkOrderServiceService, private _location: Location) {
+  constructor(private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private WorkOrderServiceService: WorkOrderServiceService, private _location: Location, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.intervalID$ = params.intervalID);
   }
 
@@ -74,17 +76,37 @@ export class EditIntervalTypeColorComponent implements OnInit {
     this.checkFlag = true;
 
     if (!(this.interval.Colour)) {
-      alert("Please select a colour");
-      this.checkFlag = false;
-      return false;
+      // alert("Please select a colour");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a colour!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return false;
+      });
     }
     else {
 
       this.WorkOrderServiceService.updateIntervalDetails(this.interval.Colour, this.intervalID$, this.OrganizationID)
         .subscribe(res => {
-          alert("Interval colour updated successfully.");
-          this.checkFlag = false;
-          this._location.back();
+          // alert("Interval colour updated successfully.");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Interval colour updated successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this._location.back();
+          });
         });
     }
   }

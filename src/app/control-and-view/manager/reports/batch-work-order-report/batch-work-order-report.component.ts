@@ -6,6 +6,8 @@ import { ExcelserviceService } from '../../../../service/excelservice.service';
 import * as FileSaver from 'file-saver';//for excel
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-batch-work-order-report',
@@ -56,7 +58,7 @@ export class BatchWorkOrderReportComponent implements OnInit {
     // Building:'',	Floor:'',	Zone:'',	Room:'',	FloorType:'',	RoomType:'',	Minutes:'',	Frequency:'',	Monday:'',	Tuesday:'',	Wednesday:'',	Thursday:'',	Friday:'',	Saturday:'',	Sunday:''
   }
   ];
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService) {
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.batchworkorder = fb.group({
       BatchScheduleNameKey: ['', Validators.required],
       ScheduleName: ['', Validators.required]
@@ -64,7 +66,7 @@ export class BatchWorkOrderReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.BatchScheduleNameKey="";
+    this.BatchScheduleNameKey = "";
     // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -82,90 +84,96 @@ export class BatchWorkOrderReportComponent implements OnInit {
   }
   //generating report for selected schedulename
   getBatchSchedule(Workorder_ScheduleKey) {
-    if(!Workorder_ScheduleKey)
-    {
-      alert("Please select schedule name!");
-    }
-    else
-    {
-    this.loading = true;
-    this.ReportServiceService
-      .getbatchschedulereport(Workorder_ScheduleKey, this.OrganizationID)
-      .subscribe((data: Reports[]) => {
-        this.reportarray = data;
-        this.loading = false;
-        this.totalMonTime = 0;
-        this.totalTuesTime = 0;
-        this.totalWedTime = 0;
-        this.totalThuTime = 0;
-        this.totalFriTime = 0;
-        this.totalSatTime = 0;
-        this.totalSunTime = 0;
-        for (var i = 0; i < this.reportarray.length; i++) {
-          var count = [];
-          var y = this.reportarray[i]["OccurrenceInterval"];
-          count = y.split(',');
-          this.reportarray[i].dailyFrequency = count.length;
-
-
-          if (this.reportarray[i].mon == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
+    if (!Workorder_ScheduleKey) {
+      // alert("Please select schedule name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select schedule name!!',
+          buttonText: {
+            cancel: 'Done'
           }
-          if (this.reportarray[i].tue == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-          if (this.reportarray[i].wed == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-          if (this.reportarray[i].thu == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-          if (this.reportarray[i].fri == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-          if (this.reportarray[i].sat == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-          if (this.reportarray[i].sun == 1) {
-            if (this.reportarray[i].MetricType === 'Minutes Per') {
-              this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
-            }
-            else {
-              this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
-            }
-          }
-        }
+        },
       });
+    }
+    else {
+      this.loading = true;
+      this.ReportServiceService
+        .getbatchschedulereport(Workorder_ScheduleKey, this.OrganizationID)
+        .subscribe((data: Reports[]) => {
+          this.reportarray = data;
+          this.loading = false;
+          this.totalMonTime = 0;
+          this.totalTuesTime = 0;
+          this.totalWedTime = 0;
+          this.totalThuTime = 0;
+          this.totalFriTime = 0;
+          this.totalSatTime = 0;
+          this.totalSunTime = 0;
+          for (var i = 0; i < this.reportarray.length; i++) {
+            var count = [];
+            var y = this.reportarray[i]["OccurrenceInterval"];
+            count = y.split(',');
+            this.reportarray[i].dailyFrequency = count.length;
+
+
+            if (this.reportarray[i].mon == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalMonTime = this.totalMonTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].tue == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalTuesTime = this.totalTuesTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].wed == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalWedTime = this.totalWedTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].thu == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalThuTime = this.totalThuTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].fri == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalFriTime = this.totalFriTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].sat == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalSatTime = this.totalSatTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+            if (this.reportarray[i].sun == 1) {
+              if (this.reportarray[i].MetricType === 'Minutes Per') {
+                this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].dailyFrequency);
+              }
+              else {
+                this.totalSunTime = this.totalSunTime + ((this.reportarray[i].MetricValue) * this.reportarray[i].Area) * this.reportarray[i].dailyFrequency;
+              }
+            }
+          }
+        });
     }
   }
   //export to excel function
@@ -233,7 +241,7 @@ export class BatchWorkOrderReportComponent implements OnInit {
     // this.excelService.exportAsExcelFile(this.excelarray, 'BatchWorkorder_Report');
     var blob = new Blob([document.getElementById('exportable1').innerHTML], {
       type: EXCEL_TYPE
-  });
-  FileSaver.saveAs(blob, "BatchWorkorder_Report.xls");
+    });
+    FileSaver.saveAs(blob, "BatchWorkorder_Report.xls");
   }
 }

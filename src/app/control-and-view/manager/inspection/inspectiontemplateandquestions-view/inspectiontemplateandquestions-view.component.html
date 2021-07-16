@@ -44,12 +44,12 @@
             <td>{{v.TemplateName}}</td>
             <td>{{v.Question}}</td>
             <td>{{v.ScoreName}}</td>
-            <td> <button [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deleteInspTemplatePass(v.TemplateID,v.TemplateQuestionID);"><b>Delete</b></button></td>
+            <td> <button [disabled]="checkFlag" class="btn btn-danger" (click)="deleteInspTemplatePass(v.TemplateID,v.TemplateQuestionID);"><b>Delete</b></button></td>
           </tr>
           <tr *ngIf="viewinspectionTemplate?.length == 0">
             <td colspan="2" class="no-data-available">No records found</td>
           </tr>
-          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+          <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -67,7 +67,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </tbody>
       </table>
     </div>

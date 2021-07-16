@@ -8,6 +8,8 @@ import { InspectionService } from '../../../../service/inspection.service';
 import * as FileSaver from 'file-saver';//for excel
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-picklist-report',
@@ -80,7 +82,7 @@ export class PicklistReportComponent implements OnInit {
   viewinspectionReport;
   // viewinspectionReportSummary;
   public reportarray: Array<any> = [{}];
-  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService) { }
+  constructor(private fb: FormBuilder, private dst: DataServiceTokenStorageService, private ReportServiceService: ReportServiceService, private excelService: ExcelserviceService, private inspectionService: InspectionService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.TemplateName = "";
@@ -119,9 +121,19 @@ export class PicklistReportComponent implements OnInit {
     // var Template_Name;
     this.checkFlag = true;
     if (!TemplateName) {
-      alert("Please select a Template Name");
-      this.checkFlag = false;
-      return false;
+      // alert("Please select a Template Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a Template Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!from_date) {
@@ -140,9 +152,19 @@ export class PicklistReportComponent implements OnInit {
 
     if (todate1 && fromdate1 > todate1) {
       todate1 = null;
-      alert("Please check your Dates !");
-      this.checkFlag = false;
-      return;
+      // alert("Please check your Dates !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Dates !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     fromdate1 = new Date(fromdate1.getFullYear(), fromdate1.getMonth(), 1);

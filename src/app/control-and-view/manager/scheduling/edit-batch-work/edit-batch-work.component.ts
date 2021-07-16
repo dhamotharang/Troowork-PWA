@@ -5,6 +5,10 @@ import { ReportServiceService } from '../../../../service/report-service.service
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-edit-batch-work',
   templateUrl: './edit-batch-work.component.html',
@@ -53,7 +57,7 @@ export class EditBatchWorkComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private _location: Location) {
+  constructor(private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private _location: Location, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleNameKey);
   }
 
@@ -64,27 +68,77 @@ export class EditBatchWorkComponent implements OnInit {
   updateScheduleName() {
     this.checkFlag = true;
     if (!this.scheduleDetails.BatchSchduleName || !this.scheduleDetails.ScheduleDescription.trim()) {
-      alert("Assignment Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Assignment Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } if (!this.scheduleDetails.ScheduleDescription || !this.scheduleDetails.ScheduleDescription.trim()) {
-      alert("Assignment Description is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Assignment Description is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Assignment Description is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     } if (!this.empKey) {
-      alert("Employee Name is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Employee Name is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee Name is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.BatchScheduleTime) {
-      alert("Start Time is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Start Time is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!this.BatchScheduleEndTime) {
-      alert("End Time is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("End Time is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'End Time is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.scheduleDetails.BatchSchduleName) {
       this.scheduleDetails.BatchSchduleName = this.scheduleDetails.BatchSchduleName.trim();
@@ -114,21 +168,51 @@ export class EditBatchWorkComponent implements OnInit {
           if (data[0].count == 0) {
             this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime, this.scheduleDetails.Master_shiftID)
               .subscribe(res => {
-                alert("Assignment Name updated Successfully");
-                this.checkFlag = false;
-                this._location.back();
+                // alert("Assignment Name updated Successfully");
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Assignment Name updated Successfully',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
+                dialogRef.afterClosed().subscribe(dialogResult => {
+                  this.checkFlag = false;
+                  this._location.back();
+                });
               });
           } else {
-            alert("Assignment Name already present !");
-            this.checkFlag = false;
+            // alert("Assignment Name already present !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Assignment Name already present !!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
           }
         });
     } else {
       this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription, startTime, endTime, this.scheduleDetails.Master_shiftID)
         .subscribe(res => {
-          alert("Assignment Name updated Successfully");
-          this.checkFlag = false;
-          this._location.back();
+          // alert("Assignment Name updated Successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Assignment Name updated Successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this._location.back();
+          });
         });
     }
 
@@ -182,16 +266,51 @@ export class EditBatchWorkComponent implements OnInit {
   deleteAssignName(BatchScheduleNameKey) {
     this.BatchScheduleNameKey = BatchScheduleNameKey;
 
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
+          .subscribe((data: any[]) => {
+            // alert("Assignment Name deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Assignment Name deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.loading = true;
+              this._location.back();
+            });
+          });
+      } else {
+        this.loading = false;
+        this.checkFlag = false;
+      }
+    });
+
+
+
   }
 
-  deleteAssignmentName() {
-    this.checkFlag = true;
-    this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        alert("Assignment Name deleted successfully");
-        this.checkFlag = false;
-        this.loading = true;
-        this._location.back();
-      })
-  }
+  // deleteAssignmentName() {
+  //   this.checkFlag = true;
+  //   this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
+  //     .subscribe((data: any[]) => {
+  //       alert("Assignment Name deleted successfully");
+  //       this.checkFlag = false;
+  //       this.loading = true;
+  //       this._location.back();
+  //     })
+  // }
 }

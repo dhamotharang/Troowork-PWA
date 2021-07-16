@@ -4,6 +4,8 @@ import { Inventory } from '../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-view-department',
   templateUrl: './view-department.component.html',
@@ -78,7 +80,7 @@ export class ViewDepartmentComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -130,28 +132,58 @@ export class ViewDepartmentComponent implements OnInit {
 
   deleteDeptPass(DeptKey) {
     this.delete_DeptKey = DeptKey;
+    this.checkFlag = true;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.inventoryService
+          .DeleteDepartment(this.delete_DeptKey, this.OrganizationID).subscribe(() => {
+            this.checkFlag = false;
+            this.inventoryService
+              .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+              .subscribe((data: Inventory[]) => {
+                this.departments = data;
+                if (this.departments[0].totalItems > this.itemsPerPage) {
+                  this.showHide2 = true;
+                  this.showHide1 = false;
+                }
+                else if (this.departments[0].totalItems <= this.itemsPerPage) {
+                  this.showHide2 = false;
+                  this.showHide1 = false;
+                }
+              });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
 
-  deleteDepartment() {
-    this.checkFlag = true;
-    this.inventoryService
-      .DeleteDepartment(this.delete_DeptKey, this.OrganizationID).subscribe(() => {
-        this.checkFlag = false;
-        this.inventoryService
-          .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inventory[]) => {
-            this.departments = data;
-            if (this.departments[0].totalItems > this.itemsPerPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.departments[0].totalItems <= this.itemsPerPage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
-      });
-  }
+  // deleteDepartment() {
+  //   this.inventoryService
+  //     .DeleteDepartment(this.delete_DeptKey, this.OrganizationID).subscribe(() => {
+  //       this.checkFlag = false;
+  //       this.inventoryService
+  //         .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inventory[]) => {
+  //           this.departments = data;
+  //           if (this.departments[0].totalItems > this.itemsPerPage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.departments[0].totalItems <= this.itemsPerPage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+  //     });
+  // }
 
   ngOnInit() {
 

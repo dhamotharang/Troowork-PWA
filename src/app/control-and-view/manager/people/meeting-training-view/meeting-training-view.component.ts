@@ -4,6 +4,9 @@ import { PeopleServiceService } from '../../../../service/people-service.service
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-meeting-training-view',
   templateUrl: './meeting-training-view.component.html',
@@ -80,7 +83,7 @@ export class MeetingTrainingViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private peopleServ: PeopleServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private peopleServ: PeopleServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -147,8 +150,18 @@ export class MeetingTrainingViewComponent implements OnInit {
     else {
       date2 = this.convert_DT(this.todate);
       if (date2 < dateFrom) {
-        alert("To date can't be less than Start date");
-        return;
+        // alert("To date can't be less than Start date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "To date can't be less than Start date",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          return;
+        });
       }
     }
     var dept, eventTyp;
@@ -161,7 +174,7 @@ export class MeetingTrainingViewComponent implements OnInit {
     if (!(this.EventType)) {
       eventTyp = null;
     }
-    else{
+    else {
       eventTyp = this.EventType;
     }
 
@@ -213,7 +226,7 @@ export class MeetingTrainingViewComponent implements OnInit {
     if (!(this.EventType)) {
       eventTyp = null;
     }
-    else{
+    else {
       eventTyp = this.EventType;
     }
     var EmployeeKeyString;
@@ -254,7 +267,7 @@ export class MeetingTrainingViewComponent implements OnInit {
 
 
   ngOnInit() {
-       // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

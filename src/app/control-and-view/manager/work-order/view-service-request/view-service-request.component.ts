@@ -4,7 +4,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-view-service-request',
@@ -75,7 +76,7 @@ export class ViewServiceRequestComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private WorkOrderServiceService: WorkOrderServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService) { }
+  constructor(private WorkOrderServiceService: WorkOrderServiceService, private SchedulingService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   ngOnInit() {
 
@@ -139,8 +140,18 @@ export class ViewServiceRequestComponent implements OnInit {
     }
 
     if (date2 && date1 > date2) {
-      alert("Please check your Start Date!");
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
 
     // if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {
@@ -192,17 +203,37 @@ export class ViewServiceRequestComponent implements OnInit {
       CreateEmpKey: empKey
     };
     if (!empKey) {
-      alert("Employee not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("Employee not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Employee not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     this.WorkOrderServiceService.generateWorkorderbyservicerequest(this.vpto)
       .subscribe((data: any[]) => {
         this.requestdetails = data;
         if (data.length > 0) {
-          alert("WorkOrder created successfully");
-          this.checkFlag = false;
-          this.viewserviceRequest();
+          // alert("WorkOrder created successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'WorkOrder created successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this.viewserviceRequest();
+          });
         }
       });
 

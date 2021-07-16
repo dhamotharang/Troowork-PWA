@@ -5,6 +5,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from "@angular/router";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-create-department',
   templateUrl: './create-department.component.html',
@@ -37,13 +39,21 @@ export class CreateDepartmentComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private dst: DataServiceTokenStorageService) { }
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addDepartment(DepartmentName) {
 
     this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {
-      alert("Please provide a Department Name");
+      // alert("Please provide a Department Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide a Department Name !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
 
@@ -52,14 +62,32 @@ export class CreateDepartmentComponent implements OnInit {
       this.inventoryServ.checkForNewDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         this.dept = data;
         if (data.length > 0) {
-          alert("Department already present");
+          // alert("Department already present");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Department already present !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
         }
         else if (data.length == 0) {
           this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res => {
-            alert("Department created successfully");
-            this.checkFlag = false;
-            this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['ViewDepartment'] } }]);
+            // alert("Department created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Department created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['ViewDepartment'] } }]);
+            });
           });
         }
       });

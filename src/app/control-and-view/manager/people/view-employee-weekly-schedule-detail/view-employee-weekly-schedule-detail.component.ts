@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-view-employee-weekly-schedule-detail',
@@ -111,7 +114,7 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
   };
 
-  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
 
@@ -135,7 +138,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
 
     this.checkFlag = true;
     if (!(idemployeegrouping)) {
-      alert('Please Select Employee Group');
+      // alert('Please Select Employee Group');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select Employee Group!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -151,7 +162,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Sunday');
+      // alert('Values Missing in Sunday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Sunday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -164,7 +183,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Monday');
+      // alert('Values Missing in Monday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Monday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -177,7 +204,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Tuesday');
+      // alert('Values Missing in Tuesday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Tuesday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -190,7 +225,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Wednesday');
+      // alert('Values Missing in Wednesday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Wednesday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -203,7 +246,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Thursday');
+      // alert('Values Missing in Thursday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Thursday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -216,7 +267,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     }
     else {
       this.schedularcount++;
-      alert('Values Missing in Friday');
+      // alert('Values Missing in Friday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Friday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -228,7 +287,15 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
       this.schedularcount = this.schedularcount;
     } else {
       this.schedularcount++;
-      alert('Values Missing in Saturday');
+      // alert('Values Missing in Saturday');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Values Missing in Saturday!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -245,22 +312,32 @@ export class ViewEmployeeWeeklyScheduleDetailComponent implements OnInit {
     if (this.schedularcount == 0) {
       this.PeopleServiceService.Employeecreateeditweeklyschedule(this.empk$, this.employeekey, this.OrganizationID, start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idemployeegrouping, this.exceptionsdate)
         .subscribe((data: People[]) => {
-          alert("Updated Successfully!");
-          this.checkFlag = false;
-          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-          if (this.role == 'Manager') {
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ScheduleEmployee'] } }]);
-          }
-          // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-          else if (this.role == 'Supervisor') {
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-          }
+          // alert("Updated Successfully!");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Updated Successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+            if (this.role == 'Manager') {
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ScheduleEmployee'] } }]);
+            }
+            // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            else if (this.role == 'Supervisor') {
+              this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+            }
+          });
         });
 
 
     }
     else {
-      alert('Weekly Schedule!');
+      // alert('Weekly Schedule!');
       this.checkFlag = false;
       return;
     }

@@ -4,7 +4,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-edit-workorder-type',
   templateUrl: './edit-workorder-type.component.html',
@@ -57,7 +58,7 @@ export class EditWorkorderTypeComponent implements OnInit {
       event.preventDefault();
     }
   }
-  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.WOT_Key = params.WorkorderTypeKey);//getting WorkorderTypeKey for edited workordertype
   }
 
@@ -114,20 +115,50 @@ export class EditWorkorderTypeComponent implements OnInit {
     this.checkFlag = true;
     if (!this.metricType || this.metricType == "--Select--") {
       this.metricType = null;
-      alert("Select a metric type !");
-      this.checkFlag = false;
-      return;
+      // alert("Select a metric type !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Select a metric type !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (!WOTName || !WOTName.trim()) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
-      return;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.metricType != 'Default' && (!MetricTypeValue1 || !MetricTypeValue1.trim())) {
       MetricTypeValue1 = null;
-      alert("MetricTypeValue is not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("MetricTypeValue is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'MetricTypeValue is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (WOTName) {
       WOTName = WOTName.trim();
@@ -164,8 +195,18 @@ export class EditWorkorderTypeComponent implements OnInit {
         .checkforWOT(WOTName, this.employeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].count != 0) {
-            alert("Work-order type already exists!");
-            this.checkFlag = false;
+            // alert("Work-order type already exists!");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work-order type already exists!!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
           }
           else if (data[0].count == 0) {//add new workordertype
             this.WorkOrderServiceService
@@ -174,16 +215,26 @@ export class EditWorkorderTypeComponent implements OnInit {
                 this.WorkOrderServiceService
                   .view_wotype(WOTKey, this.OrganizationID)
                   .subscribe((data: any[]) => {
-                    alert("Work-order type updated successfully");
-                    this.checkFlag = false;
-                    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-                    if (this.role == 'Manager') {
-                      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-                    }
-                    // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-                    else if (this.role == 'Supervisor') {
-                      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
-                    }
+                    // alert("Work-order type updated successfully");
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Work-order type updated successfully',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
+                    dialogRef.afterClosed().subscribe(dialogResult => {
+                      this.checkFlag = false;
+                      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                      if (this.role == 'Manager') {
+                        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                      }
+                      // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                      else if (this.role == 'Supervisor') {
+                        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+                      }
+                    });
                   });
               });
           }
@@ -213,16 +264,26 @@ export class EditWorkorderTypeComponent implements OnInit {
           this.WorkOrderServiceService
             .view_wotype(WOTKey, this.OrganizationID)
             .subscribe((data: any[]) => {
-              alert("Work-order type updated successfully");
-              this.checkFlag = false;
-              // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-              if (this.role == 'Manager') {
-                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-              }
-              // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-              else if (this.role == 'Supervisor') {
-                this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
-              }
+              // alert("Work-order type updated successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Work-order type updated successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                if (this.role == 'Manager') {
+                  this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                }
+                // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                else if (this.role == 'Supervisor') {
+                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+                }
+              });
             });
         });
     }

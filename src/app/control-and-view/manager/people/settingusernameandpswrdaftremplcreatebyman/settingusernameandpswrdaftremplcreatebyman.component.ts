@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-settingusernameandpswrdaftremplcreatebyman',
@@ -47,7 +50,7 @@ export class SettingusernameandpswrdaftremplcreatebymanComponent implements OnIn
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmployeeKey);
     this.route.params.subscribe(params => this.str$ = params.str);
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
@@ -56,15 +59,32 @@ export class SettingusernameandpswrdaftremplcreatebymanComponent implements OnIn
   setUsernamePassword() {
     this.checkFlag = true;
     if (!this.username) {
-      alert("User Name can't be empty");
-      this.checkFlag = false;
+      // alert("User Name can't be empty");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "User Name can't be empty",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => { this.checkFlag = false; });
+
     } else {
       this.peopleService.checkUserName(this.username, this.empKey$, this.OrganizationID)
         .subscribe((data: any[]) => {
 
           if (data[0].result == 'Exists') {
-            alert("User Name already exists");
-            this.checkFlag = false;
+            // alert("User Name already exists");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'User Name already exists',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => { this.checkFlag = false; });
             return;
           } else {
             this.peopleService.setLoginCreds(this.username, this.password, this.empKey$, this.employeekey, this.userRoleTypeKey$, this.OrganizationID)
@@ -84,7 +104,15 @@ export class SettingusernameandpswrdaftremplcreatebymanComponent implements OnIn
                   this.userMail = data[0].newmail;
 
                   if (this.userMail == null) {
-                    alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                    // alert("Login Credentials created for user Successfully! Mail not send , Mail-Id not found !");
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Login Credentials created for user Successfully! Mail not send , Mail-Id not found !',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
                   } else {
                     var message = 'Your Username is ' + this.username + ' and ' + 'Your Password is ' + this.password + "                https://troowork.azurewebsites.net";
 
@@ -109,7 +137,7 @@ export class SettingusernameandpswrdaftremplcreatebymanComponent implements OnIn
 
   ngOnInit() {
 
-      // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

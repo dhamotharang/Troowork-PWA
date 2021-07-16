@@ -9,6 +9,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import * as FileSaver from 'file-saver';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-workorder-report',
   templateUrl: './workorder-report.component.html',
@@ -98,7 +100,7 @@ export class WorkorderReportComponent implements OnInit {
     WorkorderTypeName: '', DateandTime: '', Status: '', Employee: '', Room: '', Equipment: '', CheckinTime: '', CheckoutTime: '', Duration: '', DelayTime: '', Notes: ''
   }];
 
-  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService) { }
+  constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService, private dst: DataServiceTokenStorageService, private excelService: ExcelserviceService, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.FacilityKey = "";
@@ -192,9 +194,19 @@ export class WorkorderReportComponent implements OnInit {
     var WorkorderType_Key;
     if ((to_date) && (this.convert_DT(from_date) > this.convert_DT(to_date))) {
       todate = null;
-      alert("Please check your Start Date!");
-      this.checkFlag = false;
-      return;
+      // alert("Please check your Start Date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your Start Date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     else {
       var fromdate;

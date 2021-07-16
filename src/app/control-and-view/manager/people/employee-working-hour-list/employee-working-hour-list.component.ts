@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-employee-working-hour-list',
   templateUrl: './employee-working-hour-list.component.html',
@@ -23,7 +27,7 @@ export class EmployeeWorkingHourListComponent implements OnInit {
   fromdate;
   todate;
   checkFlag;
-  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
   }
   url_base64_decode(str) {
@@ -164,23 +168,63 @@ export class EmployeeWorkingHourListComponent implements OnInit {
 
     var toDate = new Date();
     if (this.convert_DT(this.fromdate) < this.convert_DT(toDate)) {
-      alert("Please select current date or higher !");
-      return;
+      // alert("Please select current date or higher !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select current date or higher !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
     if (!(this.todate)) {
-      alert("To Date not provided !");
-      return;
+      // alert("To Date not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'To Date not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
     var timeDiff = Math.abs(this.fromdate.getTime() - this.todate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays < 31) {
-      alert("Please select 31 days gap !");
-      return;
+      // alert("Please select 31 days gap !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select 31 days gap !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
 
     if (this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
-      alert("Please check dates !");
-      return;
+      // alert("Please check dates !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check dates !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        return;
+      });
     }
 
 

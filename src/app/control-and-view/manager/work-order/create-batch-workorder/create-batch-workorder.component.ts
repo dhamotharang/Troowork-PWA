@@ -5,6 +5,8 @@ import { WorkOrderServiceService } from '../../../../service/work-order-service.
 import { Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-create-batch-workorder',
   templateUrl: './create-batch-workorder.component.html',
@@ -145,7 +147,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService) { }
+  constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   url_base64_decode(str) {//token decoding function
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -438,57 +440,186 @@ export class CreateBatchWorkorderComponent implements OnInit {
   createWorkorder1() {
 
     if (!(this.BatchScheduleNameKey)) {
-      alert("Please select schedule name!");
-      this.checkFlag = false;
+      // alert("Please select schedule name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select schedule name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.WorkorderTypeKey) {
-      alert("Please select work-order type!");
-      this.checkFlag = false;
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.newType == true && !(this.newworkordertypetext)) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (this.newType == true && !(this.newworkordertypetext.trim())) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
-      this.checkFlag = false;
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
-      this.checkFlag = false;
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderStartDate)) {
-      alert("Please provide work-order start date!");
-      this.checkFlag = false;
+      // alert("Please provide work-order start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide work-order start date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderEndDate)) {
-      alert("Please provide work-order end date!");
-      this.checkFlag = false;
+      // alert("Please provide work-order end date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide work-order end date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your end date!");
-      this.checkFlag = false;
-
+      // alert("Please check your end date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your end date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
-      alert("Please provide recurring Period!");
-      this.checkFlag = false;
+      // alert("Please provide recurring Period!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide recurring Period!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.dailyrecurring == true) {
       if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (!(this.dailyFrequency)) {
-        alert("Please select frequency !");
-        this.checkFlag = false;
+        // alert("Please select frequency !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please select frequency !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       } else if (this.dailyFrequency) {
         for (var i = 0; i < this.dailyFrequency; i++) {
           if (!(this.timetable.times[i])) {
-            alert("Please enter time values !");
-            this.checkFlag = false;
+            // alert("Please enter time values !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Please enter time values !!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
           }
         }
         this.withoutequip_wo();
@@ -496,16 +627,46 @@ export class CreateBatchWorkorderComponent implements OnInit {
     }
     else if (this.weeklyrecurring == true) {
       if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
-        alert("Please select atleast one day!");
-        this.checkFlag = false;
+        // alert("Please select atleast one day!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please select atleast one day!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (!this.Time_weekly) {
-        alert("Please provide time!");
-        this.checkFlag = false;
+        // alert("Please provide time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please provide time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else {
         this.withoutequip_wo();
@@ -513,33 +674,83 @@ export class CreateBatchWorkorderComponent implements OnInit {
     }
     else if (this.monthlyrecurring == true) {
       if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
-        alert("Select a radio option from monthly reccuring !");
-        this.checkFlag = false;
-        return;
+        // alert("Select a radio option from monthly reccuring !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Select a radio option from monthly reccuring !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
       if (this.monthlyreccradio1 == true) {
         if (!(this.day1) || !(this.month1)) {
-          alert("Provide entries for monthly recurring !");
-          this.checkFlag = false;
-          return;
+          // alert("Provide entries for monthly recurring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Provide entries for monthly recurring !!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       }
       if (this.monthlyreccradio2 == true) {
         if (!(this.day2) || !(this.pos2) || !(this.month2)) {
-          alert("Provide entries for monthly recurring !");
-          this.checkFlag = false;
-          return;
+          // alert("Provide entries for monthly recurring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Provide entries for monthly recurring !!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       }
       if (!this.Time_monthly) {
-        alert("Please provide time!");
-        this.checkFlag = false;
+        // alert("Please provide time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please provide time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else {
         this.withoutequip_wo();
@@ -603,9 +814,19 @@ export class CreateBatchWorkorderComponent implements OnInit {
 
         }
         else {
-          alert("Limit for the maximum Batch workorders have reached. Maximum 100");
-          this.checkFlag = false;
-          return;
+          // alert("Limit for the maximum Batch workorders have reached. Maximum 100");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Limit for the maximum Batch workorders have reached. Maximum 100!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       } else {
@@ -729,14 +950,34 @@ export class CreateBatchWorkorderComponent implements OnInit {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     if (this.intervaltype == 'w' && diffDays < 7) {
-      alert("Please Select One week Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One week Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One week Date Range!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
-      alert("Please Select One month Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One month Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One month Date Range!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.dailyrecurring == true) {
       var timeset = [];
@@ -759,16 +1000,36 @@ export class CreateBatchWorkorderComponent implements OnInit {
         this.workTime = this.Time_weekly.getHours() + ':' + this.Time_weekly.getMinutes();
       }
       else {
-        alert("Please Enter Time!");
-        this.checkFlag = false;
+        // alert("Please Enter Time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please Enter Time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
     } else if (this.monthlyrecurring == true) {
       if (this.Time_monthly) {
         this.workTime = this.Time_monthly.getHours() + ':' + this.Time_monthly.getMinutes();
       }
       else {
-        alert("Please Enter Time!");
-        this.checkFlag = false;
+        // alert("Please Enter Time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please Enter Time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
@@ -852,15 +1113,25 @@ export class CreateBatchWorkorderComponent implements OnInit {
                     IsSnapshot: this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
-                    alert("Batch work-order created successfully");
-                    this.checkFlag = false;
-                    if (this.role == 'Manager') {
-                      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
-                    }
-                    // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-                    else if (this.role == 'Supervisor') {
-                      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
-                    }
+                    // alert("Batch work-order created successfully");
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Batch work-order created successfully!',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
+                    dialogRef.afterClosed().subscribe(dialogResult => {
+                      this.checkFlag = false;
+                      if (this.role == 'Manager') {
+                        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                      }
+                      // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                      else if (this.role == 'Supervisor') {
+                        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+                      }
+                    });
                   });
                 });
             }
@@ -896,80 +1167,239 @@ export class CreateBatchWorkorderComponent implements OnInit {
         IsSnapshot: this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
-        alert("Batch work-order created successfully");
-        this.checkFlag = false;
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
-        }
-        // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
-        }
+        // alert("Batch work-order created successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Batch work-order created successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+          }
+          // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+          }
+        });
       });
     }
   }
   createWorkorder2() {
     if (!(this.BatchScheduleNameKey)) {
-      alert("Please select schedule name!");
-      this.checkFlag = false;
+      // alert("Please select schedule name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select schedule name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.WorkorderTypeKey) {
-      alert("Please select work-order type!");
-      this.checkFlag = false;
+      // alert("Please select work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.newType == true && !(this.newworkordertypetext)) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     } else if (this.newType == true && !(this.newworkordertypetext.trim())) {
-      alert("Please enter work-order type!");
-      this.checkFlag = false;
+      // alert("Please enter work-order type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter work-order type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FacilityKey) {
-      alert("Please select building!");
-      this.checkFlag = false;
+      // alert("Please select building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!this.FloorKey) {
-      alert("Please select floor!");
-      this.checkFlag = false;
+      // alert("Please select floor!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select floor!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderStartDate)) {
-      alert("Please provide work-order start date!");
-      this.checkFlag = false;
+      // alert("Please provide work-order start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide work-order start date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (!(this.WorkorderEndDate)) {
-      alert("Please provide work-order end date!");
-      this.checkFlag = false;
+      // alert("Please provide work-order end date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please provide work-order end date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if ((this.WorkorderStartDate) && this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-      alert("Start date is less than current date");
-      this.checkFlag = false;
+      // alert("Start date is less than current date");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Start date is less than current date!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your end date!");
-      this.checkFlag = false;
-
+      // alert("Please check your end date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your end date!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.showEqTypes == true && !(this.EquipmentTypeKey)) {
-      alert("Please select equipment type!");
-      this.checkFlag = false;
+      // alert("Please select equipment type!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select equipment type!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.dailyrecurring == false && this.weeklyrecurring == false && this.monthlyrecurring == false) {
-      alert("Recurring Period is not provided !");
-      this.checkFlag = false;
+      // alert("Recurring Period is not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Recurring Period is not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+      });
     }
     else if (this.dailyrecurring == true) {
       if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (!(this.dailyFrequency)) {
-        alert("Please select frequency !");
-        this.checkFlag = false;
+        // alert("Please select frequency !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please select frequency !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       } else if (this.dailyFrequency) {
         for (var i = 0; i < this.dailyFrequency; i++) {
           if (!(this.timetable.times[i])) {
-            alert("Please enter time values !");
-            this.checkFlag = false;
+            // alert("Please enter time values !");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Please enter time values !!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+            });
           }
         }
         this.withequip_wo();
@@ -977,16 +1407,46 @@ export class CreateBatchWorkorderComponent implements OnInit {
     }
     else if (this.weeklyrecurring == true) {
       if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
-        alert("Please select atleast one day!");
-        this.checkFlag = false;
+        // alert("Please select atleast one day!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please select atleast one day!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (!this.Time_weekly) {
-        alert("Please provide time!");
-        this.checkFlag = false;
+        // alert("Please provide time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please provide time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else {
         this.withequip_wo();
@@ -994,35 +1454,85 @@ export class CreateBatchWorkorderComponent implements OnInit {
     }
     else if (this.monthlyrecurring == true) {
       if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-        alert("Start date is less than current date");
-        this.checkFlag = false;
-        return;
+        // alert("Start date is less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Start date is less than current date!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.monthlyreccradio1 == false && this.monthlyreccradio2 == false) {
-        alert("Select a radio option from monthly reccuring !");
-        this.checkFlag = false;
-        return;
+        // alert("Select a radio option from monthly reccuring !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Select a radio option from monthly reccuring !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
       if (this.monthlyreccradio1 == true) {
         if (!(this.day1) || !(this.month1)) {
-          alert("Provide entries for monthly recurring !");
-          this.checkFlag = false;
-          return;
+          // alert("Provide entries for monthly recurring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Provide entries for monthly recurring !!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       }
       if (this.monthlyreccradio2 == true) {
         if (!(this.day2) || !(this.pos2) || !(this.month2)) {
-          alert("Provide entries for monthly recurring !");
-          this.checkFlag = false;
-          return;
+          // alert("Provide entries for monthly recurring !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Provide entries for monthly recurring !!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       }
       if (!this.Time_monthly) {
-        alert("Please provide time!");
-        this.checkFlag = false;
+        // alert("Please provide time!");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Please provide time!!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+        });
       }
       else {
         this.withequip_wo();
@@ -1142,9 +1652,19 @@ export class CreateBatchWorkorderComponent implements OnInit {
 
         }
         else {
-          alert("Limit for the maximum batch workorders have reached. Maximum 100");
-          this.checkFlag = false;
-          return;
+          // alert("Limit for the maximum batch workorders have reached. Maximum 100");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Limit for the maximum batch workorders have reached. Maximum 100!',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            return;
+          });
         }
 
       } else {
@@ -1219,14 +1739,34 @@ export class CreateBatchWorkorderComponent implements OnInit {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     if (this.intervaltype == 'w' && diffDays < 7) {
-      alert("Please Select One week Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One week Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One week Date Range!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.intervaltype == 'm' && diffDays < 31) {
-      alert("Please Select One month Date Range!");
-      this.checkFlag = false;
-      return;
+      // alert("Please Select One month Date Range!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Select One month Date Range!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.dailyrecurring == true) {
       var timeset = [];
@@ -1328,15 +1868,25 @@ export class CreateBatchWorkorderComponent implements OnInit {
                     IsSnapshot: this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res => {
-                    alert("Batch work-order created successfully");
-                    this.checkFlag = false;
-                    if (this.role == 'Manager') {
-                      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
-                    }
-                    // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-                    else if (this.role == 'Supervisor') {
-                      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
-                    }
+                    // alert("Batch work-order created successfully");
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Batch work-order created successfully',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
+                    dialogRef.afterClosed().subscribe(dialogResult => {
+                      this.checkFlag = false;
+                      if (this.role == 'Manager') {
+                        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                      }
+                      // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                      else if (this.role == 'Supervisor') {
+                        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+                      }
+                    });
                   });
                 });
             }
@@ -1372,15 +1922,25 @@ export class CreateBatchWorkorderComponent implements OnInit {
         IsSnapshot: this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res => {
-        alert("Batch work-order created successfully");
-        this.checkFlag = false;
-        if (this.role == 'Manager') {
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
-        }
-        // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-        else if (this.role == 'Supervisor') {
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
-        }
+        // alert("Batch work-order created successfully");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Batch work-order created successfully',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+          }
+          // else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          else if (this.role == 'Supervisor') {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+          }
+        });
       });
     }
 

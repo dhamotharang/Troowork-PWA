@@ -7,6 +7,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 
 @Component({
   selector: 'app-building-edit',
@@ -40,7 +44,7 @@ export class BuildingEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
   }
 
@@ -50,7 +54,15 @@ export class BuildingEditComponent implements OnInit {
     var type = 'facility';
 
     if (!(FacilityName) || !(FacilityName.trim())) {
-      alert("Please Enter Building Name!");
+      // alert("Please Enter Building Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Building Name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -58,16 +70,34 @@ export class BuildingEditComponent implements OnInit {
       FacilityName = FacilityName.trim();
       this.inventoryService.CheckNewBuilding(FacilityName, type, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data.length > 0) {
-          alert("Building already present !");
+          // alert("Building already present !");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Building already present !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }
         else {
           this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
             .subscribe((data: Inventory[]) => {
-              alert("Building updated successfully");
-              this.checkFlag = false;
-              this._location.back();
+              // alert("Building updated successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Building updated successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this._location.back();
+              });
             });
         }
       });
@@ -76,7 +106,7 @@ export class BuildingEditComponent implements OnInit {
 
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

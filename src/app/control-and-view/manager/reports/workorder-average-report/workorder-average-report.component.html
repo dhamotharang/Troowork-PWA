@@ -1,0 +1,57 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">WORK ORDER ALERT</h4>
+  </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <!-- <h3 style="text-align: right"></h3> -->
+      <div class="form-group">
+        <label style="margin-top: 2rem;" class="col-sm-4 col-md-4 col-lg-4 ">From Date</label>
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="fromdate"></ng-datepicker>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="fromdate"></igx-datePicker> -->
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label style="margin-top: 2rem;" class="col-sm-4 col-md-4 col-lg-4 ">To Date</label>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"></igx-datePicker> -->
+        <ng-datepicker [options]="options" position="bottom-right" [(ngModel)]="todate"></ng-datepicker>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div class="row col-md-12">
+  <div style="margin-left: 45%">
+    <button type="button" class="btn btn-success" [disabled]="checkFlag"
+      (click)=generateWorkOrderAvgReport(fromdate,todate)><b>GENERATE</b></button>
+  </div>
+</div>
+
+
+<div style="margin-left: 1.5rem;width: 100%">
+  <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table"
+    style="display: inline-table">
+    <thead class="tableHead">
+      <th> Work-Order Type Name </th>
+      <th> Room</th>
+      <th> Work Order Duration </th>
+      <th> Metric Duration </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let x of viewWorkorderReport">
+
+        <td>{{x.WorkorderTypeName}}</td>
+        <td>{{x.RoomId}}</td>
+        <td>{{x.duration}}</td>
+        <td>{{x.TotalMetric}}</td>
+
+      </tr>
+      <tr *ngIf="viewWorkorderReport?.length == 0">
+        <td colspan="4" class="no-data-available">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

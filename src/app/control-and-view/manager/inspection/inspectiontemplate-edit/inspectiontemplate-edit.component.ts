@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-inspectiontemplate-edit',
@@ -55,7 +58,7 @@ export class InspectiontemplateEditComponent implements OnInit {
   @Input() isAlphaNumeric: boolean;
   editQuestions;
 
-  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inspectionService: InspectionService, private el: ElementRef, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -73,23 +76,49 @@ export class InspectiontemplateEditComponent implements OnInit {
 
     }, 100)
   }
-  deleteTemplate() {
-    this.checkFlag = true;
-    this.loading = true;// loading
-    this.inspectionService
-      .DeleteTemplate(this.delete_tempid, this.employeekey, this.OrganizationID).subscribe(() => {
-        this.checkFlag = false;
-        this.inspectionService
-          .getInspectionTemplateDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inspection[]) => {
-            this.inspectiontemplate = data;
-            this.loading = false;// loading
-          });
-      });
-  }
+  // deleteTemplate() {
+  //   this.checkFlag = true;
+  //   this.loading = true;// loading
+  //   this.inspectionService
+  //     .DeleteTemplate(this.delete_tempid, this.employeekey, this.OrganizationID).subscribe(() => {
+  //       this.checkFlag = false;
+  //       this.inspectionService
+  //         .getInspectionTemplateDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inspection[]) => {
+  //           this.inspectiontemplate = data;
+  //           this.loading = false;// loading
+  //         });
+  //     });
+  // }
 
   deleteTemplatePass(TemplateID) {
     this.delete_tempid = TemplateID;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.loading = true;// loading
+        this.inspectionService
+          .DeleteTemplate(this.delete_tempid, this.employeekey, this.OrganizationID).subscribe(() => {
+            this.checkFlag = false;
+            this.inspectionService
+              .getInspectionTemplateDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+              .subscribe((data: Inspection[]) => {
+                this.inspectiontemplate = data;
+                this.loading = false;// loading
+              });
+          });
+      } else {
+        this.loading = false;
+        this.checkFlag = false;
+      }
+    });
   }
   searchTemplate(SearchValue) {
 
@@ -211,7 +240,15 @@ export class InspectiontemplateEditComponent implements OnInit {
 
     this.checkFlag = true;
     if (!TemplateName && !TemplateName.trim()) {
-      alert("Template Name Not provided !");
+      // alert("Template Name Not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Template Name Not provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       return;
     }
     if (TemplateName) {

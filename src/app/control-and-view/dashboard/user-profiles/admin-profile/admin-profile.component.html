@@ -1,143 +1,130 @@
-<div class="container">
-  <div class="container-fluid">
+<div style="padding-left: 9rem;padding-right: 9rem;" *ngFor="let profile of profile">
+  <div class="row col-sm-12 col-md-12 col-lg-12" style="text-align: center;margin-left: 40%;">
+    <h4><strong>{{profile.FirstName}} {{profile.MiddleName}} {{profile.LastName}}: Profile</strong></h4>
+  </div>
+  <div class="row col-sm-12 col-md-12 col-lg-12" style="text-align: center;margin-left: 44%;">
+    <h4><strong>{{profile.UserRoleName}}</strong></h4>
+  </div>
 
-    <div *ngFor="let profile of profile">
-      <div style="margin-left: 45%;">
-        <h4 class="refer"><strong>{{profile.FirstName}} {{profile.MiddleName}} {{profile.LastName}}
-            : Profile</strong></h4>
-        <div style="margin-left: 15%;">
-          <!-- <div *ngIf="profile.IsSupervisor === 1 && profile.UserRoleName==='Employee'">
-            <h4 class="refer"><strong>Supervisor</strong></h4>
-          </div>
-          <div *ngIf="profile.IsSupervisor === 0 && profile.UserRoleName==='Employee'">
-            <h4 class="refer"><strong>Employee</strong></h4>
-          </div> -->
-          <!-- <div *ngIf="profile.UserRoleName!=='Employee'"> -->
-          <h4 class="refer"><strong>{{profile.UserRoleName}}</strong></h4>
-          <!-- </div> -->
-        </div>
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;" class="row col-sm-12 col-md-12 col-lg-12">
+
+    <div class="col-sm-3 col-md-3 col-lg-3">
+
+      <div class="form-group" *ngIf="image == null">
+        <img src="assets/img/userIcon.jpg" style="width: 12rem;" class="img-responsive">
+      </div>
+      <div class="form-group" *ngIf="image !== null">
+        <img src="./imageupload/{{image}}" style="width: 12rem;" class="img-responsive">
+      </div>
+      <div class="form-group">
+        <label for="file-upload" class="custom-file-upload">
+          <i class="fa fa-cloud-upload"></i> Choose File
+        </label>
+        <input id="file-upload" type="file" name="photo" ng2FileSelect [uploader]="uploader" />
+        <!-- <input type="file" name="photo" ng2FileSelect [uploader]="uploader" /> -->
+      </div>
+      <div>
+        <button type="button" style="text-align:center;width: 66%;margin-top: -3%;" class="btn btn-success" [disabled]="fileCheck" (click)="ImgUpload();"><b>UPLOAD</b></button>
+      </div>
+      <div class="form-group">
+        <button style="margin-top: 1rem;" class="btn btn-primary" [routerLink]="['changePasswordManager',profile.EmployeeKey,profile.UserRoleName,profile.IsSupervisor]" routerLinkActive="active">
+          <span><b>CHANGE PASSWORD</b></span>
+        </button>
       </div>
 
+    </div>
+
+    <div class="col-sm-9 col-md-9 col-lg-9">
       <div class="form-group">
-        <div>
-          <section class="imageSection">
-            <div *ngIf="image==null">
-              <img src="assets/img/userIcon.jpg" style="width: 12rem;" class="img-responsive">
-            </div>
-            <div *ngIf="image!==null">
-              <img src="./imageupload/{{image}}" style="width: 12rem;" class="img-responsive">
-            </div>
-            <div style="margin-bottom: 1rem;margin-top: 2rem">
-              <input type="file" name="photo" ng2FileSelect [uploader]="uploader" />
-            </div>
-            <div>
-              <!-- <div class="row col-md-12" style="margin-left: 45%"> -->
-
-              <button type="button" style="text-align:center;width: 18%;" class="btn btn-success" [disabled]="fileCheck"
-                (click)="ImgUpload();"><b>UPLOAD</b></button>
-            </div>
-            <div class='buttonDiv'>
-              <button class="btn btn-primary" style="width: 18%;"
-                [routerLink]="['changePasswordAdmin',profile.EmployeeKey,profile.UserRoleName,profile.IsSupervisor]"
-                routerLinkActive="active">
-                <!-- ng-click="changePassword(,, )" -->
-                <span><b>CHANGE PASSWORD</b></span></button>
-            </div>
-          </section>
-        </div>
-        <div style="margin-left: 15rem; margin-top: -16rem; background-color: white !important">
-          <div class="form-group" style="margin-left: 9rem;padding-top: 5rem;padding-bottom: 3rem;">
-            <!-- <div class="form-group" style="margin-left: 15rem; margin-top: -11rem; background-color: white !important"></div> -->
-            <section class="infoSection ">
-              <h5><b>Organizational Information</b></h5>
-              <div style="margin-left: 2rem;">
-                <div *ngIf="profile.Organization">
-                  <span class="col-md-6">Organization :</span>
-                  <span class="col-md-6" style="margin-left: 5rem;"> {{profile.Organization}}</span>
-                </div>
-                <div *ngIf="profile.EmployeeKey">
-                  <span class="col-md-6">EmployeeNumber :</span>
-                  <span class="col-md-6" style="margin-left: 2.7rem;"> {{profile.EmployeeNumber}}</span>
-                </div>
-                <div *ngIf="profile.UserId">
-                  <span class="col-md-6">User Name :</span>
-                  <span class="col-md-6" style="margin-left: 5.7rem;"> {{profile.UserId}}</span>
-                </div>
-              </div>
-              <h5><b>General Information</b></h5>
-              <div style="margin-left: 2rem;">
-                <div>
-                  <span class="col-md-6">Position:</span>
-
-                  <span style="margin-left: 8.2rem;" *ngIf="profile.UserRoleName==='Supervisor'">
-                    Supervisor
-                  </span>
-                  <span style="margin-left: 8.2rem;" *ngIf="profile.UserRoleName==='Employee'">
-                    Employee
-                  </span>
-                  <span style="margin-left: 8.2rem;" *ngIf="profile.UserRoleName==='Manager'">
-                    Manager
-                  </span>
-                  <span style="margin-left: 8.2rem;" *ngIf="profile.UserRoleName==='SuperAdmin'">
-                    Super Admin
-                  </span>
-                  <span style="margin-left: 8.2rem;" *ngIf="profile.UserRoleName==='Admin'">
-                    Admin
-                  </span>
-                </div>
-                <div *ngIf="profile.DepartmentName">
-                  <span class="col-md-6">Department :</span>
-                  <span class="col-md-6" style="margin-left: 5.3rem;"> {{profile.DepartmentName}}</span>
-                </div>
-                <div *ngIf="profile.JobTitle !== -1">
-                  <span class="col-md-6">Job Title :</span>
-                  <span class="col-md-6" style="margin-left: 6.7rem;"> {{profile.JobTitle}}</span>
-                </div>
-                <div *ngIf="managerFlag">
-                  <span class="col-md-6">Manager :</span>
-                  <span class="col-md-6" style="margin-left: rem;"> {{manager}}</span>
-                </div>
-                <!-- <div *ngIf="profile.IsSupervisor === 1">
-                  <span class="col-md-6">Supervisor :</span>
-                  <span class="col-md-6" style="margin-left: 5.6rem;"> Yes</span>
-                </div> -->
-                <div>
-                  <span class="col-md-6">Hire Date :</span>
-                  <span class="col-md-6" style="margin-left: 6.3rem;"> {{profile.HireDate}}</span>
-                </div>
-                <div>
-                  <span class="col-md-6">Status :</span>
-                  <span class="col-md-6" style="margin-left: 7.6rem;"> Active</span>
-                </div>
-              </div>
-              <h5><strong>Personal Information</strong></h5>
-              <div style="margin-left: 2rem;">
-                <div *ngIf="profile.EmailID !== 'null'">
-                  <span class="col-md-6">Email :</span>
-                  <span class="col-md-6" style="margin-left: 8rem;"> {{profile.EmailID}}</span>
-                </div>
-                <div>
-                  <span class="col-md-6">Date of Birth :</span>
-                  <span class="col-md-6" style="margin-left: 5rem;"> {{profile.BirthDate}}</span>
-                </div>
-                <div *ngIf="profile.PrimaryPhone !== 'null'">
-                  <span class="col-md-6">Phone Number :</span>
-                  <span class="col-md-6" style="margin-left: 3.8rem;"> {{profile.PrimaryPhone}}</span>
-                </div>
-                <div *ngIf="profile.AlternatePhone !== 'null'">
-                  <span class="col-md-6"></span>
-                  <span class="col-md-6" style="margin-left: 11rem;"> {{profile.AlternatePhone}}</span>
-                </div>
-                <div *ngIf="profile.AddressLine1 !== 'null'">
-                  <span class="col-md-6">Address :</span>
-                  <span class="col-md-6" style="margin-left: 6.8rem;"> {{profile.AddressLine1}}
-                    &nbsp;{{profile.AddressLine2}}&nbsp;{{profile.City}}&nbsp;{{profile.State}}&nbsp;{{profile.Country}}</span>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
+        <table class="table table-responsive table-hover table-bordered table" style="display: inline-table;width: 90%;">
+          <thead class="tableHead newHead">
+            <th colspan="2">
+              <h5><strong> Organizational Information </strong></h5>
+            </th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Organization :</td>
+              <td>{{profile.Organization}}</td>
+            </tr>
+            <tr>
+              <td>EmployeeNumber :</td>
+              <td>{{profile.EmployeeNumber}}</td>
+            </tr>
+            <tr>
+              <td>User Name :</td>
+              <td>{{profile.UserId}}</td>
+            </tr>
+            <!-- <tr>
+              <td></td>
+              <td></td>
+            </tr> -->
+            <tr class="tableHead newHead">
+              <td colspan="2">
+                <h5><strong> General Information</strong></h5>
+              </td>
+            </tr>
+            <tr>
+              <td>Position:</td>
+              <td *ngIf="profile.IsSupervisor===1 && profile.UserRoleName==='Employee'">Supervisor</td>
+              <td *ngIf="profile.IsSupervisor === 0 && profile.UserRoleName==='Employee'">Employee</td>
+              <td *ngIf="profile.UserRoleName==='Manager'">Manager</td>
+              <td *ngIf="profile.UserRoleName==='SuperAdmin'">SuperAdmin</td>
+              <td *ngIf="profile.UserRoleName==='Admin'">Admin</td>
+            </tr>
+            <tr *ngIf="profile.DepartmentName">
+              <td>Department :</td>
+              <td>{{profile.DepartmentName}}</td>
+            </tr>
+            <tr *ngIf="profile.JobTitle !== -1">
+              <td>Job Title :</td>
+              <td>{{profile.JobTitle}}</td>
+            </tr>
+            <tr *ngIf="managerFlag">
+              <td>Manager :</td>
+              <td>{{manager}}</td>
+            </tr>
+            <tr>
+              <td>Hire Date :</td>
+              <td>{{profile.HireDate}}</td>
+            </tr>
+            <tr>
+              <td>Status :</td>
+              <td>Active</td>
+            </tr>
+            <!-- <tr>
+              <td></td>
+              <td></td>
+            </tr> -->
+            <tr class="tableHead newHead">
+              <td colspan="2">
+                <h5><strong> Personal Information</strong></h5>
+              </td>
+            </tr>
+            <tr *ngIf="profile.EmailID !== 'null'">
+              <td>Email :</td>
+              <td>{{profile.EmailID}}</td>
+            </tr>
+            <tr>
+              <td>Date of Birth :</td>
+              <td>{{profile.BirthDate}}</td>
+            </tr>
+            <tr *ngIf="profile.PrimaryPhone !== 'null'">
+              <td>Phone Number :</td>
+              <td>{{profile.PrimaryPhone}}</td>
+            </tr>
+            <tr *ngIf="profile.AlternatePhone !== 'null'">
+              <td></td>
+              <td>{{profile.AlternatePhone}}</td>
+            </tr>
+            <tr *ngIf="profile.AddressLine1 !== 'null'">
+              <td>Address :</td>
+              <td>{{profile.AddressLine1}}&nbsp;{{profile.AddressLine2}}&nbsp;{{profile.City}}&nbsp;{{profile.State}}&nbsp;{{profile.Country}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+
   </div>
 </div>

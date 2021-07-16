@@ -5,6 +5,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InventoryService } from '../../../../service/inventory.service';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-floor-create',
   templateUrl: './floor-create.component.html',
@@ -39,7 +42,7 @@ export class FloorCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private router: Router, private fb: FormBuilder, private inventoryService: InventoryService, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private router: Router, private fb: FormBuilder, private inventoryService: InventoryService, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
 
     this.floorcreate = fb.group({
       FacilityKey: ['', Validators.required],
@@ -51,17 +54,41 @@ export class FloorCreateComponent implements OnInit {
   addFloor(FacilityKey, FloorName, FloorDescription) {
     this.checkFlag = true;
     if (!FacilityKey) {
-      alert("Please Choose Building!");
+      // alert("Please Choose Building!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Choose Building!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!FloorName || !FloorName.trim()) {
-      alert("Please Enter Floor Name!");
+      // alert("Please Enter Floor Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Floor Name!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!FloorDescription || !FloorDescription.trim()) {
-      alert("Please Enter Floor Description!");
+      // alert("Please Enter Floor Description!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Floor Description!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -72,16 +99,34 @@ export class FloorCreateComponent implements OnInit {
 
     this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data[0].count > 0) {
-        alert("Floor already present !");
+        // alert("Floor already present !");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Floor already present !!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       }
       else {
         this.inventoryService.createFloors(FacilityKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
-            alert("Floor created successfully");
-            this.checkFlag = false;
-            this._location.back();
+            // alert("Floor created successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Floor created successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this._location.back();
+            });
           });
       }
     });
@@ -89,7 +134,7 @@ export class FloorCreateComponent implements OnInit {
 
   ngOnInit() {
 
-        // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

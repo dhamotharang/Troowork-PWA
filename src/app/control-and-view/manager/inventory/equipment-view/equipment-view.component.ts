@@ -3,6 +3,9 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-equipment-view',
@@ -46,7 +49,7 @@ export class EquipmentViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -137,35 +140,80 @@ export class EquipmentViewComponent implements OnInit {
 
   deleteEquipPass(EquipKey) {
     this.delete_EquipKey = EquipKey;
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
+        this.inventoryService
+          .DeleteEquipment(this.delete_EquipKey, this.employeekey, this.OrganizationID).subscribe(() => {
+            // alert("Equipment deleted successfully...");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Equipment deleted successfully...',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.loading = true;
+              this.inventoryService
+                .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+                .subscribe((data: Inventory[]) => {
+                  this.equipments = data;
+                  if (this.equipments[0].totalItems > this.itemsPerPage) {
+                    this.loading = false;
+                    this.showHide2 = true;
+                    this.showHide1 = false;
+                  }
+                  else if (this.equipments[0].totalItems <= this.itemsPerPage) {
+                    this.loading = false;
+                    this.showHide2 = false;
+                    this.showHide1 = false;
+                  }
+                });
+            });
+          });
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
 
-  deleteEquipments() {
-    this.checkFlag = true;
-    this.inventoryService
-      .DeleteEquipment(this.delete_EquipKey, this.employeekey, this.OrganizationID).subscribe(() => {
-        alert("Equipment deleted successfully...");
-        this.checkFlag = false;
-        this.loading = true;
-        this.inventoryService
-          .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inventory[]) => {
-            this.equipments = data;
-            if (this.equipments[0].totalItems > this.itemsPerPage) {
-              this.loading = false;
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.equipments[0].totalItems <= this.itemsPerPage) {
-              this.loading = false;
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
-      });
-  }
+  // deleteEquipments() {
+  //   this.checkFlag = true;
+  //   this.inventoryService
+  //     .DeleteEquipment(this.delete_EquipKey, this.employeekey, this.OrganizationID).subscribe(() => {
+  //       alert("Equipment deleted successfully...");
+  //       this.checkFlag = false;
+  //       this.loading = true;
+  //       this.inventoryService
+  //         .getEquipmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inventory[]) => {
+  //           this.equipments = data;
+  //           if (this.equipments[0].totalItems > this.itemsPerPage) {
+  //             this.loading = false;
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.equipments[0].totalItems <= this.itemsPerPage) {
+  //             this.loading = false;
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+  //     });
+  // }
 
   ngOnInit() {
-      // var token = sessionStorage.getItem('token');
+    // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.role = this.dst.getRole();

@@ -4,6 +4,8 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-pto-request-details',
   templateUrl: './pto-request-details.component.html',
@@ -71,7 +73,7 @@ export class PtoRequestDetailsComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService) {
+  constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
 
@@ -91,12 +93,22 @@ export class PtoRequestDetailsComponent implements OnInit {
     this.checkFlag = true;
     this.PeopleServiceService.cancelPTObyEmployee(this.ptorequestID$, this.toServeremployeekey, this.OrganizationID, this.convert_DT(new Date())).subscribe((data) => {
       this.checkFlag = false;
-      alert("Request successfully cancelled by employee");
-      if (this.role == 'Employee') {
-        this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
-      } else if (this.role == 'Supervisor') {
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewPtoRequest'] } }]);
-      }
+      // alert("Request successfully cancelled by employee");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Request successfully cancelled by employee',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (this.role == 'Employee') {
+          this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
+        } else if (this.role == 'Supervisor') {
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewPtoRequest'] } }]);
+        }
+      });
     });
   }
 

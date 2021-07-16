@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-newdocumentfolder-create',
   templateUrl: './newdocumentfolder-create.component.html',
@@ -37,17 +39,33 @@ export class NewdocumentfolderCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) { }
+  constructor(private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
   addDocFold() {
     this.checkFlag = true;
     if (this.DocFolderName && !this.DocFolderName.trim()) {
-      alert("Please Enter Document Folder Name!");
+      // alert("Please Enter Document Folder Name!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please Enter Document Folder Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     if (!this.DocFolderName) {
-      alert("Document Folder Name not provided");
+      // alert("Document Folder Name not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Document Folder Name not provided',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
@@ -58,13 +76,31 @@ export class NewdocumentfolderCreateComponent implements OnInit {
     this.documentService.checkforForms(this.DocFolderName, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
       if (data[0].count == 0) {
         this.documentService.CreateNewDocumentFolder(this.DocFolderName, this.employeekey, this.OrganizationID).subscribe((data: Documents[]) => {
-          alert("Successfully Added");
-          this.checkFlag = false;
-          this._location.back();
+          // alert("Successfully Added");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Successfully Added',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this._location.back();
+          });
         });
       }
       else {
-        alert("Document Folder Name already exists");
+        // alert("Document Folder Name already exists");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Document Folder Name already exists',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       }

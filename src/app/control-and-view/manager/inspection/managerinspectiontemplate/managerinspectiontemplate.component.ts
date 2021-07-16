@@ -8,6 +8,9 @@ import { Location } from '@angular/common';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 const url = ConectionSettings.Url + '/inspection_Upload';
 @Component({
   selector: 'app-managerinspectiontemplate',
@@ -148,7 +151,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   count = 0;
   saveInspection = {};
 
-  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router, private _location: Location, private http: HttpClient, private dst: DataServiceTokenStorageService) {
+  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router, private _location: Location, private http: HttpClient, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.inspKey$ = params.InspectionOrderKey);
   }
 
@@ -204,7 +207,15 @@ export class ManagerinspectiontemplateComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
-      alert('File uploaded successfully');
+      // alert('File uploaded successfully');
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'File uploaded successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
     };
   }
   saveRatings(TemplateQuestionID, ScoreName) {
@@ -366,11 +377,27 @@ export class ManagerinspectiontemplateComponent implements OnInit {
               this.emp_EmailId = data[0].AssignEmpEmailId;
               this.audit_EmailId = data[0].EmailID;
               if (!(this.emp_EmailId)) {
-                alert('Employee Has No Email ID');
+                // alert('Employee Has No Email ID');
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Employee Has No Email ID',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
                 return;
               }
               if (!(this.audit_EmailId)) {
-                alert('Auditor Has No Email ID');
+                // alert('Auditor Has No Email ID');
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Auditor Has No Email ID',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
                 return;
               }
               this.inspectionService.getInspectionDetailsForEmail(this.inspKey$, this.OrganizationID).subscribe((inspectionEmail: any[]) => {
@@ -391,7 +418,16 @@ export class ManagerinspectiontemplateComponent implements OnInit {
                 };
                 const url = ConectionSettings.Url + "/sendmail";
                 return this.http.post(url, obj)
-                  .subscribe(res => alert('Mail Sent Successfully...'));
+                  .subscribe(res => {
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Mail Sent Successfully...',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
+                  });
 
               });
             });
@@ -524,11 +560,27 @@ export class ManagerinspectiontemplateComponent implements OnInit {
               this.emp_EmailId = data[0].AssignEmpEmailId;
               this.audit_EmailId = data[0].EmailID;
               if (!(this.emp_EmailId)) {
-                alert('Employee Has No Email ID');
+                // alert('Employee Has No Email ID');
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Employee Has No Email ID',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
                 return;
               }
               if (!(this.audit_EmailId)) {
-                alert('Auditor Has No Email ID');
+                // alert('Auditor Has No Email ID');
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Auditor Has No Email ID',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
                 return;
               }
               this.inspectionService.getInspectionDetailsForEmail(this.inspKey$, this.OrganizationID).subscribe((inspectionEmail: any[]) => {
@@ -549,7 +601,16 @@ export class ManagerinspectiontemplateComponent implements OnInit {
                 };
                 const url = ConectionSettings.Url + "/sendmail";
                 return this.http.post(url, obj)
-                  .subscribe(res => alert('Mail Sent Successfully...'));
+                  .subscribe(res => {
+                    const dialogRef = this.dialog.open(AlertdialogComponent, {
+                      data: {
+                        message: 'Mail Sent Successfully...',
+                        buttonText: {
+                          cancel: 'Done'
+                        }
+                      },
+                    });
+                  });
 
               });
             });

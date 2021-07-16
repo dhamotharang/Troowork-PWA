@@ -33,7 +33,7 @@
             <td>
               <a [routerLink]="['MeetingTrainingEdit', x.EventKey,x.ActionKey]" *ngIf="x.HasAttended == 0" class="btn btn-primary">Edit</a>
 
-              <button *ngIf="x.HasAttended == 0" class="btn btn-danger" style="margin-left: 0.4rem;" [disabled]="checkFlag" (click)="basicModal.show();deleteMeetingPass(x.EventKey); ">Delete</button>
+              <button *ngIf="x.HasAttended == 0" class="btn btn-danger" style="margin-left: 0.4rem;" [disabled]="checkFlag" (click)="deleteMeetingPass(x.EventKey); ">Delete</button>
 
               <button (click)="markAttended(x.EmployeeKey, x.HasAttended, x.EventKey)" *ngIf="x.HasAttended == 0" class="btn btn-success">Mark
                 as Attended</button>
@@ -44,7 +44,7 @@
           <tr *ngIf="eventEmps?.length == 0">
             <td colspan="7" class="no-data-available">No records found</td>
           </tr>
-          <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+          <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -62,7 +62,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </tbody>
       </table>
     </div>

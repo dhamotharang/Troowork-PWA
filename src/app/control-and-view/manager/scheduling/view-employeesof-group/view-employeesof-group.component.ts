@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-view-employeesof-group',
@@ -48,7 +50,7 @@ export class ViewEmployeesofGroupComponent implements OnInit {
 
   }
 
-  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empGroupID$ = params.employeegroupID);
     this.route.params.subscribe(params => this.empGroupName$ = params.groupName);
   }
@@ -117,7 +119,15 @@ export class ViewEmployeesofGroupComponent implements OnInit {
         });
     }
     if (i === this.empList.length) {
-      alert("Seniority Order updated Successfully");
+      // alert("Seniority Order updated Successfully");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Seniority Order updated Successfully',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       this.scheduleServ.getAllEmployeesofEmpGroup(this.empGroupID$, this.OrganizationID).subscribe((data: any[]) => {
         this.empList = data;

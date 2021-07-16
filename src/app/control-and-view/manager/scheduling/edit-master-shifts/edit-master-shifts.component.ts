@@ -4,6 +4,8 @@ import { ActivatedRoute } from "@angular/router";
 
 import { Location } from '@angular/common';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-edit-master-shifts',
@@ -47,7 +49,7 @@ export class EditMasterShiftsComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private scheduleService: SchedulingService, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService) {
+  constructor(private scheduleService: SchedulingService, private route: ActivatedRoute, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.shiftKey$ = params.masterShiftID);
   }
 
@@ -72,7 +74,7 @@ export class EditMasterShiftsComponent implements OnInit {
         this.shftNme = data[0].ShiftName;
       });
 
-      this.scheduleService.getallsupervisorlist_shift(this.employeekey, this.OrganizationID)
+    this.scheduleService.getallsupervisorlist_shift(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.supervisorlist = data;
       });
@@ -85,9 +87,19 @@ export class EditMasterShiftsComponent implements OnInit {
   updateShift() {
     this.checkFlag = true;
     if (!(this.shiftDetails.ShiftName) || !(this.shiftDetails.ShiftName.trim())) {
-      alert("Shift Name can't be empty.");
-      this.checkFlag = false;
-      return false;
+      // alert("Shift Name can't be empty.");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: "Shift Name can't be empty.",
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return false;
+      });
     }
     this.shiftDetails.ShiftName = this.shiftDetails.ShiftName.trim();
     if (this.shftNme != this.shiftDetails.ShiftName) {
@@ -98,21 +110,41 @@ export class EditMasterShiftsComponent implements OnInit {
             this.scheduleService
               .udpateMasterShiftDetails_supervisor(this.shiftKey$, this.shiftDetails.ShiftName, this.employeekey, this.OrganizationID, this.shiftDetails.SupervisorEmployeeKey)
               .subscribe(res => {
-                alert("Shift Name updated Successfully");
-                this.checkFlag = false;
-                this._location.back();
+                // alert("Shift Name updated Successfully");
+                const dialogRef = this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    message: 'Shift Name updated Successfully!',
+                    buttonText: {
+                      cancel: 'Done'
+                    }
+                  },
+                });
+                dialogRef.afterClosed().subscribe(dialogResult => {
+                  this.checkFlag = false;
+                  this._location.back();
+                });
               });
           }
           else {
-            alert("Shift Name already present... :(");
-            this.checkFlag = false;
-            return false;
+            // alert("Shift Name already present... :(");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Shift Name already present !',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return false;
+            });
           }
 
         });
     } else {
       this.scheduleService
-      .udpateMasterShiftDetails_supervisor(this.shiftKey$, this.shiftDetails.ShiftName, this.employeekey, this.OrganizationID, this.shiftDetails.SupervisorEmployeeKey)
+        .udpateMasterShiftDetails_supervisor(this.shiftKey$, this.shiftDetails.ShiftName, this.employeekey, this.OrganizationID, this.shiftDetails.SupervisorEmployeeKey)
         .subscribe(res => {
           this.checkFlag = false;
           this._location.back();

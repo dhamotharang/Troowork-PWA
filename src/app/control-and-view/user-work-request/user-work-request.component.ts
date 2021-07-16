@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../../service/review.service';
 import { ActivatedRoute, Router } from "@angular/router";
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-user-work-request',
   templateUrl: './user-work-request.component.html',
@@ -14,7 +18,7 @@ export class UserWorkRequestComponent implements OnInit {
   Floor_Key;
   Zone_Key;
   checkFlag;
-  constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute) {
+  constructor(private reviewservice: ReviewService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.Facility_Key = params.Facility_Key);
     this.route.params.subscribe(params => this.Floor_Key = params.Floor_Key);
     this.route.params.subscribe(params => this.Zone_Key = params.Zone_Key);
@@ -33,9 +37,19 @@ export class UserWorkRequestComponent implements OnInit {
   Submit() {
     this.checkFlag = true;
     if (!(this.comments) || !(this.comments.trim())) {
-      alert("comment not provided !");
-      this.checkFlag = false;
-      return;
+      // alert("comment not provided !");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Comment not provided !!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     var t = new Date();
     var t = new Date();

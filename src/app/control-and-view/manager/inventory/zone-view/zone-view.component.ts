@@ -3,6 +3,10 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+
 @Component({
   selector: 'app-zone-view',
   templateUrl: './zone-view.component.html',
@@ -47,7 +51,7 @@ export class ZoneViewComponent implements OnInit {
   //validation starts ..... @rodney
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -140,33 +144,78 @@ export class ZoneViewComponent implements OnInit {
     this.delete_faciKey = FacilityKey;
     this.delete_floorKey = FloorKey;
     this.delete_zoneKey = ZoneKey;
-  }
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
 
-  deleteZone() {
-    this.checkFlag = true;
-    this.inventoryService
-      .DeleteZone(this.delete_faciKey, this.delete_floorKey, this.delete_zoneKey, this.employeekey, this.OrganizationID).subscribe(res => {
-        alert("Zone deleted successfully");
-        this.checkFlag = false;
-        this.loading = true;
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.checkFlag = true;
         this.inventoryService
-          .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: Inventory[]) => {
-            this.zone = data;
-            this.loading = false;
-            if (this.zone[0].totalItems > this.itemsperPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.zone[0].totalItems <= this.itemsperPage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
+          .DeleteZone(this.delete_faciKey, this.delete_floorKey, this.delete_zoneKey, this.employeekey, this.OrganizationID).subscribe(res => {
+            // alert("Zone deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Zone deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              this.loading = true;
+              this.inventoryService
+                .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
+                .subscribe((data: Inventory[]) => {
+                  this.zone = data;
+                  this.loading = false;
+                  if (this.zone[0].totalItems > this.itemsperPage) {
+                    this.showHide2 = true;
+                    this.showHide1 = false;
+                  }
+                  else if (this.zone[0].totalItems <= this.itemsperPage) {
+                    this.showHide2 = false;
+                    this.showHide1 = false;
+                  }
+                });
+            });
+
           });
-
-      });
-
+      } else {
+        this.checkFlag = false;
+      }
+    });
   }
+
+  // deleteZone() {
+  //   this.checkFlag = true;
+  //   this.inventoryService
+  //     .DeleteZone(this.delete_faciKey, this.delete_floorKey, this.delete_zoneKey, this.employeekey, this.OrganizationID).subscribe(res => {
+  //       alert("Zone deleted successfully");
+  //       this.checkFlag = false;
+  //       this.loading = true;
+  //       this.inventoryService
+  //         .getZones(this.pageNo, this.itemsperPage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: Inventory[]) => {
+  //           this.zone = data;
+  //           this.loading = false;
+  //           if (this.zone[0].totalItems > this.itemsperPage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.zone[0].totalItems <= this.itemsperPage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
+
+  //     });
+
+  // }
   ngOnInit() {
 
     // var token = sessionStorage.getItem('token');

@@ -9411,3 +9411,25 @@ h4 {
 //     -ms-appearance: checkbox;     /* not currently supported */
 //     -o-appearance: checkbox;      /* not currently supported */
 // }
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal !important;
+}
+
+.form-control,
+.mat-dialog-container {
+  color: #000000 !important;
+  font-weight: normal !important;
+}
+
+a,
+button {
+  font-weight: normal !important;
+}

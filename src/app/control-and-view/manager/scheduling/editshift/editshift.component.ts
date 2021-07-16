@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+
 @Component({
   selector: 'app-editshift',
   templateUrl: './editshift.component.html',
@@ -63,7 +66,7 @@ export class EditshiftComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private PeopleServiceService: PeopleServiceService) {
+  constructor(private scheduleServ: SchedulingService, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private router: Router, private PeopleServiceService: PeopleServiceService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.shiftk$ = params.Idemployeeshift);
   }
 
@@ -268,15 +271,35 @@ export class EditshiftComponent implements OnInit {
     this.schedularcount = 0;
     this.checkFlag = true;
     if (!(this.edit.Description)) {
-      alert("Please enter the Employee Group Name");
-      this.checkFlag = false;
-      return;
+      // alert("Please enter the Employee Group Name");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please enter the Employee Group Name!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
     if (!(this.edit.Colour)) {
-      alert("Please select a colour");
-      this.checkFlag = false;
-      return;
+      // alert("Please select a colour");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please select a colour!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
     if (this.showHide == true) {
       if (this.edit.Start_sun_hour == '-1' && this.edit.Start_sun_min == '-1' && this.edit.End_sun_hour == '-1' && this.edit.End_sun_min == '-1') {
@@ -287,9 +310,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Sunday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Sunday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Sunday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_mon_hour == '-1' && this.edit.Start_mon_min == '-1' && this.edit.End_mon_hour == '-1' && this.edit.End_mon_min == '-1') {
@@ -300,9 +333,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Monday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Monday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Monday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_tue_hour == '-1' && this.edit.Start_tue_min == '-1' && this.edit.End_tue_hour == '-1' && this.edit.End_tue_min == '-1') {
@@ -313,9 +356,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Tuesday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Tuesday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Tuesday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_wed_hour == '-1' && this.edit.Start_wed_min == '-1' && this.edit.End_wed_hour == '-1' && this.edit.End_wed_min == '-1') {
@@ -326,9 +379,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Wednesday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Wednesday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Wednesday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_thu_hour == '-1' && this.edit.Start_thu_min == '-1' && this.edit.End_thu_hour == '-1' && this.edit.End_thu_min == '-1') {
@@ -339,9 +402,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Thursday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Thursday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Thursday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_fri_hour == '-1' && this.edit.Start_fri_min == '-1' && this.edit.End_fri_hour == '-1' && this.edit.End_fri_min == '-1') {
@@ -352,9 +425,19 @@ export class EditshiftComponent implements OnInit {
       }
       else {
         this.schedularcount++;
-        alert('Values Missing in Friday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Friday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Friday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
 
       if (this.edit.Start_sat_hour == '-1' && this.edit.Start_sat_min == '-1' && this.edit.End_sat_hour == '-1' && this.edit.End_sat_min == '-1') {
@@ -364,17 +447,37 @@ export class EditshiftComponent implements OnInit {
         this.schedularcount = this.schedularcount;
       } else {
         this.schedularcount++;
-        alert('Values Missing in Saturday');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Saturday');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Saturday!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       }
     }
     else if (this.showHide == false) {
       if (this.start_hour == '-1' || this.start_min == '-1' || this.end_hour == '-1' || this.end_min == '-1') {
         this.schedularcount++;
-        alert('Values Missing in Start and End Time');
-        this.checkFlag = false;
-        return;
+        // alert('Values Missing in Start and End Time');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Values Missing in Start and End Time!',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          this.checkFlag = false;
+          return;
+        });
       } else {
         this.edit.Start_sun_hour = this.start_hour;
         this.edit.Start_sun_min = this.start_min;
@@ -495,23 +598,53 @@ export class EditshiftComponent implements OnInit {
       if (this.desc !== this.edit.Description) {
         this.scheduleServ.checkForEmpGrpDuplicate(this.edit.Description, this.OrganizationID).subscribe((data: any[]) => {
           if (data.length > 0) {
-            alert("Group Name already exists");
-            this.checkFlag = false;
-            return;
+            // alert("Group Name already exists");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Group Name already exists!',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            dialogRef.afterClosed().subscribe(dialogResult => {
+              this.checkFlag = false;
+              return;
+            });
           } else {
             this.scheduleServ.updateShiftDetails(empschobj).subscribe((data: any[]) => {
-              alert("Updated Successfully");
-              this.checkFlag = false;
-              this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+              // alert("Updated Successfully");
+              const dialogRef = this.dialog.open(AlertdialogComponent, {
+                data: {
+                  message: 'Updated Successfully',
+                  buttonText: {
+                    cancel: 'Done'
+                  }
+                },
+              });
+              dialogRef.afterClosed().subscribe(dialogResult => {
+                this.checkFlag = false;
+                this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+              });
             });
           }
         });
       }
       else {
         this.scheduleServ.updateShiftDetails(empschobj).subscribe((data: any[]) => {
-          alert("Updated Successfully");
-          this.checkFlag = false;
-          this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+          // alert("Updated Successfully");
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Updated Successfully',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
+          dialogRef.afterClosed().subscribe(dialogResult => {
+            this.checkFlag = false;
+            this.router.navigate(['ManagerDashBoard', { outlets: { ManagerOut: ['ViewShift'] } }]);
+          });
         });
       }
       // } else {
@@ -520,9 +653,19 @@ export class EditshiftComponent implements OnInit {
       // }
       // });
     } else {
-      alert("Value for weekly schedule is missing somewhere. Please check it!!!");
-      this.checkFlag = false;
-      return;
+      // alert("Value for weekly schedule is missing somewhere. Please check it!!!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Value for weekly schedule is missing somewhere. Please check it!!!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.checkFlag = false;
+        return;
+      });
     }
 
   }

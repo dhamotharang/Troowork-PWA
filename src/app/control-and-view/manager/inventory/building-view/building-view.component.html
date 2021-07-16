@@ -2,15 +2,13 @@
 
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <h4 class="refer"> BUILDINGS </h4>
-   <div style="text-align:center">
+  <div style="text-align:center">
     <a [routerLink]="['Createbuilding']" class="btn btn-success"><b>Create New Building</b>
     </a>
   </div>
   <form [formGroup]="searchform">
     <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
-      <input class="form-control" name="searchbuildingview" maxlength="20" specialIsAlphaNumeric minlength="3" type="text"
-        placeholder="Search Building" aria-label="Search" [(ngModel)]="SearchFacility" formControlName="SearchFacility"
-        (input)="searchFacility($event.target.value);" style="width: 100%;">
+      <input class="form-control" name="searchbuildingview" maxlength="20" specialIsAlphaNumeric minlength="3" type="text" placeholder="Search Building" aria-label="Search" [(ngModel)]="SearchFacility" formControlName="SearchFacility" (input)="searchFacility($event.target.value);" style="width: 100%;">
       <div *ngIf="searchform.controls.SearchFacility.errors?.minlength">Minimum 3 characters required.</div>
     </div>
   </form>
@@ -26,13 +24,13 @@
 
           <td>
             <a [routerLink]="['Buildedit',x.FacilityKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <button [disabled]="checkFlag" class="btn btn-danger" (click)="basicModal.show();deleteFacPass(x.FacilityKey); "><b>Delete</b></button>
+            <button [disabled]="checkFlag" class="btn btn-danger" (click)="deleteFacPass(x.FacilityKey); "><b>Delete</b></button>
           </td>
         </tr>
         <tr *ngIf="build?.length == 0">
           <td colspan="2" class="no-data-available">No records found</td>
         </tr>
-        <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
+        <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -53,7 +51,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
     <button class="btn btn-success" style="float: left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>

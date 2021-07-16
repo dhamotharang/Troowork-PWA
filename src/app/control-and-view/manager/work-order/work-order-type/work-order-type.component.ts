@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 
 @Component({
   selector: 'app-work-order-type',
@@ -47,7 +50,7 @@ export class WorkOrderTypeComponent implements OnInit {
   searchform: FormGroup;
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
-  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService) { }
+  constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
   }
@@ -163,37 +166,87 @@ export class WorkOrderTypeComponent implements OnInit {
 
   }
   //function to assign value of current wot(for delete)
-  passWOT(key) {
+  deleteWOT(key) {
     this.wot_key = key;
+
+    const message = `Are you sure !!  Do you want to delete`;
+    const dialogData = new ConfirmDialogModel("DELETE", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+
+        this.loading = true;
+        this.checkFlag = true;
+        this.delete_WOType = {
+          WorkorderTypeKey: this.wot_key,
+          OrganizationID: this.OrganizationID
+        };
+        this.WorkOrderServiceService
+          .DeleteWOT(this.delete_WOType).subscribe(() => {
+            // alert("Work-order type deleted successfully");
+            const dialogRef = this.dialog.open(AlertdialogComponent, {
+              data: {
+                message: 'Work-order type deleted successfully',
+                buttonText: {
+                  cancel: 'Done'
+                }
+              },
+            });
+            this.checkFlag = false;
+            this.WorkOrderServiceService
+              .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
+              .subscribe((data: any[]) => {
+                this.workorderTypeList = data;
+                this.loading = false;
+                if (this.workorderTypeList[0].totalItems > this.items_perpage) {
+                  this.showHide2 = true;
+                  this.showHide1 = false;
+                }
+                else if (this.workorderTypeList[0].totalItems <= this.items_perpage) {
+                  this.showHide2 = false;
+                  this.showHide1 = false;
+                }
+              });
+
+          });
+      } else {
+        this.loading = false;
+        this.checkFlag = false;
+      }
+    });
   }
   //function to delete current workordertype key
-  deleteWOType() {
-    this.loading = true;
-    this.checkFlag = true;
-    this.delete_WOType = {
-      WorkorderTypeKey: this.wot_key,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService
-      .DeleteWOT(this.delete_WOType).subscribe(() => {
-        alert("Work-order type deleted successfully");
-        this.checkFlag = false;
-        this.WorkOrderServiceService
-          .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
-          .subscribe((data: any[]) => {
-            this.workorderTypeList = data;
-            this.loading = false;
-            if (this.workorderTypeList[0].totalItems > this.items_perpage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.workorderTypeList[0].totalItems <= this.items_perpage) {
-              this.showHide2 = false;
-              this.showHide1 = false;
-            }
-          });
+  // deleteWOType() {
+  //   this.loading = true;
+  //   this.checkFlag = true;
+  //   this.delete_WOType = {
+  //     WorkorderTypeKey: this.wot_key,
+  //     OrganizationID: this.OrganizationID
+  //   };
+  //   this.WorkOrderServiceService
+  //     .DeleteWOT(this.delete_WOType).subscribe(() => {
+  //       alert("Work-order type deleted successfully");
+  //       this.checkFlag = false;
+  //       this.WorkOrderServiceService
+  //         .getall_workordertype(this.pageno, this.items_perpage, this.employeekey, this.OrganizationID)
+  //         .subscribe((data: any[]) => {
+  //           this.workorderTypeList = data;
+  //           this.loading = false;
+  //           if (this.workorderTypeList[0].totalItems > this.items_perpage) {
+  //             this.showHide2 = true;
+  //             this.showHide1 = false;
+  //           }
+  //           else if (this.workorderTypeList[0].totalItems <= this.items_perpage) {
+  //             this.showHide2 = false;
+  //             this.showHide1 = false;
+  //           }
+  //         });
 
-      });
-  }
+  //     });
+  // }
 
 }

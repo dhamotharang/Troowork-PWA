@@ -3,6 +3,8 @@ import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from 'src/app/service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 @Component({
   selector: 'app-inspection-create',
   templateUrl: './inspection-create.component.html',
@@ -94,7 +96,7 @@ export class InspectionCreateComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService) { }
+  constructor(private inspectionService: InspectionService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
   //Pooja's code starts
   // for getting the floor when building is selected.
   selectFloorfromBuildings(facKey) {
@@ -237,7 +239,15 @@ export class InspectionCreateComponent implements OnInit {
     }
     else {
       if (this.convert_DT(this.fromdate) < this.convert_DT(new Date())) {
-        alert("Date can't be less than current date");
+        // alert("Date can't be less than current date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "Date can't be less than current date",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       } else {
@@ -249,7 +259,15 @@ export class InspectionCreateComponent implements OnInit {
     }
     else {
       if (this.convert_DT(this.todate) < dateFrom) {
-        alert("To date can't be less than start date");
+        // alert("To date can't be less than start date");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: "To date can't be less than start date",
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       } else {
@@ -257,32 +275,88 @@ export class InspectionCreateComponent implements OnInit {
       }
     }
     if (!this.TemplateID) {
-      alert("Template Name is not provided");
+      // alert("Template Name is not provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Template Name is not provided!',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (!this.Building) {
-      alert("Building should be selected");
+      // alert("Building should be selected");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Building should be selected !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (!this.Floor) {
-      alert("Floor should be provided");
+      // alert("Floor should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Floor should be provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (!this.RoomKey && !this.RoomType) {
-      alert("Room or Room Type should be provided");
+      // alert("Room or Room Type should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Room or Room Type should be provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
       return;
     }
     else if (!this.time1) {
-      alert("Time should be provided");
+      // alert("Time should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Time should be provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (!(this.SupervisorKey)) {
-      alert("Auditor should be provided");
+      // alert("Auditor should be provided");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Auditor should be provided !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else if (this.convert_DT(date2) < this.convert_DT(dateFrom)) {
-      alert("Please check your start date!");
+      // alert("Please check your start date!");
+      const dialogRef = this.dialog.open(AlertdialogComponent, {
+        data: {
+          message: 'Please check your start date !',
+          buttonText: {
+            cancel: 'Done'
+          }
+        },
+      });
       this.checkFlag = false;
     }
     else {
@@ -308,21 +382,45 @@ export class InspectionCreateComponent implements OnInit {
           roomString = roomlist.join(',');
         }
         else {
-          alert('Room has no value');
+          // alert('Room has no value');
+          const dialogRef = this.dialog.open(AlertdialogComponent, {
+            data: {
+              message: 'Room has no value !',
+              buttonText: {
+                cancel: 'Done'
+              }
+            },
+          });
           this.checkFlag = false;
           return;
         }
       }
       this.RoomKey = roomString;
       if (roomlistObj.length === 0) {
-        alert('Room is not provided');
+        // alert('Room is not provided');
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Room is not provided !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         return;
       }
 
 
       this.inspectionService.createInspections(this.TemplateID, this.SupervisorKey, dateFrom, date2, this.theCheckbox, newTime, this.RoomKey, this.Employee, this.employeekey, this.OrganizationID, p).subscribe(res => {
-        alert("Successfully Added");
+        // alert("Successfully Added");
+        const dialogRef = this.dialog.open(AlertdialogComponent, {
+          data: {
+            message: 'Successfully Added... !',
+            buttonText: {
+              cancel: 'Done'
+            }
+          },
+        });
         this.checkFlag = false;
         this.TemplateID = "";
         this.fromdate = null;
