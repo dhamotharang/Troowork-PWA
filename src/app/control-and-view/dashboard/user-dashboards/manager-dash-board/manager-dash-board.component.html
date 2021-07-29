@@ -217,7 +217,7 @@
       <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulerPWA']}}]"><b>Scheduler</b></a> -->
     <!-- <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ScheduleEmployee']}}]"><b>Schedule Employee</b></a>  -->
     <!-- </div> -->
-    <button class="dropdown-btn" (click)="basicModal.show();logout()"><i class="fa fa-sign-out"></i> Logout
+    <button class="dropdown-btn" (click)="logout()"><i class="fa fa-sign-out"></i> Logout
 
     </button>
 
@@ -304,7 +304,7 @@
     <button type="button" class= "btn btn-danger"   (click)="stayhere()">No</button>
  
   </div> -->
-  <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+  <!-- <div mdbModal #basicModal="mdbModal" class="modal fade" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,7 +322,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <router-outlet name="ManagerOut"></router-outlet>
 </div>

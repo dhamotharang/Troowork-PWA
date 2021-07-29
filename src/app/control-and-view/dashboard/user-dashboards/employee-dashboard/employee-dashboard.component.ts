@@ -3,6 +3,9 @@ import { LoginService } from '../../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from "@angular/router";
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-employee-dashboard',
   templateUrl: './employee-dashboard.component.html',
@@ -21,7 +24,6 @@ export class EmployeeDashboardComponent implements OnInit {
 
   isMobile: boolean;
   popup: boolean = false;
-  router: any;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -40,10 +42,26 @@ export class EmployeeDashboardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
+  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private router: Router, private dialog: MatDialog) { }
   logout() {
-    this.popup = true;
-    window.sessionStorage.clear();
+
+    const message = `Are you sure !!  Do you want to exit?`;
+    const dialogData = new ConfirmDialogModel("LOGOUT", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.leave();
+        this.router.navigateByUrl('/');
+        window.sessionStorage.clear();
+      } else {
+        this.stayhere();
+      }
+    });
+
   }
 
 

@@ -3,6 +3,9 @@ import { LoginService } from '../../../../service/login.service';
 import { ResponsiveService } from 'src/app/service/responsive.service';
 
 import { DataServiceTokenStorageService } from '../../../../service/DataServiceTokenStorage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from "@angular/router";
+import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
 @Component({
   selector: 'app-supervisor-dashboard',
   templateUrl: './supervisor-dashboard.component.html',
@@ -18,7 +21,6 @@ export class SupervisorDashboardComponent implements OnInit {
   OrganizationID: Number;
   scheduleIcon;
   popup: boolean = false;
-  router: any;
   isMobile: boolean;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -37,10 +39,26 @@ export class SupervisorDashboardComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService) { }
+  constructor(private loginService: LoginService, private responsiveService: ResponsiveService, private dst: DataServiceTokenStorageService, private router: Router, private dialog: MatDialog) { }
   logout() {
-    this.popup = true;
-    window.sessionStorage.clear();
+
+    const message = `Are you sure !!  Do you want to exit?`;
+    const dialogData = new ConfirmDialogModel("LOGOUT", message);
+    const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.leave();
+        this.router.navigateByUrl('/');
+        window.sessionStorage.clear();
+      } else {
+        this.stayhere();
+      }
+    });
+
   }
   ngOnInit() {
 
