@@ -1059,7 +1059,7 @@ export class SchedulerComponent implements AfterViewInit {
 
 
   delete() {
-
+    this.modal1.hide();
     const message = `Are you sure !!  Do you want to delete`;
     const dialogData = new ConfirmDialogModel("DELETE", message);
     const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
@@ -1072,6 +1072,9 @@ export class SchedulerComponent implements AfterViewInit {
         this.deleteCall(this.AssignIDForDelete, this.employeekey, this.OrganizationID);
         this.modal1.hide();
         this.scheduler.control.scrollToResource(this.event1.data.resource);
+      }
+      else{
+        this.modal1.show();
       }
     });
 
