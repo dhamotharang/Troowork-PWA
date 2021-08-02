@@ -22,14 +22,14 @@
   </div>
 
 
-</div>
+
 <div class="row col-md-12">
   <div style="margin-left: 45%">
     <button type="button" class="btn btn-success" [disabled]="checkFlag"
       (click)=generateWorkOrderAvgReport(fromdate,todate)><b>GENERATE</b></button>
   </div>
 </div>
-
+</div>
 
 <div style="margin-left: 1.5rem;width: 100%">
   <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table"
