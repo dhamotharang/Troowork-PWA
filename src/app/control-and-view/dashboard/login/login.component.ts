@@ -60,6 +60,8 @@ export class LoginComponent implements OnInit {
       passWord: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
+  // Function to check the login credentials
+
   loginFn(userName, passWord, tenantID) {
     if (!userName) {
       alert("Enter User Name");
@@ -112,6 +114,9 @@ export class LoginComponent implements OnInit {
             // this.dst.setUser(profile.user);
             // this.dst.setOrganization(profile.Organization);
             this.dst.setValues();
+
+            // Routing to PWA
+
             if (this.isMobile) {
               if (profile.role === 'Manager') {
                 this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
@@ -126,6 +131,7 @@ export class LoginComponent implements OnInit {
               }
 
             }
+              // Routing to Web
             else {
               if (passWord == 'troowork') {
                 if (profile.role === 'Admin') {
@@ -206,6 +212,7 @@ export class LoginComponent implements OnInit {
     this.popup = false;
   }
 
+  // Function to check the login credentials
   loginFn1(userName, passWord, tenantID) {
     if (!userName) {
       alert("Enter User Name");
@@ -261,6 +268,7 @@ export class LoginComponent implements OnInit {
             // this.dst.setUser(profile.user);
             // this.dst.setOrganization(profile.Organization);
 
+            // Routing to PWA
             if (profile.role === 'Manager') {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['SchedulerPWA'] } }]);  // redirect to Manager
             }
@@ -284,7 +292,7 @@ export class LoginComponent implements OnInit {
     }
   }
 }
-
+// Followiing code is to add the jwt token to the header along with every apis that are called are login
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   constructor() { }
