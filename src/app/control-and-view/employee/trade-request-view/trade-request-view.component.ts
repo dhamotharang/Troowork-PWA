@@ -44,6 +44,8 @@ export class TradeRequestViewComponent implements OnInit {
 
   constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
+  // Function to delete the trade request
+
   deletePass(key) {
     this.deleteRequestKey = key;
 
@@ -118,6 +120,9 @@ export class TradeRequestViewComponent implements OnInit {
     this.checkFlag = false;
 
     this.checkEmp = parseInt(this.toServeremployeekey);
+
+    // call to get the trade details
+
     this.PeopleServiceService.getTradeRequestdetails(this.OrganizationID, this.toServeremployeekey).subscribe((data) => {
       this.requestdetails = data;
     });

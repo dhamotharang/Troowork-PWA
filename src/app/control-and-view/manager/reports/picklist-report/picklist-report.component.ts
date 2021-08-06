@@ -185,6 +185,7 @@ export class PicklistReportComponent implements OnInit {
         this.checkFlag = false;
       });
   }
+  // function for exporting to excel 
   exportToExcel(): void {
 
     for (var i = 0; i < this.viewinspectionReport.length; i++) {

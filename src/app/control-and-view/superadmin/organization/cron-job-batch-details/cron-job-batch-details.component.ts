@@ -42,10 +42,11 @@ export class CronJobBatchDetailsComponent implements OnInit {
   };
 
   constructor(private PeopleServiceService: PeopleServiceService, private organizationService: OrganizationService, private dst: DataServiceTokenStorageService) { }
-  
+
+  // Function to get the cronjob details after organization is changed from dropdown
   orgChanged() {
     this.loading = true;
-    this.total=0;
+    this.total = 0;
     this.organizationService.cronJob_unrunBatchCount(this.currentDate, this.OrganizationID).subscribe((data: any[]) => {
       this.batchDetails = data;
       for (var i = 0; i < this.batchDetails.length; i++) {
@@ -58,7 +59,7 @@ export class CronJobBatchDetailsComponent implements OnInit {
     // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-   
+
     this.OrgID = this.dst.getOrganizationID();
     this.currentDate = this.convert_DT(new Date());
     this.PeopleServiceService

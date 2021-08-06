@@ -5,6 +5,7 @@ import { DataServiceTokenStorageService } from '../../../service/DataServiceToke
 import { MatDialog } from '@angular/material/dialog';
 import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
 import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../dialog/confirmationdialog/confirmationdialog.component';
+// import { request } from 'http';
 @Component({
   selector: 'app-pto-request-view',
   templateUrl: './pto-request-view.component.html',
@@ -42,6 +43,9 @@ export class PtoRequestViewComponent implements OnInit {
   }
 
   constructor(private PeopleServiceService: PeopleServiceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
+
+  // Function to delete the pto request
+
   deletePass(key) {
     this.deleteRequestKey = key;
 
@@ -102,6 +106,7 @@ export class PtoRequestViewComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
 
+    // Call to get the pto request details 
     this.PeopleServiceService.getRequestdetailsWithTime(this.toServeremployeekey, this.OrganizationID).subscribe((data) => {
       this.requestdetails = data;
     });

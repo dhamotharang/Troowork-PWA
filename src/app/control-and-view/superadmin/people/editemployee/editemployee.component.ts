@@ -130,6 +130,7 @@ export class EditemployeeComponent implements OnInit {
   //       this.router.navigate(['/SuperadminDashboard', { outlets: { SuperAdminOut: ['Viewemployee'] } }]);
   //     });
   // }
+  //  Function to delete and employee
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
     this.checkFlag = true;
@@ -152,6 +153,7 @@ export class EditemployeeComponent implements OnInit {
       }
     });
   }
+  //  Function to save the edited details of employee
   editEmployee(OrganizationID, UserRoleTypeKey, EmployeeNumber, ManagerKey, FirstName, LastName, MiddleName, BD, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, JobTitleKey, DepartmentKey, Gender, SupervisorKey) {
     var manKey;
     var superKey;
@@ -428,6 +430,7 @@ export class EditemployeeComponent implements OnInit {
     }
   }
 
+  //  Function to call the manager and supervisor with respect to the user type selected
   selectUserType(userType, orgID) {
     if (userType == this.roleTypeKey1) {
       this.showManager = true;

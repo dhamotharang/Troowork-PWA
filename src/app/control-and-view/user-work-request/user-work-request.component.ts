@@ -34,6 +34,9 @@ export class UserWorkRequestComponent implements OnInit {
   ngOnInit() {
     this.checkFlag = false;
   }
+
+  // Function to save the details of workorder request by user
+
   Submit() {
     this.checkFlag = true;
     if (!(this.comments) || !(this.comments.trim())) {

@@ -48,7 +48,7 @@ export class ResetpasswordforsamoduleComponent implements OnInit {
   constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmpKey);
   }
-
+// Function call to reset password
   resetUserPassword(username, password, userLoginId) {
     this.checkFlag = true;
     if (!(username)) {

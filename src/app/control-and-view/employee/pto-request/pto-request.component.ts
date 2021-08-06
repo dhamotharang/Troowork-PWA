@@ -104,7 +104,7 @@ export class PtoRequestComponent implements OnInit {
     return setDob;
 
   };
-
+  //Function to save the pto request
   submitRequest() {
     this.checkFlag = true;
     if (!(this.startdate)) {

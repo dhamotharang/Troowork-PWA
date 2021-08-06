@@ -65,7 +65,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
       event.preventDefault();
     }, 100)
   }
-
+  // Function to update employee list based on jobtitle/manager from dropdown
   getempdettablewithselectedJobtitle() {
 
     if (!(this.JobTitleKey) && !(this.ManagerKey)) {
@@ -112,6 +112,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
         });
     }
   }
+  // Function to search employee list
   searchEmployeeDetails(SearchValue) {
     var value = SearchValue.trim();
     if (value.length >= 3) {
@@ -174,11 +175,13 @@ export class ViewEmployeeAdminComponent implements OnInit {
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
     this.loading = true;
+    // call to get jobtitle list
     this.PeopleServiceService
       .getJobTitleforadmindd(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.jobtitle = data;
       });
+    // call to get employeedetails list
     this.PeopleServiceService
       .getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -197,6 +200,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
       SearchEmpDetails: ['', Validators.required]
     });
 
+    // call to get manager list
     this.PeopleServiceService
       .getmanagersForEmp(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -204,6 +208,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
       });
   }
 
+  // Function to go to the previous page of pagination
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -245,6 +250,7 @@ export class ViewEmployeeAdminComponent implements OnInit {
         });
     }
   }
+  // Function to go to the next page of pagination
   nextPage() {
     this.loading = true;
     this.pageNo = +this.pageNo + 1;

@@ -74,7 +74,7 @@ export class BatchScheduleRoomComponent implements OnInit {
   }
 
   constructor(private scheduleServ: SchedulingService, private dst: DataServiceTokenStorageService, private inventoryService: InventoryService, private router: Router, private WorkOrderServiceService: WorkOrderServiceService, private dialog: MatDialog) { }
-
+  // Function to get the details of the assignment Selected
   getScheduleRoomDetails(key) {
 
 
@@ -129,7 +129,7 @@ export class BatchScheduleRoomComponent implements OnInit {
   setFlrTypeKey(flrType) {
     this.flrTypeKey = flrType;
   }
-
+  // Function to call the filter
   viewRooms_Filter() {
     var building;
     var floor;
@@ -250,7 +250,7 @@ export class BatchScheduleRoomComponent implements OnInit {
       this.index = this.index + 1;
     }
   }
-
+  // Function to add rooms to the assignment
   addRoomToSchedule() {
     this.checkFlag = true;
     var addRoomList = [];
@@ -388,6 +388,7 @@ export class BatchScheduleRoomComponent implements OnInit {
     //     this.floorTypeList = data;
     //   });
   }
+  // Function to delete the assignment
   deletekeypass(key) {
     this.deletekey = key;
 

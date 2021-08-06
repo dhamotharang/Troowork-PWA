@@ -76,7 +76,7 @@ export class PtoRequestDetailsComponent implements OnInit {
   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.ptorequestID$ = params.requestID);
   }
-
+  //Function to go back to previous page
   goBack() {
     // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
 
@@ -88,7 +88,7 @@ export class PtoRequestDetailsComponent implements OnInit {
       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewPtoRequest'] } }]);
     }
   }
-
+  //Function to cancel the pto request which is approved
   cancelPTO() {
     this.checkFlag = true;
     this.PeopleServiceService.cancelPTObyEmployee(this.ptorequestID$, this.toServeremployeekey, this.OrganizationID, this.convert_DT(new Date())).subscribe((data) => {
@@ -125,7 +125,7 @@ export class PtoRequestDetailsComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     this.editflag = false;
     this.checkFlag = false;
-
+    // Call to get the details of the pto request which is selected.
     this.PeopleServiceService.getRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
       var cur_time = new Date(Date.now());

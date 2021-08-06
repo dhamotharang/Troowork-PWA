@@ -104,6 +104,7 @@ export class CreateemployeeComponent implements OnInit {
     return window.atob(output);
   }
   constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
+  //  Function to call the jobtitle & department for the organization selected
   OrganizationChanged() {
     this.PeopleServiceService.getJobTitleforadmindd(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
       this.jobtitle = data;
@@ -112,6 +113,8 @@ export class CreateemployeeComponent implements OnInit {
       this.department = data;
     });
   }
+
+  //  Function to save the employee details 
   createEmployee() {
     this.checkFlag = true;
     var manKey;
@@ -401,6 +404,8 @@ export class CreateemployeeComponent implements OnInit {
     this.employeekey = this.dst.getEmployeekey();
     this.OrgID = this.dst.getOrganizationID();
     this.HireDate = new Date(Date.now());
+
+    //  call the user roletypes,organization details
     this.PeopleServiceService
       .getUserRoleTypesa(this.OrgID)
       .subscribe((data: People[]) => {
@@ -434,6 +439,7 @@ export class CreateemployeeComponent implements OnInit {
       this.marked = true;
     }
   }
+  //  Function to call the manager and supervisor with respect to the user type selected
   selectUserType(userType) {
     if (!(this.OrganizationID)) {
       // alert("Please provide Organization!");

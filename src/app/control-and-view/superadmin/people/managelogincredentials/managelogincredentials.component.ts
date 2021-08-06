@@ -65,7 +65,7 @@ export class ManagelogincredentialsComponent implements OnInit {
   }
 
   //validation ends ..... @rodney
-
+// Pagination starts
   previousPage() {
     this.pageNo = +this.pageNo - 1;
     this.peopleServiceService.getLoginCredentialList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
@@ -95,7 +95,9 @@ export class ManagelogincredentialsComponent implements OnInit {
       }
     });
   }
+// Pagination ends
 
+// Search Function
   searchUserList(searchKey) {
     var value=searchKey.trim();
     if (value.length >= 3){

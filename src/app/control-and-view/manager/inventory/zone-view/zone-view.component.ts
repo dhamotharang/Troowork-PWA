@@ -69,6 +69,7 @@ export class ZoneViewComponent implements OnInit {
     }, 100)
   }
   //validation ends ..... @rodney
+  // Pagination starts
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -107,6 +108,9 @@ export class ZoneViewComponent implements OnInit {
       });
   }
 
+  // Pagination ends
+
+  // Search function starts
 
   searchZone(SearchValue) {
 
@@ -140,6 +144,8 @@ export class ZoneViewComponent implements OnInit {
     }
   };
 
+  // Search function ends
+  // Function to delete zone
   deleteZoneValuePass(FacilityKey, FloorKey, ZoneKey) {
     this.delete_faciKey = FacilityKey;
     this.delete_floorKey = FloorKey;

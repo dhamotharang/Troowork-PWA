@@ -44,6 +44,7 @@ export class ViewDepartmentComponent implements OnInit {
     return window.atob(output);
   }
 
+  // Function to go to the previous page of pagination of department list
   previousPage() {
     this.pageNo = +this.pageNo - 1;
     this.inventoryService
@@ -60,6 +61,7 @@ export class ViewDepartmentComponent implements OnInit {
       });
   }
 
+  // Function to go to the next page of pagination of department list
   nextPage() {
     this.pageNo = +this.pageNo + 1;
     this.inventoryService
@@ -99,7 +101,7 @@ export class ViewDepartmentComponent implements OnInit {
   }
 
   //validation ends ..... @rodney
-
+  // Function to search from the department list
   searchDepartment(SearchValue) {
     var value = SearchValue.trim();
     if (value.length >= 3) {
@@ -130,6 +132,7 @@ export class ViewDepartmentComponent implements OnInit {
     }
   }
 
+  // Function to delete the department
   deleteDeptPass(DeptKey) {
     this.delete_DeptKey = DeptKey;
     this.checkFlag = true;
@@ -197,6 +200,7 @@ export class ViewDepartmentComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     this.loading = true;
     this.checkFlag = false;
+    // Call to get the department list
     this.inventoryService
       .getDepartmentList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

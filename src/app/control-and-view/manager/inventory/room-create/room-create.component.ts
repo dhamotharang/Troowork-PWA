@@ -65,6 +65,7 @@ export class RoomCreateComponent implements OnInit {
     }
   }
 
+  // Dropdown changing functions starts.
   selectFloorfromBuildings(facKey) {
     this.FaciKey = facKey;
     if (facKey) {
@@ -87,6 +88,9 @@ export class RoomCreateComponent implements OnInit {
         this.zone = data;
       });
   }
+  
+  // Dropdown changing functions ends.
+  // Function to add room details
   addRoom(FacilityKey, FloorKey, FloorTypeKey, ZoneKey, RoomTypeKey, RoomName, SquareFoot, Barcode) {
 
     this.checkFlag = true;

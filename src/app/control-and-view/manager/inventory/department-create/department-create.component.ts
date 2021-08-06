@@ -45,6 +45,7 @@ export class DepartmentCreateComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
+  // Function to add the department details
   addDepartment(DepartmentName) {
     this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {

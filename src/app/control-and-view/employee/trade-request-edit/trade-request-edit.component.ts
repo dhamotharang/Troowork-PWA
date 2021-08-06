@@ -68,6 +68,7 @@ export class TradeRequestEditComponent implements OnInit {
   }
   constructor(public PeopleServiceService: PeopleServiceService, private router: Router, private route: ActivatedRoute, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { this.route.params.subscribe(params => this.traderequestID$ = params.requestID); }
 
+  // Function to save the edited details of trade
   submitEditedRequest() {
 
     this.checkFlag = true;
@@ -224,16 +225,22 @@ export class TradeRequestEditComponent implements OnInit {
     this.editflag = false;
 
     this.checkFlag = false;
+
+    // call to get the employee list
+
     this.PeopleServiceService.getAllEmployeeNames(this.OrganizationID, this.toServeremployeekey)
       .subscribe((data) => {
         this.EmployeeDetails = data;
       });
+
+    // call to get the trade details
     this.PeopleServiceService.getTradeRequestInfoforEmployee(this.traderequestID$, this.OrganizationID).subscribe((data) => {
 
       this.traderequestdetails = data[0];
     });
   }
 
+  // Function to go back to previos page
   goBack() {
     if (this.role == 'Employee') {
       this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);

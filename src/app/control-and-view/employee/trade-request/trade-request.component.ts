@@ -67,7 +67,7 @@ export class TradeRequestComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
   constructor(private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to save the trade request details
   submitRequest() {
 
     this.checkFlag = true;
@@ -226,7 +226,7 @@ export class TradeRequestComponent implements OnInit {
     this.EmployeeKey = "";
     this.curr_date = this.convert_DT(new Date());
     this.checkFlag = false;
-
+    // Call to get the EmployeeDetails for the dropdown
     this.PeopleServiceService.getAllEmployeeNames(this.OrganizationID, this.toServeremployeekey)
       .subscribe((data) => {
         this.EmployeeDetails = data;

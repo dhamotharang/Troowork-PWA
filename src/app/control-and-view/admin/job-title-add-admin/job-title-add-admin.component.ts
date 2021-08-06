@@ -38,7 +38,7 @@ export class JobTitleAddAdminComponent implements OnInit {
 
 
   constructor(private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to add new job title
   addNewJobtitle(JobtitleName, JobTitleDescription) {
     this.checkFlag = true;
     if (!(JobtitleName) || !(JobtitleName.trim())) {
@@ -69,7 +69,7 @@ export class JobTitleAddAdminComponent implements OnInit {
     }
     JobtitleName = JobtitleName.trim();
     JobTitleDescription = JobTitleDescription.trim();
-
+    // Check whether jobtitle exists on not
     this.peopleServiceService.checkfor_jobtitle(JobtitleName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if (data[0].count != 0) {
@@ -119,6 +119,7 @@ export class JobTitleAddAdminComponent implements OnInit {
 
     this.checkFlag = false;
   }
+  // Function to go back to previousPage
   goBack() {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
   }

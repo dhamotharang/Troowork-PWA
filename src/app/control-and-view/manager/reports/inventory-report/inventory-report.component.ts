@@ -234,6 +234,7 @@ export class InventoryReportComponent implements OnInit {
       roomtype = null;
     }
   }
+  //function for genaerating report
   generateInventoryReport(FacilityKey, FloorKey, ZoneKey, RoomTypeKey, FloorTypeKey, RoomKey) {
     this.checkFlag = true;
     this.loading = true;
@@ -264,6 +265,7 @@ export class InventoryReportComponent implements OnInit {
     }
   }
 
+  //function for exporting to excel 
   exportToExcel(): void {
     //export room table to excel
     if (this.viewInventoryReport) {

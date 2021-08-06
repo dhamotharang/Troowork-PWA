@@ -6,6 +6,7 @@ import { DatepickerOptions } from 'ng2-datepicker';
 import { DataServiceTokenStorageService } from '../../../service/DataServiceTokenStorage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertdialogComponent } from '../../dialog/alertdialog/alertdialog.component';
+import { Manager } from 'hammerjs';
 
 @Component({
   selector: 'app-add-employee',
@@ -199,6 +200,7 @@ export class AddEmployeeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
+  // Function to save the employee details
   createEmployee() {
     this.checkFlag = true;
     var manKey; var superKey;
@@ -533,6 +535,7 @@ export class AddEmployeeComponent implements OnInit {
             .subscribe((data22: any[]) => {
               this.temp_res = data22;
               // alert("Employee Created !");
+              // code to call alert starts
               const dialogRef = this.dialog.open(AlertdialogComponent, {
                 data: {
                   message: 'Employee Created !',
@@ -541,12 +544,13 @@ export class AddEmployeeComponent implements OnInit {
                   }
                 },
               });
-
+              // code to run remaining portion after we click done button of alert
               dialogRef.afterClosed().subscribe(dialogResult => {
                 this.checkFlag = false;
                 var empKey = this.temp_res.EmployeeKey;
                 this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
               });
+              // code to call alert ends
             });
         }
       });
@@ -644,6 +648,7 @@ export class AddEmployeeComponent implements OnInit {
     this.HireDate = new Date(Date.now());
     // this.isemployeecalendar = profile.isemployeecalendar;//Author: Prakash for Checking Whether the organization uses Calendar or not
 
+    // to call the useroletype
     this.PeopleServiceService
       .getUserRoleType(this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -659,16 +664,20 @@ export class AddEmployeeComponent implements OnInit {
         }
 
       });
+
+    // to call the JobTitle
     this.PeopleServiceService
       .getJobTitleforadmindd(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.jobtitle = data;
       });
+    // to call the supervisor
     this.PeopleServiceService
       .getSuperVisor(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.supervisor = data;
       });
+    // to call the department
     this.PeopleServiceService
       .getDepartment(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -719,6 +728,8 @@ export class AddEmployeeComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  // function to call Manager/supervisor list or both based on usertype selected
   selectUserType(userType) {
     if (userType == this.roleTypeKey1) {
       this.showManager = true;

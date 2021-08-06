@@ -50,6 +50,7 @@ export class FloorEditComponent implements OnInit {
     this.route.params.subscribe(params => this.floorKey$ = params.Floor_Key);
   }
 
+  // Function to update floor
   updateFloor(FacilityKey, FloorKey, FloorName, FloorDescription) {
     this.checkFlag = true;
     if (FacilityKey == "--Select--") {

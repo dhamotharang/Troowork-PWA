@@ -106,7 +106,7 @@ export class TradeRequestApproveComponent implements OnInit {
 
     this.statuscurrentdate = this.convert_DT(new Date());
     this.editflag = false;
-
+    // Call to get the trade request details selected
     this.checkFlag = false;
     this.PeopleServiceService.getTradeRequestdetailsbyID(this.traderequestDetails$)
       .subscribe((data) => {
@@ -114,6 +114,7 @@ export class TradeRequestApproveComponent implements OnInit {
         this.traderequestdetailsbyID.Status = '';
       });
 
+    // Call to get the assignments against the trade
     this.PeopleServiceService.getAssignmentTradebyID(this.traderequestDetails$)
       .subscribe((data: any) => {
         if (data.length > 0) {
@@ -129,6 +130,7 @@ export class TradeRequestApproveComponent implements OnInit {
       });
   }
 
+  // Function to go back to previous page
   goBack() {
     if (this.role == 'Employee') {
       this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
@@ -136,6 +138,9 @@ export class TradeRequestApproveComponent implements OnInit {
       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewTradeRequest'] } }]);
     }
   }
+
+  // Function to save the action(approved/rejected) by other employee
+
   saveTradeRequestAction() {
 
     this.checkFlag = true;

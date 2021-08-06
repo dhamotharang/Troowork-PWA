@@ -123,7 +123,7 @@ export class ViewServiceRequestComponent implements OnInit {
         this.EmployeeOption = data;
       });
   }
-
+  // Function to filter the list
   viewserviceRequest() {
 
     if (!this.fromdate) {
@@ -181,7 +181,7 @@ export class ViewServiceRequestComponent implements OnInit {
         });
     }
   }
-
+  // Function to create wo for the employee selected for the request
   createworkorderbyservicerequest(servicerequestid, empKey) {
     this.loading = true;
 

@@ -72,6 +72,7 @@ export class EditIntervalTypeColorComponent implements OnInit {
   goBack() {
     this._location.back();
   }
+  // Function to update the color of interval type
   updateIntervalColor() {
     this.checkFlag = true;
 

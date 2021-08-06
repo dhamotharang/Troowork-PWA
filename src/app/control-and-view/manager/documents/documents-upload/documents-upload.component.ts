@@ -43,7 +43,7 @@ export class DocumentsUploadComponent implements OnInit {
   FormtypeId;
   DescName: any;
   addUrl;
-
+  // For file upload
   public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
 
   constructor(private documentService: DocumentserviceService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
@@ -60,13 +60,13 @@ export class DocumentsUploadComponent implements OnInit {
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
     this.FormtypeId = "";
-
+    // Call for document folder names
     this.documentService
       .getDocumentFolderNamesfordropdown(this.employeekey, this.OrganizationID)
       .subscribe((data: Documents[]) => {
         this.documentsList = data;
       });
-
+    // file upload code starts...
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
@@ -80,6 +80,7 @@ export class DocumentsUploadComponent implements OnInit {
         },
       });
     };
+    // file upload code ends...
   }
   FileSelected() {
     if (!(this.FormtypeId)) {
@@ -97,11 +98,13 @@ export class DocumentsUploadComponent implements OnInit {
     if (this.DescName) {
       this.DescName = this.DescName.trim();
     }
+    // file upload code starts...
     this.addUrl = '?formtypeId=' + this.FormtypeId + '&formDesc=' + this.DescName + '&empkey=' + this.employeekey + '&OrganizationID=' + this.OrganizationID;
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
       item.url = url + this.addUrl;
     }
     this.uploader.uploadAll();
+    // file upload code ends...
   }
 }

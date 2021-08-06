@@ -141,6 +141,7 @@ export class BarcodeReportComponent implements OnInit {
         this.EquipmentKey = "";
       });
   }
+  //function for generating report
   generateBarcodeReport(FacilityKey, FloorKey, RoomTypeKey, ZoneKey, EquipmentTypeKey, EquipmentKey) {
     this.checkFlag = true;
     if (!this.FacilityKey && !this.EquipmentTypeKey && !this.EquipmentKey) {
@@ -234,7 +235,7 @@ export class BarcodeReportComponent implements OnInit {
   }
 
 
-  //export to excel 
+  //function for exporting to excel 
   exportToExcel(): void {
     //export room table to excel
     if (this.viewBarcodeReport) {

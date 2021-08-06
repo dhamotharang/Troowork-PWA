@@ -43,7 +43,7 @@ export class DocumentfolderEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.folder$ = params.FormtypeId);
   }
-
+  // Function to update the folder name of the documents
   updateFolderName() {
     this.checkFlag = true;
     if (this.folder.FormType && !this.folder.FormType.trim()) {
@@ -143,7 +143,7 @@ export class DocumentfolderEditComponent implements OnInit {
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
     this.checkFlag = false;
-
+    // Call to get the folder name details to be edited
     this.documentService.EditDocFolderName(this.folder$, this.OrganizationID).subscribe((data: any[]) => {
       this.folder = data[0]
       this.initialFolder = data[0].FormType

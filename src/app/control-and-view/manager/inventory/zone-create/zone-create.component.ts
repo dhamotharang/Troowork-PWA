@@ -42,7 +42,7 @@ export class ZoneCreateComponent implements OnInit {
     return window.atob(output);
   }
   constructor(private inventoryService: InventoryService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to add zone values
   addZone(FacilityKey, FloorName, ZoneName, FloorKey) {
 
     this.checkFlag = true;

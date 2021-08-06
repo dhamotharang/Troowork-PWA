@@ -64,7 +64,7 @@ export class ZoneEditComponent implements OnInit {
         this.zoneEditValues.FloorKey = "";
       });
   }
-
+  // Function to update edited zone values
   updateZone(FacilityKey, FacilityName, FloorName, FloorKey, ZoneKey, ZoneName) {
 
     this.checkFlag = true;

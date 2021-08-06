@@ -44,7 +44,7 @@ export class CreateOrganizationComponent implements OnInit {
     }
     return window.atob(output);
   }
-
+  // Function to save organization details
   createOrg() {
     this.checkFlag = true;
     if (!(this.OrgName) || !(this.OrgName.trim())) {

@@ -132,7 +132,7 @@ export class BuildingViewComponent implements OnInit {
 
 
   // }
-
+  // Function to search building list
   searchFacility(SearchValue) {
 
     var value = SearchValue.trim();
@@ -165,7 +165,7 @@ export class BuildingViewComponent implements OnInit {
         });
     }
   };
-
+  // Delete building function
   deleteFacPass(FacilityKey) {
     this.delete_faciKey = FacilityKey;
 

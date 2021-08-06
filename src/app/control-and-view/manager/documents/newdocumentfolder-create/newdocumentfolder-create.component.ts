@@ -40,7 +40,7 @@ export class NewdocumentfolderCreateComponent implements OnInit {
   }
 
   constructor(private documentService: DocumentserviceService, private router: Router, private _location: Location, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to add document folder
   addDocFold() {
     this.checkFlag = true;
     if (this.DocFolderName && !this.DocFolderName.trim()) {

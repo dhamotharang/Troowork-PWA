@@ -63,14 +63,17 @@ export class EditFeedbackTemplateComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     //token ends
 
+    // Call to get scoring type list
     this.inspectionService
       .scoringtype(this.OrganizationID).subscribe((data: any[]) => {
         this.scores = data;
       });
+    // Call to get Feedback Template Details
     this.inspectionService
       .getFeedbackTemplateEditDetails(this.tempID, this.OrganizationID).subscribe((data: any[]) => {
         this.TemplateEditDetails = data[0];
       });
+    // Call to get Feedback Template Questions Details
     this.inspectionService
       .getFeedbackTemplateQuestionsEditDetails(this.tempID, this.OrganizationID).subscribe((data: any[]) => {
         this.fieldArray = data;
@@ -83,7 +86,7 @@ export class EditFeedbackTemplateComponent implements OnInit {
   addtempId(tempKeys) {
     this.temparray.push(tempKeys);
   }
-
+  // Function to delete feedback question
   deleteFieldValue(TemplateQuestionID) {
     if (this.fieldArray.length > 1) {
       this.inspectionService
@@ -111,6 +114,7 @@ export class EditFeedbackTemplateComponent implements OnInit {
   deleteNewFieldValue(index) {
     this.newAttribute.splice(index, 1);
   }
+  // Function to save feedback template question
   savetemplate() {
     var temp_updateArry = this.fieldArray;
     var temp_insertArry = this.newAttribute;

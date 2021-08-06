@@ -114,6 +114,7 @@ export class TradeRequestActionComponent implements OnInit {
     this.route.params.subscribe(params => this.traderequestDetails$ = params.requestID);
   }
 
+  // Function to save the approval/rejection of trade 
   saveTradeRequestAction() {
 
     this.checkFlag = true;

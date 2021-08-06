@@ -132,7 +132,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
 
     }, 100)
   }
-
+  // Function for pagination starts
   previousPage() {
     this.pageNo = +this.pageNo - 1;
     var fromDate, FacilityKey, ZoneKey, toDate, FloorKey, RoomTypeKey, SearchWO, startDate, endDate;
@@ -288,6 +288,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
         this.loading = false;
       });
   }
+  // Function for pagination ends
   checktoshowFinish(i) {
     if (this.showbutton[i] == true) {
       this.showbutton[i] = true;
@@ -306,6 +307,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     }
   }
 
+  // Function to get floor details based on building selected from dropdown
   selectFloorfromBuildings(facKey) {
     this.facikey = facKey;
     if (facKey) {
@@ -324,6 +326,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     }
   }
 
+  // Function to get zone & roomtype details based on floor selected from dropdown
   selectZoneRoomtypefromFloor(flkey) {
     this.WorkOrderServiceService
       .getallZones(this.facikey, flkey, this.OrganizationID)
@@ -343,6 +346,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
   selectedZone() {
     this.RoomTypeKey = '';
   }
+  // Function for search
   searchWO(SearchValue) {
     var value = SearchValue.trim();
     if (!this.WorkorderDate) {
@@ -388,6 +392,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     }
 
   }
+  // Function for filter
   viewEmployeeWorkorderByFilter() {
     this.loading = true;// loading
     this.showHide1 = false;
@@ -435,6 +440,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
 
   }
 
+  // Function to complete the workorder
   workorderCompleted(i, barcodeRequired, photoRequired, workorderkey, file) {
 
     this.checkFlag = true;
@@ -533,6 +539,8 @@ export class ViewworkordersforemployeeComponent implements OnInit {
 
     this.workorderViewsEmpByAll();
   };
+
+  // Function for file uploading
   FileSelected(WorkorderKey) {
     this.addUrl = '?Workorderkey=' + WorkorderKey + '&EmployeeKey=' + this.toServeremployeekey + '&OrganizationID=' + this.OrganizationID;
     this.uploader.onBeforeUploadItem = (item) => {
@@ -736,6 +744,8 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     })
   }
   // @Rodney starts
+
+  // Function for Workorder cancellation
   canceltheWorkorder(woKey) {
 
     const message = `Enter the reason for cancelling the workorder`;

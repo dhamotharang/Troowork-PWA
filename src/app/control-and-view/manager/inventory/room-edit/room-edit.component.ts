@@ -67,7 +67,7 @@ export class RoomEditComponent implements OnInit {
       event.preventDefault();
     }
   }
-
+  // Dropdown changing functions starts.
   selectFloorfromBuildings(facKey) {
     if (facKey) {
       this.facKey = facKey;
@@ -110,6 +110,9 @@ export class RoomEditComponent implements OnInit {
     this.ZoneName = zoneName;
   }
 
+  // Dropdown changing functions ends.
+
+  // Update room details 
   updateRoom(RoomName, SquareFoot, Barcode) {
     this.checkFlag = true;
     if (!this.facKey) {

@@ -130,7 +130,7 @@ export class PtoRequestActionComponent implements OnInit {
     return setDob;
 
   };
-
+  // Function to save the pto response
   saveRequestAction() {
     this.checkFlag = true;
 

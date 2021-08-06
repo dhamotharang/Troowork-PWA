@@ -68,6 +68,7 @@ export class EquipmentEditComponent implements OnInit {
   floorValueSet(floorKey) {
     this.FloorKey = floorKey;
   }
+  // Update Equipment details
   updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode) {
     this.checkFlag = true;
     if (!(EquipmentName) || !(EquipmentName.trim())) {

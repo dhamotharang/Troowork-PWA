@@ -96,6 +96,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
+  // Function to update the total time
   metricCal() {
     this.totalMonTime = 0;
     this.totalTuesTime = 0;
@@ -237,7 +238,7 @@ export class CreateBatchScheduleComponent implements OnInit {
 
   constructor(private scheduleService: SchedulingService, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
 
-
+  // Function to get the assignment details
   getScheduleDetails(scheduleKey) {
 
     this.BatchScheduleNameKey = scheduleKey;
@@ -469,6 +470,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
   }
 
+  // Function to save the details of assignment schedule
   createBatchReport() {
 
     this.CreateDis = true;

@@ -90,6 +90,7 @@ export class RoomViewComponent implements OnInit {
   }
 
   //validation ends ..... @rodney
+  // Pagination starts.
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -127,7 +128,8 @@ export class RoomViewComponent implements OnInit {
         }
       });
   }
-
+  // Pagination ends.
+  // Search function
   searchRoom(SearchValue) {
 
     var value = SearchValue.trim();
@@ -214,7 +216,7 @@ export class RoomViewComponent implements OnInit {
       }
     }
   }
-
+  // Delete room 
   deleteRoomPass(RoomKey) {
     this.delete_roomKey = RoomKey;
     const message = `Are you sure !!  Do you want to delete`;
@@ -286,7 +288,7 @@ export class RoomViewComponent implements OnInit {
   //         });
   //     });
   // }
-
+  // Function to filter the rooms
   rooms_Filter() {
     var building;
     var floor;
@@ -361,6 +363,7 @@ export class RoomViewComponent implements OnInit {
         });
     }
   }
+  // Dropdown changing functions starts.
   getFloorDisp(facilityName) {
     if (!facilityName) {
       facilityName = 0;
@@ -482,6 +485,7 @@ export class RoomViewComponent implements OnInit {
   }
 
 
+  // Dropdown changing functions ends.
   setRoomKey(key) {
     if (!key) {
       key = null

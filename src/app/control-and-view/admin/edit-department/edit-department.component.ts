@@ -40,7 +40,7 @@ export class EditDepartmentComponent implements OnInit {
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.deptKey$ = params.DeptKey);
   }
-
+  // Function to update the department details
   updateDepartment(DepartmentName) {
     this.checkFlag = true;
     if (!(DepartmentName) || !(DepartmentName.trim())) {
@@ -103,6 +103,7 @@ export class EditDepartmentComponent implements OnInit {
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
 
+    // call to get the department details to be updated
     this.checkFlag = false;
     this.inventoryService.EditDepartment(this.deptKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.dept = data[0];

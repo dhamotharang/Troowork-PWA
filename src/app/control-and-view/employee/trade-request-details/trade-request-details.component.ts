@@ -83,6 +83,7 @@ export class TradeRequestDetailsComponent implements OnInit {
     );
   }
 
+  // Function to go back to previous page
   goBack() {
     if (this.role == 'Employee') {
       this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewTradeRequest'] } }]);
@@ -103,6 +104,10 @@ export class TradeRequestDetailsComponent implements OnInit {
 
     this.editflag = false;
     this.checkFlag = false;
+
+
+    // call to get the trade request details
+
     this.PeopleServiceService.getTradeRequestInfoforEmployee(
       this.traderequestID$,
       this.OrganizationID
@@ -122,6 +127,7 @@ export class TradeRequestDetailsComponent implements OnInit {
     });
   }
 
+  // Function to cancel the approved trade
   cancelTrade() {
     this.checkFlag = true;
     this.PeopleServiceService.requestForTradeCancel(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {
@@ -145,6 +151,7 @@ export class TradeRequestDetailsComponent implements OnInit {
     });
   }
 
+  // Function to approval the cancellation request of trade
   cancelTradeApproval() {
     this.checkFlag = true;
     this.PeopleServiceService.tradeCancelApprove(this.traderequestID$, this.toServeremployeekey, this.convert_DT(new Date())).subscribe((data) => {

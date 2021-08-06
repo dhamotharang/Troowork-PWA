@@ -54,6 +54,7 @@ export class SetUsnamepaswdbySAComponent implements OnInit {
     this.route.params.subscribe(params => this.str$ = params.str);
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
   }
+  // Function to set the password
   setUsernamePassword() {
     this.checkFlag = true;
     if (!this.username) {

@@ -11,9 +11,11 @@ import { DataServiceTokenStorageService } from "src/app/service/DataServiceToken
 
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { DataService, CreateEventParams, EventData, UpdateEventParams } from "./data.service";
+// For alert and confirm box starts...
 import { MatDialog } from '@angular/material/dialog';
 import { AlertdialogComponent } from '../../../dialog/alertdialog/alertdialog.component';
 import { ConfirmationdialogComponent, ConfirmDialogModel } from '../../../dialog/confirmationdialog/confirmationdialog.component';
+// For alert and confirm box ends...
 @Component({
   selector: 'scheduler-component',
   templateUrl: './scheduler.component.html',
@@ -140,6 +142,7 @@ export class SchedulerComponent implements AfterViewInit {
           let row = args.source.data;
           if (row.IsShift == 1) {
             // alert("Can't delete an employee group... !!!! ");
+            // Alert starts
             const dialogRef = this.dialog.open(AlertdialogComponent, {
               data: {
                 message: "Can't delete an employee group... !!!! ",
@@ -148,8 +151,10 @@ export class SchedulerComponent implements AfterViewInit {
                 }
               },
             });
+            // Alert ends
           } else if (row.IsShift == 0) {
 
+            // Confirm starts
             const message = "Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?";
             const dialogData = new ConfirmDialogModel("DELETE", message);
             const dialogRef = this.dialog.open(ConfirmationdialogComponent, {
@@ -184,6 +189,8 @@ export class SchedulerComponent implements AfterViewInit {
                 });
               }
             });
+
+            // Confirm ends
 
             // var k = confirm("Do you really want to delete " + row.name + " from the employee group " + row.Description + " ?");
 
@@ -399,7 +406,7 @@ export class SchedulerComponent implements AfterViewInit {
     onEventMove: args => {
       const copy = args.ctrl || args.meta;
       console.log(copy);
-      if (copy) {
+      if (copy) { //multi select event move
         args.preventDefault();
         args.multimove.forEach(item => {
           console.log(item);
@@ -421,7 +428,7 @@ export class SchedulerComponent implements AfterViewInit {
           this.scheduler.control.multiselect.clear();
         });
       }
-      else {
+      else {    //single event move
         let obj = {
           resourceEmployee: this.MovingToEmpKey,
           start: this.MovingToDate,
@@ -440,7 +447,7 @@ export class SchedulerComponent implements AfterViewInit {
         });
       }
     },
-    onEventRightClick: args => {
+    onEventRightClick: args => {  //Event right click action
       this.scheduler.control.multiselect.clear();
       console.log(this.scheduler.events);
       if (this.highlightcellid && (this.highlightcellid !== args.e.data.id)) {
@@ -468,13 +475,13 @@ export class SchedulerComponent implements AfterViewInit {
     onEventResize: args => {
       args.cell.disabled = true;
     },
-    onBeforeCellRender: args => {
+    onBeforeCellRender: args => {     //cell rendering
       if (args.cell.start.getDayOfWeek() === 6 || args.cell.start.getDayOfWeek() === 0) {
         args.cell.backColor = "white";
         // args.cell.disabled = true;
       }
     },
-    onBeforeTimeHeaderRender: args => {
+    onBeforeTimeHeaderRender: args => {  //time header rendering
       if (args.header.level === 1) {
         args.header.html = "Week " + args.header.html;
       }
@@ -490,7 +497,7 @@ export class SchedulerComponent implements AfterViewInit {
 
 
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void {         //the code to be executed after the initialization of the component
     var n = this.ds.clearExpandVal();
 
     //token starts....
@@ -710,7 +717,7 @@ export class SchedulerComponent implements AfterViewInit {
     }
   }
 
-  empCalendarActivities() {
+  empCalendarActivities() {     //event refresh call
     // this.loading = true;
     this.date1 = this.date;
     this.SchedulingService
@@ -876,7 +883,7 @@ export class SchedulerComponent implements AfterViewInit {
     this.modal.show();
   }
 
-  createSubmit() {
+  createSubmit() {      //When submit button create is clicked
     if (!(this.BatchScheduleNameKey)) {
       // alert("Please provide Assignment Name !");
       const dialogRef = this.dialog.open(AlertdialogComponent, {
@@ -926,7 +933,7 @@ export class SchedulerComponent implements AfterViewInit {
     // });
   }
 
-  createCancel() {
+  createCancel() {  //When close button in create  is clicked
     this.modal.hide();
   }
 
@@ -1006,7 +1013,7 @@ export class SchedulerComponent implements AfterViewInit {
     this.DateEdit = this.convert_DT(this.DateEdit);
   }
 
-  submitEdit() {
+  submitEdit() {      //When submit button in edit is clicked
     console.log(this.event1);
     var date = this.DateEdit;
     if (!(this.BatchScheduleNameKeyEdit)) {
@@ -1053,12 +1060,12 @@ export class SchedulerComponent implements AfterViewInit {
     this.event1.data.ScheduleNameKey = this.BatchScheduleNameKeyEdit;
   }
 
-  cancel() {
+  cancel() {      //When close button in edit is clicked
     this.modal1.hide();
   }
 
 
-  delete() {
+  delete() {      //When delete button in edit is clicked
     this.modal1.hide();
     const message = `Are you sure !!  Do you want to delete`;
     const dialogData = new ConfirmDialogModel("DELETE", message);
@@ -1073,7 +1080,7 @@ export class SchedulerComponent implements AfterViewInit {
         this.modal1.hide();
         this.scheduler.control.scrollToResource(this.event1.data.resource);
       }
-      else{
+      else {
         this.modal1.show();
       }
     });
@@ -1109,7 +1116,7 @@ export class SchedulerComponent implements AfterViewInit {
 
   }
 
-  updateCall(obj) {
+  updateCall(obj) {     //update the edited values of the event and then call the event refresh function.
 
     this.SchedulingService.SchedulerEventUpdate(obj).subscribe(data => {
       return Promise.resolve(this.empCalendarActivities());
@@ -1117,7 +1124,7 @@ export class SchedulerComponent implements AfterViewInit {
   }
 
 
-  deleteCall(AssignIDForDelete, employeekey, OrganizationID) {
+  deleteCall(AssignIDForDelete, employeekey, OrganizationID) {          //delete the selected event and then call the event refresh function.
 
     this.SchedulingService.SchedulerEventDelete(AssignIDForDelete, employeekey, OrganizationID).subscribe(data => {
       return Promise.resolve(this.empCalendarActivities());

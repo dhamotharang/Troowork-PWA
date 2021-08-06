@@ -115,6 +115,7 @@ export class ViewmeetingortrainingeventComponent implements OnInit {
 
   //functions for pagination 
 
+  // Function to search training/meeting 
   searchMeeting(SearchValue) {
     var value = SearchValue.trim();
     var curr_date = this.convert_DT(new Date());
@@ -144,17 +145,18 @@ export class ViewmeetingortrainingeventComponent implements OnInit {
     // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
-    
+
     this.role = this.dst.getRole();
     this.IsSupervisor = this.dst.getIsSupervisor();
     this.name = this.dst.getName();
     this.toServeremployeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-  
+
 
     //token ends
     this.loading = true;// loading
     var curr_date = this.convert_DT(new Date());
+    // call to get training/meeting details
     this.PeopleServiceService
       .getMeetingTrainingViewforemployees(curr_date, this.toServeremployeekey, this.OrganizationID)
       .subscribe((data: People[]) => {

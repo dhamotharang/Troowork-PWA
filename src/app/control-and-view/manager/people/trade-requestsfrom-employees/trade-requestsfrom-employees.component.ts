@@ -106,7 +106,7 @@ export class TradeRequestsfromEmployeesComponent implements OnInit {
         this.tradestatus = data;
       });
   }
-
+  // Filter function
   viewtrade(fromdate, todate, tradeStat) {
 
     if ((todate) && (this.convert_DT(fromdate) > this.convert_DT(todate))) {

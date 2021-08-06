@@ -46,6 +46,7 @@ export class DepartmentViewComponent implements OnInit {
   }
 
   //validation starts ..... @rodney
+  // Pagination starts
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -83,6 +84,9 @@ export class DepartmentViewComponent implements OnInit {
         }
       });
   }
+
+  // Pagination ends
+
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
   constructor(private formBuilder: FormBuilder, private inventoryService: InventoryService, private el: ElementRef, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
@@ -104,7 +108,7 @@ export class DepartmentViewComponent implements OnInit {
   }
 
   //validation ends ..... @rodney
-
+  // Function to search from department list
   searchDepartment(SearchValue) {
 
     var value = SearchValue.trim();
@@ -136,7 +140,7 @@ export class DepartmentViewComponent implements OnInit {
         });
     }
   }
-
+  // Delete department fn
   deleteDeptPass(DeptKey) {
     this.delete_DeptKey = DeptKey;
     const message = `Are you sure !!  Do you want to delete`;

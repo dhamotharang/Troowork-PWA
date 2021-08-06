@@ -62,6 +62,7 @@ export class ViewDocumentsComponent implements OnInit {
 
     }, 100)
   }
+  // Function to call recent uploads
   RecentUpdates() {
     this.documentService
       .getRecentUploads(this.page, this.count, this.employeekey, this.OrganizationID)
@@ -70,6 +71,8 @@ export class ViewDocumentsComponent implements OnInit {
         this.viewFolderDescriptionTable = data;
       });
   }
+
+  // Function for search 
   searchFNDN(SearchValue) {
     var value = SearchValue.trim();
     if (value.length >= 3) {
@@ -97,6 +100,7 @@ export class ViewDocumentsComponent implements OnInit {
       }
     }
   }
+  
   showFileDetailsTablebydropdown(formtype) {
     if (!(this.FormtypeId)) {
       this.documentService

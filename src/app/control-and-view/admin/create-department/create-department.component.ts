@@ -40,7 +40,7 @@ export class CreateDepartmentComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to save the department details
   addDepartment(DepartmentName) {
 
     this.checkFlag = true;

@@ -59,6 +59,8 @@ export class ViewOrganizationComponent implements OnInit {
 
   //     });
   // }
+
+  // Function to delete organization
   deleteOrgPass(OrganizationID) {
     this.delete_orgKey = OrganizationID;
     this.checkFlag = true;

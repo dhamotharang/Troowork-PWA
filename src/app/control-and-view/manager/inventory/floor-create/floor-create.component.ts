@@ -50,7 +50,7 @@ export class FloorCreateComponent implements OnInit {
       FloorDescription: ['', Validators.required]
     });
   }
-
+  // Function to add floor details
   addFloor(FacilityKey, FloorName, FloorDescription) {
     this.checkFlag = true;
     if (!FacilityKey) {

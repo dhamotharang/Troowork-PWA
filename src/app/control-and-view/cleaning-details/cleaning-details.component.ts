@@ -35,6 +35,7 @@ export class CleaningDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    // call to get the last details of the room
     this.reviewservice.getLastCleanedDetails(this.rKey$, this.OrgId$).subscribe((data: any[]) => {
       if (data.length > 0) {
         this.show = true;

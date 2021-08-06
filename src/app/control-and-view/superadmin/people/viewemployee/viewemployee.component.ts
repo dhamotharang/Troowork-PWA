@@ -71,6 +71,8 @@ export class ViewemployeeComponent implements OnInit {
 
     }, 100)
   }
+
+  // Function to call employeedetails according to manager/jobtitle dropdown selection
   getempdettablewithselectedddvsa() {
     this.pageNo = 1;
     if (!(this.ManagerKey)) {
@@ -96,6 +98,7 @@ export class ViewemployeeComponent implements OnInit {
       });
   }
 
+  // Function to search employee details
   searchEmployeeDetails(SearchValue) {
 
     var value = SearchValue.trim();
@@ -173,6 +176,7 @@ export class ViewemployeeComponent implements OnInit {
     });
   }
 
+  // Function for pagination starts..
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -257,4 +261,5 @@ export class ViewemployeeComponent implements OnInit {
         });
     }
   }
+  // Function for pagination ends..
 }

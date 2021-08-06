@@ -48,7 +48,7 @@ export class JobTitleViewAdminComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) { }
-
+  // Function to search from the jobtitle list
   searchJobTitle(SearchJobTitle) {
     var value = SearchJobTitle.trim();
     if (value.length >= 3) {
@@ -76,6 +76,7 @@ export class JobTitleViewAdminComponent implements OnInit {
       });
     }
   }
+  // Function to delete the jobtitle list
   deleteJobPass(key) {
     this.deleteJobtitleKey = key;
     this.checkFlag = true;
@@ -112,6 +113,7 @@ export class JobTitleViewAdminComponent implements OnInit {
   //       })
   //     );
   // }
+  // Function to go to the previous page of pagination of jobtitle list
   previousPage() {
     this.pageNo = +this.pageNo - 1;
     this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
@@ -126,6 +128,7 @@ export class JobTitleViewAdminComponent implements OnInit {
     });
   }
 
+  // Function to go to the next page of pagination of jobtitle list
   nextPage() {
     this.pageNo = +this.pageNo + 1;
     this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
@@ -153,6 +156,7 @@ export class JobTitleViewAdminComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
+    // Call to get the jobtitle list for view
     this.peopleServiceService.getJobtitleView(this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
       this.jobView = data;
       this.loading = false;

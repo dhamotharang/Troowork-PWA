@@ -84,6 +84,9 @@ export class PtoRequestEditComponent implements OnInit {
     return setDob;
 
   };
+
+  // Function to update the edited pto request
+
   submitEditedRequest() {
 
     this.checkFlag = true;
@@ -261,6 +264,8 @@ export class PtoRequestEditComponent implements OnInit {
       });
   }
 
+  // Function to go back to the previous page
+
   goBack() {
     // this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['ViewPtoRequest'] } }]);
     // if (this.role == 'Employee' && this.IsSupervisor == 0) {
@@ -285,6 +290,7 @@ export class PtoRequestEditComponent implements OnInit {
     this.checkFlag = false;
     // this.editflag = false;
 
+    // Call to get the pto request details 
     this.PeopleServiceService.getRequestInfoforEmployeeWithTime(this.ptorequestID$).subscribe((data) => {
       this.requestdetails = data[0];
       var cur_time = new Date(Date.now());

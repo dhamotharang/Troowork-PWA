@@ -43,6 +43,8 @@ export class JobTitleEditAdminComponent implements OnInit {
   constructor(private route: ActivatedRoute, private peopleServiceService: PeopleServiceService, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.JobTitle_Key$ = params.JobTitle_Key);
   }
+
+  // Function to update jobtitle details
   updateJobTitle(JobTitle, JobTitleDescription) {
     this.checkFlag = true;
     if (!(JobTitle) || !(JobTitle.trim())) {
@@ -137,13 +139,14 @@ export class JobTitleEditAdminComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-
+    // Call to get the JobtitleDetails which needs to be updated
     this.checkFlag = false;
     this.peopleServiceService.getEditJobtitleDetails(this.JobTitle_Key$, this.OrganizationID).subscribe((data: People[]) => {
       this.JobtitleDetails = data;
       this.JT = this.JobtitleDetails[0].JobTitle;
     });
   }
+  // Function to go back to previousPage
   goBack() {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
   }

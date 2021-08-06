@@ -119,6 +119,8 @@ export class ReviewsComponent implements OnInit {
     return z;
   }
 
+  // Function to save the review
+
   SubmitReview() {
     var t = new Date();
     var t = new Date();
@@ -314,7 +316,7 @@ export class ReviewsComponent implements OnInit {
       });
     }
   }
-
+  // Functio to redirect to another page after saving the review
   redirect() {
     this.router.navigate(['thankYou', 'feedback']);
   }

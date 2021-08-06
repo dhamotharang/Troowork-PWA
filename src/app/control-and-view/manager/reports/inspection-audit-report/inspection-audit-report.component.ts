@@ -229,6 +229,7 @@ export class InspectionAuditReportComponent implements OnInit {
   // check(emp) {
   //   alert(emp);
   // }
+  //function for exporting to excel 
   exportToExcel(): void {
 
     for (var i = 0; i < this.viewinspectionReport.length; i++) {

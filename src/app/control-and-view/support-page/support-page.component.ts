@@ -23,7 +23,7 @@ export class SupportPageComponent implements OnInit {
     this.useType = "";
     this.checkFlag = false;
   }
-
+  // Function to save the support request details
   Submit() {
     this.checkFlag = true;
     if (this.useType === 'Support') {
@@ -246,6 +246,9 @@ export class SupportPageComponent implements OnInit {
 
 
   }
+
+  // Function to call the alert after saving the request starts
+
   callalert() {
     // alert("Your request has been submitted. The support team will get back to you soon");
     const dialogRef = this.dialog.open(AlertdialogComponent, {
@@ -276,4 +279,5 @@ export class SupportPageComponent implements OnInit {
       this.router.navigate(['']);
     });
   }
+  // Function to call the alert after saving the request ends
 }

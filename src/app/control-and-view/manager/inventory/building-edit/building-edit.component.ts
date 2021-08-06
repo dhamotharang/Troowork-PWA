@@ -48,6 +48,7 @@ export class BuildingEditComponent implements OnInit {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
   }
 
+  // Function to update building
   updateBuilding(FacilityName, FacilityKey) {
 
     this.checkFlag = true;

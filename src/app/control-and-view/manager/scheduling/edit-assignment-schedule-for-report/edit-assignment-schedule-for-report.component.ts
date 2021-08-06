@@ -97,6 +97,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
+  // Function to update the total time
   metricCal() {
     this.totalMonTime = 0;
     this.totalTuesTime = 0;
@@ -240,7 +241,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleKey);
   }
 
-
+  // Function to get the assignment details
   getScheduleDetails(scheduleKey) {
     this.BatchScheduleNameKey = scheduleKey;
     this.empName = null;
@@ -343,8 +344,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
           this.roomTempList[j].KeepActive = 0;
-          this.roomTempList[j].CreateWO=1;
-          this.roomTempList[j].IsAvgAlert=0;
+          this.roomTempList[j].CreateWO = 1;
+          this.roomTempList[j].IsAvgAlert = 0;
         }
         this.metricCal();
       });
@@ -479,7 +480,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       this.roomTempList[j].IsAvgAlert = 1;
     }
   }
-
+  // Function to save the details of assignment schedule
   createBatchReport() {
     this.CreateDis = true;
     this.wotypeFlag = 0;
@@ -745,7 +746,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           todate: this.endDT,
           scheduleTime: newTime,
           CreateWO: CreateWO1,
-          isavgalert:isavgalert1
+          isavgalert: isavgalert1
         }
         this.scheduleService
           .setUpdateScheduleReport(this.scheduleUpdate).subscribe(res => {
@@ -931,7 +932,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
         CreateWO2 = createwoObj2.join(',');
-        isavgalert2=isavgalertObj2.join(',');
+        isavgalert2 = isavgalertObj2.join(',');
         if (this.WorkorderNotes) {
           this.WorkorderNotes = this.WorkorderNotes.trim();
         }
@@ -959,7 +960,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           todate: this.endDT,
           scheduleTime: newTime,
           CreateWO: CreateWO2,
-          isavgalert:isavgalert2
+          isavgalert: isavgalert2
         }
 
 

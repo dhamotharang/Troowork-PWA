@@ -65,7 +65,7 @@ export class DocumentfolderViewComponent implements OnInit {
   }
 
   //validation ends ..... @Pooja
-
+  // Function to search the document folder
   searchDocumentFolder(SearchValue) {
     var value = SearchValue.trim();
     if (value.length >= 3) {
@@ -102,6 +102,8 @@ export class DocumentfolderViewComponent implements OnInit {
 
   //     });
   // }
+  // Function to delete the document folder
+
   deleteFolderPass(FormtypeId) {
     this.delete_foldKey = FormtypeId;
     this.checkFlag = true;
@@ -137,7 +139,7 @@ export class DocumentfolderViewComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-
+    // Call to get the document folder list
     this.checkFlag = false;
     this.documentService
       .getDocumentFoldersDataTable(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)

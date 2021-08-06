@@ -65,6 +65,7 @@ export class SetUserLoginSuperComponent implements OnInit {
     this.checkFlag = false;
     this.username = this.str$;
   }
+  // Function to set the password
   setUsernamePassword() {
     this.checkFlag = true;
     if (!this.username) {

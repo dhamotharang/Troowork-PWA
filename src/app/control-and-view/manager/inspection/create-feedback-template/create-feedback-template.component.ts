@@ -51,7 +51,7 @@ export class CreateFeedbackTemplateComponent implements OnInit {
   deleteFieldValue(index) {
     this.fieldArray.splice(index, 1);
   }
-
+  // Function to save the values for inspection
   valuesSave(ScoreTypeKey, TempName) {
 
     var ScoringTypeKey;
@@ -203,6 +203,7 @@ export class CreateFeedbackTemplateComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
     this.addFieldValue();
     this.ScoreTypeKey = "";
+    // Call to get the score list
     this.inspectionService
       .getScoreTypeList(this.OrganizationID)
       .subscribe((data: any[]) => {

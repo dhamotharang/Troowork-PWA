@@ -113,6 +113,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     }
   }
 
+  // Function to update the employee details
   editEmployee(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, JobTitleKey, DepartmentKey, ManagerKey, SupervisorKey) {
     // , start_sun_hour, start_sun_min, start_sun_format, start_mon_hour, start_mon_min, start_mon_format, start_tue_hour, start_tue_min, start_tue_format, start_wed_hour, start_wed_min, start_wed_format, start_thu_hour, start_thu_min, start_thu_format, start_fri_hour, start_fri_min, start_fri_format, start_sat_hour, start_sat_min, start_sat_format, end_sun_hour, end_sun_min, end_sun_format, end_mon_hour, end_mon_min, end_mon_format, end_tue_hour, end_tue_min, end_tue_format, end_wed_hour, end_wed_min, end_wed_format, end_thu_hour, end_thu_min, end_thu_format, end_fri_hour, end_fri_min, end_fri_format, end_sat_hour, end_sat_min, end_sat_format, idscheduler_exception, idmaster_exception_weekend,idemployeegrouping
 
@@ -392,9 +393,12 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
   //       this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
   //     });
   // }
+  // function to go back to previous page
   goBack() {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
   }
+
+  // Function to delete employee
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
     this.checkFlag = true;
@@ -441,6 +445,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
+    // Call to get the employeedetails
     this.PeopleServiceService.EditEmployeeDetailsbyManager(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
       this.editempdtails = data[0];
       this.BirthDate = new Date(this.editempdtails.BirthDate);
@@ -455,12 +460,14 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       if (this.useroletype == "Employee") {
         this.showManager = true;
         this.supermark = true;
+        // Call to get the supervisor list
         this.PeopleServiceService
           .getSupervisorListforDropdown(this.employeekey, this.OrganizationID)
           .subscribe((data: People[]) => {
             this.supervisor = data;
           });
 
+        // Call to get the manager list
         this.PeopleServiceService
           .getmanagersForEmp(this.employeekey, this.OrganizationID)
           .subscribe((data: any[]) => {
@@ -468,6 +475,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
           });
       } else if (this.useroletype == "Supervisor") {
         this.showManager = true;
+        // Call to get the manager list
         this.PeopleServiceService
           .getmanagersForEmp(this.employeekey, this.OrganizationID)
           .subscribe((data: any[]) => {
@@ -477,16 +485,19 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
     });
 
+    // Call to get the employeestatus list
     this.PeopleServiceService
       .getEmployeeStatusListforDropdown(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.employeestatus = data;
       });
+    // Call to get the jobtitle list
     this.PeopleServiceService
       .getJobTitleListforDropdown(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.jobtitle = data;
       });
+    // Call to get the department list
     this.PeopleServiceService
       .getDeptListforDropdown(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -495,6 +506,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
 
 
+    // Call to get the useroletype list
     this.PeopleServiceService
       .getUserRoleTypesa(this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -519,6 +531,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
   }
 
+  // Function to get the manager and supervisor list based on usertype
   selectUserType(userType) {
     if (userType == 5) {
       this.showManager = true;

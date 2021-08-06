@@ -46,7 +46,7 @@ export class ResetPasswordsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private peopleService: PeopleServiceService, private http: HttpClient, private router: Router, private dst: DataServiceTokenStorageService, private dialog: MatDialog) {
     this.route.params.subscribe(params => this.empKey$ = params.EmpKey);
   }
-
+  // Function to reset the user password
   resetUserPassword(username, password, userLoginId) {
     this.checkFlag = true;
     if (!(username)) {
@@ -117,10 +117,12 @@ export class ResetPasswordsComponent implements OnInit {
     this.OrganizationID = this.dst.getOrganizationID();
 
     this.checkFlag = false;
+    // Call to get the login details of the employee
     this.peopleService.getLoginDetailsByEmpKey(this.empKey$, this.OrganizationID).subscribe((data: any[]) => {
       this.build = data;
     });
   }
+  // Function to go back to previousPage
   goBack() {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['manageLoginCreds'] } }]);
   }

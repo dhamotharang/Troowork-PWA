@@ -117,7 +117,7 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
-
+  //Daypilot scheduler configuration
   config: any = {
     timeHeaders: [
       {
@@ -182,13 +182,13 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
     // var token = sessionStorage.getItem('token');
     // var encodedProfile = token.split('.')[1];
     // var profile = JSON.parse(this.url_base64_decode(encodedProfile));
- 
+
     this.role = this.dst.getRole();
     this.IsSupervisor = this.dst.getIsSupervisor();
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-    
+
     var from = this.scheduler.control.visibleStart();
     var to = this.scheduler.control.visibleEnd();
     this.ds.getEvents(from, to).subscribe(result => {
@@ -228,12 +228,13 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
       else {
         Todate = TempEndDate
       }
-
+      // Call to get the events details of scheduler
       this.SchedulingService
         .empCalendarDetailsForViewOnly(this.employeekey, this.Range, this.convert_DT(this.date), this.convert_DT(Todate), this.OrganizationID)
         .subscribe((data: any[]) => {
           this.events = data;
           if (this.events.length > 0) {
+            // Call to get the employee details of scheduler
             this.SchedulingService.employeesForScheduler('Employee', this.employeekey, this.OrganizationID)
               .subscribe((data: any[]) => {
                 this.config.resources = data;
@@ -369,6 +370,7 @@ export class ViewEmployeeSchedulerComponent implements AfterViewInit {
     }
   }
 
+  // Call to get the events details of scheduler
   empCalendarActivities() {
     var TempEndDate;
     var Todate;

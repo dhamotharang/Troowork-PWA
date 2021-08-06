@@ -68,6 +68,9 @@ export class EquipmentCreateComponent implements OnInit {
   floorValueSet(floorKey) {
     this.FloorKey = floorKey;
   }
+
+  // Function to add equipment
+
   addEquipment(EquipmentName, EquipmentDescription, Barcode, EquipmentTypeKey) {
 
     this.checkFlag = true;

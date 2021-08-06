@@ -52,6 +52,9 @@ export class CreatebuildingComponent implements OnInit {
       newbuildingName: ['', Validators.required]
     });
   }
+
+  // Function to add Building details
+
   addBuilding(newbuildingName) {
     this.checkFlag = true;
     if (!(newbuildingName) || !(newbuildingName.trim())) {

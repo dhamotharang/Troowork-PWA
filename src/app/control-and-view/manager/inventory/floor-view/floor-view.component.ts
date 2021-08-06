@@ -69,6 +69,7 @@ export class FloorViewComponent implements OnInit {
   }
 
   //validation ends ..... @pooja
+  // Pagination starts.
   previousPage() {
     this.loading = true;
     this.pageNo = +this.pageNo - 1;
@@ -106,7 +107,7 @@ export class FloorViewComponent implements OnInit {
         }
       });
   }
-
+  // Pagination ends.
 
   // deleteFloor() {
   //   this.checkFlag = true;
@@ -131,6 +132,9 @@ export class FloorViewComponent implements OnInit {
   //         });
   //     });
   // }
+
+  // Delete Floor 
+
   deleteFloorPass(FacilityKey, FloorKey) {
     this.delete_faciKey = FacilityKey;
     this.delete_floorKey = FloorKey;
@@ -180,6 +184,7 @@ export class FloorViewComponent implements OnInit {
       }
     });
   }
+  // Function to search Floor
 
   searchFloor(SearchValue) {
 

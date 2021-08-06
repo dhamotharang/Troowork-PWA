@@ -40,6 +40,7 @@ export class EditOrganizationComponent implements OnInit {
     return window.atob(output);
   }
 
+  // Function to update the edited organization details 
   updateOrg(OName, ODesc, state, tid, loc, country, tename, email) {
     this.checkFlag = true;
     if (!(OName) || !(OName.trim())) {

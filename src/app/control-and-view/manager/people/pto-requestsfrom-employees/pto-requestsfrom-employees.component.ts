@@ -226,6 +226,7 @@ export class PtoRequestsfromEmployeesComponent implements OnInit {
       day = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join("-");
   }
+  // Function to filter the pto from the list.
   viewpto(fromdate, todate, ptoStatus) {
 
 

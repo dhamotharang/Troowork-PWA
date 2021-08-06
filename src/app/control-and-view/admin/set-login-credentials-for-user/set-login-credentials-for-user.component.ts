@@ -51,7 +51,7 @@ export class SetLoginCredentialsForUserComponent implements OnInit {
     this.route.params.subscribe(params => this.str$ = params.str);
     this.route.params.subscribe(params => this.userRoleTypeKey$ = params.UserRoleTypeKey);
   }
-
+  // Function to set the password of the user
   setUsernamePassword() {
     this.checkFlag = true;
     if (!(this.username) || !(this.username.trim())) {

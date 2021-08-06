@@ -46,6 +46,8 @@ export class DepartmentEditComponent implements OnInit {
     this.route.params.subscribe(params => this.deptKey$ = params.DeptKey);
   }
 
+  // Function to update department details
+
   updateDepartment(DepartmentName) {
     this.checkFlag = true;
 

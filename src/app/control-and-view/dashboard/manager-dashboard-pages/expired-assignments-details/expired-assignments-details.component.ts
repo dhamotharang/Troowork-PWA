@@ -46,7 +46,7 @@ export class ExpiredAssignmentsDetailsComponent implements OnInit {
     this.name = this.dst.getName();
     this.employeekey = this.dst.getEmployeekey();
     this.OrganizationID = this.dst.getOrganizationID();
-
+// Call to get the details of expired assignment list
     this.loginService.getExpiredAssignmentList("Detail", this.OrganizationID).subscribe((data: any[]) => {
       this.expiredList = data;
     });
@@ -55,6 +55,7 @@ export class ExpiredAssignmentsDetailsComponent implements OnInit {
   goBack() {
     this._location.back();
   }
+  // Function to redirect to edit assignment screen
   changeAssignment(BatchScheduleNameKey) {
     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport', BatchScheduleNameKey] } }]);
   }
